@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  resources :friendships
+  # resources :friendships
   resources :groups
-  resources :evidences
+  # resources :evidences
   resources :people
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

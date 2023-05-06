@@ -13,3 +13,55 @@
  *= require_tree .
  *= require_self
  */
+
+* {
+  /* border: 1px red solid; */
+}
+
+.wcbcc {
+  background-color: chocolate;
+}
+
+.usyd {
+  background-color: #0B3B17;
+  color: white;
+}
+
+.aloysius {
+  background-color: #07396c;
+  color: white;
+}
+
+.bands {
+  background-color: #966c95;
+}
+
+.phhs {
+  background-color: #8ed00c;
+}
+
+
+.flex-normal {
+  display: flex;
+  align-items: center;
+  /* align children vertically */
+  justify-content: space-between;
+  /* align children to the right */
+  gap: 20px;
+  /* add spacing between children */
+
+}
+
+
+.right {
+  display: flex;
+  align-items: center;
+  /* align children vertically */
+  justify-content: flex-end;
+  /* align children to the right */
+  gap: 20px;
+  /* add spacing between children */
+}
+.w-100 {
+  width: 100%;
+}

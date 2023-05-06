@@ -1,7 +1,32 @@
-<div id="<%= dom_id group %>">
-  <p>
-    <strong>Name:</strong>
-    <%= group.name %>
-  </p>
+<div class="col-md-4">
+  <div class="card" style="width: 18rem;">
 
+    <div class="card-body">
+      <%= link_to group.name, group_path(group), class: "btn #{group.name} w-100"  %>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    </div>
+      <% group.people.each do |person| %>
+        <div class="list-group-item flex-normal">
+          <div>
+                      <button class="btn btn-lg btn-primary d-inline-block"><%= person.name %></button>
+          </div>
+          <div>
+          <% person.groups.map(&:name).reject{ |n| n == group.name } .each do |group_name|  %>
+            <button class="btn btn-sm <%= group_name %>"><%= group_name %></button>
+          <% end %>
+          </div>
+
+
+
+        </div>
+      <% end %>
+
+    </ul>
+    <div class="card-body">
+
+    </div>
+  </div>
 </div>
+
+
+

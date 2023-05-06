@@ -4,10 +4,17 @@ class GroupsController < ApplicationController
   # GET /groups or /groups.json
   def index
     @groups = Group.all
+    @people = @groups.map(&:people).flatten.uniq
   end
 
   # GET /groups/1 or /groups/1.json
   def show
+    @people = @group.people
+    @people_count = @people.count
+    @people_names = @people.map(&:name).join(', ')
+    @people_names = 'No people in this group' if @people_names.blank?
+
+    @peoples_friends = @people.map(&:friends).flatten.uniq
   end
 
   # GET /groups/new
