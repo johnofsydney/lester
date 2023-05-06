@@ -1,0 +1,17 @@
+# fly.toml app configuration file generated for black-dream-4845 on 2023-05-06T16:07:19+10:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "black-dream-4845"
+primary_region = "syd"
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+
+[[statics]]
+  guest_path = "/rails/public"
+  url_prefix = "/"
