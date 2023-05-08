@@ -33,13 +33,13 @@ phhs = Group.create(name: 'phhs')
 
 Membership.create(person: john, group: wcbcc)
 Membership.create(person: paul, group: wcbcc)
-Membership.create(person: richard, group: wcbcc)
+Membership.create(person: richard_fox_smith, group: wcbcc)
 Membership.create(person: ben, group: wcbcc)
 
 Membership.create(person: paul, group: aloysius)
 Membership.create(person: ben, group: aloysius)
 Membership.create(person: frank, group: aloysius)
-Membership.create(person: richard, group: aloysius)
+Membership.create(person: richard_fox_smith, group: aloysius)
 
 Membership.create(person: john, group: phhs)
 Membership.create(person: dave, group: phhs)

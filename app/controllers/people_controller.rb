@@ -24,7 +24,7 @@ class PeopleController < ApplicationController
     @person = Person.new(person_params)
 
     respond_to do |format|
-      if @person.save
+      if update_person(@person)
         format.html { redirect_to person_url(@person), notice: "Person was successfully created." }
         format.json { render :show, status: :created, location: @person }
       else
@@ -37,7 +37,8 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1 or /people/1.json
   def update
     respond_to do |format|
-      if @person.update(person_params)
+      if update_person(@person)
+      # if @person.update(person_params)
         format.html { redirect_to person_url(@person), notice: "Person was successfully updated." }
         format.json { render :show, status: :ok, location: @person }
       else
@@ -65,6 +66,19 @@ class PeopleController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def person_params
-      params.require(:person).permit(:name)
+      params.require(:person).permit!
+      # params.require(:person).permit(:name, :group_ids)
+    end
+
+    def update_person(person)
+
+      group_ids = person_params['group_ids'].select(&:present?).map(&:to_i)
+
+      group_ids.each do |id|
+        group = Group.find(id)
+        person.groups << group unless person.groups.include?(group)
+      end
+
+      person.save
     end
 end

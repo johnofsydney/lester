@@ -8,7 +8,8 @@
       <% group.people.each do |person| %>
         <div class="list-group-item flex-normal">
           <div>
-                      <button class="btn btn-lg btn-primary d-inline-block"><%= person.name %></button>
+
+                        <%= link_to person.name, person_path(person), class: "btn-primary btn #{person.name}"  %>
           </div>
           <div>
           <% person.groups.map(&:name).reject{ |n| n == group.name } .each do |group_name|  %>

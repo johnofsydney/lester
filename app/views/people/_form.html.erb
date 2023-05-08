@@ -1,22 +1,24 @@
-<%= form_with(model: person) do |form| %>
-  <% if person.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(person.errors.count, "error") %> prohibited this person from being saved:</h2>
+<h1>Edit Person</h1>
 
-      <ul>
-        <% person.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
+<%= form_with model: @person, url: person_path(@person), method: :patch do |form| %>
   <div>
-    <%= form.label :name, style: "display: block" %>
+    <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
 
+  <h2>Current Groups</h2>
   <div>
-    <%= form.submit %>
+    <ul>
+      <% @person.groups.each do |group| %>
+        <li>
+          <%= group.name %>
+        </li>
+      <% end %>
+    </ul>
+
+    <h3>Add Group</h3>
+    <%= form.collection_select :group_ids, Group.all, :id, :name, { include_blank: true }, { class: "form-control", multiple: true } %>
   </div>
+
+  <%= form.submit "Save Person" %>
 <% end %>
