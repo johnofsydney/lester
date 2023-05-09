@@ -1,20 +1,25 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: %i[ show edit update destroy ]
+  layout -> { ApplicationLayout }
 
   # GET /groups or /groups.json
   def index
+    # @groups = Group.all
+    # @people = @groups.map(&:people).flatten.uniq
+
     @groups = Group.all
-    @people = @groups.map(&:people).flatten.uniq
+    render Groups::IndexView.new(groups: @groups)
   end
 
   # GET /groups/1 or /groups/1.json
   def show
-    @people = @group.people
-    @people_count = @people.count
-    @people_names = @people.map(&:name).join(', ')
-    @people_names = 'No people in this group' if @people_names.blank?
+    # @people = @group.people
+    # @people_count = @people.count
+    # @people_names = @people.map(&:name).join(', ')
+    # @people_names = 'No people in this group' if @people_names.blank?
 
-    @peoples_friends = @people.map(&:friends).flatten.uniq
+    # @peoples_friends = @people.map(&:friends).flatten.uniq
+    render Groups::ShowView.new(group: @group)
   end
 
   # GET /groups/new

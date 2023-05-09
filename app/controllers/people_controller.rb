@@ -1,22 +1,28 @@
 class PeopleController < ApplicationController
   before_action :set_person, only: %i[ show edit update destroy ]
+  layout -> { ApplicationLayout }
 
   # GET /people or /people.json
   def index
     @people = Person.all
+    render People::IndexView.new(people: @people)
   end
 
   # GET /people/1 or /people/1.json
   def show
+    render People::ShowView.new(person: @person)
   end
 
   # GET /people/new
   def new
     @person = Person.new
+    render People::EditView.new(person: @person)
   end
 
   # GET /people/1/edit
   def edit
+    @person = Person.find(params[:id])
+    render People::EditView.new(person: @person)
   end
 
   # POST /people or /people.json
@@ -82,3 +88,12 @@ class PeopleController < ApplicationController
       person.save
     end
 end
+
+
+	# layout -> { ApplicationLayout }
+
+	# def index
+	# 	render Articles::IndexView.new(
+	# 		articles: Article.all.load_async
+	# 	)
+	# end
