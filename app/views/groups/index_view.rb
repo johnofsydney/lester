@@ -1,4 +1,4 @@
-class Groups::IndexView < Phlex::HTML
+class Groups::IndexView < ApplicationView
 	def initialize(groups:)
 		@groups = groups
 	end
@@ -13,6 +13,7 @@ class Groups::IndexView < Phlex::HTML
       end
     end
 
-    a(href: '/groups/new') { 'New Group' }
+    a(href: '/groups/new', class: 'btn btn-primary') { 'New Group' }
+    a(href: '/people/', class: 'btn btn-secondary') { 'People' }
 	end
 end

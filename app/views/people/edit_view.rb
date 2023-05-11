@@ -1,4 +1,4 @@
-class People::EditView < Phlex::HTML
+class People::EditView < ApplicationView
 	def initialize(person:)
 		@person = person
 	end
@@ -28,5 +28,8 @@ class People::EditView < Phlex::HTML
         end
       end
     end
+
+    a(href: '/groups/', class: 'btn btn-secondary') { 'Groups' }
+    a(href: '/people/', class: 'btn btn-secondary') { 'People' }
 	end
 end
