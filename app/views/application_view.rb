@@ -17,16 +17,21 @@ class ApplicationView < ApplicationComponent
   end
 
   def background_color(item)
-    "#" + text_to_hex(item.name)
+    background_color = safe_name(item)
+    "#" + text_to_hex(background_color)
   end
 
   def color(item)
-    color = text_to_hex(item.name)
+    color = safe_name(item)
 
     color.hex > 0x7FFFFF ? 'black' : 'white'
   end
 
   def text_to_hex(text)
     Digest::MD5.hexdigest(text)[0..5]
+  end
+
+  def safe_name(item)
+    item.attributes['name'] || item.attributes['amount'].to_s
   end
 end

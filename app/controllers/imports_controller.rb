@@ -52,19 +52,25 @@ class ImportsController < ApplicationController
 
       donor = Donor::RecordDonation.call(row["Donor Name"])
       party = Party::RecordDonation.call(row["Donation Made To"])
-      # party = Group.find_or_create_by(name: row["Donation Made To"])
-      donation = row["Amount"].to_i
+      amount = row["Amount"].to_i
+
+      donation = Donation.create(
+        donor_type: donor.class.to_s,
+        donee: party,
+        donor: donor,
+        date: date,
+        amount: amount
+      )
+
+
+
       puts donation
       puts date
       puts donor.name
       puts party.name
-      # Donation.create(date: date, donor: donor, party: party, donation: donation)
+
     end
 
-
-    # binding.pry
-
-    # render CsvSorter::UploadView.new(headings:, data:)redi
     redirect_to groups_path
   end
 end
