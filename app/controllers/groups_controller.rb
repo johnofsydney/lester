@@ -7,18 +7,12 @@ class GroupsController < ApplicationController
     # @groups = Group.all
     # @people = @groups.map(&:people).flatten.uniq
 
-    @groups = Group.all
+    @groups = Group.order(:name)
     render Groups::IndexView.new(groups: @groups)
   end
 
   # GET /groups/1 or /groups/1.json
   def show
-    # @people = @group.people
-    # @people_count = @people.count
-    # @people_names = @people.map(&:name).join(', ')
-    # @people_names = 'No people in this group' if @people_names.blank?
-
-    # @peoples_friends = @people.map(&:friends).flatten.uniq
     render Groups::ShowView.new(group: @group)
   end
 
@@ -72,7 +66,7 @@ class GroupsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_group
-      @group = Group.find(params[:id])
+      @group = Group.includes(:transactions).find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.

@@ -28,10 +28,14 @@ class People::ShowView < ApplicationView
       end
     end
 
+    # main menu
+    span { strong { 'see also footer' } }
+    a(href: '/groups/', class: 'btn btn-primary') { 'Groups' }
+    a(href: '/transactions/', class: 'btn btn-primary') { 'Transactions' }
+    a(href: '/people/', class: 'btn btn-primary') { 'People' }
+    a(href: '/imports/annual_donor/', class: 'btn btn-primary') { 'TEMP | IMPORT DONATIONS' }
+
     a(href: '/people/new', class: 'btn btn-primary') { 'New Person' }
     a(href: "/people/#{person.id}/edit", class: 'btn btn-primary') { 'Edit Person' }
-    a(href: '/groups/', class: 'btn btn-primary') { 'Groups' }
 	end
-
-
 end

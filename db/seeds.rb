@@ -10,7 +10,7 @@ Membership.destroy_all
 Group.destroy_all
 Person.destroy_all
 
-Donation.destroy_all
+Transaction.destroy_all
 
 # john = Person.create(name: 'john')
 # mark = Person.create(name: 'mark')

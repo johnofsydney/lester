@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get '/imports/annual_donor' => 'imports#annual_donor'
   post '/imports/annual_donor_upload' => 'imports#annual_donor_upload'
 
-  resources :donations do
+  resources :transactions do
     collection do
       get :summary
     end
