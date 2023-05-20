@@ -137,6 +137,27 @@ class Group < ApplicationRecord
   has_many :memberships
   has_many :people, through: :memberships
 
-  has_many :transactions, as: :giver
-  has_many :transactions, as: :taker
+  has_many :transfers, as: :giver
+  has_many :transfers, as: :taker
+
+  def incoming_transfers = Transfer.includes(:giver).where(taker_id: self.id).order(amount: :desc)
+  def outgoing_transfers = Transfer.includes(:taker).where(giver_id: self.id).order(amount: :desc)
+
+  def incoming_sum = Transfer.where(taker: self).sum(:amount)
+  def outgoing_sum = Transfer.where(giver: self).sum(:amount)
+  def net_sum = incoming_sum - outgoing_sum
+
+  def people_transfers
+    incoming_transfers = []
+    outgoing_transfers = []
+    self.people.each do |person|
+      incoming_transfers << person.transfers.where(taker: person)
+      outgoing_transfers << person.transfers.where(giver: person)
+    end
+
+    OpenStruct.new(
+      incoming_transfers: incoming_transfers.flatten,
+      outgoing_transfers: outgoing_transfers.flatten
+    )
+  end
 end

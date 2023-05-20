@@ -12,22 +12,24 @@ class ImportsController < ApplicationController
   end
 
   def annual_donor_upload
-
+    # TODO: make this a find or create
     file = params['project']['filename'].tempfile
     csv = CSV.read(file, headers: true)
     csv.each do |row|
-      date = row['Date'].present? ? Date.parse(row['Date']) : Date.new(2022,6,30)
-      giver = Donor::RecordDonation.call(row["Donor Name"])
-      taker = Party::RecordDonation.call(row["Donation Made To"])
-      amount = row["Amount"].to_i
 
-      Transaction.create(
-        giver_type: giver.class.to_s,
-        taker: taker,
-        giver: giver,
-        date: date,
-        amount: amount
+      donation_date = row['Date'].present? ? Date.parse(row['Date']) : Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30)
+      financial_year = Dates::FinancialYear.new(donation_date)
+
+      transfer = Transfer.find_or_create_by(
+        giver: Donor::RecordDonation.call(row["Donor Name"]),
+        taker: Party::RecordDonation.call(row["Donation Made To"]),
+        start_date: financial_year.first_day,
+        end_date: financial_year.last_day,
+        transfer_type: 'donation',
       )
+
+      transfer.amount += row['Amount'].to_i
+      transfer.save
     end
 
     redirect_to groups_path

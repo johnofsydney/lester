@@ -36,17 +36,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_121828) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "transactions", force: :cascade do |t|
+  create_table "transfers", force: :cascade do |t|
     t.string "giver_type", null: false
     t.bigint "giver_id", null: false
     t.string "taker_type", null: false
     t.bigint "taker_id", null: false
-    t.date "date", null: false
-    t.integer "amount", null: false
+    t.date "start_date", null: false
+    t.date "end_date", null: false
+    t.integer "amount", default: 0, null: false
+    t.text "transfer_type", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["giver_type", "giver_id"], name: "index_transactions_on_giver"
-    t.index ["taker_type", "taker_id"], name: "index_transactions_on_taker"
+    t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
+    t.index ["taker_type", "taker_id"], name: "index_transfers_on_taker"
   end
 
 end

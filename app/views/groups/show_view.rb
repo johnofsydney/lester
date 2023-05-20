@@ -1,82 +1,104 @@
 class Groups::ShowView < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :group, :incoming_transactions, :outgoing_transactions
+  attr_reader :group
 
 	def initialize(group:)
 		@group = group
-    # @incoming_transactions = group.transactions.select{|transaction| transaction.taker_id == group.id}
-    # @outgoing_transactions = group.transactions.select{|transaction| transaction.giver_id == group.id}
-    @incoming_transactions = Transaction.where(taker_id: group.id)
-    @outgoing_transactions = Transaction.where(giver_id: group.id)
 	end
 
 	def template
-    # div(class: 'col-md-4') do
-      # div(class: 'card') do
-        # div(class: 'card-body') do
-          a(href: "/groups/#{group.id}", class: 'btn w-100', style: button_styles(group)) { group.name }
+    a(href: "/groups/#{group.id}", class: 'btn w-100', style: button_styles(group)) { group.name }
 
-          h3 { 'Transactions In' }
-          table(class: 'table') do
-            tr do
-              th { 'Amount' }
-              th { 'Giver' }
-              th { 'Date' }
-            end
+    table(class: 'table') do
+      tr do
+        th { 'Money In' }
+        th { 'Money Out' }
+        th { group.net_sum > 0 ? 'Net (In)' : 'Net (Out)' }
+      end
 
-            incoming_transactions.each do |transaction|
-              tr do
-                td { number_to_currency(transaction.amount.to_s) }
-                td { a(href: "/#{class_of_giver(transaction.giver)}/#{transaction.giver_id}") { transaction.giver.name } }
-                td { transaction.date.strftime("%d/%m/%Y") }
-              end
-            end
-          end
+      tr do
+        td { number_to_currency(group.incoming_sum) }
+        td { number_to_currency(group.outgoing_sum) }
+        td { number_to_currency(group.net_sum.abs) }
+      end
+    end
+
+    h3 { "Transfers In (#{group.incoming_transfers.count} records)" }
+    table(class: 'table') do
+      tr do
+        th { 'Amount' }
+        th { 'Year' }
+        th { 'Giver' }
+      end
+
+      group.incoming_transfers.each do |summary|
+        tr do
+          td { number_to_currency(summary.amount.to_s) }
+          td { summary.end_date.year.to_s }
+          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
+        end
+      end
+    end
+
+    h3 { "Transfers Out (#{group.outgoing_transfers.count} records)" }
+    table(class: 'table') do
+      tr do
+        th { 'Amount' }
+        th { 'Year' }
+        th { 'Giver' }
+      end
+
+      group.outgoing_transfers.each do |summary|
+        tr do
+          td { number_to_currency(summary.amount.to_s) }
+          td { summary.end_date.year.to_s }
+          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
+        end
+      end
+    end
 
 
-          h3 { 'Transactions Out' }
-          table(class: 'table') do
-            tr do
-              th { 'Amount' }
-              th { 'Taker' }
-              th { 'Date' }
-            end
+    hr
 
-
-            outgoing_transactions.each do |transaction|
-              tr do
-                td { number_to_currency(transaction.amount.to_s) }
-                td { transaction.taker.name.to_s }
-                td { transaction.date.strftime("%d/%m/%Y") }
-              end
-            end
-          end
-
-
-        # end
-
-        group.people.each do |person|
-          div(class: 'list-group-item flex-normal') do
-            div do
-              a(href: "/people/#{person.id}", class: 'btn-primary btn', style: button_styles(person)) { person.name }
-            end
-            div do
-              person.groups.each do |group|
-                a(href: "/groups/#{group.id}", class: 'btn-secondary btn btn-sml', style: button_styles(group) ) { group.name }
-              end
-            end
+    group.people.each do |person|
+      div(class: 'list-group-item flex-normal') do
+        div do
+          a(href: "/people/#{person.id}", class: 'btn-primary btn', style: button_styles(person)) { person.name }
+        end
+        div do
+          person.groups.each do |group|
+            a(href: "/groups/#{group.id}", class: 'btn-secondary btn btn-sml', style: button_styles(group) ) { group.name }
           end
         end
-      # end
-    # end
+      end
+    end
+
+    h3 { "Transfers Out (by Members) (#{group.people_transfers.outgoing_transfers.count} records)" }
+    table(class: 'table') do
+      tr do
+        th { 'Amount' }
+        th { 'Year' }
+        th { 'Giver' }
+      end
+
+      group.people_transfers.outgoing_transfers.each do |summary|
+        tr do
+          td { number_to_currency(summary.amount.to_s) }
+          td { summary.end_date.year.to_s }
+          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
+        end
+      end
+    end
+
+
 
     a(href: '/groups/new', class: 'btn btn-primary') { 'New Group' }
     a(href: "/groups/#{group.id}/edit", class: 'btn btn-primary') { 'Edit Group' }
     a(href: '/people/', class: 'btn btn-primary') { 'People' }
 	end
 
-  def class_of_giver(giver)
-    giver.is_a?(Group) ? 'groups' : 'people'
+  def class_of(klass)
+    klass.is_a?(Group) ? 'groups' : 'people'
   end
 end
