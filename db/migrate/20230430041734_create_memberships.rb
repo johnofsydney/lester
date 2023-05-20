@@ -5,8 +5,9 @@ class CreateMemberships < ActiveRecord::Migration[7.0]
       # t.references :group, polymorphic: true, null: false
       t.bigint :person_id
       t.bigint :group_id
-      t.date :start
-      t.date :end
+      t.date :start_date # TODO: time range for membership
+      t.date :end_date
+      t.text :title
 
       t.timestamps
       t.index [:person_id, :group_id]

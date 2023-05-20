@@ -62,6 +62,7 @@ class Groups::ShowView < ApplicationView
     hr
 
     group.people.each do |person|
+      # TODO: add title from membership here...
       div(class: 'list-group-item flex-normal') do
         div do
           a(href: "/people/#{person.id}", class: 'btn-primary btn', style: button_styles(person)) { person.name }
@@ -80,12 +81,14 @@ class Groups::ShowView < ApplicationView
         th { 'Amount' }
         th { 'Year' }
         th { 'Giver' }
+        th { 'Taker' }
       end
 
       group.people_transfers.outgoing_transfers.each do |summary|
         tr do
           td { number_to_currency(summary.amount.to_s) }
           td { summary.end_date.year.to_s }
+          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
           td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
         end
       end
