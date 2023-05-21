@@ -223,7 +223,7 @@ class Group < ApplicationRecord
   has_many :memberships
   has_many :people, through: :memberships
 
-  has_many :transfers, as: :giver
+  has_many :transfers, as: :giver # not working?
   has_many :transfers, as: :taker
 
   def incoming_transfers = Transfer.includes(:giver).where(taker_id: self.id).order(amount: :desc)
@@ -234,11 +234,32 @@ class Group < ApplicationRecord
   def net_sum = incoming_sum - outgoing_sum
 
   def people_transfers
+    # seond degree transfers
+    # transfers in and out from _people_ directly joined to this group as members
+    # TODO: add nodes, stop worrying about people and groups
     incoming_transfers = []
     outgoing_transfers = []
     self.people.each do |person|
       incoming_transfers << person.transfers.where(taker: person)
       outgoing_transfers << person.transfers.where(giver: person)
+    end
+
+    OpenStruct.new(
+      incoming_transfers: incoming_transfers.flatten,
+      outgoing_transfers: outgoing_transfers.flatten
+    )
+  end
+
+  def third_degree_transfers
+    # transfers in and out from _people_ indirectly joined to this group as members
+    # TODO: add nodes, stop worrying about people and groups
+    incoming_transfers = []
+    outgoing_transfers = []
+    self.people.each do |person|
+      person.groups.where.not(id: self.id).each do |group|
+        incoming_transfers << group.incoming_transfers
+        outgoing_transfers << group.outgoing_transfers
+      end
     end
 
     OpenStruct.new(

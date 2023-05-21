@@ -23,9 +23,9 @@ class ImportsController < ApplicationController
       transfer = Transfer.find_or_create_by(
         giver: Donor::RecordDonation.call(row["Donor Name"]),
         taker: Party::RecordDonation.call(row["Donation Made To"]),
-        start_date: financial_year.first_day,
-        end_date: financial_year.last_day,
+        effective_date: financial_year.last_day,
         transfer_type: 'donation',
+        evidence: 'https://transparency.aec.gov.au/AnnualPoliticalParty',
       )
 
       transfer.amount += row['Amount'].to_i

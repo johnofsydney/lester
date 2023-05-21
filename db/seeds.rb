@@ -6,6 +6,7 @@
 # Transaction.destroy_all
 
 federal_government = Group.create(name: 'Australian Federal Government')
+wheelton_investments = Group.find_by(name: 'Wheelton Investments Pty Ltd')
 
 guide_dogs_victoria = Group.create(name: 'Guide Dogs Victoria')
 
@@ -18,12 +19,12 @@ Membership.create(group: federal_government, person: josh_frydenburg)
 Membership.create(group: the_coalition, person: josh_frydenburg)
 
 Membership.create(group: guide_dogs_victoria, person: paul_wheelton, title: 'Capital Campaign Chair')
+Membership.create(group: wheelton_investments, person: paul_wheelton, title: 'Owner')
 
 Transfer.create(
   giver: federal_government,
   taker: guide_dogs_victoria,
-  start_date: Date.new(2020, 4, 1),
-  end_date: Date.new(2020, 4, 1),
+  effective_date: Date.new(2020, 4, 1),
   amount: 25_000_000,
   transfer_type: 'grant',
   evidence: 'https://parlinfo.aph.gov.au/parlInfo/download/media/pressrel/7303441/upload_binary/7303441.pdf;fileType=application/pdf#search=%22media/pressrel/7303441%22'

@@ -18,9 +18,9 @@ class Groups::ShowView < ApplicationView
       end
 
       tr do
-        td { number_to_currency(group.incoming_sum) }
-        td { number_to_currency(group.outgoing_sum) }
-        td { number_to_currency(group.net_sum.abs) }
+        td { number_to_currency(group.incoming_sum, precision: 0) }
+        td { number_to_currency(group.outgoing_sum, precision: 0) }
+        td { number_to_currency(group.net_sum.abs, precision: 0) }
       end
     end
 
@@ -34,8 +34,8 @@ class Groups::ShowView < ApplicationView
 
       group.incoming_transfers.each do |summary|
         tr do
-          td { number_to_currency(summary.amount.to_s) }
-          td { summary.end_date.year.to_s }
+          td { number_to_currency(summary.amount.to_s, precision: 0) }
+          td { summary.effective_date.year.to_s }
           td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
         end
       end
@@ -51,8 +51,8 @@ class Groups::ShowView < ApplicationView
 
       group.outgoing_transfers.each do |summary|
         tr do
-          td { number_to_currency(summary.amount.to_s) }
-          td { summary.end_date.year.to_s }
+          td { number_to_currency(summary.amount.to_s, precision: 0) }
+          td { summary.effective_date.year.to_s }
           td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
         end
       end
@@ -86,8 +86,27 @@ class Groups::ShowView < ApplicationView
 
       group.people_transfers.outgoing_transfers.each do |summary|
         tr do
-          td { number_to_currency(summary.amount.to_s) }
-          td { summary.end_date.year.to_s }
+          td { number_to_currency(summary.amount.to_s, precision: 0) }
+          td { summary.effective_date.year.to_s }
+          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
+          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
+        end
+      end
+    end
+
+    h3 { "Transfers Out (third degree) (#{group.third_degree_transfers.outgoing_transfers.count} records)" }
+    table(class: 'table') do
+      tr do
+        th { 'Amount' }
+        th { 'Year' }
+        th { 'Giver' }
+        th { 'Taker' }
+      end
+
+      group.third_degree_transfers.outgoing_transfers.each do |summary|
+        tr do
+          td { number_to_currency(summary.amount.to_s, precision: 0) }
+          td { summary.effective_date.year.to_s }
           td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
           td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
         end

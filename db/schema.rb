@@ -23,8 +23,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_121828) do
   create_table "memberships", force: :cascade do |t|
     t.bigint "person_id"
     t.bigint "group_id"
-    t.date "start"
-    t.date "end"
+    t.date "start_date"
+    t.date "end_date"
+    t.text "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id", "group_id"], name: "index_memberships_on_person_id_and_group_id"
@@ -41,10 +42,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_121828) do
     t.bigint "giver_id", null: false
     t.string "taker_type", null: false
     t.bigint "taker_id", null: false
-    t.date "start_date", null: false
-    t.date "end_date", null: false
+    t.date "effective_date", null: false
     t.integer "amount", default: 0, null: false
     t.text "transfer_type", null: false
+    t.text "evidence"
+    t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
