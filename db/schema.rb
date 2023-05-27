@@ -21,14 +21,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_121828) do
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.bigint "person_id"
-    t.bigint "group_id"
+    t.string "member_type", null: false
+    t.bigint "member_id", null: false
+    t.bigint "owner_id", null: false
     t.date "start_date"
     t.date "end_date"
     t.text "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["person_id", "group_id"], name: "index_memberships_on_person_id_and_group_id"
+    t.index ["member_type", "member_id"], name: "index_memberships_on_member"
+    t.index ["owner_id"], name: "index_memberships_on_owner_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -53,4 +55,5 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_121828) do
     t.index ["taker_type", "taker_id"], name: "index_transfers_on_taker"
   end
 
+  add_foreign_key "memberships", "groups", column: "owner_id"
 end

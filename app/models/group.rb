@@ -220,51 +220,19 @@ class Group < ApplicationRecord
     }
 
 
-  has_many :memberships
-  has_many :people, through: :memberships
+  # has_many :memberships, as: :owner, dependent: :destroy
+  # # has_many :members, through: :memberships, source: :member, source_type: ['Person', 'Group']
 
-  has_many :transfers, as: :giver # not working?
-  has_many :transfers, as: :taker
+  # has_many :members, through: :memberships, source: :member, source_type: ['Person', 'Group'], class_name: 'Member'
 
-  def incoming_transfers = Transfer.includes(:giver).where(taker_id: self.id).order(amount: :desc)
-  def outgoing_transfers = Transfer.includes(:taker).where(giver_id: self.id).order(amount: :desc)
+  has_many :memberships, as: :owner, dependent: :destroy
+  has_many :people, through: :memberships, source: :member, source_type: 'Person'
+  has_many :groups, through: :memberships, source: :member, source_type: 'Group'
 
-  def incoming_sum = Transfer.where(taker: self).sum(:amount)
-  def outgoing_sum = Transfer.where(giver: self).sum(:amount)
-  def net_sum = incoming_sum - outgoing_sum
 
-  def people_transfers
-    # seond degree transfers
-    # transfers in and out from _people_ directly joined to this group as members
-    # TODO: add nodes, stop worrying about people and groups
-    incoming_transfers = []
-    outgoing_transfers = []
-    self.people.each do |person|
-      incoming_transfers << person.transfers.where(taker: person)
-      outgoing_transfers << person.transfers.where(giver: person)
-    end
+  # ...
 
-    OpenStruct.new(
-      incoming_transfers: incoming_transfers.flatten,
-      outgoing_transfers: outgoing_transfers.flatten
-    )
+
+
+
   end
-
-  def third_degree_transfers
-    # transfers in and out from _people_ indirectly joined to this group as members
-    # TODO: add nodes, stop worrying about people and groups
-    incoming_transfers = []
-    outgoing_transfers = []
-    self.people.each do |person|
-      person.groups.where.not(id: self.id).each do |group|
-        incoming_transfers << group.incoming_transfers
-        outgoing_transfers << group.outgoing_transfers
-      end
-    end
-
-    OpenStruct.new(
-      incoming_transfers: incoming_transfers.flatten,
-      outgoing_transfers: outgoing_transfers.flatten
-    )
-  end
-end

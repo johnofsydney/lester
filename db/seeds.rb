@@ -15,11 +15,11 @@ josh_frydenburg = Person.create(name: 'Josh Frydenburg')
 
 paul_wheelton = Person.find_by(name: 'Paul Wheelton')
 
-Membership.create(group: federal_government, person: josh_frydenburg)
-Membership.create(group: the_coalition, person: josh_frydenburg)
+Membership.create(owner: federal_government, member: the_coalition)
+Membership.create(owner: the_coalition, member: josh_frydenburg)
 
-Membership.create(group: guide_dogs_victoria, person: paul_wheelton, title: 'Capital Campaign Chair')
-Membership.create(group: wheelton_investments, person: paul_wheelton, title: 'Owner')
+Membership.create(owner: guide_dogs_victoria, member: paul_wheelton, title: 'Capital Campaign Chair')
+Membership.create(owner: wheelton_investments, member: paul_wheelton, title: 'Owner')
 
 Transfer.create(
   giver: federal_government,
