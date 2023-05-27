@@ -10,9 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_11_121828) do
+ActiveRecord::Schema[7.0].define(version: 2023_05_27_042114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "affiliations", force: :cascade do |t|
+    t.bigint "owning_group_id", null: false
+    t.bigint "sub_group_id", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.text "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owning_group_id"], name: "index_affiliations_on_owning_group_id"
+    t.index ["sub_group_id"], name: "index_affiliations_on_sub_group_id"
+  end
 
   create_table "groups", force: :cascade do |t|
     t.string "name"
@@ -21,16 +33,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_121828) do
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.string "member_type", null: false
-    t.bigint "member_id", null: false
-    t.bigint "owner_id", null: false
+    t.bigint "person_id", null: false
+    t.bigint "group_id", null: false
     t.date "start_date"
     t.date "end_date"
-    t.text "title"
+    t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["member_type", "member_id"], name: "index_memberships_on_member"
-    t.index ["owner_id"], name: "index_memberships_on_owner_id"
+    t.index ["group_id"], name: "index_memberships_on_group_id"
+    t.index ["person_id"], name: "index_memberships_on_person_id"
   end
 
   create_table "people", force: :cascade do |t|
@@ -40,20 +51,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_11_121828) do
   end
 
   create_table "transfers", force: :cascade do |t|
-    t.string "giver_type", null: false
-    t.bigint "giver_id", null: false
-    t.string "taker_type", null: false
+    t.string "giver_type"
+    t.bigint "giver_id"
     t.bigint "taker_id", null: false
-    t.date "effective_date", null: false
-    t.integer "amount", default: 0, null: false
-    t.text "transfer_type", null: false
+    t.integer "amount"
     t.text "evidence"
-    t.text "notes"
+    t.text "transfer_type"
+    t.date "effective_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
-    t.index ["taker_type", "taker_id"], name: "index_transfers_on_taker"
+    t.index ["taker_id"], name: "index_transfers_on_taker_id"
   end
 
-  add_foreign_key "memberships", "groups", column: "owner_id"
+  add_foreign_key "affiliations", "groups", column: "owning_group_id"
+  add_foreign_key "affiliations", "groups", column: "sub_group_id"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "people"
+  add_foreign_key "transfers", "groups", column: "taker_id"
 end

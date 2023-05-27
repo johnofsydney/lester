@@ -1,12 +1,26 @@
 class Person < ApplicationRecord
-  has_many :memberships
+  has_many :memberships, dependent: :destroy
   has_many :groups, through: :memberships
-  has_many :group_memberships, through: :groups, source: :memberships
-  has_many :group_people, -> { distinct }, through: :group_memberships, source: :person, class_name: 'Person'
 
-  has_many :transfers, as: :giver
+  has_many :given_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
 
-  def friends
-    group_people.where.not(id: self.id)
+  def received_transfers = []
+
+
+  def nodes
+    groups + other_edge_ends
+  end
+
+  def other_edge_ends
+    given_transfers.map(&:taker)
+  end
+
+
+  def second_degree_given_transfers
+    nodes.flat_map(&:given_transfers)
+  end
+
+  def second_degree_received_transfers
+    nodes.flat_map(&:received_transfers)
   end
 end

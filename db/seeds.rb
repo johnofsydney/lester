@@ -1,35 +1,62 @@
 
-# Membership.destroy_all
-# Group.destroy_all
-# Person.destroy_all
+Transfer.destroy_all
+Membership.destroy_all
+Group.destroy_all
+Person.destroy_all
 
 # Transaction.destroy_all
 
-federal_government = Group.create(name: 'Australian Federal Government')
-wheelton_investments = Group.find_by(name: 'Wheelton Investments Pty Ltd')
+josh_frydenburg = Person.find_or_create_by(name: 'Josh Frydenburg')
+peter_dutton = Person.find_or_create_by(name: 'Peter Dutton')
+scott_morrison = Person.find_or_create_by(name: 'Scott Morrison')
+anthony_albanese = Person.find_or_create_by(name: 'Anthony Albanese')
+tanya_plibersek = Person.find_or_create_by(name: 'Tanya Plibersek')
+kevin_rudd = Person.find_or_create_by(name: 'Kevin Rudd')
 
-guide_dogs_victoria = Group.create(name: 'Guide Dogs Victoria')
+paul_wheelton = Person.find_or_create_by(name: 'Paul Wheelton')
 
-the_coalition = Group.find_by(name: 'The Coalition')
-josh_frydenburg = Person.create(name: 'Josh Frydenburg')
+federal_government = Group.find_or_create_by(name: 'Australian Federal Government')
+wheelton_investments = Group.find_or_create_by(name: 'Wheelton Investments Pty Ltd')
+guide_dogs_victoria = Group.find_or_create_by(name: 'Guide Dogs Victoria')
+the_coalition = Group.find_or_create_by(name: 'The Coalition')
+labor = Group.find_or_create_by(name: 'Labor')
 
-paul_wheelton = Person.find_by(name: 'Paul Wheelton')
 
-Membership.create(owner: federal_government, member: the_coalition)
-Membership.create(owner: the_coalition, member: josh_frydenburg)
+# Membership.create(owner: federal_government, member: the_coalition)
+Membership.create(group: the_coalition, person: josh_frydenburg)
+Membership.create(group: the_coalition, person: peter_dutton)
+Membership.create(group: the_coalition, person: scott_morrison)
+Membership.create(group: labor, person: anthony_albanese)
+Membership.create(group: labor, person: tanya_plibersek)
+Membership.create(group: labor, person: kevin_rudd)
 
-Membership.create(owner: guide_dogs_victoria, member: paul_wheelton, title: 'Capital Campaign Chair')
-Membership.create(owner: wheelton_investments, member: paul_wheelton, title: 'Owner')
+Membership.create(group: guide_dogs_victoria, person: paul_wheelton, title: 'Capital Campaign Chair')
+Membership.create(group: wheelton_investments, person: paul_wheelton, title: 'Owner')
 
-Transfer.create(
+# Affiliation.find_or_create_by(owning_group: federal_government, sub_group: the_coalition)
+# Affiliation.find_or_create_by(owning_group: federal_government, sub_group: labor)
+
+Transfer.find_or_create_by(
   giver: federal_government,
   taker: guide_dogs_victoria,
   effective_date: Date.new(2020, 4, 1),
-  amount: 25_000_000,
-  transfer_type: 'grant',
-  evidence: 'https://parlinfo.aph.gov.au/parlInfo/download/media/pressrel/7303441/upload_binary/7303441.pdf;fileType=application/pdf#search=%22media/pressrel/7303441%22'
+  amount: 25_000_000
+)
+
+Transfer.find_or_create_by(
+  giver: paul_wheelton,
+  taker: the_coalition,
+  effective_date: Date.new(2018, 4, 1),
+  amount: 1500
+)
+
+Transfer.find_or_create_by(
+  giver: wheelton_investments,
+  taker: the_coalition,
+  effective_date: Date.new(2019, 4, 1),
+  amount: 1500
 )
 
 
-atlassian = Group.create(name: 'Atlassian')
+# atlassian = Group.create(name: 'Atlassian')
 
