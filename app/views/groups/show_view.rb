@@ -10,53 +10,124 @@ class Groups::ShowView < ApplicationView
 	def template
     a(href: "/groups/#{group.id}", class: 'btn w-100', style: button_styles(group)) { group.name }
 
-    table(class: 'table') do
-      tr do
-        th { 'Money In' }
-        th { 'Money Out' }
-        th { group.net_sum > 0 ? 'Net (In)' : 'Net (Out)' }
-      end
 
-      tr do
-        td { number_to_currency(group.incoming_sum, precision: 0) }
-        td { number_to_currency(group.outgoing_sum, precision: 0) }
-        td { number_to_currency(group.net_sum.abs, precision: 0) }
-      end
-    end
-
-    h3 { "Transfers In (#{group.incoming_transfers.count} records)" }
+    h2 { 'First Degree' }
+    h3 { "Transfers In (#{group.first_degree_received_transfers.count} records)" }
     table(class: 'table') do
       tr do
         th { 'Amount' }
         th { 'Year' }
         th { 'Giver' }
+        th { 'Taker' }
       end
 
-      group.incoming_transfers.each do |summary|
+      group.first_degree_received_transfers.each do |summary|
         tr do
           td { number_to_currency(summary.amount.to_s, precision: 0) }
           td { summary.effective_date.year.to_s }
           td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
+          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
         end
       end
     end
 
-    h3 { "Transfers Out (#{group.outgoing_transfers.count} records)" }
+    h3 { "Transfers Out (#{group.first_degree_given_transfers.count} records)" }
     table(class: 'table') do
       tr do
         th { 'Amount' }
         th { 'Year' }
         th { 'Giver' }
+        th { 'Taker' }
       end
 
-      group.outgoing_transfers.each do |summary|
+      group.first_degree_given_transfers.each do |summary|
         tr do
           td { number_to_currency(summary.amount.to_s, precision: 0) }
           td { summary.effective_date.year.to_s }
+          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
           td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
         end
       end
     end
+
+    h2 { 'Second Degree' }
+    h3 { "Transfers In (#{group.second_degree_received_transfers.count} records)" }
+    table(class: 'table') do
+      tr do
+        th { 'Amount' }
+        th { 'Year' }
+        th { 'Giver' }
+        th { 'Taker' }
+      end
+
+      group.second_degree_received_transfers.each do |summary|
+        tr do
+          td { number_to_currency(summary.amount.to_s, precision: 0) }
+          td { summary.effective_date.year.to_s }
+          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
+          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
+        end
+      end
+    end
+
+    h3 { "Transfers Out (#{group.second_degree_given_transfers.count} records)" }
+    table(class: 'table') do
+      tr do
+        th { 'Amount' }
+        th { 'Year' }
+        th { 'Giver' }
+        th { 'Taker' }
+      end
+
+      group.second_degree_given_transfers.each do |summary|
+        tr do
+          td { number_to_currency(summary.amount.to_s, precision: 0) }
+          td { summary.effective_date.year.to_s }
+          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
+          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
+        end
+      end
+    end
+
+    h2 { 'Third Degree' }
+    h3 { "Transfers In (#{group.third_degree_received_transfers.count} records)" }
+    table(class: 'table') do
+      tr do
+        th { 'Amount' }
+        th { 'Year' }
+        th { 'Giver' }
+        th { 'Taker' }
+      end
+
+      group.third_degree_received_transfers.each do |summary|
+        tr do
+          td { number_to_currency(summary.amount.to_s, precision: 0) }
+          td { summary.effective_date.year.to_s }
+          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
+          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
+        end
+      end
+    end
+
+    h3 { "Transfers Out (#{group.third_degree_given_transfers.count} records)" }
+    table(class: 'table') do
+      tr do
+        th { 'Amount' }
+        th { 'Year' }
+        th { 'Giver' }
+        th { 'Taker' }
+      end
+
+      group.third_degree_given_transfers.each do |summary|
+        tr do
+          td { number_to_currency(summary.amount.to_s, precision: 0) }
+          td { summary.effective_date.year.to_s }
+          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
+          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
+        end
+      end
+    end
+
 
 
     hr
@@ -75,43 +146,9 @@ class Groups::ShowView < ApplicationView
       end
     end
 
-    h3 { "Transfers Out (by Members) (#{group.people_transfers.outgoing_transfers.count} records)" }
-    table(class: 'table') do
-      tr do
-        th { 'Amount' }
-        th { 'Year' }
-        th { 'Giver' }
-        th { 'Taker' }
-      end
+    hr
 
-      group.people_transfers.outgoing_transfers.each do |summary|
-        tr do
-          td { number_to_currency(summary.amount.to_s, precision: 0) }
-          td { summary.effective_date.year.to_s }
-          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
-          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
-        end
-      end
-    end
 
-    h3 { "Transfers Out (third degree) (#{group.third_degree_transfers.outgoing_transfers.count} records)" }
-    table(class: 'table') do
-      tr do
-        th { 'Amount' }
-        th { 'Year' }
-        th { 'Giver' }
-        th { 'Taker' }
-      end
-
-      group.third_degree_transfers.outgoing_transfers.each do |summary|
-        tr do
-          td { number_to_currency(summary.amount.to_s, precision: 0) }
-          td { summary.effective_date.year.to_s }
-          td { a(href: "/#{class_of(summary.giver)}/#{summary.giver.id}") { summary.giver.name } }
-          td { a(href: "/#{class_of(summary.taker)}/#{summary.taker.id}") { summary.taker.name } }
-        end
-      end
-    end
 
 
 

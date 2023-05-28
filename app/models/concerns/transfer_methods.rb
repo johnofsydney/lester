@@ -21,11 +21,11 @@ module TransferMethods
     end
 
     def second_degree_given_transfers
-      nodes.flat_map(&:given_transfers)
+      nodes.flat_map(&:given_transfers).flatten.compact.uniq - first_degree_given_transfers - first_degree_received_transfers
     end
 
     def second_degree_received_transfers
-      nodes.flat_map(&:received_transfers)
+      nodes.flat_map(&:received_transfers).flatten.compact.uniq - first_degree_given_transfers - first_degree_received_transfers
     end
 
     def second_degree_given_transfer_nodes
@@ -40,11 +40,11 @@ module TransferMethods
 
     # NEEDS checking!
     def third_degree_given_transfers
-      nodes.flat_map(&:second_degree_given_transfers)
+      nodes.flat_map(&:second_degree_given_transfers).flatten.compact.uniq - second_degree_given_transfers - second_degree_received_transfers - first_degree_given_transfers - first_degree_received_transfers
     end
 
     def third_degree_received_transfers
-      nodes.flat_map(&:second_degree_received_transfers)
+      nodes.flat_map(&:second_degree_received_transfers).flatten.compact.uniq - second_degree_given_transfers - second_degree_received_transfers  - first_degree_given_transfers - first_degree_received_transfers
     end
 
     def third_degree_given_transfer_nodes
@@ -59,11 +59,11 @@ module TransferMethods
 
     # NEEDS checking!
     def fourth_degree_given_transfers
-      nodes.flat_map(&:third_degree_given_transfers)
+      nodes.flat_map(&:third_degree_given_transfers).flatten.compact.uniq
     end
 
     def fourth_degree_received_transfers
-      nodes.flat_map(&:third_degree_received_transfers)
+      nodes.flat_map(&:third_degree_received_transfers).flatten.compact.uniq
     end
 
     def fourth_degree_given_transfer_nodes
@@ -72,17 +72,6 @@ module TransferMethods
 
     def fourth_degree_received_transfer_nodes
       fourth_degree_received_transfers.map(&:giver).flatten - nodes - [self] - third_degree_received_transfer_nodes
-    end
-
-    def nodes_deep(degree)
-      return self if degree == 0
-      nodes_summary = []
-
-      while degree > 0
-
-
-        degree -= 1
-      end
     end
   end
 end

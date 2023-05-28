@@ -140,7 +140,7 @@ Transfer.find_or_create_by(
   giver: guide_dogs_victoria,
   taker: lander_and_rogers,
   effective_date: Date.new(2022, 4, 1),
-  transfer_type: 'donation',
+  transfer_type: 'fees',
   amount: 140000
 )
 
