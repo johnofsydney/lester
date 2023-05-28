@@ -39,13 +39,13 @@ lander_and_rogers = Group.find_or_create_by(name: 'Lander and Rogers')
 
 
 # Membership.create(owner: federal_government, member: the_coalition)
-Membership.create(group: the_coalition, person: josh_frydenburg)
-Membership.create(group: the_coalition, person: peter_dutton)
-Membership.create(group: the_coalition, person: scott_morrison)
-Membership.create(group: labor, person: anthony_albanese)
-Membership.create(group: labor, person: tanya_plibersek)
-Membership.create(group: labor, person: kevin_rudd)
-Membership.create(group: the_greens, person: bob_brown)
+Membership.create(group: the_coalition, person: josh_frydenburg, title: 'Deputy Leader')
+Membership.create(group: the_coalition, person: peter_dutton, title: 'Leader')
+Membership.create(group: the_coalition, person: scott_morrison, title: 'Leader')
+Membership.create(group: labor, person: anthony_albanese, title: 'Leader')
+Membership.create(group: labor, person: tanya_plibersek, title: 'Deputy Leader')
+Membership.create(group: labor, person: kevin_rudd, title: 'Leader')
+Membership.create(group: the_greens, person: bob_brown, title: 'Great Grand Leader')
 Membership.create(group: allegra_spender_campaign, person: allegra_spender)
 Membership.create(group: zalie_stegall_campaign, person: zalie_stegall)
 
@@ -67,6 +67,7 @@ Transfer.find_or_create_by(
   giver: federal_government,
   taker: guide_dogs_victoria,
   effective_date: Date.new(2020, 4, 1),
+  transfer_type: 'grant',
   amount: 25_000_000
 )
 
@@ -74,6 +75,7 @@ Transfer.find_or_create_by(
   giver: paul_wheelton,
   taker: the_coalition,
   effective_date: Date.new(2018, 4, 1),
+  transfer_type: 'donation',
   amount: 1500
 )
 
@@ -81,6 +83,7 @@ Transfer.find_or_create_by(
   giver: wheelton_investments,
   taker: the_coalition,
   effective_date: Date.new(2019, 4, 1),
+  transfer_type: 'donation',
   amount: 1500
 )
 
@@ -88,6 +91,7 @@ Transfer.find_or_create_by(
   giver: mike_cannon_brookes,
   taker: climate200,
   effective_date: Date.new(2020, 4, 1),
+  transfer_type: 'donation',
   amount: 150000
 )
 
@@ -95,6 +99,7 @@ Transfer.find_or_create_by(
   giver: scott_farquar,
   taker: climate200,
   effective_date: Date.new(2020, 4, 1),
+  transfer_type: 'donation',
   amount: 150000
 )
 
@@ -102,6 +107,7 @@ Transfer.find_or_create_by(
   giver: mike_cannon_brookes,
   taker: allegra_spender_campaign,
   effective_date: Date.new(2020, 4, 1),
+  transfer_type: 'donation',
   amount: 150000
 )
 
@@ -109,6 +115,7 @@ Transfer.find_or_create_by(
   giver: scott_farquar,
   taker: zalie_stegall_campaign,
   effective_date: Date.new(2020, 4, 1),
+  transfer_type: 'donation',
   amount: 150000
 )
 
@@ -116,6 +123,7 @@ Transfer.find_or_create_by(
   giver: climate200,
   taker: the_greens,
   effective_date: Date.new(2020, 4, 1),
+  transfer_type: 'donation',
   amount: 150000
 )
 
@@ -123,6 +131,7 @@ Transfer.find_or_create_by(
   giver: climate200,
   taker: allegra_spender_campaign,
   effective_date: Date.new(2021, 4, 1),
+  transfer_type: 'donation',
   amount: 190000
 )
 
@@ -131,6 +140,7 @@ Transfer.find_or_create_by(
   giver: guide_dogs_victoria,
   taker: lander_and_rogers,
   effective_date: Date.new(2022, 4, 1),
+  transfer_type: 'donation',
   amount: 140000
 )
 

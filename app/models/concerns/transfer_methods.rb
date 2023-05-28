@@ -38,6 +38,7 @@ module TransferMethods
       second_degree_received_transfers.map(&:giver).flatten - [self]
     end
 
+    # NEEDS checking!
     def third_degree_given_transfers
       nodes.flat_map(&:second_degree_given_transfers)
     end
@@ -54,6 +55,34 @@ module TransferMethods
     def third_degree_received_transfer_nodes
       # of all the nodes who are connected to this group, what are the nodes they received transfers from?
       third_degree_received_transfers.map(&:giver).flatten - nodes - [self]
+    end
+
+    # NEEDS checking!
+    def fourth_degree_given_transfers
+      nodes.flat_map(&:third_degree_given_transfers)
+    end
+
+    def fourth_degree_received_transfers
+      nodes.flat_map(&:third_degree_received_transfers)
+    end
+
+    def fourth_degree_given_transfer_nodes
+      fourth_degree_given_transfers.map(&:taker).flatten - nodes - [self] - third_degree_given_transfer_nodes
+    end
+
+    def fourth_degree_received_transfer_nodes
+      fourth_degree_received_transfers.map(&:giver).flatten - nodes - [self] - third_degree_received_transfer_nodes
+    end
+
+    def nodes_deep(degree)
+      return self if degree == 0
+      nodes_summary = []
+
+      while degree > 0
+
+
+        degree -= 1
+      end
     end
   end
 end
