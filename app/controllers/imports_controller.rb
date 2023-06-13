@@ -16,7 +16,6 @@ class ImportsController < ApplicationController
     file = params['project']['filename'].tempfile
     csv = CSV.read(file, headers: true)
     csv.each do |row|
-
       donation_date = row['Date'].present? ? Date.parse(row['Date']) : Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30)
       financial_year = Dates::FinancialYear.new(donation_date)
 

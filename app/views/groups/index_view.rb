@@ -14,6 +14,7 @@ class Groups::IndexView < ApplicationView
     end
 
     a(href: '/groups/new', class: 'btn btn-primary') { 'New Group' }
+    a(href: '/groups/', class: 'btn btn-primary') { 'Groups' }
     a(href: '/people/', class: 'btn btn-secondary') { 'People' }
     a(href: '/donations/', class: 'btn btn-secondary') { 'Donations' }
 	end

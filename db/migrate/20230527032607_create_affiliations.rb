@@ -6,7 +6,7 @@ class CreateAffiliations < ActiveRecord::Migration[7.0]
 
       t.date :start_date # TODO: time range for affiliation
       t.date :end_date
-      t.text :title
+      t.text :description
 
       t.timestamps
     end

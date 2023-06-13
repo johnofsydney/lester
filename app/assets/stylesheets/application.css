@@ -27,7 +27,17 @@
   /* align children to the right */
   gap: 20px;
   /* add spacing between children */
+}
 
+.flex-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* align children vertically */
+  justify-content: space-between;
+  /* align children to the right */
+  gap: 20px;
+  /* add spacing between children */
 }
 
 

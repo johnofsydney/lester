@@ -3,7 +3,7 @@ class CreateTransfers < ActiveRecord::Migration[7.0]
     create_table :transfers do |t|
       t.references :giver, polymorphic: true, index: true
       t.references :taker, null: false, foreign_key: { to_table: :groups }
-      t.integer :amount
+      t.integer :amount, default: 0
       t.text :evidence
       t.text :transfer_type
       t.date :effective_date

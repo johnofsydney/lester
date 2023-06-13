@@ -19,7 +19,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_042114) do
     t.bigint "sub_group_id", null: false
     t.date "start_date"
     t.date "end_date"
-    t.text "title"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["owning_group_id"], name: "index_affiliations_on_owning_group_id"
@@ -54,7 +54,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_042114) do
     t.string "giver_type"
     t.bigint "giver_id"
     t.bigint "taker_id", null: false
-    t.integer "amount"
+    t.integer "amount", default: 0
     t.text "evidence"
     t.text "transfer_type"
     t.date "effective_date"

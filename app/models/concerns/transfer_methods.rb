@@ -2,76 +2,39 @@ module TransferMethods
   extend ActiveSupport::Concern
 
   included do
-    def first_degree_given_transfers
-      given_transfers
+    # depth is the number of degrees of separation from the invoking node, 0 being the invoking node itself
+    def consolidated_transfers(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0)
+      p "{results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, queue.count: #{queue.count}, counter: #{counter}, depth: #{depth}}  }"
+
+      queue.each do |node|
+        visited_nodes << node # store the current node as visited
+
+        node.transfers.outgoing.each do |transfer|
+          results << make_struct(transfer:, depth: counter, direction: 'outgoing')
+        end
+        node.transfers.incoming.each do |transfer|
+          results << make_struct(transfer:, depth: counter, direction: 'incoming')
+        end
+      end
+
+      return results if depth == 0
+
+      depth -= 1
+      counter += 1
+      queue = queue.map(&:nodes).flatten.uniq - visited_nodes # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
+
+      consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:)
     end
 
-    def first_degree_received_transfers
-      received_transfers
-    end
-
-    def first_degree_given_transfer_nodes
-      # who did this person/group give to?
-      first_degree_given_transfers.map(&:taker)
-    end
-
-    def first_degree_received_transfer_nodes
-      # who did this person/group receive from?
-      first_degree_received_transfers.map(&:giver)
-    end
-
-    def second_degree_given_transfers
-      nodes.flat_map(&:given_transfers).flatten.compact.uniq - first_degree_given_transfers - first_degree_received_transfers
-    end
-
-    def second_degree_received_transfers
-      nodes.flat_map(&:received_transfers).flatten.compact.uniq - first_degree_given_transfers - first_degree_received_transfers
-    end
-
-    def second_degree_given_transfer_nodes
-      # of all the nodes who are connected to this group, what are the nodes they gave to?
-      second_degree_given_transfers.map(&:taker).flatten - [self]
-    end
-
-    def second_degree_received_transfer_nodes
-      # of all the nodes who are connected to this group, what are the nodes they received transfers from?
-      second_degree_received_transfers.map(&:giver).flatten - [self]
-    end
-
-    # NEEDS checking!
-    def third_degree_given_transfers
-      nodes.flat_map(&:second_degree_given_transfers).flatten.compact.uniq - second_degree_given_transfers - second_degree_received_transfers - first_degree_given_transfers - first_degree_received_transfers
-    end
-
-    def third_degree_received_transfers
-      nodes.flat_map(&:second_degree_received_transfers).flatten.compact.uniq - second_degree_given_transfers - second_degree_received_transfers  - first_degree_given_transfers - first_degree_received_transfers
-    end
-
-    def third_degree_given_transfer_nodes
-      # of all the nodes who are connected to this group, what are the nodes they gave to?
-      third_degree_given_transfers.map(&:taker).flatten - nodes - [self]
-    end
-
-    def third_degree_received_transfer_nodes
-      # of all the nodes who are connected to this group, what are the nodes they received transfers from?
-      third_degree_received_transfers.map(&:giver).flatten - nodes - [self]
-    end
-
-    # NEEDS checking!
-    def fourth_degree_given_transfers
-      nodes.flat_map(&:third_degree_given_transfers).flatten.compact.uniq
-    end
-
-    def fourth_degree_received_transfers
-      nodes.flat_map(&:third_degree_received_transfers).flatten.compact.uniq
-    end
-
-    def fourth_degree_given_transfer_nodes
-      fourth_degree_given_transfers.map(&:taker).flatten - nodes - [self] - third_degree_given_transfer_nodes
-    end
-
-    def fourth_degree_received_transfer_nodes
-      fourth_degree_received_transfers.map(&:giver).flatten - nodes - [self] - third_degree_received_transfer_nodes
+    def make_struct(transfer:, depth:, direction:)
+      OpenStruct.new(
+        giver: transfer.giver,
+        taker: transfer.taker,
+        amount: transfer.amount,
+        effective_date: transfer.effective_date,
+        depth:,
+        direction:
+      )
     end
   end
 end

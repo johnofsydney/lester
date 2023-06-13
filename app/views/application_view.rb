@@ -9,7 +9,7 @@ class ApplicationView < ApplicationComponent
 
   def button_styles(instance)
     {
-      'background-color' => background_color(instance),
+      'background_color' => background_color(instance),
       'color' => color(instance)
     }.map{|key, value| "#{key.to_s.dasherize}: #{value};"}
      .join('; ') + ';'
@@ -22,9 +22,7 @@ class ApplicationView < ApplicationComponent
   end
 
   def color(item)
-    color = safe_name(item)
-
-    color.hex > 0x7FFFFF ? 'black' : 'white'
+    text_to_hex(safe_name(item)).hex > 0x7FFFFF ? 'black' : 'white'
   end
 
   def text_to_hex(text)
@@ -33,5 +31,11 @@ class ApplicationView < ApplicationComponent
 
   def safe_name(item)
     item.attributes['name'] || item.attributes['amount'].to_s
+  end
+
+  def class_of(klass)
+    return 'groups' if klass.respond_to?(:report_as) && klass.report_as == 'group'
+
+    klass.is_a?(Group) ? 'groups' : 'people'
   end
 end
