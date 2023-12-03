@@ -10,7 +10,8 @@ class ApplicationView < ApplicationComponent
   def button_styles(instance)
     {
       'background_color' => background_color(instance),
-      'color' => color(instance)
+      'color' => color(instance),
+      'display' => 'inline-block',
     }.map{|key, value| "#{key.to_s.dasherize}: #{value};"}
      .join('; ') + ';'
 

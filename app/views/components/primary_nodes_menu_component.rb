@@ -1,23 +1,26 @@
 class PrimaryNodesMenuComponent < ApplicationView
-	def initialize(entity:)
+	def initialize(entity:, entities_to_exclude: [])
 		@entity = entity
+    @nodes = entity.nodes - entities_to_exclude
 	end
 
   attr_reader :entity
 
 	def template
-    h2 { "The main nodes connected to #{entity.name}" }
-    entity.nodes.each do |primary_node|
-      div(class: 'list-group-item flex-normal') do
+    div(class: 'flex-normal') do
+      @nodes.each do |primary_node|
         div do
-          a(href: "/#{class_of(primary_node)}/#{primary_node.id}", class: 'btn-primary btn', style: button_styles(primary_node)) { primary_node.name }
-        end
-        div do
-          primary_node.nodes.each do |secondary_node|
-            a(href: "/#{class_of(secondary_node)}/#{secondary_node.id}", class: 'btn-secondary btn btn-sml', style: button_styles(secondary_node) ) { secondary_node.name }
-          end
+          link_for(
+            entity: primary_node,
+            class: 'btn-primary btn',
+            style: button_styles(primary_node)
+          )
         end
       end
     end
 	end
+
+  def link_for(entity:, class: '', style: '')
+    a(href: "/#{class_of(entity)}/#{entity.id}", class:, style:) { entity.name }
+  end
 end

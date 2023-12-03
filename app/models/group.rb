@@ -40,12 +40,14 @@ class Group < ApplicationRecord
     # at the end of a given transfer is the taker of that transfer
     # at the end of a received transfer is the giver of that transfer
 
+    # looser nodes is too loose for looking at a list of associated people and groups, it catches too many.
+    # try it for the degrees of seperation between two groups / two people / person & group
+
 
     outgoing_transfers.map(&:taker) +
     incoming_transfers.map(&:giver)
     # outgoing_transfers.includes(:giver, :taker).map(&:taker) +
     # incoming_transfers.includes(:giver, :taker).map(&:giver)
-
   end
 
 

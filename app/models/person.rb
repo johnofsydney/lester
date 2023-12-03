@@ -4,6 +4,8 @@ class Person < ApplicationRecord
   has_many :groups, through: :memberships
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
   def incoming_transfers = []
+  # TODO: this method clashes with transfer.incoming below
+  # also results are not consistent between them. Which is correct?
 
   def nodes(include_looser_nodes: false)
     return self.groups.compact.flatten.uniq unless include_looser_nodes

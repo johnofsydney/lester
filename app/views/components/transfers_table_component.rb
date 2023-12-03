@@ -2,6 +2,7 @@ class TransfersTableComponent < ApplicationView
   include ActionView::Helpers::NumberHelper
 
   def initialize(transfers:, heading:, summarise_for: nil, exclude: nil, entity:)
+    # these transfers are already consolidated with depth relative to the entity
     @transfers = transfers
     @heading = heading
     @summarise_for = summarise_for
@@ -49,6 +50,7 @@ class TransfersTableComponent < ApplicationView
     h3 { "#{heading} (#{transfers.count} records)" }
     table(class: 'table') do
       tr do
+        th { 'ID' }
         th { 'Amount' }
         th { 'Year' }
         th { 'Giver' }
@@ -59,6 +61,13 @@ class TransfersTableComponent < ApplicationView
 
       transfers.each do |transfer|
         tr(style: row_style(transfer)) do
+          td do
+            if transfer.id
+              a(href: "/transfers/#{transfer.id}") { transfer.id}
+            else
+              "nope"
+            end
+          end
           td { number_to_currency(transfer.amount.to_s, precision: 0) }
           td { transfer.effective_date.year.to_s }
           td { a(href: "/#{class_of(transfer.giver)}/#{transfer.giver.id}") { transfer.giver.name } if transfer.giver }

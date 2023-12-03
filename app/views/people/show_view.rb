@@ -7,8 +7,17 @@ class People::ShowView < ApplicationView
 	end
 
 	def template
-    a(href: "/people/#{person.id}", class: 'btn w-100', style: button_styles(person)) { person.name }
-    render PrimaryNodesMenuComponent.new(entity: person)
+    div(class: 'heading') do
+      a(
+        href: "/people/#{person.id}",
+        class: 'btn w-100',
+        style: button_styles(person)
+      ) { person.name }
+    end
+
+    div(class: 'direct-descendents') do
+      render PrimaryNodesMenuComponent.new(entity: person)
+    end
 
     depth = 6
     render TransfersTableComponent.new(
@@ -17,8 +26,6 @@ class People::ShowView < ApplicationView
       heading: "Transfers connected to #{person.name} to a depth of #{depth} degrees of separation",
       summarise_for: ['Australian Labor Party', 'The Coalition']
     )
-
-
 
     render FooterComponent.new(entity: person)
 	end

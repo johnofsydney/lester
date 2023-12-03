@@ -22,34 +22,40 @@
 .flex-normal {
   display: flex;
   align-items: center;
-  /* align children vertically */
   justify-content: space-between;
-  /* align children to the right */
-  gap: 20px;
-  /* add spacing between children */
+}
+
+.reverse {
+  flex-direction: row-reverse;
 }
 
 .flex-vertical {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* align children vertically */
   justify-content: space-between;
-  /* align children to the right */
   gap: 20px;
-  /* add spacing between children */
 }
-
 
 .right {
   display: flex;
   align-items: center;
-  /* align children vertically */
   justify-content: flex-end;
-  /* align children to the right */
   gap: 20px;
-  /* add spacing between children */
 }
+
 .w-100 {
   width: 100%;
+}
+
+.heading {
+  margin: 10px 0px;
+}
+
+.direct-descendents {
+  margin: 50px 0px;
+}
+
+.jumbotron {
+  padding: 20px;
 }

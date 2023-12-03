@@ -10,10 +10,10 @@ module TransferMethods
         visited_nodes << node # store the current node as visited
 
         node.transfers.outgoing.each do |transfer|
-          results << make_struct(transfer:, depth: counter, direction: 'outgoing')
+          results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
         end
         node.transfers.incoming.each do |transfer|
-          results << make_struct(transfer:, depth: counter, direction: 'incoming')
+          results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
         end
       end
 
@@ -21,19 +21,52 @@ module TransferMethods
 
       depth -= 1
       counter += 1
-      queue = queue.map(&:nodes).flatten.uniq - visited_nodes # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
+      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
+      queue = queue.map(&:nodes).flatten.uniq - visited_nodes
 
       consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:)
     end
 
-    def make_struct(transfer:, depth:, direction:)
+    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0)
+      p "{results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, queue.count: #{queue.count}, counter: #{counter}, depth: #{depth}}  }"
+
+      queue.each do |node|
+        visited_nodes << node # store the current node as visited
+
+        results << descendent_struct(node:, depth:, counter:)
+      end
+
+      return results if depth == 0
+      # return results.reject { |descendent| descendent.depth.zero? } if depth == 0
+
+      depth -= 1
+      counter += 1
+      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
+      queue = queue.map(&:nodes).flatten.uniq - visited_nodes
+
+
+      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:)
+    end
+
+    private
+
+    def transfer_struct(transfer:, depth:, direction:)
       OpenStruct.new(
+        id: transfer.id,
         giver: transfer.giver,
         taker: transfer.taker,
         amount: transfer.amount,
         effective_date: transfer.effective_date,
         depth:,
         direction:
+      )
+    end
+
+    def descendent_struct(node:, depth:, counter:)
+      OpenStruct.new(
+        id: node.id,
+        name: node.name,
+        depth: counter
       )
     end
   end

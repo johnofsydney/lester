@@ -10,8 +10,18 @@ class Groups::ShowView < ApplicationView
 	end
 
 	def template
-    a(href: "/groups/#{group.id}", class: 'btn w-100', style: button_styles(group)) { group.name }
-    render PrimaryNodesMenuComponent.new(entity: group)
+    div(class: 'heading') do
+      a(
+        href: "/groups/#{group.id}",
+        class: 'btn w-100',
+        style: button_styles(group)
+      ) { group.name }
+    end
+
+    div(class: 'direct-descendents') do
+      render PrimaryNodesMenuComponent.new(entity: group)
+    end
+
 
     depth = 6
     render TransfersTableComponent.new(
