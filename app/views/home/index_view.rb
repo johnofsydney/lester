@@ -47,7 +47,7 @@ class Home::IndexView < ApplicationView
             div(class: 'card-body') do
               h5(class: 'card-title') { 'Work Laptop' }
               ul do
-                li { 'Transfer Show Page' }
+                li { s{'Transfer Show Page'} }
                 li { 'Search' }
                 li { 'What is a Transaction?' }
                 li { 'D3 JS' }
@@ -75,6 +75,10 @@ class Home::IndexView < ApplicationView
                 li { 'Tests' }
                 li { 'Get ASX data programatically' }
                 li { 'Source Tree access for home' }
+                li { 'Javascript' }
+                li { 'jQuery' }
+                li { 'Import Maps' }
+                li { 'Import Phlex JS' }
               end
             end
           end

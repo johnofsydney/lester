@@ -8,15 +8,26 @@ class Transfers::ShowView < ApplicationView
 
   def template
     div(class: 'container') do
+      div(class: 'heading') do
+        a(
+          href: "/transfers/#{transfer.id}",
+          class: 'btn w-100',
+          style: button_styles(transfer)
+        ) { "$#{transfer.formatted_amount}" }
+      end
+
       div(class: 'row') do
-        p { "Transfer of $#{transfer.amount}" }
-        p { "From #{transfer.giver.name} to #{transfer.taker.name}" }
-        p { "Evidence: #{transfer.evidence}" }
+        h2 { "Transfer of #{transfer.formatted_amount} From #{transfer.giver.name} to #{transfer.taker.name}" }
+        p do
+          span { "Evidence: " }
+          a(href: transfer.evidence) {"Evidence: #{transfer.evidence}"}
+        end
+        p do
+          span { "Effective Date: #{transfer.effective_date}"}
+        end
       end
       div(class: 'row') do
         div(class: 'col') do
-          p { "From #{transfer.giver.name} to #{transfer.taker.name}" }
-
           descendents = transfer.giver.consolidated_descendents(depth: 6)
 
           p { "Associated People and Groups of #{transfer.giver.name}" }
@@ -29,7 +40,7 @@ class Transfers::ShowView < ApplicationView
             end
             tbody do
               descendents.each do |descendent|
-                tr do
+                tr(class: "depth-#{descendent.depth}") do
                   td { link_for(entity: descendent) }
                   td { descendent.depth }
                 end
@@ -41,8 +52,6 @@ class Transfers::ShowView < ApplicationView
 
         end
         div(class: 'col') do
-          p { "To #{transfer.taker.name} from #{transfer.giver.name}" }
-
           descendents = transfer.taker.consolidated_descendents(depth: 6)
 
           p { "Associated People and Groups of #{transfer.taker.name}" }
@@ -55,7 +64,7 @@ class Transfers::ShowView < ApplicationView
             end
             tbody do
               descendents.each do |descendent|
-                tr do
+                tr(class: "depth-#{descendent.depth}") do
                   td { link_for(entity: descendent) }
                   td { descendent.depth }
                 end
@@ -65,9 +74,17 @@ class Transfers::ShowView < ApplicationView
         end
       end
     end
+
+    script do
+      "console.log(123)"
+    end
   end
 
   def link_for(entity:, class: '')
     a(href: "/#{class_of(entity)}/#{entity.id}", class:) { entity.name }
+  end
+
+  def log_message
+    "hello"
   end
 end
