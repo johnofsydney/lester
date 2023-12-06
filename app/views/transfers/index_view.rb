@@ -13,14 +13,14 @@ class Transfers::IndexView < ApplicationView
         tr do
           th { 'ID' }
           th { 'Amount' }
-          th { 'Effective Date' }
+          th { 'EOFY Date' }
           th { 'Transfer Type' }
           th { 'Giver Name' }
           th { 'Taker Name' }
         end
       end
       tbody do
-        transfers.each do |transfer|
+        transfers.find_each do |transfer|
           tr do
             td do
               if transfer.id
@@ -30,7 +30,7 @@ class Transfers::IndexView < ApplicationView
               end
             end
             td { transfer.amount }
-            td { transfer.effective_date }
+            td { transfer.effective_date.to_s }
             td { transfer.transfer_type }
             td { transfer.giver.name }
             td { transfer.taker.name }
