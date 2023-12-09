@@ -4,6 +4,8 @@ class Groups::IndexView < ApplicationView
 	end
 
 	def template
+    render MenuComponent.new
+
 		h1 { 'Groups' }
     ul do
       @groups.each do |group|

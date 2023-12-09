@@ -20,7 +20,7 @@ class PrimaryNodesMenuComponent < ApplicationView
     end
 	end
 
-  def link_for(entity:, class: '', style: '')
-    a(href: "/#{class_of(entity)}/#{entity.id}", class:, style:) { entity.name }
-  end
+  # def link_for(entity:, class: '', style: '')
+  #   a(href: "/#{class_of(entity)}/#{entity.id}", class:, style:) { entity.name }
+  # end
 end

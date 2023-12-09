@@ -7,6 +7,8 @@ class People::ShowView < ApplicationView
 	end
 
 	def template
+    render MenuComponent.new(entity: person)
+
     div(class: 'heading') do
       a(
         href: "/people/#{person.id}",
@@ -27,6 +29,6 @@ class People::ShowView < ApplicationView
       summarise_for: ['Australian Labor Party', 'The Coalition']
     )
 
-    render FooterComponent.new(entity: person)
+
 	end
 end

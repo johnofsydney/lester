@@ -1,4 +1,5 @@
 class Transfers::IndexView < ApplicationView
+  include ActionView::Helpers::NumberHelper
 
   attr_reader :transfers
 
@@ -7,6 +8,8 @@ class Transfers::IndexView < ApplicationView
   end
 
   def template
+    render MenuComponent.new
+
     h3 { "Transfers: (#{transfers.count} records)" }
     table(class: 'table') do
       thead do
@@ -29,7 +32,7 @@ class Transfers::IndexView < ApplicationView
                 "nope"
               end
             end
-            td { transfer.amount }
+            td { number_to_currency(transfer.amount.to_s, precision: 0) }
             td { transfer.effective_date.to_s }
             td { transfer.transfer_type }
             td { transfer.giver.name }

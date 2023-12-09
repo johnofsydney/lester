@@ -4,6 +4,8 @@ class People::IndexView < ApplicationView
 	end
 
 	def template
+    render MenuComponent.new(new: {path: '/people/new', text: 'New Person'})
+
 		h1 { 'People' }
     ul do
       @people.each do |person|
@@ -12,8 +14,5 @@ class People::IndexView < ApplicationView
         end
       end
     end
-
-    a(href: '/people/new', class: 'btn btn-primary') { 'New Person' }
-    a(href: '/groups/', class: 'btn btn-secondary') { 'Groups' }
 	end
 end

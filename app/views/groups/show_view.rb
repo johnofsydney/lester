@@ -10,6 +10,8 @@ class Groups::ShowView < ApplicationView
 	end
 
 	def template
+    render MenuComponent.new(entity: group)
+
     div(class: 'heading') do
       a(
         href: "/groups/#{group.id}",
@@ -31,6 +33,6 @@ class Groups::ShowView < ApplicationView
       summarise_for: ['Australian Labor Party', 'The Coalition']
     )
 
-    render FooterComponent.new(entity: group)
+
 	end
 end

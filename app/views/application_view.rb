@@ -39,4 +39,14 @@ class ApplicationView < ApplicationComponent
 
     klass.is_a?(Group) ? 'groups' : 'people'
   end
+
+  def link_for(entity:, class: '', style: '', link_text: nil, action: nil)
+    klass_name_plural = class_of(entity)
+    id = entity.id
+    link_text ||= entity.respond_to?(:name) ? entity.name : entity.amount
+    href = "/#{klass_name_plural}/#{id}"
+    href += "/#{action}" if action
+
+    a(href: href, class:, style:) { link_text }
+  end
 end

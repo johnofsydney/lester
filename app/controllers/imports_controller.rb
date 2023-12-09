@@ -15,7 +15,7 @@ class ImportsController < ApplicationController
     file = params['project']['filename'].tempfile
     csv = CSV.read(file, headers: true)
     csv.each do |row|
-      donation_date = infer_date(row)
+      donation_date = Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30) # saves bothering about the date format
       financial_year = Dates::FinancialYear.new(donation_date)
 
       transfer = Transfer.find_or_create_by(

@@ -88,12 +88,3 @@ class PeopleController < ApplicationController
       person.save
     end
 end
-
-
-	# layout -> { ApplicationLayout }
-
-	# def index
-	# 	render Articles::IndexView.new(
-	# 		articles: Article.all.load_async
-	# 	)
-	# end

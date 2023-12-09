@@ -36,8 +36,8 @@ module TransferMethods
         results << descendent_struct(node:, depth:, counter:)
       end
 
-      return results if depth == 0
-      # return results.reject { |descendent| descendent.depth.zero? } if depth == 0
+      # return results if depth == 0
+      return results.reject { |descendent| descendent.depth.zero? } if depth == 0
 
       depth -= 1
       counter += 1
