@@ -9,18 +9,25 @@ class PrimaryNodesMenuComponent < ApplicationView
 	def template
     div(class: 'flex-normal') do
       @nodes.each do |primary_node|
+
+        if use_member_title?(entity, primary_node)
+          membership = Membership.find_by(person: entity, group: primary_node) || Membership.find_by(person: primary_node, group: entity)
+          link_text = "#{primary_node.name} (#{membership.title})"
+        end
+
         div do
           link_for(
             entity: primary_node,
             class: 'btn-primary btn',
-            style: button_styles(primary_node)
+            style: button_styles(primary_node),
+            link_text: link_text || primary_node.name
           )
         end
       end
     end
 	end
 
-  # def link_for(entity:, class: '', style: '')
-  #   a(href: "/#{class_of(entity)}/#{entity.id}", class:, style:) { entity.name }
-  # end
+  def use_member_title?(entity, primary_node)
+    entity.is_a?(Person) && primary_node.is_a?(Group) || entity.is_a?(Group) && primary_node.is_a?(Person)
+  end
 end

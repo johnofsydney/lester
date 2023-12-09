@@ -1,24 +1,67 @@
-<h1>Edit Person</h1>
-
-<%= form_with model: @person, url: person_path(@person), method: :patch do |form| %>
-  <div>
+<%= form_with(model: @person, url: person_path(@person), method: :patch) do |form| %>
+  <!-- Person Attributes -->
+  <div class="field">
     <%= form.label :name %>
     <%= form.text_field :name %>
   </div>
 
-  <h2>Current Groups</h2>
-  <div>
-    <ul>
-      <% @person.groups.each do |group| %>
-        <li>
-          <%= group.name %>
-        </li>
+  <!-- Other person attributes go here -->
+
+  <!-- Memberships Fields -->
+  <h2>Memberships</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Group Name</th>
+        <th>Title</th>
+        <th>Start Date</th>
+        <th>End Date</th>
+        <!-- Add other membership attributes as needed -->
+      </tr>
+    </thead>
+    <tbody>
+      <% @person.memberships.each do |membership| %>
+        <tr>
+          <td><%= membership.group.name %></td>
+          <%= form.fields_for :memberships, membership do |membership_form| %>
+            <td>
+              <div class="field">
+                <%= membership_form.text_field :title %>
+              </div>
+            </td>
+
+            <td>
+              <div class="field">
+                <%= membership_form.date_field :start_date %>
+              </div>
+            </td>
+
+            <td>
+              <div class="field">
+                <%= membership_form.date_field :end_date %>
+              </div>
+            </td>
+            <!-- Add other membership attributes as needed -->
+          <% end %>
+        </tr>
       <% end %>
-    </ul>
+    </tbody>
+  </table>
 
-    <h3>Add Group</h3>
-    <%= form.collection_select :group_ids, Group.all, :id, :name, { include_blank: true }, { class: "form-control", multiple: true } %>
+  <!-- Add a new membership -->
+  <%= form.fields_for :memberships, Membership.new, child_index: 'NEW_RECORD' do |membership_form| %>
+    <tr>
+      <td><%= membership_form.text_field :group_id, placeholder: 'Group ID' %></td>
+      <td><%= membership_form.text_field :title, placeholder: 'Title' %></td>
+      <td><%= membership_form.date_field :start_date, placeholder: 'Start Date' %></td>
+      <td><%= membership_form.date_field :end_date, placeholder: 'End Date' %></td>
+      <!-- Add other membership attributes as needed -->
+    </tr>
+  <% end %>
+
+  <!-- Submit Button -->
+  <div class="actions">
+    <%= form.submit 'Update Person and Memberships' %>
   </div>
-
-  <%= form.submit "Save Person" %>
 <% end %>
