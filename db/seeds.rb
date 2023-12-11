@@ -11,6 +11,7 @@ peter_dutton = Person.find_or_create_by(name: 'Peter Dutton')
 scott_morrison = Person.find_or_create_by(name: 'Scott Morrison')
 warren_entsch = Person.find_or_create_by(name: 'Warren Entsch')
 arthur_sinodinos = Person.find_or_create_by(name: 'Arthur Sinodinos')
+bill_heffernan = Person.find_or_create_by(name: 'Bill Heffernan')
 
 jacob_entsch = Person.find_or_create_by(name: 'Jacob Entsch')
 leo_maltam = Person.find_or_create_by(name: 'Leo Maltam')
@@ -32,6 +33,7 @@ nick_di_giralomo = Person.find_or_create_by(name: 'Di Girolamo')
 eddie_obied_junior = Person.find_or_create_by(name: 'Eddie Obied Junior')
 moses_obeid = Person.find_or_create_by(name: 'Moses Obied')
 paul_obeid = Person.find_or_create_by(name: 'Paul Obied')
+gerard_obeid = Person.find_or_create_by(name: 'Gerard Obied')
 
 
 bob_brown = Person.find_or_create_by(name: 'Bob Brown')
@@ -82,10 +84,11 @@ australian_romance = Group.find_or_create_by(name: 'Australian Romance Pty Ltd')
 aus_gold_mining = Group.find_or_create_by(name: 'AusGold Mining')
 oryxium = Group.find_or_create_by(name: 'Oryxium Investments Limited')
 adani = Group.find_or_create_by(name: 'Adani Mining Pty Ltd')
-adani = Group.find_or_create_by(name: 'Adani Mining Pty Ltd')
 carmichael = Group.find_or_create_by(name: 'Carmichael Rail Network')
 australian_water_holdings = Group.find_or_create_by(name: 'Australian Water Holdings Pty Ltd')
 colin_biggers_and_paisley = Group.find_or_create_by(name: 'Colin Biggers & Paisley')
+sunny_ridge_strawberry_farm = Group.find_or_create_by(name: 'Sunny Ridge Strawberry Farm')
+waratah_group = Group.find_or_create_by(name: 'Waratah Group (Australia) Pty Ltd)')
 
 
 federal_government = Group.find_or_create_by(name: 'Australian Federal Government')
@@ -101,6 +104,7 @@ Membership.find_or_create_by(group: the_coalition, person: scott_morrison, title
 Membership.find_or_create_by(group: the_coalition, person: trent_twomey, title: 'Member')
 Membership.find_or_create_by(group: the_coalition, person: warren_entsch, title: 'Member')
 Membership.find_or_create_by(group: the_coalition, person: arthur_sinodinos, title: 'Member')
+Membership.find_or_create_by(group: the_coalition, person: bill_heffernan, title: 'Member')
 
 
 Membership.find_or_create_by(group: labor, person: anthony_albanese, title: 'Leader', start_date: Date.new(2019, 5, 30)
@@ -109,6 +113,7 @@ Membership.find_or_create_by(group: labor, person: kevin_rudd, title: 'Leader', 
 Membership.find_or_create_by(group: labor, person: mark_latham, title: 'Leader', start_date: Date.new(2003, 12, 2), end_date: Date.new(2005, 1, 18)
 Membership.find_or_create_by(group: labor, person: ian_macdonald, title: 'MLC', start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7)
 Membership.find_or_create_by(group: labor, person: eddie_obied, title: 'MLC', start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6)
+Membership.find_or_create_by(group: labor, person: adele_tahan, title: 'Member')
 
 Membership.find_or_create_by(group: the_greens, person: bob_brown, title: 'Great Grand Leader')
 Membership.find_or_create_by(group: allegra_spender_campaign, person: allegra_spender)
@@ -135,10 +140,14 @@ Membership.find_or_create_by(group: warren_entsch_campaign, person: trent_twomey
 Membership.find_or_create_by(group: twomey_family, person: georgina_twomey, title: 'Wife')
 Membership.find_or_create_by(group: twomey_family, person: trent_twomey, title: 'Husband')
 
+Membership.find_or_create_by(group: heffernan_family, person: bill_heffernan, title: 'Father')
+Membership.find_or_create_by(group: heffernan_family, person: david_heffernan, title: 'Son / Brother')
+
 Membership.find_or_create_by(group: obeid_family, person: eddie_obied, title: 'Father')
 Membership.find_or_create_by(group: obeid_family, person: eddie_obied_junior, title: 'Son / Brother')
 Membership.find_or_create_by(group: obeid_family, person: moses_obeid, title: 'Son / Brother')
 Membership.find_or_create_by(group: obeid_family, person: paul_obeid, title: 'Son / Brother')
+Membership.find_or_create_by(group: obeid_family, person: gerard_obeid, title: 'Son / Brother')
 
 Membership.find_or_create_by(group: qrx_group, person: georgina_twomey, title: 'Part Owner')
 Membership.find_or_create_by(group: qrx_group, person: leo_maltam, title: 'Director')
@@ -169,6 +178,7 @@ Membership.find_or_create_by(group: colin_biggers_and_paisley, person: nick_di_g
 
 
 Affiliation.create(owning_group: adani, sub_group: carmichael)
+Affiliation.create(owning_group: waratah_group, sub_group: sunny_ridge_strawberry_farm)
 Affiliation.create(owning_group: obeid_family, sub_group: australian_water_holdings)
 
 Affiliation.create(owning_group: federal_government, sub_group: labor, start_date: Date.new(2022, 6, 30), end_date: Date.new(2013, 9, 18))
