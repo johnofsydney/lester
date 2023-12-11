@@ -16,12 +16,10 @@ class PeopleController < ApplicationController
   # GET /people/new
   def new
     @person = Person.new
-    render People::EditView.new(person: @person)
   end
 
   # GET /people/1/edit
   def edit
-    @person = Person.find(params[:id])
     # phlex not working yet. form is hard. has nesting
     # render People::EditView.new(person: @person)
   end
@@ -31,7 +29,11 @@ class PeopleController < ApplicationController
     @person = Person.new(person_params)
 
     respond_to do |format|
-      if update_person(@person)
+      if @person.save
+        new_membership_params = params[:person][:memberships_attributes][:NEW_RECORD]
+        if new_membership_params
+          @person.memberships.create(new_membership_params.permit(:group_id, :title, :start_date, :end_date))
+        end
         format.html { redirect_to person_url(@person), notice: "Person was successfully created." }
         format.json { render :show, status: :created, location: @person }
       else
@@ -76,6 +78,6 @@ class PeopleController < ApplicationController
 
   # Only allow a list of trusted parameters through. Including nested params for memberships
   def person_params
-    params.require(:person).permit(:name, memberships_attributes: [:id, :group_id, :title, :start_date, :end_date, :_destroy])
+    params.require(:person).permit(:name, memberships_attributes: [:id, :title, :start_date, :end_date, :_destroy])
   end
 end

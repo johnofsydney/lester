@@ -35,8 +35,8 @@ class Transfers::IndexView < ApplicationView
             td { number_to_currency(transfer.amount.to_s, precision: 0) }
             td { transfer.effective_date.to_s }
             td { transfer.transfer_type }
-            td { transfer.giver.name }
-            td { transfer.taker.name }
+            td { transfer.giver.name if transfer.giver }
+            td { transfer.taker.name if transfer.taker }
           end
         end
       end

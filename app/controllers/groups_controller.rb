@@ -4,9 +4,6 @@ class GroupsController < ApplicationController
 
   # GET /groups or /groups.json
   def index
-    # @groups = Group.all
-    # @people = @groups.map(&:people).flatten.uniq
-
     @groups = Group.order(:name)
     render Groups::IndexView.new(groups: @groups)
   end
@@ -31,6 +28,10 @@ class GroupsController < ApplicationController
 
     respond_to do |format|
       if @group.save
+        new_membership_params = params.dig(:group, :memberships_attributes, :NEW_RECORD)
+        if new_membership_params
+          @group.memberships.create(new_membership_params.permit(:person_id, :title, :start_date, :end_date))
+        end
         format.html { redirect_to group_url(@group), notice: "Group was successfully created." }
         format.json { render :show, status: :created, location: @group }
       else
@@ -43,7 +44,11 @@ class GroupsController < ApplicationController
   # PATCH/PUT /groups/1 or /groups/1.json
   def update
     respond_to do |format|
-      if update_group(@group)
+      if @group.update(group_params)
+        new_membership_params = params.dig(:group, :memberships_attributes, :NEW_RECORD)
+        if new_membership_params
+          @group.memberships.create(new_membership_params.permit(:person_id, :title, :start_date, :end_date))
+        end
         format.html { redirect_to group_url(@group), notice: "Group was successfully updated." }
         format.json { render :show, status: :ok, location: @group }
       else
@@ -71,8 +76,7 @@ class GroupsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def group_params
-      params.require(:group).permit!
-      # params.require(:group).permit(:name)
+      params.require(:group).permit(:name, memberships_attributes: [:id, :title, :start_date, :end_date, :_destroy])
     end
 
     def update_group(group)

@@ -12,8 +12,10 @@ class Person < ApplicationRecord
   # also results are not consistent between them. Which is correct?
 
   def nodes(include_looser_nodes: false)
-    return self.groups.compact.flatten.uniq unless include_looser_nodes
+    return groups.includes([:people, memberships: [:person, :group]]) unless include_looser_nodes
 
+
+    # this + will still work for relations not just arrays
     [groups + other_edge_ends].flatten.compact.uniq
   end
 

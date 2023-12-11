@@ -4,11 +4,11 @@ class Groups::IndexView < ApplicationView
 	end
 
 	def template
-    render MenuComponent.new
+    render MenuComponent.new(new: {path: '/groups/new', text: 'New Group'})
 
 		h1 { 'Groups' }
     ul do
-      @groups.each do |group|
+      @groups.sort_by { |group| group.nodes.count }.reverse.each do |group|
         li do
           a(href: "/groups/#{group.id}") { group.name }
         end

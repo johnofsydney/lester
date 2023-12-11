@@ -15,7 +15,7 @@ class MenuComponent < ApplicationView
       button(class: 'navbar-toggler', type: 'button', data: { toggle: 'collapse', target: '#navbarNav', aria: { controls: 'navbarNav', expanded: 'false', label: 'Toggle navigation' } }) do
         span(class: 'navbar-toggler-icon')
       end
-      div(class: 'collapse navbar-collapse', id: 'navbarNav') do
+      div(class: 'collapse navbar-collapse justify-content-end', id: 'navbarNav') do
         ul(class: 'navbar-nav') do
           li(class: 'nav-item') do
             a(class: 'nav-link', href: '/groups/') { 'Groups' }
@@ -32,6 +32,9 @@ class MenuComponent < ApplicationView
           li(class: 'nav-item') do
             link_for(entity: entity, class: 'nav-link', link_text: 'Edit', action: 'edit') if entity
             a(class: 'nav-link', href: new_path) { new_text } if new_path
+          end
+          li(class: 'nav-item ml-auto') do
+            a(class: 'nav-link', href: '/') { 'Coming Soon... login' }
           end
         end
       end

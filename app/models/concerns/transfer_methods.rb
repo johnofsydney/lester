@@ -9,10 +9,13 @@ module TransferMethods
       queue.each do |node|
         visited_nodes << node # store the current node as visited
 
-        node.transfers.outgoing.each do |transfer|
+        # node.transfers.outgoing.each do |transfer|
+        # TODO: are the transfer methods in Person and Group helpful or harmful?
+        Transfer.where(giver: node).includes([:giver, :taker]).each do |transfer|
           results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
         end
-        node.transfers.incoming.each do |transfer|
+        # node.transfers.incoming.each do |transfer|
+        Transfer.where(taker: node).includes([:giver, :taker]).each do |transfer|
           results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
         end
       end

@@ -35,7 +35,8 @@ class ApplicationView < ApplicationComponent
   end
 
   def class_of(klass)
-    return 'groups' if klass.respond_to?(:report_as) && klass.report_as == 'group'
+    return 'groups' if klass.respond_to?(:report_as) && klass.report_as == 'group' # special case for summary rows
+    return 'transfers' if klass.is_a?(Transfer)
 
     klass.is_a?(Group) ? 'groups' : 'people'
   end
@@ -45,6 +46,7 @@ class ApplicationView < ApplicationComponent
     id = entity.id
     link_text ||= entity.respond_to?(:name) ? entity.name : entity.amount
     href = "/#{klass_name_plural}/#{id}"
+
     href += "/#{action}" if action
 
     a(href: href, class:, style:) { link_text }

@@ -13,6 +13,7 @@ trent_twomey = Person.find_or_create_by(name: 'Trent Twomey')
 warren_entsch = Person.find_or_create_by(name: 'Warren Entsch')
 junior_entsch = Person.find_or_create_by(name: 'Junior Entsch')
 leo_maltam = Person.find_or_create_by(name: 'Leo Maltam')
+arthur_sinodinos = Person.find_or_create_by(name: 'Arthur Sinodinos')
 
 anthony_albanese = Person.find_or_create_by(name: 'Anthony Albanese')
 tanya_plibersek = Person.find_or_create_by(name: 'Tanya Plibersek')
@@ -34,12 +35,18 @@ sally_zou = Person.find_or_create_by(name: 'Sally Zou')
 peter_lowy = Person.find_or_create_by(name: 'Peter Lowy')
 steven_lowy = Person.find_or_create_by(name: 'Steven Lowy')
 david_lowy = Person.find_or_create_by(name: 'David Lowy')
+sandro_cirianni = Person.find_or_create_by(name: 'Sandro Cirianni')
+karen_hayes = Person.find_or_create_by(name: 'Karen Hayes')
+iain_edwards = Person.find_or_create_by(name: 'Iain Edwards')
+
+eddie_obeid =  Person.find_or_create_by(name: 'Eddie Obeid')
+moses_obeid =  Person.find_or_create_by(name: 'Moses Obeid')
 
 federal_government = Group.find_or_create_by(name: 'Australian Federal Government')
 wheelton_investments = Group.find_or_create_by(name: 'Wheelton Investments Pty Ltd')
 guide_dogs_victoria = Group.find_or_create_by(name: 'Guide Dogs Victoria')
 the_coalition = Group.find_or_create_by(name: 'The Coalition')
-labor = Group.find_or_create_by(name: 'Labor')
+labor = Group.find_or_create_by(name: 'Australian Labor Party')
 the_greens = Group.find_or_create_by(name: 'The Greens')
 atlassian = Group.find_or_create_by(name: 'Atlassian')
 climate200 = Group.find_or_create_by(name: 'Climate 200')
@@ -59,6 +66,8 @@ oryxium = Group.find_or_create_by(name: 'Oryxium Investments Limited')
 adani = Group.find_or_create_by(name: 'Adani Mining Pty Ltd')
 adani = Group.find_or_create_by(name: 'Adani Mining Pty Ltd')
 carmichael = Group.find_or_create_by(name: 'Carmichael Rail Network')
+obeid_family = Group.find_or_create_by(name: 'Obeid Fanily')
+australia_water = Group.find_or_create_by(name: 'Australian Water')
 
 
 
@@ -69,16 +78,20 @@ Membership.find_or_create_by(group: the_coalition, person: peter_dutton, title: 
 Membership.find_or_create_by(group: the_coalition, person: scott_morrison, title: 'Leader')
 Membership.find_or_create_by(group: the_coalition, person: trent_twomey, title: 'Member')
 Membership.find_or_create_by(group: the_coalition, person: warren_entsch, title: 'Member')
+Membership.find_or_create_by(group: the_coalition, person: arthur_sinodinos, title: 'Senator')
 
 
 Membership.find_or_create_by(group: labor, person: anthony_albanese, title: 'Leader')
 Membership.find_or_create_by(group: labor, person: tanya_plibersek, title: 'Deputy Leader')
 Membership.find_or_create_by(group: labor, person: kevin_rudd, title: 'Leader')
+Membership.find_or_create_by(group: labor, person: eddie_obeid, title: 'MLC')
 Membership.find_or_create_by(group: the_greens, person: bob_brown, title: 'Great Grand Leader')
 Membership.find_or_create_by(group: allegra_spender_campaign, person: allegra_spender)
 Membership.find_or_create_by(group: zalie_stegall_campaign, person: zalie_stegall)
 
-Membership.find_or_create_by(group: guide_dogs_victoria, person: paul_wheelton, title: 'Capital Campaign Chair')
+Membership.find_or_create_by(group: guide_dogs_victoria, person: sandro_cirianni, title: 'General Manager')
+Membership.find_or_create_by(group: guide_dogs_victoria, person: karen_hayes, title: 'Chief Executive Officer')
+Membership.find_or_create_by(group: guide_dogs_victoria, person: iain_edwards, title: 'Board Chair')
 Membership.find_or_create_by(group: wheelton_investments, person: paul_wheelton, title: 'Owner')
 Membership.find_or_create_by(group: climate200, person: simon_holmes_acourt, title: 'Owner')
 Membership.find_or_create_by(group: atlassian, person: mike_cannon_brookes, title: 'Owner')
@@ -103,7 +116,6 @@ Membership.find_or_create_by(group: qrx_group, person: junior_entsch)
 Membership.find_or_create_by(group: australian_romance, person: sally_zou)
 Membership.find_or_create_by(group: aus_gold_mining, person: sally_zou)
 
-
 Membership.find_or_create_by(group: entsch_family, person: warren_entsch, title: 'Dad')
 Membership.find_or_create_by(group: entsch_family, person: junior_entsch, title: 'Son')
 
@@ -111,7 +123,10 @@ Membership.find_or_create_by(group: oryxium, person: david_lowy, title: 'Owner')
 Membership.find_or_create_by(group: oryxium, person: peter_lowy, title: 'Owner')
 Membership.find_or_create_by(group: oryxium, person: steven_lowy, title: 'Owner')
 
-
+Membership.find_or_create_by(group: obeid_family, person: eddie_obeid, title: 'Father')
+Membership.find_or_create_by(group: obeid_family, person: moses_obeid, title: 'Son / Brother')
+Membership.find_or_create_by(group: australia_water, person: moses_obeid, title: 'Director')
+Membership.find_or_create_by(group: australia_water, person: arthur_sinodinos, title: 'Director')
 
 
 Affiliation.create(owning_group: adani, sub_group: carmichael)

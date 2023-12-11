@@ -15,21 +15,32 @@ class Transfers::ShowView < ApplicationView
           href: "/transfers/#{transfer.id}",
           class: 'btn w-100',
           style: button_styles(transfer)
-        ) { "$#{transfer.formatted_amount}" }
+        ) { "#{transfer.formatted_amount}" }
       end
 
       div(class: 'row') do
         h2 { "Transfer of #{transfer.formatted_amount} From #{transfer.giver.name} to #{transfer.taker.name}" }
-        p do
-          span { "Evidence: " }
-          a(href: transfer.evidence) {"Evidence: #{transfer.evidence}"}
-        end
-        p do
-          span { "Effective Date: #{transfer.effective_date}"}
+
+        div(class: 'row') do
+          p do
+            span { 'From: ' }
+            link_for(entity: transfer.giver)
+          end
+          p do
+            span { 'To: ' }
+            link_for(entity: transfer.taker)
+          end
+          p do
+            span { 'Evidence: ' }
+            a(href: transfer.evidence) {"Evidence: #{transfer.evidence}"}
+          end
+          p do
+            span { "Effective Date: #{transfer.effective_date}"}
+          end
         end
       end
       div(class: 'row') do
-        div(class: 'col') do
+        div(class: 'col', id: 'descendents-of-giver') do
           descendents = transfer.giver.consolidated_descendents(depth: 6)
 
           p { "Associated People and Groups of #{transfer.giver.name}" }
@@ -50,10 +61,7 @@ class Transfers::ShowView < ApplicationView
             end
           end
         end
-        div(class: 'col') do
-
-        end
-        div(class: 'col') do
+        div(class: 'col', id: 'descendents-of-taker') do
           descendents = transfer.taker.consolidated_descendents(depth: 6)
 
           p { "Associated People and Groups of #{transfer.taker.name}" }
@@ -75,8 +83,6 @@ class Transfers::ShowView < ApplicationView
           end
         end
       end
-
-
     end
 
     script do

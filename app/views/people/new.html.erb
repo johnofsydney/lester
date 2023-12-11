@@ -1,6 +1,80 @@
 <h1>New person</h1>
 
-<%= render "form", person: @person %>
+<%= form_with(model: Person.new, url: people_path, class: 'form') do |form| %>
+  <!-- Person Attributes -->
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-3">
+        <%= form.label :name, class: 'form-label' %>
+      </div>
+      <div class="col-md-9">
+        <%= form.text_field :name, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other person attributes go here -->
+
+  <!-- Memberships Fields -->
+  <h2>Edit Existing Memberships</h2>
+
+  <!-- Existing memberships table goes here -->
+
+  <!-- Add a new membership -->
+  <h2>Add a New Membership</h2>
+  <%= form.fields_for :memberships, Membership.new, child_index: 'NEW_RECORD' do |membership_form| %>
+    <!-- New membership fields go here -->
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-3">
+          <%= membership_form.label :group_id, 'Group', class: 'form-label' %>
+        </div>
+        <div class="col-md-9">
+          <%= membership_form.select :group_id, Group.all.map { |group| [group.name, group.id] }, { prompt: 'Select Group' }, class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-3">
+          <%= membership_form.label :title, class: 'form-label' %>
+        </div>
+        <div class="col-md-9">
+          <%= membership_form.text_field :title, placeholder: 'Title', class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-3">
+          <%= membership_form.label :start_date, class: 'form-label' %>
+        </div>
+        <div class="col-md-9">
+          <%= membership_form.date_field :start_date, placeholder: 'Start Date', class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-md-3">
+          <%= membership_form.label :end_date, class: 'form-label' %>
+        </div>
+        <div class="col-md-9">
+          <%= membership_form.date_field :end_date, placeholder: 'End Date', class: 'form-control' %>
+        </div>
+      </div>
+    </div>
+    <!-- Add other membership attributes as needed -->
+  <% end %>
+
+  <!-- Submit Button -->
+  <div class="form-actions">
+    <%= form.submit 'Create Person and Memberships', class: 'btn btn-primary' %>
+  </div>
+<% end %>
 
 <br>
 

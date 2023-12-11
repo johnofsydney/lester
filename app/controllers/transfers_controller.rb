@@ -3,7 +3,8 @@ class TransfersController < ApplicationController
   layout -> { ApplicationLayout }
 
   def index
-    render Transfers::IndexView.new(transfers: Transfer.all)
+    render Transfers::IndexView.new(transfers: Transfer.includes([:giver, :taker]).all)
+    # TODO: make this a search page otherwise it will be too slow. dont bother to paginate
   end
 
   def show
@@ -20,12 +21,35 @@ class TransfersController < ApplicationController
   end
 
   def update
+    respond_to do |format|
+      if @transfer.update(transfer_params)
+        format.html { redirect_to transfer_url(@transfer), notice: "Transfer was successfully updated." }
+        format.json { render :show, status: :ok, location: @transfer }
+      else
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @transfer.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /transfers/1 or /transfers/1.json
+  def destroy
+    @transfer.destroy
+
+    respond_to do |format|
+      format.html { redirect_to people_url, notice: "Transfer was successfully destroyed." }
+      format.json { head :no_content }
+    end
   end
 
   private
 
   def set_transfer
     @transfer = Transfer.find(params[:id])
+  end
+
+  def transfer_params
+    params.require(:transfer).permit(:giver_id, :giver_type, :taker_id, :amount, :evidence, :transfer_type, :effective_date)
   end
 
 end
