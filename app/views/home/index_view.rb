@@ -79,6 +79,8 @@ class Home::IndexView < ApplicationView
                 li { 'jQuery' }
                 li { 'Import Maps' }
                 li { 'Import Phlex JS' }
+                li { 'Source Tree access for this repo' }
+                li { 'Pagination' }
               end
             end
           end
