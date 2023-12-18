@@ -12,6 +12,8 @@ class PrimaryNodesMenuComponent < ApplicationView
 
         if use_member_title?(entity, primary_node)
           membership = Membership.find_by(person: entity, group: primary_node) || Membership.find_by(person: primary_node, group: entity)
+          return false unless membership
+
           link_text = "#{primary_node.name} (#{membership.title})"
         end
 
