@@ -39,6 +39,7 @@ gerard_obeid = Person.find_or_create_by(name: 'Gerard Obied')
 bob_brown = Person.find_or_create_by(name: 'Bob Brown')
 allegra_spender = Person.find_or_create_by(name: 'Allegra Spender')
 zalie_stegall = Person.find_or_create_by(name: 'Zali Stegall')
+pauline_hanson = Person.find_or_create_by(name: 'Pauline Hanson')
 
 paul_wheelton = Person.find_or_create_by(name: 'Paul Wheelton')
 scott_farquar = Person.find_or_create_by(name: 'Scott Farquar')
@@ -79,6 +80,7 @@ frydenburg_family = Group.find_or_create_by(name: 'Frydenburg Family')
 twomey_family = Group.find_or_create_by(name: 'Twomey Family')
 entsch_family = Group.find_or_create_by(name: 'Entsch Family')
 obeid_family = Group.find_or_create_by(name: 'Obeid Family')
+heffernan_family = Group.find_or_create_by(name: 'Heffernan Family')
 
 australian_romance = Group.find_or_create_by(name: 'Australian Romance Pty Ltd')
 aus_gold_mining = Group.find_or_create_by(name: 'AusGold Mining')
@@ -107,12 +109,12 @@ Membership.find_or_create_by(group: the_coalition, person: arthur_sinodinos, tit
 Membership.find_or_create_by(group: the_coalition, person: bill_heffernan, title: 'Member')
 
 
-Membership.find_or_create_by(group: labor, person: anthony_albanese, title: 'Leader', start_date: Date.new(2019, 5, 30)
-Membership.find_or_create_by(group: labor, person: tanya_plibersek, title: 'Deputy Leader', start_date: Date.new(2019, 5, 30)
+Membership.find_or_create_by(group: labor, person: anthony_albanese, title: 'Leader', start_date: Date.new(2019, 5, 30))
+Membership.find_or_create_by(group: labor, person: tanya_plibersek, title: 'Deputy Leader', start_date: Date.new(2019, 5, 30))
 Membership.find_or_create_by(group: labor, person: kevin_rudd, title: 'Leader', start_date: Date.new(2006, 12, 4), end_date: Date.new(2010, 6, 24))
-Membership.find_or_create_by(group: labor, person: mark_latham, title: 'Leader', start_date: Date.new(2003, 12, 2), end_date: Date.new(2005, 1, 18)
-Membership.find_or_create_by(group: labor, person: ian_macdonald, title: 'MLC', start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7)
-Membership.find_or_create_by(group: labor, person: eddie_obied, title: 'MLC', start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6)
+Membership.find_or_create_by(group: labor, person: mark_latham, title: 'Leader', start_date: Date.new(2003, 12, 2), end_date: Date.new(2005, 1, 18))
+Membership.find_or_create_by(group: labor, person: ian_macdonald, title: 'MLC', start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7))
+Membership.find_or_create_by(group: labor, person: eddie_obied, title: 'MLC', start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6))
 Membership.find_or_create_by(group: labor, person: adele_tahan, title: 'Member')
 
 Membership.find_or_create_by(group: the_greens, person: bob_brown, title: 'Great Grand Leader')

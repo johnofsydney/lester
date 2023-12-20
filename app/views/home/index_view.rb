@@ -81,6 +81,7 @@ class Home::IndexView < ApplicationView
                 li { 'Import Phlex JS' }
                 li { 'Source Tree access for this repo' }
                 li { 'Pagination' }
+                li { 'DRY form for new and edit where nested resources' } # https://stackoverflow.com/questions/55596186/use-a-single-form-with-to-create-and-edit-nested-resources-in-rails
               end
             end
           end
