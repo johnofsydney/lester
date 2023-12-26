@@ -13,8 +13,13 @@ class PrimaryNodesMenuComponent < ApplicationView
         if use_member_title?(entity, primary_node)
           membership = Membership.find_by(person: entity, group: primary_node) || Membership.find_by(person: primary_node, group: entity)
           return false unless membership
+          if membership.start_date && membership.end_date
+            period = "#{membership.start_date.year} - #{membership.end_date.year}"
+          else
+            ''
+          end
 
-          link_text = "#{primary_node.name} (#{membership.title})"
+          link_text = "#{primary_node.name} (#{membership.title}, #{period})"
         end
 
         div do

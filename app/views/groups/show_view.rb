@@ -33,6 +33,13 @@ class Groups::ShowView < ApplicationView
       summarise_for: ['Australian Labor Party', 'The Coalition']
     )
 
+    render TransfersTableComponent.new(
+      entity: group,
+      transfers: group.related_transfers(depth:),
+      heading: "Transfers connected to #{group.name} to a depth of #{depth} degrees of separation YOLO BOLO",
+      summarise_for: ['Australian Labor Party', 'The Coalition']
+    )
+
 
 	end
 end

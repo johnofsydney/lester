@@ -30,5 +30,12 @@ class People::ShowView < ApplicationView
     )
 
 
+    render TransfersTableComponent.new(
+      entity: person,
+      transfers: person.related_transfers(depth:),
+      heading: "Transfers connected to #{person.name} to a depth of #{depth} degrees of separation YOLO BOLO",
+      summarise_for: ['Australian Labor Party', 'The Coalition']
+    )
+
 	end
 end

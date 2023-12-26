@@ -198,6 +198,98 @@ Affiliation.create(owning_group: federal_government, sub_group: labor, start_dat
 Affiliation.create(owning_group: federal_government, sub_group: the_coalition, start_date: Date.new(2013, 9, 18), end_date: Date.new(2022, 6, 30))
 
 
+# TESTING with made up data
+company_one = Group.find_or_create_by(name: 'Company One') # take
+company_two = Group.find_or_create_by(name: 'Company Two') # giver & taker
+company_three = Group.find_or_create_by(name: 'Company Three') # giver
+company_four = Group.find_or_create_by(name: 'Old Boys') # neither
+
+person_one = Person.find_or_create_by(name: 'Person One')
+person_two = Person.find_or_create_by(name: 'Person Two')
+person_three = Person.find_or_create_by(name: 'Person Three')
+person_four = Person.find_or_create_by(name: 'Person Four')
+
+Membership.find_or_create_by(group: company_one, person: person_one, title: 'CEO', start_date: Date.new(2010, 1, 1), end_date: Date.new(2015, 1, 1))
+Membership.find_or_create_by(group: company_one, person: person_two, title: 'CEO', start_date: Date.new(2015, 1, 2), end_date: Date.new(2020, 1, 1))
+Membership.find_or_create_by(group: company_one, person: person_three, title: 'Cook', start_date: Date.new(2018, 1, 1), end_date: Date.new(2023, 1, 1))
+Membership.find_or_create_by(group: company_one, person: person_four, title: 'Officer', start_date: Date.new(2022, 1, 2), end_date: Date.new(2023, 1, 1))
+
+
+Membership.find_or_create_by(group: company_two, person: person_one, title: 'CEO', start_date: Date.new(2015, 1, 2), end_date: Date.new(2020, 1, 1))
+Membership.find_or_create_by(group: company_two, person: person_two, title: 'CEO', start_date: Date.new(2020, 1, 2), end_date: Date.new(2025, 1, 1))
+Membership.find_or_create_by(group: company_two, person: person_three, title: 'Cook', start_date: Date.new(2019, 1, 1), end_date: Date.new(2023, 1, 1))
+
+
+Membership.find_or_create_by(group: company_three, person: person_one, title: 'CEO', start_date: Date.new(2020, 1, 2), end_date: Date.new(2021, 1, 1))
+Membership.find_or_create_by(group: company_three, person: person_three, title: 'Cook', start_date: Date.new(2020, 1, 2), end_date: Date.new(2021, 1, 1))
+Membership.find_or_create_by(group: company_three, person: person_four, title: 'Cook', start_date: Date.new(2010, 1, 2), end_date: Date.new(2011, 1, 1))
+
+Membership.find_or_create_by(group: company_four, person: person_one, title: 'member')
+Membership.find_or_create_by(group: company_four, person: person_two, title: 'member')
+Membership.find_or_create_by(group: company_four, person: person_three, title: 'member')
+Membership.find_or_create_by(group: company_four, person: person_four, title: 'member')
+
+Transfer.find_or_create_by(
+  giver: company_two,
+  taker: company_one,
+  effective_date: Date.new(2021, 1, 1),
+  transfer_type: 'fees',
+  amount: 1000
+)
+Transfer.find_or_create_by(
+  giver: company_two,
+  taker: company_one,
+  effective_date: Date.new(2016, 1, 1),
+  transfer_type: 'fees',
+  amount: 2000
+)
+Transfer.find_or_create_by(
+  giver: company_two,
+  taker: company_one,
+  effective_date: Date.new(2011, 1, 1),
+  transfer_type: 'fees',
+  amount: 3000
+)
+Transfer.find_or_create_by(
+  giver: company_three,
+  taker: company_one,
+  effective_date: Date.new(2004, 1, 1),
+  transfer_type: 'fees',
+  amount: 4000
+)
+Transfer.find_or_create_by(
+  giver: company_three,
+  taker: company_one,
+  effective_date: Date.new(2007, 1, 1),
+  transfer_type: 'fees',
+  amount: 5000
+)
+Transfer.find_or_create_by(
+  giver: company_three,
+  taker: company_one,
+  effective_date: Date.new(2000, 6, 1),
+  transfer_type: 'fees',
+  amount: 6000
+)
+Transfer.find_or_create_by(
+  giver: company_three,
+  taker: company_two,
+  effective_date: Date.new(2000, 6, 1),
+  transfer_type: 'fees',
+  amount: 7000
+)
+Transfer.find_or_create_by(
+  giver: company_three,
+  taker: company_two,
+  effective_date: Date.new(2006, 6, 1),
+  transfer_type: 'fees',
+  amount: 8000
+)
+
+
+
+# TESTING with made up data
+
 Transfer.find_or_create_by(
   giver: federal_government,
   taker: guide_dogs_victoria,
