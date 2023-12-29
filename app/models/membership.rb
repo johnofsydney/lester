@@ -2,6 +2,8 @@ class Membership < ApplicationRecord
   belongs_to :person
   belongs_to :group
 
+  validates :person_id, uniqueness: { scope: :group_id, message: "should have one membership per group" }
+
   def nodes
     [person, group]
   end
@@ -20,11 +22,10 @@ class Membership < ApplicationRecord
     # - memberships where a person was a member of a group at the same time as this membership
     # - memberships where a group had a member at the same time as this membership
 
-    # binding.pry
-    Membership.where(group_id: self.group.id)
+    Membership.where(group_id: self.group.id).or(Membership.where(person_id: self.person.id))
               .where.not(id: self.id)
-              .where.not('end_date < ?', self.start_date)
-              .where.not('start_date > ?', self.end_date)
+              .where('end_date IS NULL OR end_date >= ?', self.start_date)
+              .where('start_date IS NULL OR start_date <= ?', self.end_date)
   end
 end
 
@@ -39,3 +40,4 @@ end
 # ----------------------------------------------------------------------------start-------------------
 
 
+          # .where('start_date IS NULL OR start_date <= ?', self.end_date)

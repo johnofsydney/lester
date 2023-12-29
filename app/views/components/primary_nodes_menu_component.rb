@@ -11,7 +11,8 @@ class PrimaryNodesMenuComponent < ApplicationView
       @nodes.each do |primary_node|
 
         if use_member_title?(entity, primary_node)
-          membership = Membership.find_by(person: entity, group: primary_node) || Membership.find_by(person: primary_node, group: entity)
+          membership = entity.is_a?(Group) ? Membership.find_by(person: primary_node, group: entity) : Membership.find_by(person: entity, group: primary_node)
+          
           return false unless membership
           if membership.start_date && membership.end_date
             period = "#{membership.start_date.year} - #{membership.end_date.year}"
