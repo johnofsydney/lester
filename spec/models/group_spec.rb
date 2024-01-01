@@ -91,7 +91,7 @@ RSpec.describe Group, type: :model do
         end
 
         it 'doesnt list this transfer with any other group', :aggregate_failures do
-          binding.pry
+          # binding.pry
           expect(alp.related_transfers).to be_empty
           expect(phon.related_transfers).to be_empty
           expect(coalition.related_transfers).to be_empty

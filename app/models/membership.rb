@@ -24,6 +24,8 @@ class Membership < ApplicationRecord
 
     Membership.where(group_id: self.group.id).or(Membership.where(person_id: self.person.id))
               .where.not(id: self.id)
+              # .where('end_date >= ?', self.start_date)
+              # .where('start_date <= ?', self.end_date)
               .where('end_date IS NULL OR end_date >= ?', self.start_date)
               .where('start_date IS NULL OR start_date <= ?', self.end_date)
   end

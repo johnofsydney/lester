@@ -39,8 +39,11 @@ module TransferMethods
           results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
         end
 
-        Transfer.where(taker: node).includes([:giver, :taker]).each do |transfer|
-          results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
+
+        if node.class == Group
+          Transfer.where(taker: node).includes([:giver, :taker]).each do |transfer|
+            results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
+          end
         end
 
         return results if depth == 0 # if called with depth 0.
@@ -72,11 +75,13 @@ module TransferMethods
           end
         end
       end
+      p "results.count #{results.count}"
 
 
       # look at 2nd degree memberships and their transactions
       counter += 1
       depth -= 1
+      # binding.pry
       queue = queue.map(&:overlapping).to_a.flatten.uniq
       queue.each do |membership|
         next if visited_memberships.include?(membership)
@@ -195,6 +200,7 @@ module TransferMethods
       end
 
 
+      results = results.flatten.uniq.compact
 
 
       # related_transfers(depth:, counter:, visited_nodes:, results:, visited_memberships:, queue:)
