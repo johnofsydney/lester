@@ -22,7 +22,7 @@ class Membership < ApplicationRecord
     # - memberships where a person was a member of a group at the same time as this membership
     # - memberships where a group had a member at the same time as this membership
 
-    Membership.where(group_id: self.group.id).or(Membership.where(person_id: self.person.id))
+    Membership.where(group_id: self.group.id) # .or(Membership.where(person_id: self.person.id))
               .where.not(id: self.id)
               # .where('end_date >= ?', self.start_date)
               # .where('start_date <= ?', self.end_date)

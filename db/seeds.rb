@@ -11,6 +11,9 @@ ben = Person.create(name: 'Ben')
 paul = Person.create(name: 'Paul')
 richard = Person.create(name: 'Richard')
 
+doe = Person.create(name: 'John Doe')
+pedro = Person.create(name: 'Pedro')
+
 eddie = Person.create(name: 'Eddie')
 
 alp = Group.create(name: 'Australian Labor Party')
@@ -19,6 +22,7 @@ usyd = Group.create(name: 'University of Sydney')
 balance = Group.create(name: 'Balance')
 kennards = Group.create(name: 'Kennards')
 greens = Group.create(name: 'The Greens')
+doeboys = Group.create(name: 'Dough')
 
 Membership.create(group: alp, person: john, title: 'Member', start_date: 2.years.ago)
 Membership.create(group: alp, person: eddie, title: 'Member', start_date: 25.years.ago, end_date: 10.years.ago)
@@ -27,6 +31,7 @@ Membership.create(group: usyd, person: john, title: 'Student', start_date: 34.ye
 Membership.create(group: usyd, person: mark, title: 'Student', start_date: 34.years.ago, end_date: 30.years.ago)
 Membership.create(group: usyd, person: ben, title: 'Student', start_date: 34.years.ago, end_date: 30.years.ago)
 Membership.create(group: usyd, person: richard, title: 'Student', start_date: 34.years.ago, end_date: 30.years.ago)
+Membership.create(group: usyd, person: doe, title: 'Student', start_date: 4.years.ago, end_date: 2.years.ago)
 
 Membership.create(group: aloyisus, person: paul, title: 'Student', start_date: 40.years.ago, end_date: 35.years.ago)
 Membership.create(group: aloyisus, person: ben, title: 'Student', start_date: 40.years.ago, end_date: 35.years.ago)
@@ -34,9 +39,11 @@ Membership.create(group: aloyisus, person: richard, title: 'Student', start_date
 
 Membership.create(group: balance, person: paul, title: 'Owner', start_date: 16.years.ago)
 Membership.create(group: kennards, person: richard, title: 'CIO', start_date: 6.years.ago)
+Membership.create(group: doeboys, person: doe, title: 'Member', start_date: 2.years.ago)
 
 Transfer.create(giver: balance, taker: greens, amount: 1000, effective_date: 2.years.ago)
 Transfer.create(giver: kennards, taker: greens, amount: 1000, effective_date: 2.years.ago)
+Transfer.create(giver: paul, taker: alp, amount: 1000, effective_date: 20.years.ago)
 
 
 

@@ -4,7 +4,7 @@ module TransferMethods
   included do
     # depth is the number of degrees of separation from the invoking node, 0 being the invoking node itself
     def consolidated_transfers(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, caller: self)
-      p "{results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, queue.count: #{queue.count}, counter: #{counter}, depth: #{depth}, caller: #{caller.name}}  }"
+      p "{counter: #{counter}, depth: #{depth}, results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, queue.count: #{queue.count}, queue: #{queue.map{|node| node.name} }, caller: #{caller.name}}  }"
 
       queue.each do |node|
         visited_nodes << node # store the current node as visited
@@ -14,6 +14,7 @@ module TransferMethods
           results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
         end
 
+        next unless node.class == Group
         Transfer.where(taker: node).includes([:giver, :taker]).each do |transfer|
           results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
         end
@@ -23,212 +24,93 @@ module TransferMethods
 
       depth -= 1
       counter += 1
+
+
       # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
-      queue = queue.map(&:nodes).flatten.uniq - visited_nodes
+      queue = queue.map do |node|
+        node.nodes # where there is an overlap
+      end.flatten.uniq - visited_nodes
+      # queue = queue.map(&:nodes).flatten.uniq - visited_nodes
 
       consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:)
     end
 
-    def related_transfers(depth: 6, counter: 0, visited_nodes: [], results: [], visited_memberships: [], queue: [], caller: self)
-      # p " results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, counter: #{counter}, depth: #{depth}, queue.length: #{queue.length}, caller: #{caller.name}"
-
-      if counter.zero?
-        node = caller
-
-        Transfer.where(giver: node).includes([:giver, :taker]).each do |transfer|
-          results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
-        end
-
-
-        if node.class == Group
-          Transfer.where(taker: node).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
-          end
-        end
-
-        return results if depth == 0 # if called with depth 0.
-
-        visited_nodes << node # store the current node as visited
-      end
-
-      # look at 1st degree memberships and their transactions
-      counter += 1
-      depth -= 1
-      queue = caller.memberships
-      queue.each do |membership|
-        next if visited_memberships.include?(membership)
-        visited_memberships << membership # store the current membership as visited
-        date_range = membership.start_date..membership.end_date
-
-        membership.nodes.each do |node|
-          p "#{node.name}, membership_id: #{membership.id}, depth: #{counter}"
-
-          next if visited_nodes.include?(node)
-          visited_nodes << node # store the current node as visited
-
-          Transfer.where(giver: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
-          end
-
-          Transfer.where(taker: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
-          end
-        end
-      end
-      p "results.count #{results.count}"
-
-
-      # look at 2nd degree memberships and their transactions
-      counter += 1
-      depth -= 1
-      # binding.pry
-      queue = queue.map(&:overlapping).to_a.flatten.uniq
-      queue.each do |membership|
-        next if visited_memberships.include?(membership)
-        visited_memberships << membership # store the current membership as visited
-        date_range = membership.start_date..membership.end_date
-
-        membership.nodes.each do |node|
-          p "#{node.name}, membership_id: #{membership.id}, depth: #{counter}"
-
-          next if visited_nodes.include?(node)
-          visited_nodes << node # store the current node as visited
-
-          Transfer.where(giver: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
-          end
-          Transfer.where(taker: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
-          end
-        end
-      end
-
-      # look at 3rd degree memberships and their transactions
-      counter += 1
-      depth -= 1
-      queue = queue.map(&:overlapping).to_a.flatten.uniq
-      queue.each do |membership|
-        next if visited_memberships.include?(membership)
-        visited_memberships << membership # store the current membership as visited
-        date_range = membership.start_date..membership.end_date
-
-        membership.nodes.each do |node|
-          p "#{node.name}, membership_id: #{membership.id}, depth: #{counter}"
-
-          next if visited_nodes.include?(node)
-          visited_nodes << node # store the current node as visited
-
-          Transfer.where(giver: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
-          end
-          Transfer.where(taker: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
-          end
-        end
-      end
-
-      # look at 4th degree memberships and their transactions
-      counter += 1
-      depth -= 1
-      queue = queue.map(&:overlapping).to_a.flatten.uniq
-      queue.each do |membership|
-        next if visited_memberships.include?(membership)
-        visited_memberships << membership # store the current membership as visited
-        date_range = membership.start_date..membership.end_date
-
-        membership.nodes.each do |node|
-          p "#{node.name}, membership_id: #{membership.id}, depth: #{counter}"
-
-          next if visited_nodes.include?(node)
-          visited_nodes << node # store the current node as visited
-
-          Transfer.where(giver: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
-          end
-          Transfer.where(taker: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
-          end
-        end
-      end
-
-      # look at 5th degree memberships and their transactions
-      counter += 1
-      depth -= 1
-      queue = queue.map(&:overlapping).to_a.flatten.uniq
-      queue.each do |membership|
-        next if visited_memberships.include?(membership)
-        visited_memberships << membership # store the current membership as visited
-        date_range = membership.start_date..membership.end_date
-
-        membership.nodes.each do |node|
-          p "#{node.name}, membership_id: #{membership.id}, depth: #{counter}"
-
-          next if visited_nodes.include?(node)
-          visited_nodes << node # store the current node as visited
-
-          Transfer.where(giver: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
-          end
-          Transfer.where(taker: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
-          end
-        end
-      end
-
-      # look at 6th degree memberships and their transactions
-      counter += 1
-      depth -= 1
-      queue = queue.map(&:overlapping).to_a.flatten.uniq
-      queue.each do |membership|
-        next if visited_memberships.include?(membership)
-        visited_memberships << membership # store the current membership as visited
-        date_range = membership.start_date..membership.end_date
-
-        membership.nodes.each do |node|
-          p "#{node.name}, membership_id: #{membership.id}, depth: #{counter}"
-
-          next if visited_nodes.include?(node)
-          visited_nodes << node # store the current node as visited
-
-          Transfer.where(giver: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
-          end
-          Transfer.where(taker: node, effective_date: date_range).includes([:giver, :taker]).each do |transfer|
-            results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
-          end
-        end
-      end
-
-
-      results = results.flatten.uniq.compact
-
-
-      # related_transfers(depth:, counter:, visited_nodes:, results:, visited_memberships:, queue:)
-      results || []
-    end
-
-    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0)
-      # p "{results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, queue.count: #{queue.count}, counter: #{counter}, depth: #{depth}}  }"
-
+    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_memberships: {})
+      p "{results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, queue.count: #{queue.count}, counter: #{counter}, depth: #{depth}}  }"
+      p "visited_memberships: #{visited_memberships}"
+      current_depth_memberships = []
       queue.each do |node|
+
         visited_nodes << node # store the current node as visited
+        current_depth_memberships << node.memberships.to_a
 
         results << descendent_struct(node:, depth:, counter:)
       end
 
-      # return results if depth == 0
-      return results.reject { |descendent| descendent.depth.zero? } if depth == 0
+      return results if depth == 0
+      # return results.reject { |descendent| descendent.depth.zero? } if depth == 0
+
+
+      visited_memberships[counter] = current_depth_memberships.flatten
+      visited_memberships[:ids] ||= []
+      visited_memberships[:ids] << current_depth_memberships.flatten
+      visited_memberships[:ids] = visited_memberships[:ids].flatten.uniq
+
+
+
+      previous_queue = queue
+      # memberships = previous_queue.map(&:memberships).flatten.uniq
+# binding.pry
+
+      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
+      # something something overlapping memberships (for people?)
+      # queue = queue.map(&:nodes).flatten.uniq - visited_nodes
+      queue = queue.map do |node|
+        # node.nodes.filter{|next_node| overlaps?(next_node, visited_memberships)} # where there is an overlap
+
+        # binding.pry
+        node.nodes.filter do |next_node|
+          if counter < 2
+            true
+          else
+            if next_node.class == Person && next_node.id == 34
+              # binding.pry
+            end
+            next_node_memberships = next_node.memberships
+            result = false if next_node_memberships.empty?
+
+
+            next_node_overlapping_memberships = next_node_memberships.map { |membership| membership.overlapping }
+
+            # binding.pry
+            if next_node_overlapping_memberships
+              # binding.pry if next_node.id == 34
+              next_node_overlapping_memberships.flatten.pluck(:id) & visited_memberships[:ids].pluck(:id) == [] ? false : true
+            else
+              false
+            end
+
+
+            # result
+          end
+        end
+      end.flatten.uniq - visited_nodes
 
       depth -= 1
       counter += 1
-      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
-      queue = queue.map(&:nodes).flatten.uniq - visited_nodes
-
-
-      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:)
+      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_memberships:)
     end
 
     private
+
+    def overlaps(node, visited_memberships)
+      memberships = node.memberships
+      memberships.any? do |membership|
+        visited_memberships.any? do |depth, memberships|
+          memberships.include?(membership)
+        end
+      end
+    end
 
     def transfer_struct(transfer:, depth:, direction:)
       OpenStruct.new(
