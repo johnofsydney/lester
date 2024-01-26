@@ -41,7 +41,7 @@ class Transfers::ShowView < ApplicationView
       end
       div(class: 'row') do
         div(class: 'col', id: 'descendents-of-giver') do
-          descendents = transfer.giver.consolidated_descendents(depth: 6)
+          descendents = transfer.giver.consolidated_descendents(depth: 8)
 
           p { "Associated People and Groups of #{transfer.giver.name}" }
           table(class: 'table') do
@@ -62,7 +62,7 @@ class Transfers::ShowView < ApplicationView
           end
         end
         div(class: 'col', id: 'descendents-of-taker') do
-          descendents = transfer.taker.consolidated_descendents(depth: 6)
+          descendents = transfer.taker.consolidated_descendents(depth: 8)
 
           p { "Associated People and Groups of #{transfer.taker.name}" }
           table(class: 'table') do
@@ -81,6 +81,8 @@ class Transfers::ShowView < ApplicationView
               end
             end
           end
+
+
         end
       end
     end

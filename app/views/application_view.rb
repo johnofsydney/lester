@@ -34,13 +34,23 @@ class ApplicationView < ApplicationComponent
     item.attributes['name'] || item.attributes['amount'].to_s
   end
 
-  def class_of(klass)
-    return 'groups' if klass.respond_to?(:report_as) && klass.report_as == 'group' # special case for summary rows
-    return 'transfers' if klass.is_a?(Transfer)
+  def class_of(entity)
+    if entity.respond_to?(:klass)
+      return 'people' if entity&.klass == 'Person'
+      return 'groups' if entity&.klass == 'Group'
+    end
 
-    klass.is_a?(Group) ? 'groups' : 'people'
+    return 'groups' if entity.respond_to?(:report_as) && entity.report_as == 'group' # special case for summary rows
+    return 'transfers' if entity.is_a?(Transfer)
+
+    entity.is_a?(Group) ? 'groups' : 'people'
   end
 
+  # entity: the object to link to
+  # class: the CSS class to use
+  # style: the CSS style to use
+  # link_text: the text to display in the link
+  # action: the action to append to the link
   def link_for(entity:, class: '', style: '', link_text: nil, action: nil)
     klass_name_plural = class_of(entity)
     id = entity.id
