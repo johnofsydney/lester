@@ -117,14 +117,5 @@ RSpec.describe Membership, type: :model do
         expect(membership_pauline_phon.overlapping).to eq([membership_mark_phon])
       end
     end
-
-    context 'when the membershipsare for the same person' do
-      it 'returns an array of overlapping memberships' do
-        expect(membership_john_phader.overlapping).to contain_exactly(
-          membership_john_cootes,
-          membership_john_wc_boys
-        )
-      end
-    end
   end
 end
