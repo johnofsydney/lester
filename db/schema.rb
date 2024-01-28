@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_05_27_042114) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_11_101804) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -60,6 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_27_042114) do
     t.date "effective_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.json "data"
     t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
     t.index ["taker_id"], name: "index_transfers_on_taker_id"
   end

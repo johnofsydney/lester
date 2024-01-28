@@ -1,0 +1,25 @@
+<%= form_with(model: @transfer, url: transfer_path(@transfer), method: :patch, class: 'form') do |form| %>
+  <!-- Transfer Attributes -->
+  <div class="form-group">
+    <div class="row">
+      <div class="col-md-3">
+        <%= form.label :amount, class: 'form-label' %>
+      </div>
+      <div class="col-md-9">
+        <%= form.text_field :amount, class: 'form-control' %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Other transfer attributes go here -->
+
+  <!-- Giver and Taker Fields -->
+
+
+  <!-- Add other transfer attributes as needed -->
+
+  <!-- Submit Button -->
+  <div class="form-actions">
+    <%= form.submit 'Update Transfer', class: 'btn btn-primary' %>
+  </div>
+<% end %>

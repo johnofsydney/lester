@@ -28,7 +28,5 @@ class People::ShowView < ApplicationView
       heading: "Transfers connected to #{person.name} to a depth of #{depth} degrees of separation",
       summarise_for: ['Australian Labor Party', 'The Coalition']
     )
-
-
 	end
 end

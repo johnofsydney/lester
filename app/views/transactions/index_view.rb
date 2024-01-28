@@ -19,8 +19,8 @@ class Transactions::IndexView < ApplicationView
       @transactions.each do |transaction|
         tr do
           td { a(href: "/transactions/#{transaction.id}") { number_to_currency(transaction.amount) } }
-          td { a(href: "/people/#{transaction.giver_id}") { transaction.giver.name } }
-          td { a(href: "/people/#{transaction.taker_id}") { transaction.taker.name } }
+          td { a(href: "/people/#{transaction.giver_id}") { transaction.giver.name } if transaction.giver }
+          td { a(href: "/people/#{transaction.taker_id}") { transaction.taker.name } if transaction.taker }
           td { transaction.date.strftime("%m/%d/%Y") }
         end
       end

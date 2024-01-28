@@ -65,12 +65,17 @@ class TransfersTableComponent < ApplicationView
             if transfer.id
               a(href: "/transfers/#{transfer.id}") { transfer.id}
             else
-              "nope"
+              ''
             end
           end
           td { number_to_currency(transfer.amount.to_s, precision: 0) }
           td { transfer.effective_date.year.to_s }
-          td { a(href: "/#{class_of(transfer.giver)}/#{transfer.giver.id}") { transfer.giver.name } if transfer.giver }
+          if transfer.giver.id
+            td { a(href: "/#{class_of(transfer.giver)}/#{transfer.giver.id}") { transfer.giver.name } }
+          elsif transfer.giver
+            td { transfer.giver.name } # only for summary rows
+          end
+
           td { a(href: "/#{class_of(transfer.taker)}/#{transfer.taker.id}") { transfer.taker.name } if transfer.taker}
           td { transfer.depth }
           td { transfer.direction }

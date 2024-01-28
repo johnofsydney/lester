@@ -5,8 +5,8 @@ class Home::IndexView < ApplicationView
   def template
     div(class: 'container') do
       div(class: 'jumbotron', style: 'background-color: #243447; color: white;') do
-        h1(class: 'display-4') { 'Unveiling the Ties That Bind: Tracking Money in Politics' }
-        h3(class: 'display-6') { 'Uncovering the Hidden Networks of Influence & Empowering Citizens with Transparency' }
+        h1(class: 'display-4') { 'LESTER' }
+        h3(class: 'display-6') { "you start to follow the money, and you don't know where the fuck it's gonna take you" }
         p(class: 'lead') { 'In the realm of politics, money talks. And often, it whispers secrets into the ears of those in power. At [website name], we shine a light on these shadowy interactions, exposing the potential for corruption that lurks beneath the surface of our political system.' }
       end
 

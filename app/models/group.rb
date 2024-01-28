@@ -13,10 +13,12 @@ class Group < ApplicationRecord
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
   has_many :incoming_transfers, class_name: 'Transfer', foreign_key: 'taker_id'
 
-  # attr_accessor :depth, :direction # this is a temporary attribute used in the consolidation process
+  accepts_nested_attributes_for :memberships, allow_destroy: true
 
   def nodes(include_looser_nodes: false)
-    return [people + affiliated_groups].compact.flatten.uniq unless include_looser_nodes
+    return people.includes([memberships: [:group, :person]])
+
+    return [people + affiliated_groups].compact.flatten.uniq unless include_looser_nodes # TODO work on includes / bullet
 
     [people + affiliated_groups + other_edge_ends].compact.flatten.uniq
   end

@@ -16,13 +16,12 @@ class PeopleController < ApplicationController
   # GET /people/new
   def new
     @person = Person.new
-    render People::EditView.new(person: @person)
   end
 
   # GET /people/1/edit
   def edit
-    @person = Person.find(params[:id])
-    render People::EditView.new(person: @person)
+    # phlex not working yet. form is hard. has nesting
+    # render People::EditView.new(person: @person)
   end
 
   # POST /people or /people.json
@@ -30,7 +29,11 @@ class PeopleController < ApplicationController
     @person = Person.new(person_params)
 
     respond_to do |format|
-      if update_person(@person)
+      if @person.save
+        new_membership_params = params[:person][:memberships_attributes][:NEW_RECORD]
+        if new_membership_params
+          @person.memberships.create(new_membership_params.permit(:group_id, :title, :start_date, :end_date))
+        end
         format.html { redirect_to person_url(@person), notice: "Person was successfully created." }
         format.json { render :show, status: :created, location: @person }
       else
@@ -43,8 +46,11 @@ class PeopleController < ApplicationController
   # PATCH/PUT /people/1 or /people/1.json
   def update
     respond_to do |format|
-      if update_person(@person)
-      # if @person.update(person_params)
+      if @person.update(person_params)
+        new_membership_params = params[:person][:memberships_attributes][:NEW_RECORD]
+        if new_membership_params
+          @person.memberships.create(new_membership_params.permit(:group_id, :title, :start_date, :end_date))
+        end
         format.html { redirect_to person_url(@person), notice: "Person was successfully updated." }
         format.json { render :show, status: :ok, location: @person }
       else
@@ -65,26 +71,13 @@ class PeopleController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_person
-      @person = Person.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_person
+    @person = Person.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def person_params
-      params.require(:person).permit!
-      # params.require(:person).permit(:name, :group_ids)
-    end
-
-    def update_person(person)
-
-      group_ids = person_params['group_ids'].select(&:present?).map(&:to_i)
-
-      group_ids.each do |id|
-        group = Group.find(id)
-        person.groups << group unless person.groups.include?(group)
-      end
-
-      person.save
-    end
+  # Only allow a list of trusted parameters through. Including nested params for memberships
+  def person_params
+    params.require(:person).permit(:name, memberships_attributes: [:id, :title, :start_date, :end_date, :_destroy])
+  end
 end

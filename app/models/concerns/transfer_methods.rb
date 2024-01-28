@@ -3,52 +3,85 @@ module TransferMethods
 
   included do
     # depth is the number of degrees of separation from the invoking node, 0 being the invoking node itself
-    def consolidated_transfers(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0)
-      p "{results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, queue.count: #{queue.count}, counter: #{counter}, depth: #{depth}}  }"
+    def consolidated_transfers(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, caller: self, visited_membership_ids: [])
+      current_depth_memberships = []
 
       queue.each do |node|
         visited_nodes << node # store the current node as visited
+        current_depth_memberships << node.memberships.to_a
 
-        node.transfers.outgoing.each do |transfer|
+        # TODO: are the transfer methods in Person and Group helpful or harmful?
+        Transfer.where(giver: node).includes([:giver, :taker]).each do |transfer|
           results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
         end
-        node.transfers.incoming.each do |transfer|
+
+        next unless node.class == Group # TODO - get rid of this, people can accept transfers too (make taker polymorphic as well)
+        Transfer.where(taker: node).includes([:giver, :taker]).each do |transfer|
           results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
         end
       end
 
       return results if depth == 0
 
+      # add current memberships to visited memberships
+      visited_membership_ids << current_depth_memberships.flatten.pluck(:id)
+
+      # clean up the visited memberships
+      visited_membership_ids = visited_membership_ids.flatten.uniq
+
+
+      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue if there are overlapping memberships
+      queue = queue.map do |node|
+        node.nodes.filter do |next_node|
+          if counter < 2 # if counter is 0 we ave already returned. if it is 1, give us the next level of nodes without conditions
+            true
+          elsif next_node.is_a?(Group)
+            true
+          else
+            next_node_overlapping_membership_ids = next_node.memberships.flat_map { |membership| membership.overlapping }.pluck(:id)
+
+            next_node_overlapping_membership_ids.any? { |id| visited_membership_ids.include?(id) }
+          end
+        end
+      end.flatten.uniq - visited_nodes
+
+
+      # queue = queue.map(&:nodes).flatten.uniq - visited_nodes # OLD
+
+
       depth -= 1
       counter += 1
-      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
-      queue = queue.map(&:nodes).flatten.uniq - visited_nodes
-
-      consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:)
+      consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:)
     end
 
-    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0)
-      p "{results.count: #{results.count}, visited_nodes.count: #{visited_nodes.count}, queue.count: #{queue.count}, counter: #{counter}, depth: #{depth}}  }"
-
+    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [])
+      current_depth_memberships = []
       queue.each do |node|
+
         visited_nodes << node # store the current node as visited
+        current_depth_memberships << node.memberships.to_a
 
         results << descendent_struct(node:, depth:, counter:)
       end
 
-      # return results if depth == 0
-      return results.reject { |descendent| descendent.depth.zero? } if depth == 0
+      return results if depth == 0
+
+      # add current memberships to visited memberships
+      visited_membership_ids << current_depth_memberships.flatten.pluck(:id)
+
+      # clean up the visited memberships
+      visited_membership_ids = visited_membership_ids.flatten.uniq
+
+      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue (if there are overlapping memberships)
+      queue = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter).call
 
       depth -= 1
       counter += 1
-      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue
-      queue = queue.map(&:nodes).flatten.uniq - visited_nodes
-
-
-      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:)
+      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:)
     end
 
     private
+
 
     def transfer_struct(transfer:, depth:, direction:)
       OpenStruct.new(
@@ -66,7 +99,8 @@ module TransferMethods
       OpenStruct.new(
         id: node.id,
         name: node.name,
-        depth: counter
+        depth: counter,
+        klass: node.class.to_s,
       )
     end
   end
