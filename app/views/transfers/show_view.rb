@@ -32,7 +32,7 @@ class Transfers::ShowView < ApplicationView
           end
           p do
             span { 'Evidence: ' }
-            a(href: transfer.evidence) {"Evidence: #{transfer.evidence}"}
+            a(href: transfer.evidence) { transfer.evidence }
           end
           p do
             span { "Effective Date: #{transfer.effective_date}"}

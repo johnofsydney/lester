@@ -80,6 +80,7 @@ class Home::IndexView < ApplicationView
                 li { 'Import Maps' }
                 li { 'Import Phlex JS' }
                 li { 'Source Tree access for this repo' }
+                li { 'Several Memberships one person in one group (different titles) maybe new model' }
                 li { 'Pagination' }
               end
             end

@@ -14,11 +14,11 @@ class TransfersTableComponent < ApplicationView
 
   def template
     return nil if transfers.empty?
+
     return make_table(transfers) if (summarise_for.nil? && exclude.nil?)
 
     # TODO: also deal with summarise outbound?
-
-    if summarise_for.present? && summarise_for.exclude?(entity.name)
+    if summarise_for.present?
       transfers_to_summarise = transfers.group_by { |t| [t.taker.name, t.effective_date, t.depth, t.direction, t.taker.id] }
                                         .select { |combo, transfers| summarise_for.include?(combo.first) && transfers.count > 1 }
 
@@ -33,7 +33,6 @@ class TransfersTableComponent < ApplicationView
         )
       end
 
-      # make_table(transfers  + summary_rows)
       make_table(transfers - transfers_to_summarise.values.flatten + summary_rows)
     elsif exclude.present?
       transfers_grouped_by_name = transfers.group_by { |t| t.taker.name }
@@ -59,7 +58,7 @@ class TransfersTableComponent < ApplicationView
         th { 'Direction' }
       end
 
-      transfers.each do |transfer|
+      transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
         tr(style: row_style(transfer)) do
           td do
             if transfer.id

@@ -20,9 +20,16 @@ class Groups::ShowView < ApplicationView
       ) { group.name }
     end
 
-    div(class: 'direct-descendents') do
-      render PrimaryNodesMenuComponent.new(entity: group)
+    if group.affiliated_groups.present?
+      render Groups::AffiliatedGroups.new(groups: group.affiliated_groups)
     end
+
+    if group.people.present?
+      render Groups::People.new(people: group.people, group: group)
+    end
+
+
+
 
 
     depth = 6
@@ -30,7 +37,20 @@ class Groups::ShowView < ApplicationView
       entity: group,
       transfers: group.consolidated_transfers(depth:),
       heading: "Transfers connected to #{group.name} to a depth of #{depth} degrees of separation",
-      summarise_for: ['Australian Labor Party', 'The Coalition']
+      summarise_for: summarise_for
     )
 	end
+
+  def summarise_for
+    major_groupings = %i(coalition nationals labor green liberals)
+    states = %i[federal nsw vic qld sa wa nt act tas]
+
+    list = major_groupings.map do |group|
+      states.map do |state|
+        Group::NAMES.send(group).send(state) if Group::NAMES.send(group)
+      end
+    end
+
+    list.flatten.compact.uniq - [group.name]
+  end
 end

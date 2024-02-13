@@ -29,24 +29,8 @@ module TransferMethods
       # clean up the visited memberships
       visited_membership_ids = visited_membership_ids.flatten.uniq
 
-
       # get the nodes from the current depth. remove the visited nodes. store the rest in the queue if there are overlapping memberships
-      queue = queue.map do |node|
-        node.nodes.filter do |next_node|
-          if counter < 2 # if counter is 0 we ave already returned. if it is 1, give us the next level of nodes without conditions
-            true
-          elsif next_node.is_a?(Group)
-            true
-          else
-            next_node_overlapping_membership_ids = next_node.memberships.flat_map { |membership| membership.overlapping }.pluck(:id)
-
-            next_node_overlapping_membership_ids.any? { |id| visited_membership_ids.include?(id) }
-          end
-        end
-      end.flatten.uniq - visited_nodes
-
-
-      # queue = queue.map(&:nodes).flatten.uniq - visited_nodes # OLD
+      queue = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter).call
 
 
       depth -= 1

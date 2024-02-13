@@ -7,11 +7,24 @@ class ApplicationView < ApplicationComponent
 	# can change that to `Phlex::HTML` if you want to keep views and
 	# components independent.
 
-  def button_styles(instance)
+  def element_styles(instance, style = '')
+    {
+      'background_color' => background_color(instance),
+      'color' => color(instance),
+    }.map{|key, value| "#{key.to_s.dasherize}: #{value};"}
+     .join('; ') + style + ';'
+  end
+  def button_styles(instance, depth = 0)
+
+    background_color = depth.zero? ? background_color(instance) : color(instance)
+
+    color = depth.zero? ? color(instance) : background_color(instance)
     {
       'background_color' => background_color(instance),
       'color' => color(instance),
       'display' => 'inline-block',
+      'margin' => '0.25rem',
+      'padding'=> '0.25rem',
     }.map{|key, value| "#{key.to_s.dasherize}: #{value};"}
      .join('; ') + ';'
 

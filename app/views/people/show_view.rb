@@ -26,7 +26,18 @@ class People::ShowView < ApplicationView
       entity: person,
       transfers: person.consolidated_transfers(depth:),
       heading: "Transfers connected to #{person.name} to a depth of #{depth} degrees of separation",
-      summarise_for: ['Australian Labor Party', 'The Coalition']
+      summarise_for: summarise_for
     )
 	end
+
+    def summarise_for
+    major_groupings = %i(coalition nationals labor green liberals)
+    states = %i[federal nsw vic qld sa wa nt act tas]
+
+    major_groupings.map do |group|
+      states.map do |state|
+        Group::NAMES.send(group).send(state) if Group::NAMES.send(group)
+      end
+    end.flatten.compact
+  end
 end

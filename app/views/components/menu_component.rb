@@ -11,7 +11,7 @@ class MenuComponent < ApplicationView
 
   def template
     nav(class: 'navbar navbar-expand-lg navbar-light bg-light') do
-      a(class: 'navbar-brand', href: '/') { 'Linker' }
+      a(class: 'navbar-brand', href: '/') { 'LESTER' }
       button(class: 'navbar-toggler', type: 'button', data: { toggle: 'collapse', target: '#navbarNav', aria: { controls: 'navbarNav', expanded: 'false', label: 'Toggle navigation' } }) do
         span(class: 'navbar-toggler-icon')
       end

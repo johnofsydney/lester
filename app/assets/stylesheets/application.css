@@ -18,6 +18,9 @@
   /* border: 1px red solid; */
 }
 
+button {
+  text-decoration: none;
+}
 
 .flex-normal {
   display: flex;
