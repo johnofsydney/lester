@@ -88,14 +88,46 @@ namespace :lester do
     the_coalition_nsw = Group.find_or_create_by(name: Group::NAMES.coalition.nsw)
     labor_nsw = Group.find_or_create_by(name: Group::NAMES.labor.nsw)
     greens_nsw = Group.find_or_create_by(name: Group::NAMES.greens.nsw)
-    liberal_vic = Group.find_or_create_by(name: Group::NAMES.liberals.vis)
+
+    liberal_sa = Group.find_or_create_by(name: Group::NAMES.liberals.sa)
+    nationals_sa = Group.find_or_create_by(name: Group::NAMES.nationals.sa)
+    the_coalition_sa = Group.find_or_create_by(name: Group::NAMES.coalition.sa)
+    labor_sa = Group.find_or_create_by(name: Group::NAMES.labor.sa)
+    greens_sa = Group.find_or_create_by(name: Group::NAMES.greens.sa)
+
+    liberal_vic = Group.find_or_create_by(name: Group::NAMES.liberals.vic)
     nationals_vic = Group.find_or_create_by(name: Group::NAMES.nationals.vic)
+    the_coalition_vic = Group.find_or_create_by(name: Group::NAMES.coalition.vic)
     labor_vic = Group.find_or_create_by(name: Group::NAMES.labor.vic)
     greens_vic = Group.find_or_create_by(name: Group::NAMES.greens.vic)
+
     liberal_tas = Group.find_or_create_by(name: Group::NAMES.liberals.tas)
     nationals_tas = Group.find_or_create_by(name: Group::NAMES.nationals.tas)
+    the_coalition_tas = Group.find_or_create_by(name: Group::NAMES.coalition.tas)
     labor_tas = Group.find_or_create_by(name: Group::NAMES.labor.tas)
     greens_tas = Group.find_or_create_by(name: Group::NAMES.greens.tas)
+
+    liberal_wa = Group.find_or_create_by(name: Group::NAMES.liberals.wa)
+    nationals_wa = Group.find_or_create_by(name: Group::NAMES.nationals.wa)
+    the_coalition_wa = Group.find_or_create_by(name: Group::NAMES.coalition.wa)
+    labor_wa = Group.find_or_create_by(name: Group::NAMES.labor.wa)
+    greens_wa = Group.find_or_create_by(name: Group::NAMES.greens.wa)
+
+    liberal_act = Group.find_or_create_by(name: Group::NAMES.liberals.act)
+    nationals_act = Group.find_or_create_by(name: Group::NAMES.nationals.act)
+    the_coalition_act = Group.find_or_create_by(name: Group::NAMES.coalition.act)
+    labor_act = Group.find_or_create_by(name: Group::NAMES.labor.act)
+    greens_act = Group.find_or_create_by(name: Group::NAMES.greens.act)
+
+    liberal_qld = Group.find_or_create_by(name: Group::NAMES.liberals.qld)
+    labor_qld = Group.find_or_create_by(name: Group::NAMES.labor.qld)
+    greens_qld = Group.find_or_create_by(name: Group::NAMES.greens.qld)
+
+    liberal_nt = Group.find_or_create_by(name: Group::NAMES.liberals.nt)
+    labor_nt = Group.find_or_create_by(name: Group::NAMES.labor.nt)
+    greens_nt = Group.find_or_create_by(name: Group::NAMES.greens.nt)
+
+
 
     # factions
     the_terrigals = Group.find_or_create_by(name: 'The Terrigals')
@@ -145,145 +177,148 @@ namespace :lester do
 
     p "creating memberships"
     # political parties
-    Membership.create(group: liberal_federal, person: josh_frydenburg, title: 'Deputy Leader')
-    Membership.create(group: liberal_federal, person: peter_dutton, title: 'Leader')
-    Membership.create(group: liberal_federal, person: scott_morrison, title: 'Leader')
-    Membership.create(group: liberal_federal, person: trent_twomey, title: 'Branch Member')
-    Membership.create(group: liberal_federal, person: warren_entsch, title: 'Member')
-    Membership.create(group: liberal_federal, person: arthur_sinodinos, title: 'Member')
-    Membership.create(group: liberal_federal, person: bill_heffernan, title: 'Member')
-    Membership.create(group: nationals_federal, person: barnaby_joyce, title: 'Member')
+    Membership.find_or_create_by(group: liberal_federal, person: josh_frydenburg)
+    Membership.find_or_create_by(group: liberal_federal, person: peter_dutton)
+    Membership.find_or_create_by(group: liberal_federal, person: scott_morrison)
+    Membership.find_or_create_by(group: liberal_qld, person: trent_twomey Member)
+    Membership.find_or_create_by(group: liberal_federal, person: warren_entsch)
+    Membership.find_or_create_by(group: liberal_federal, person: arthur_sinodinos)
+    Membership.find_or_create_by(group: liberal_federal, person: bill_heffernan)
+    Membership.find_or_create_by(group: nationals_federal, person: barnaby_joyce)
 
 
-    Membership.create(group: labor_federal, person: anthony_albanese, title: 'Leader', start_date: Date.new(2019, 5, 30))
-    Membership.create(group: labor_federal, person: tanya_plibersek, title: 'Deputy Leader', start_date: Date.new(2019, 5, 30))
-    Membership.create(group: labor_federal, person: kevin_rudd, title: 'Leader', start_date: Date.new(2006, 12, 4), end_date: Date.new(2010, 6, 24))
-    Membership.create(group: labor_federal, person: mark_latham, title: 'Leader', start_date: Date.new(2003, 12, 2), end_date: Date.new(2005, 1, 18))
-    Membership.create(group: labor_nsw, person: ian_macdonald, title: 'MLC', start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7))
-    Membership.create(group: labor_nsw, person: eddie_obied, title: 'MLC', start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6))
-    Membership.create(group: labor_nsw, person: adele_tahan, title: 'Member')
+    Membership.find_or_create_by(group: labor_federal, person: anthony_albanese, start_date: Date.new(2019, 5, 30))
+    Membership.find_or_create_by(group: labor_federal, person: tanya_plibersek, start_date: Date.new(2019, 5, 30))
+    Membership.find_or_create_by(group: labor_federal, person: kevin_rudd, start_date: Date.new(2006, 12, 4), end_date: Date.new(2010, 6, 24))
+    Membership.find_or_create_by(group: labor_federal, person: mark_latham, start_date: Date.new(2003, 12, 2), end_date: Date.new(2005, 1, 18))
+    Membership.find_or_create_by(group: labor_nsw, person: ian_macdonald, start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7))
+    Membership.find_or_create_by(group: labor_nsw, person: eddie_obied, start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6))
+    Membership.find_or_create_by(group: labor_nsw, person: adele_tahan)
 
-    Membership.create(group: greens_tas, person: bob_brown, title: 'Great Grand Poobah')
+    Membership.find_or_create_by(group: greens_tas, person: bob_brown)
 
-    Membership.create(group: one_nation, person: pauline_hanson, title: 'Leader')
-    Membership.create(group: one_nation, person: mark_latham, title: 'NSW Leader', start_date: Date.new(2018, 11, 15), end_date: Date.new(2022, 6, 30))
-    # Membership.create(group: nsw_upper_house, person: mark_latham, title: 'MLC', start_date: Date.new(2019, 3, 23))
+    Membership.find_or_create_by(group: one_nation, person: pauline_hanson)
+    Membership.find_or_create_by(group: one_nation, person: mark_latham, start_date: Date.new(2018, 11, 15), end_date: Date.new(2022, 6, 30))
+    # Membership.find_or_create_by(group: nsw_upper_house, person: mark_latham, title: 'MLC', start_date: Date.new(2019, 3, 23))
 
 
-    Membership.create(group: allegra_spender_campaign, person: allegra_spender)
-    Membership.create(group: zalie_stegall_campaign, person: zalie_stegall)
-    Membership.create(group: warren_entsch_campaign, person: warren_entsch, title: 'Member')
-    Membership.create(group: warren_entsch_campaign, person: trent_twomey, title: 'Campaign Manager')
+    Membership.find_or_create_by(group: allegra_spender_campaign, person: allegra_spender)
+    Membership.find_or_create_by(group: zalie_stegall_campaign, person: zalie_stegall)
+    Membership.find_or_create_by(group: warren_entsch_campaign, person: warren_entsch)
+    Membership.find_or_create_by(group: warren_entsch_campaign, person: trent_twomey)
 
     # factions
-    Membership.create(group: the_terrigals, person: joe_tripodi, title: 'Member')
-    Membership.create(group: the_terrigals, person: eddie_obied, title: 'Member')
+    Membership.find_or_create_by(group: the_terrigals, person: joe_tripodi)
+    Membership.find_or_create_by(group: the_terrigals, person: eddie_obied)
 
     # attendees of maiden speeches
-    Membership.create(group: barnarbys_maiden_speech, person: barnaby_joyce, title: 'Speaker')
-    Membership.create(group: barnarbys_maiden_speech, person: gina_rinehart, title: 'Attendee')
-    Membership.create(group: barnarbys_maiden_speech, person: russell_webb, title: 'Attendee')
-    Membership.create(group: barnarbys_maiden_speech, person: bede_burke, title: 'Attendee')
+    Membership.find_or_create_by(group: barnarbys_maiden_speech, person: barnaby_joyce)
+    Membership.find_or_create_by(group: barnarbys_maiden_speech, person: gina_rinehart)
+    Membership.find_or_create_by(group: barnarbys_maiden_speech, person: russell_webb)
+    Membership.find_or_create_by(group: barnarbys_maiden_speech, person: bede_burke)
 
 
     # families
-    Membership.create(group: twomey_family, person: georgina_twomey, title: 'Wife')
-    Membership.create(group: twomey_family, person: trent_twomey, title: 'Husband')
-    Membership.create(group: heffernan_family, person: bill_heffernan, title: 'Father')
-    Membership.create(group: heffernan_family, person: david_heffernan, title: 'Son / Brother')
-    Membership.create(group: obeid_family, person: eddie_obied, title: 'Father')
-    Membership.create(group: obeid_family, person: eddie_obied_junior, title: 'Son / Brother')
-    Membership.create(group: obeid_family, person: moses_obeid, title: 'Son / Brother')
-    Membership.create(group: obeid_family, person: paul_obeid, title: 'Son / Brother')
-    Membership.create(group: obeid_family, person: gerard_obeid, title: 'Son / Brother')
-    Membership.create(group: entsch_family, person: warren_entsch, title: 'Dad')
-    Membership.create(group: entsch_family, person: jacob_entsch, title: 'Son')
-    Membership.create(group: frydenburg_family, person: josh_frydenburg, title: 'Husband')
-    Membership.create(group: frydenburg_family, person: amie_frydenburg, title: 'Wife')
-    Membership.create(group: lander_and_rogers, person: amie_frydenburg, title: 'Partner')
+    Membership.find_or_create_by(group: twomey_family, person: georgina_twomey, title: 'Wife')
+    Membership.find_or_create_by(group: twomey_family, person: trent_twomey, title: 'Husband')
+    Membership.find_or_create_by(group: heffernan_family, person: bill_heffernan, title: 'Father')
+    Membership.find_or_create_by(group: heffernan_family, person: david_heffernan, title: 'Son / Brother')
+    Membership.find_or_create_by(group: obeid_family, person: eddie_obied, title: 'Father')
+    Membership.find_or_create_by(group: obeid_family, person: eddie_obied_junior, title: 'Son / Brother')
+    Membership.find_or_create_by(group: obeid_family, person: moses_obeid, title: 'Son / Brother')
+    Membership.find_or_create_by(group: obeid_family, person: paul_obeid, title: 'Son / Brother')
+    Membership.find_or_create_by(group: obeid_family, person: gerard_obeid, title: 'Son / Brother')
+    Membership.find_or_create_by(group: entsch_family, person: warren_entsch, title: 'Dad')
+    Membership.find_or_create_by(group: entsch_family, person: jacob_entsch, title: 'Son')
+    Membership.find_or_create_by(group: frydenburg_family, person: josh_frydenburg, title: 'Husband')
+    Membership.find_or_create_by(group: frydenburg_family, person: amie_frydenburg, title: 'Wife')
+    Membership.find_or_create_by(group: lander_and_rogers, person: amie_frydenburg, title: 'Partner')
 
     # businesses
-    Membership.create(group: guide_dogs_victoria, person: sandro_cirianni, title: 'General Manager')
-    Membership.create(group: guide_dogs_victoria, person: karen_hayes, title: 'Chief Executive Officer')
-    Membership.create(group: guide_dogs_victoria, person: iain_edwards, title: 'Board Chair')
-    Membership.create(group: guide_dogs_victoria, person: paul_wheelton, title: 'Capital Campaign Chair')
-    Membership.create(group: wheelton_investments, person: paul_wheelton, title: 'Owner')
-    Membership.create(group: climate200, person: simon_holmes_acourt, title: 'Owner')
-    Membership.create(group: atlassian, person: mike_cannon_brookes, title: 'Owner')
-    Membership.create(group: atlassian, person: scott_farquar, title: 'Owner')
-    Membership.create(group: the_pharmacy_guild, person: trent_twomey, title: 'National President')
-    Membership.create(group: the_pharmacy_guild, person: david_heffernan, title: 'National Councilor (NSW)')
-    Membership.create(group: the_pharmacy_guild, person: adele_tahan, title: 'National Councilor (NSW)')
-    Membership.create(group: the_pharmacy_guild, person: judith_plunkett, title: 'National Councilor (NSW)')
-    Membership.create(group: qrx_group, person: georgina_twomey, title: 'Part Owner')
-    Membership.create(group: qrx_group, person: leo_maltam, title: 'Director')
-    Membership.create(group: qrx_group, person: jacob_entsch)
-    Membership.create(group: australian_romance, person: sally_zou)
-    Membership.create(group: aus_gold_mining, person: sally_zou)
-    Membership.create(group: oryxium, person: david_lowy, title: 'Owner')
-    Membership.create(group: oryxium, person: peter_lowy, title: 'Owner')
-    Membership.create(group: oryxium, person: steven_lowy, title: 'Owner')
-    Membership.create(group: australian_water_holdings, person: arthur_sinodinos, title: 'Chairman', start_date: Date.new(2008, 1, 1), end_date: Date.new(2011, 5, 6))
-    Membership.create(group: australian_water_holdings, person: eddie_obied_junior, title: 'Salaryman', start_date: Date.new(2008, 1, 1), end_date: Date.new(2011, 5, 6))
-    Membership.create(group: australian_water_holdings, person: nick_di_giralomo, title: 'Chief Executive Officer')
-    Membership.create(group: colin_biggers_and_paisley, person: nick_di_giralomo, title: 'Partner')
-    Membership.create(group: hancock_prospecting, person: gina_rinehart, title: 'Executive Chairwoman')
+    Membership.find_or_create_by(group: guide_dogs_victoria, person: sandro_cirianni, title: 'General Manager')
+    Membership.find_or_create_by(group: guide_dogs_victoria, person: karen_hayes, title: 'Chief Executive Officer')
+    Membership.find_or_create_by(group: guide_dogs_victoria, person: iain_edwards, title: 'Board Chair')
+    Membership.find_or_create_by(group: guide_dogs_victoria, person: paul_wheelton, title: 'Capital Campaign Chair')
+    Membership.find_or_create_by(group: wheelton_investments, person: paul_wheelton, title: 'Owner')
+    Membership.find_or_create_by(group: climate200, person: simon_holmes_acourt, title: 'Owner')
+    Membership.find_or_create_by(group: atlassian, person: mike_cannon_brookes, title: 'Owner')
+    Membership.find_or_create_by(group: atlassian, person: scott_farquar, title: 'Owner')
+    Membership.find_or_create_by(group: the_pharmacy_guild, person: trent_twomey, title: 'National President')
+    Membership.find_or_create_by(group: the_pharmacy_guild, person: david_heffernan, title: 'National Councilor (NSW)')
+    Membership.find_or_create_by(group: the_pharmacy_guild, person: adele_tahan, title: 'National Councilor (NSW)')
+    Membership.find_or_create_by(group: the_pharmacy_guild, person: judith_plunkett, title: 'National Councilor (NSW)')
+    Membership.find_or_create_by(group: qrx_group, person: georgina_twomey, title: 'Part Owner')
+    Membership.find_or_create_by(group: qrx_group, person: leo_maltam, title: 'Director')
+    Membership.find_or_create_by(group: qrx_group, person: jacob_entsch)
+    Membership.find_or_create_by(group: australian_romance, person: sally_zou)
+    Membership.find_or_create_by(group: aus_gold_mining, person: sally_zou)
+    Membership.find_or_create_by(group: oryxium, person: david_lowy, title: 'Owner')
+    Membership.find_or_create_by(group: oryxium, person: peter_lowy, title: 'Owner')
+    Membership.find_or_create_by(group: oryxium, person: steven_lowy, title: 'Owner')
+    Membership.find_or_create_by(group: australian_water_holdings, person: arthur_sinodinos, title: 'Chairman', start_date: Date.new(2008, 1, 1), end_date: Date.new(2011, 5, 6))
+    Membership.find_or_create_by(group: australian_water_holdings, person: eddie_obied_junior, title: 'Salaryman', start_date: Date.new(2008, 1, 1), end_date: Date.new(2011, 5, 6))
+    Membership.find_or_create_by(group: australian_water_holdings, person: nick_di_giralomo, title: 'Chief Executive Officer')
+    Membership.find_or_create_by(group: colin_biggers_and_paisley, person: nick_di_giralomo, title: 'Partner')
+    Membership.find_or_create_by(group: hancock_prospecting, person: gina_rinehart, title: 'Executive Chairwoman')
 
 
     p "creating affiliations"
-    Affiliation.create(owning_group: greens_federal, sub_group: greens_nsw)
-    Affiliation.create(owning_group: greens_federal, sub_group: greens_vic)
-    Affiliation.create(owning_group: greens_federal, sub_group: greens_tas)
-    Affiliation.create(owning_group: liberal_federal, sub_group: liberal_nsw)
-    Affiliation.create(owning_group: liberal_federal, sub_group: liberal_vic)
-    Affiliation.create(owning_group: liberal_federal, sub_group: liberal_tas)
-    Affiliation.create(owning_group: liberal_federal, sub_group: liberal_qld)
-    Affiliation.create(owning_group: liberal_federal, sub_group: liberal_sa)
-    Affiliation.create(owning_group: liberal_federal, sub_group: liberal_nt)
-    Affiliation.create(owning_group: liberal_federal, sub_group: liberal_wa)
-    Affiliation.create(owning_group: liberal_federal, sub_group: liberal_act)
-    Affiliation.create(owning_group: nationals_federal, sub_group: nationals_nsw)
-    Affiliation.create(owning_group: nationals_federal, sub_group: nationals_vic)
-    Affiliation.create(owning_group: nationals_federal, sub_group: nationals_tas)
-    Affiliation.create(owning_group: nationals_federal, sub_group: nationals_qld)
-    Affiliation.create(owning_group: nationals_federal, sub_group: nationals_sa)
-    Affiliation.create(owning_group: nationals_federal, sub_group: nationals_nt)
-    Affiliation.create(owning_group: nationals_federal, sub_group: nationals_wa)
-    Affiliation.create(owning_group: nationals_federal, sub_group: nationals_act)
-    Affiliation.create(owning_group: labor_federal, sub_group: labor_nsw)
-    Affiliation.create(owning_group: labor_federal, sub_group: labor_vic)
-    Affiliation.create(owning_group: labor_federal, sub_group: labor_tas)
-    Affiliation.create(owning_group: labor_federal, sub_group: labor_qld)
-    Affiliation.create(owning_group: labor_federal, sub_group: labor_sa)
-    Affiliation.create(owning_group: labor_federal, sub_group: labor_nt)
-    Affiliation.create(owning_group: labor_federal, sub_group: labor_wa)
-    Affiliation.create(owning_group: labor_federal, sub_group: labor_act)
+    Affiliation.find_or_create_by(owning_group: greens_federal, sub_group: greens_nsw)
+    Affiliation.find_or_create_by(owning_group: greens_federal, sub_group: greens_vic)
+    Affiliation.find_or_create_by(owning_group: greens_federal, sub_group: greens_tas)
+    Affiliation.find_or_create_by(owning_group: liberal_federal, sub_group: liberal_nsw)
+    Affiliation.find_or_create_by(owning_group: liberal_federal, sub_group: liberal_vic)
+    Affiliation.find_or_create_by(owning_group: liberal_federal, sub_group: liberal_tas)
+    Affiliation.find_or_create_by(owning_group: liberal_federal, sub_group: liberal_qld)
+    Affiliation.find_or_create_by(owning_group: liberal_federal, sub_group: liberal_sa)
+    Affiliation.find_or_create_by(owning_group: liberal_federal, sub_group: liberal_nt)
+    Affiliation.find_or_create_by(owning_group: liberal_federal, sub_group: liberal_wa)
+    Affiliation.find_or_create_by(owning_group: liberal_federal, sub_group: liberal_act)
+    Affiliation.find_or_create_by(owning_group: nationals_federal, sub_group: nationals_nsw)
+    Affiliation.find_or_create_by(owning_group: nationals_federal, sub_group: nationals_vic)
+    Affiliation.find_or_create_by(owning_group: nationals_federal, sub_group: nationals_tas)
+    Affiliation.find_or_create_by(owning_group: nationals_federal, sub_group: nationals_sa)
+    Affiliation.find_or_create_by(owning_group: nationals_federal, sub_group: nationals_wa)
+    Affiliation.find_or_create_by(owning_group: nationals_federal, sub_group: nationals_act)
+    Affiliation.find_or_create_by(owning_group: labor_federal, sub_group: labor_nsw)
+    Affiliation.find_or_create_by(owning_group: labor_federal, sub_group: labor_vic)
+    Affiliation.find_or_create_by(owning_group: labor_federal, sub_group: labor_tas)
+    Affiliation.find_or_create_by(owning_group: labor_federal, sub_group: labor_qld)
+    Affiliation.find_or_create_by(owning_group: labor_federal, sub_group: labor_sa)
+    Affiliation.find_or_create_by(owning_group: labor_federal, sub_group: labor_nt)
+    Affiliation.find_or_create_by(owning_group: labor_federal, sub_group: labor_wa)
+    Affiliation.find_or_create_by(owning_group: labor_federal, sub_group: labor_act)
 
     p "creating transfers"
     Transfer.find_or_create_by(
       giver: federal_government,
       taker: guide_dogs_victoria,
-      effective_date: Date.new(2020, 4, 1),
+      effective_date: Date.new(2020, 4, 19),
       transfer_type: 'grant',
-      amount: 25_000_000
+      amount: 2_500_000,
+      evidence: 'https://ministers.treasury.gov.au/ministers/josh-frydenberg-2018/media-releases/australian-government-delivers-25-million-support'
     )
 
 
-    Transfer.find_or_create_by(
-      giver: guide_dogs_victoria,
-      taker: lander_and_rogers,
-      effective_date: Date.new(2022, 4, 1),
-      transfer_type: 'fees',
-      amount: 140000
-    )
+    # Transfer.find_or_create_by(
+    #   giver: guide_dogs_victoria,
+    #   taker: lander_and_rogers,
+    #   effective_date: Date.new(2022, 4, 1),
+    #   transfer_type: 'fees',
+    #   amount: 140000,
+    #   evidence:
+    # )
 
 
+    # DID THIS PROCEED?
+    # https://www.crikey.com.au/2020/02/21/pharmacy-guild-mccormack/
     Transfer.find_or_create_by(
       giver: federal_government,
       taker: qrx_group,
       effective_date: Date.new(2022, 6, 30),
       transfer_type: 'grant',
-      amount: 2_415_400
+      amount: 2_415_400,
+      evidence: 'https://www.9news.com.au/national/no-conflict-for-lib-staffer-with-grants/1b655e26-39ac-42e8-ad2c-95380e945a29#:~:text=A%20separate%20committee%20decided%20on,%245%20million%20pharmacy%20distribution%20facility.'
     )
 
   end

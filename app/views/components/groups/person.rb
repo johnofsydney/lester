@@ -18,18 +18,19 @@ class Groups::Person < ApplicationView
         link_text: person.name
       )
 
+      if (person.memberships - Membership.where(person:, group: exclude_group)).present?
+        div(class: 'card-body text-primary') do
+          person.memberships.each do |membership|
+            next if exclude_group && membership.group == exclude_group
+            group = membership.group
 
-      div(class: 'card-body text-primary') do
-        person.memberships.each do |membership|
-          next if exclude_group && membership.group == exclude_group
-          group = membership.group
-
-          link_for(
-            entity: group,
-            class: 'btn btn-sm btn-outline-primary',
-            style: button_styles(group),
-            link_text: group.name
-          )
+            link_for(
+              entity: group,
+              class: 'btn btn-sm btn-outline-primary btn-smaller',
+              style: button_styles(group, 1),
+              link_text: group.name
+            )
+          end
         end
       end
     end

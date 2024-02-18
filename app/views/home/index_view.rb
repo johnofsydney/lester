@@ -7,7 +7,7 @@ class Home::IndexView < ApplicationView
       div(class: 'jumbotron', style: 'background-color: #243447; color: white;') do
         h1(class: 'display-4') { 'LESTER' }
         h3(class: 'display-6') { "you start to follow the money, and you don't know where the fuck it's gonna take you" }
-        p(class: 'lead') { 'In the realm of politics, money talks. And often, it whispers secrets into the ears of those in power. At [website name], we shine a light on these shadowy interactions, exposing the potential for corruption that lurks beneath the surface of our political system.' }
+        p(class: 'lead') { 'In the realm of politics, money talks. And often, it whispers secrets into the ears of those in power. Lester aims to highlight connections between individuals, organisations and money' }
       end
 
       div(class: 'row') do
@@ -52,9 +52,12 @@ class Home::IndexView < ApplicationView
                 li { 'What is a Transaction?' }
                 li { 'D3 JS' }
                 li { 'Shortest Path between any two nodes (include_looser_nodes)' }
-                li { 'Use affiliations, allow smaller grouping for state branches etc' }
-                li { 'Use date range for memberships' }
-                li { 'Source Tree access for this repo' }
+                li { s{'Use affiliations, allow smaller grouping for state branches etc'} }
+                li { s{'Use date range for memberships'} }
+                li { 'Javascript' }
+                li { 'jQuery' }
+                li { 'Import Maps' }
+                li { 'Import Phlex JS' }
               end
             end
           end
@@ -69,19 +72,16 @@ class Home::IndexView < ApplicationView
                 li { 'Better Use of Phlex, components' }
                 li { 'Documentation / Content' }
                 li { 'Theme / Color Scheme' }
-                li { 'Import Other Years' }
-                li { 'Refine Group name Mapping' }
+                li { s{'Import Other Years'} }
+                li { s{'Refine Group name Mapping'} }
                 li { 'Deployment' }
                 li { 'Tests' }
                 li { 'Get ASX data programatically' }
-                li { 'Source Tree access for home' }
-                li { 'Javascript' }
-                li { 'jQuery' }
-                li { 'Import Maps' }
-                li { 'Import Phlex JS' }
-                li { 'Source Tree access for this repo' }
-                li { 'Several Memberships one person in one group (different titles) maybe new model' }
+                li { s{'Source Tree access for home'} }
+                li { 'Several Memberships one person in one group' }
+                li { 'Several Roles for a membership (different titles) new model, remove title from membership itself' }
                 li { 'Pagination' }
+                li { 'Affiliations need start and end times as well' }
               end
             end
           end

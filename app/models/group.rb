@@ -4,6 +4,11 @@ class Group < ApplicationRecord
             coalition: OpenStruct.new(
               federal: 'The Coalition (Federal)',
               nsw: 'The Coalition (NSW)',
+              sa: 'The Coalition (SA)',
+              vic: 'The Coalition (VIC)',
+              tas: 'The Coalition (TAS)',
+              wa: 'The Coalition (WA)',
+              act: 'The Coalition (ACT)',
             ),
             liberals: OpenStruct.new(
               federal: 'Liberals (Federal)',

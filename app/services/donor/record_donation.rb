@@ -15,9 +15,9 @@ class Donor::RecordDonation
     if person_or_group == 'person'
       Person.find_or_create_by(name: first_name_last_name.titleize)
     elsif person_or_group == 'group'
-      Group.find_or_create_by(name: mapped_group_name.titleize)
+      Group.find_or_create_by(name: MapGroupNames.new(name).call)
     elsif person_or_group == 'couple'
-      Group.find_or_create_by(name: mapped_group_name.titleize)
+      Group.find_or_create_by(name: MapGroupNames.new(name).call)
       # TODO: create memberships for each person in the couple
     end
   end
@@ -42,12 +42,6 @@ class Donor::RecordDonation
   def first_name_last_name
     name.split(',').reverse.join(' ')
   end
-
-  def mapped_group_name
-    Group::NAME_MAPPING[name] || name
-  end
-
-
 end
 
 

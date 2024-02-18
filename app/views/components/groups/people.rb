@@ -7,9 +7,10 @@ class Groups::People < ApplicationView
   attr_reader :people, :group
 
 	def template
+    # TODO: look at card-coluns class
+    # https://getbootstrap.com/docs/4.0/components/card/#card-columns
     div(class: 'row') do
       h2 { 'People' }
-
       people.each do |person|
         render Groups::Person.new(person:, exclude_group: group)
       end

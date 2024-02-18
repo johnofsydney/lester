@@ -20,7 +20,7 @@ class ImportsController < ApplicationController
 
       transfer = Transfer.find_or_create_by(
         giver: Donor::RecordDonation.call(row["Donor Name"]),
-        taker: Party::RecordDonation.call(row["Donation Made To"]),
+        taker: RecordTransferTaker.call(row["Donation Made To"]),
         effective_date: financial_year.last_day, # group all donations for a financial year. There are too many otherwise.
         transfer_type: 'donation',
         evidence: 'https://transparency.aec.gov.au/AnnualDonor',
@@ -30,7 +30,7 @@ class ImportsController < ApplicationController
       transfer.data[:donation_date] = {
         donation_date: {
           giver: Donor::RecordDonation.call(row["Donor Name"]),
-          taker: RecordTransferTake.call(row["Donation Made To"]),
+          taker: RecordTransferTaker.call(row["Donation Made To"]),
           effective_date: financial_year.last_day, # TODO: use the real donation date
           transfer_type: 'donation',
           evidence: 'https://transparency.aec.gov.au/AnnualDonor',

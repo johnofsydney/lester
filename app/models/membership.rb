@@ -10,10 +10,12 @@ class Membership < ApplicationRecord
 
   def start_date
     super || Date.new(1900, 1, 1)
+    # TODO: handle nil value better
   end
 
   def end_date
     super || Date.new(2100, 1, 1)
+    # TODO: handle nil value better
   end
 
   def overlapping

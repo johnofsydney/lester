@@ -62,3 +62,11 @@ button {
 .jumbotron {
   padding: 20px;
 }
+
+.person .card-body {
+  padding: 0;
+}
+
+.btn-smaller {
+  font-size: 0.675rem;
+}

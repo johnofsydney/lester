@@ -17,8 +17,8 @@ class ApplicationView < ApplicationComponent
   def button_styles(instance, depth = 0)
 
     background_color = depth.zero? ? background_color(instance) : color(instance)
-
     color = depth.zero? ? color(instance) : background_color(instance)
+
     {
       'background_color' => background_color(instance),
       'color' => color(instance),

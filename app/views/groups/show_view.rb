@@ -21,10 +21,12 @@ class Groups::ShowView < ApplicationView
     end
 
     if group.affiliated_groups.present?
+      hr
       render Groups::AffiliatedGroups.new(groups: group.affiliated_groups)
     end
 
     if group.people.present?
+      hr
       render Groups::People.new(people: group.people, group: group)
     end
 
