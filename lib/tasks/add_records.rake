@@ -20,6 +20,8 @@ namespace :lester do
     arthur_sinodinos = Person.find_or_create_by(name: 'Arthur Sinodinos')
     bill_heffernan = Person.find_or_create_by(name: 'Bill Heffernan')
     barnaby_joyce = Person.find_or_create_by(name: 'Barnaby Joyce')
+    malcolm_turnbull = Person.find_or_create_by(name: 'Malcolm Turnbull')
+    tony_abbott = Person.find_or_create_by(name: 'Tony Abbot')
 
     # labor members
     anthony_albanese = Person.find_or_create_by(name: 'Anthony Albanese')
@@ -30,6 +32,7 @@ namespace :lester do
     ian_macdonald = Person.find_or_create_by(name: 'Ian Macdonald')
     joe_tripodi = Person.find_or_create_by(name: 'Joe Tripodi')
     adele_tahan = Person.find_or_create_by(name: 'Adele Tahan')
+    penny_wong = Person.find_or_create_by(name: 'Penny Wong')
 
     # minor party members
     bob_brown = Person.find_or_create_by(name: 'Bob Brown')
@@ -51,6 +54,25 @@ namespace :lester do
     simon_holmes_acourt = Person.find_or_create_by(name: 'Simon Holmes a Court')
     sally_zou = Person.find_or_create_by(name: 'Sally Zou')
     gina_rinehart = Person.find_or_create_by(name: 'Gina Rinehart')
+
+    # Great Barrier Reef Foundation
+    anna_marsden = Person.find_or_create_by(name: 'Anna Marsden')
+    theresa_fyffe = Person.find_or_create_by(name: 'Theresa Fyffe')
+    margot_andersen = Person.find_or_create_by(name: 'Margot Andersen')
+    cherrie_wilson = Person.find_or_create_by(name: 'Cherrie Wilson')
+    david_thodey = Person.find_or_create_by(name: 'David Thodey')
+    martin_parkinson = Person.find_or_create_by(name: 'Martin Parkinson')
+    stephen_fitzgerald = Person.find_or_create_by(name: 'Stephen Fitzgerald')
+    paul_greenfield = Person.find_or_create_by(name: 'Paul Greenfield')
+    cindy_hook = Person.find_or_create_by(name: 'Cindy Hook')
+    grant_king = Person.find_or_create_by(name: 'Grant King')
+    russell_reichelt = Person.find_or_create_by(name: 'Russell Reichelt')
+    steven_sargent = Person.find_or_create_by(name: 'Steven Sargent')
+    phillip_strachan = Person.find_or_create_by(name: 'Phillip Strachan')
+    olivia_wirth = Person.find_or_create_by(name: 'Olivia Wirth')
+    hayley_baillie = Person.find_or_create_by(name: 'Hayley Baillie')
+    larry_marshall = Person.find_or_create_by(name: 'Larry Marshall')
+    katherine_woodthorpe = Person.find_or_create_by(name: 'Katherine Woodthorpe')
 
     # family members
     eddie_obied_junior = Person.find_or_create_by(name: 'Eddie Obied Junior')
@@ -155,6 +177,12 @@ namespace :lester do
     wheelton_investments = Group.find_or_create_by(name: 'Wheelton Investments Pty Ltd')
     guide_dogs_victoria = Group.find_or_create_by(name: 'Guide Dogs Victoria')
     hancock_prospecting = Group.find_or_create_by(name: 'Hancock Prospecting Pty Ltd')
+    great_barrier_reef_foundation = Group.find_or_create_by(name: 'Great Barrier Reef Foundation')
+
+    tyro_payments = Group.find_or_create_by(name: 'Tyro Payments')
+    xero = Group.find_or_create_by(name: 'Xero')
+    ramsay_health_care = Group.find_or_create_by(name: 'Ramsay Health Care')
+
 
 
     # lobby groups, associations of grifters
@@ -167,9 +195,13 @@ namespace :lester do
     obeid_family = Group.find_or_create_by(name: 'Obeid Family')
     heffernan_family = Group.find_or_create_by(name: 'Heffernan Family')
 
-    # governments
+    # governments and departments
     federal_government = Group.find_or_create_by(name: 'Australian Federal Government')
     nsw_government = Group.find_or_create_by(name: 'NSW State Government')
+    federal_dept_climate_change = Group.find_or_create_by(name: 'Department of Climate Change')
+    federal_dept_climate_change_and_energy_efficiency = Group.find_or_create_by(name: 'Department of Climate Change and Energy Efficiency')
+    federal_dept_treasury = Group.find_or_create_by(name: 'Department of The Treasury')
+    federal_dept_prime_minister_and_cabinet = Group.find_or_create_by(name: 'Department of The Prime Minister and Cabinet')
 
     # attendees of maiden speeches
     barnarbys_maiden_speech = Group.find_or_create_by(name: 'Barnarby Joyce Maiden Speech Attendees')
@@ -177,14 +209,21 @@ namespace :lester do
 
     p "creating memberships"
     # political parties
-    Membership.find_or_create_by(group: liberal_federal, person: josh_frydenburg)
-    Membership.find_or_create_by(group: liberal_federal, person: peter_dutton)
-    Membership.find_or_create_by(group: liberal_federal, person: scott_morrison)
-    Membership.find_or_create_by(group: liberal_qld, person: trent_twomey Member)
-    Membership.find_or_create_by(group: liberal_federal, person: warren_entsch)
-    Membership.find_or_create_by(group: liberal_federal, person: arthur_sinodinos)
-    Membership.find_or_create_by(group: liberal_federal, person: bill_heffernan)
-    Membership.find_or_create_by(group: nationals_federal, person: barnaby_joyce)
+    sm_libs = Membership.find_or_create_by(group: liberal_federal, person: scott_morrison)
+    mt_libs = Membership.find_or_create_by(group: liberal_federal, person: malcolm_turnbull)
+    ta_libs = Membership.find_or_create_by(group: liberal_federal, person: tony_abbott)
+    jf_libs = Membership.find_or_create_by(group: liberal_federal, person: josh_frydenburg)
+    pd_libs = Membership.find_or_create_by(group: liberal_federal, person: peter_dutton)
+
+    tt_libs = Membership.find_or_create_by(group: liberal_qld, person: trent_twomey)
+    we_libs = Membership.find_or_create_by(group: liberal_federal, person: warren_entsch)
+    as_libs = Membership.find_or_create_by(group: liberal_federal, person: arthur_sinodinos)
+    gh_libs = Membership.find_or_create_by(group: liberal_federal, person: bill_heffernan)
+    bj_nats = Membership.find_or_create_by(group: nationals_federal, person: barnaby_joyce)
+
+    Position.find_or_create_by(membership: sm_libs, title: 'Leader & Prime Minister', start_date: Date.new(2018, 8, 24), end_date: Date.new(2022, 6, 30))
+    Position.find_or_create_by(membership: sm_libs, title: 'Backbencher', start_date: Date.new(2018, 8, 24), end_date: Date.new(2022, 6, 30))
+    Position.find_or_create_by(membership: pd_libs, title: 'Leader', start_date: Date.new(2022, 6, 30))
 
 
     Membership.find_or_create_by(group: labor_federal, person: anthony_albanese, start_date: Date.new(2019, 5, 30))
@@ -194,6 +233,7 @@ namespace :lester do
     Membership.find_or_create_by(group: labor_nsw, person: ian_macdonald, start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7))
     Membership.find_or_create_by(group: labor_nsw, person: eddie_obied, start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6))
     Membership.find_or_create_by(group: labor_nsw, person: adele_tahan)
+    Membership.find_or_create_by(group: labor_federal, person: penny_wong, start_date: Date.new(1988, 7, 3))
 
     Membership.find_or_create_by(group: greens_tas, person: bob_brown)
 
@@ -219,47 +259,92 @@ namespace :lester do
 
 
     # families
-    Membership.find_or_create_by(group: twomey_family, person: georgina_twomey, title: 'Wife')
-    Membership.find_or_create_by(group: twomey_family, person: trent_twomey, title: 'Husband')
-    Membership.find_or_create_by(group: heffernan_family, person: bill_heffernan, title: 'Father')
-    Membership.find_or_create_by(group: heffernan_family, person: david_heffernan, title: 'Son / Brother')
-    Membership.find_or_create_by(group: obeid_family, person: eddie_obied, title: 'Father')
-    Membership.find_or_create_by(group: obeid_family, person: eddie_obied_junior, title: 'Son / Brother')
-    Membership.find_or_create_by(group: obeid_family, person: moses_obeid, title: 'Son / Brother')
-    Membership.find_or_create_by(group: obeid_family, person: paul_obeid, title: 'Son / Brother')
-    Membership.find_or_create_by(group: obeid_family, person: gerard_obeid, title: 'Son / Brother')
-    Membership.find_or_create_by(group: entsch_family, person: warren_entsch, title: 'Dad')
-    Membership.find_or_create_by(group: entsch_family, person: jacob_entsch, title: 'Son')
-    Membership.find_or_create_by(group: frydenburg_family, person: josh_frydenburg, title: 'Husband')
-    Membership.find_or_create_by(group: frydenburg_family, person: amie_frydenburg, title: 'Wife')
-    Membership.find_or_create_by(group: lander_and_rogers, person: amie_frydenburg, title: 'Partner')
+    Membership.find_or_create_by(group: twomey_family, person: georgina_twomey) #, title: 'Wife')
+    Membership.find_or_create_by(group: twomey_family, person: trent_twomey) #, title: 'Husband')
+    Membership.find_or_create_by(group: heffernan_family, person: bill_heffernan) #, title: 'Father')
+    Membership.find_or_create_by(group: heffernan_family, person: david_heffernan) #, title: 'Son / Brother')
+    Membership.find_or_create_by(group: obeid_family, person: eddie_obied) #, title: 'Father')
+    Membership.find_or_create_by(group: obeid_family, person: eddie_obied_junior) #, title: 'Son / Brother')
+    Membership.find_or_create_by(group: obeid_family, person: moses_obeid) #, title: 'Son / Brother')
+    Membership.find_or_create_by(group: obeid_family, person: paul_obeid) #, title: 'Son / Brother')
+    Membership.find_or_create_by(group: obeid_family, person: gerard_obeid) #, title: 'Son / Brother')
+    Membership.find_or_create_by(group: entsch_family, person: warren_entsch) #, title: 'Dad')
+    Membership.find_or_create_by(group: entsch_family, person: jacob_entsch) #, title: 'Son')
+    Membership.find_or_create_by(group: frydenburg_family, person: josh_frydenburg) #, title: 'Husband')
+    Membership.find_or_create_by(group: frydenburg_family, person: amie_frydenburg) #, title: 'Wife')
+    Membership.find_or_create_by(group: lander_and_rogers, person: amie_frydenburg) #, title: 'Partner')
 
     # businesses
-    Membership.find_or_create_by(group: guide_dogs_victoria, person: sandro_cirianni, title: 'General Manager')
-    Membership.find_or_create_by(group: guide_dogs_victoria, person: karen_hayes, title: 'Chief Executive Officer')
-    Membership.find_or_create_by(group: guide_dogs_victoria, person: iain_edwards, title: 'Board Chair')
-    Membership.find_or_create_by(group: guide_dogs_victoria, person: paul_wheelton, title: 'Capital Campaign Chair')
-    Membership.find_or_create_by(group: wheelton_investments, person: paul_wheelton, title: 'Owner')
-    Membership.find_or_create_by(group: climate200, person: simon_holmes_acourt, title: 'Owner')
-    Membership.find_or_create_by(group: atlassian, person: mike_cannon_brookes, title: 'Owner')
-    Membership.find_or_create_by(group: atlassian, person: scott_farquar, title: 'Owner')
-    Membership.find_or_create_by(group: the_pharmacy_guild, person: trent_twomey, title: 'National President')
-    Membership.find_or_create_by(group: the_pharmacy_guild, person: david_heffernan, title: 'National Councilor (NSW)')
-    Membership.find_or_create_by(group: the_pharmacy_guild, person: adele_tahan, title: 'National Councilor (NSW)')
-    Membership.find_or_create_by(group: the_pharmacy_guild, person: judith_plunkett, title: 'National Councilor (NSW)')
-    Membership.find_or_create_by(group: qrx_group, person: georgina_twomey, title: 'Part Owner')
-    Membership.find_or_create_by(group: qrx_group, person: leo_maltam, title: 'Director')
+    gdv_sc = Membership.find_or_create_by(group: guide_dogs_victoria, person: sandro_cirianni) #, title: 'General Manager')
+    gdv_kh = Membership.find_or_create_by(group: guide_dogs_victoria, person: karen_hayes) #, title: 'Chief Executive Officer')
+    gdv_ie = Membership.find_or_create_by(group: guide_dogs_victoria, person: iain_edwards) #, title: 'Board Chair')
+    gdv_pw = Membership.find_or_create_by(group: guide_dogs_victoria, person: paul_wheelton) #, title: 'Capital Campaign Chair')
+    wi_pw = Membership.find_or_create_by(group: wheelton_investments, person: paul_wheelton) #, title: 'Owner')
+
+    Membership.find_or_create_by(group: climate200, person: simon_holmes_acourt) #, title: 'Owner')
+    Membership.find_or_create_by(group: atlassian, person: mike_cannon_brookes) #, title: 'Owner')
+    Membership.find_or_create_by(group: atlassian, person: scott_farquar) #, title: 'Owner')
+    Membership.find_or_create_by(group: the_pharmacy_guild, person: trent_twomey) #, title: 'National President')
+    Membership.find_or_create_by(group: the_pharmacy_guild, person: david_heffernan) #, title: 'National Councilor (NSW)')
+    Membership.find_or_create_by(group: the_pharmacy_guild, person: adele_tahan) #, title: 'National Councilor (NSW)')
+    Membership.find_or_create_by(group: the_pharmacy_guild, person: judith_plunkett) #, title: 'National Councilor (NSW)')
+    Membership.find_or_create_by(group: qrx_group, person: georgina_twomey) #, title: 'Part Owner')
+    Membership.find_or_create_by(group: qrx_group, person: leo_maltam) #, title: 'Director')
     Membership.find_or_create_by(group: qrx_group, person: jacob_entsch)
     Membership.find_or_create_by(group: australian_romance, person: sally_zou)
     Membership.find_or_create_by(group: aus_gold_mining, person: sally_zou)
-    Membership.find_or_create_by(group: oryxium, person: david_lowy, title: 'Owner')
-    Membership.find_or_create_by(group: oryxium, person: peter_lowy, title: 'Owner')
-    Membership.find_or_create_by(group: oryxium, person: steven_lowy, title: 'Owner')
-    Membership.find_or_create_by(group: australian_water_holdings, person: arthur_sinodinos, title: 'Chairman', start_date: Date.new(2008, 1, 1), end_date: Date.new(2011, 5, 6))
-    Membership.find_or_create_by(group: australian_water_holdings, person: eddie_obied_junior, title: 'Salaryman', start_date: Date.new(2008, 1, 1), end_date: Date.new(2011, 5, 6))
-    Membership.find_or_create_by(group: australian_water_holdings, person: nick_di_giralomo, title: 'Chief Executive Officer')
-    Membership.find_or_create_by(group: colin_biggers_and_paisley, person: nick_di_giralomo, title: 'Partner')
-    Membership.find_or_create_by(group: hancock_prospecting, person: gina_rinehart, title: 'Executive Chairwoman')
+    Membership.find_or_create_by(group: oryxium, person: david_lowy) #, title: 'Owner')
+    Membership.find_or_create_by(group: oryxium, person: peter_lowy) #, title: 'Owner')
+    Membership.find_or_create_by(group: oryxium, person: steven_lowy) #, title: 'Owner')
+    Membership.find_or_create_by(group: australian_water_holdings, person: arthur_sinodinos) #, title: 'Chairman', start_date: Date.new(2008, 1, 1), end_date: Date.new(2011, 5, 6))
+    Membership.find_or_create_by(group: australian_water_holdings, person: eddie_obied_junior) #, title: 'Salaryman', start_date: Date.new(2008, 1, 1), end_date: Date.new(2011, 5, 6))
+    Membership.find_or_create_by(group: australian_water_holdings, person: nick_di_giralomo) #, title: 'Chief Executive Officer')
+    Membership.find_or_create_by(group: colin_biggers_and_paisley, person: nick_di_giralomo) #, title: 'Partner')
+    Membership.find_or_create_by(group: hancock_prospecting, person: gina_rinehart) #, title: 'Executive Chairwoman')
+
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: anna_marsden, positions: [Position.create(title: 'Managing Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: david_thodey, positions: [Position.create(title: 'Co-Chair')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: martin_parkinson, positions: [Position.create(title: 'Co_Chair')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: stephen_fitzgerald, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: paul_greenfield, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: cindy_hook, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: grant_king, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: russell_reichelt, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: steven_sargent, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: phillip_strachan, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: olivia_wirth, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: hayley_baillie, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: larry_marshall, positions: [Position.create(title: 'Director')])
+    Membership.find_or_create_by(group: great_barrier_reef_foundation, person: katherine_woodthorpe, positions: [Position.create(title: 'Director')])
+
+    # Thodey
+    # https://en.wikipedia.org/wiki/David_Thodey
+    Membership.find_or_create_by(group: tyro_payments, person: david_thodey, positions: [Position.create(title: 'ChairPerson')])
+    Membership.find_or_create_by(group: xero, person: david_thodey, positions: [Position.create(title: 'ChairPerson')])
+    Membership.find_or_create_by(group: ramsay_health_care, person: david_thodey, positions: [Position.create(title: 'Board Member')])
+    # Parkinson
+    # https://en.wikipedia.org/wiki/Martin_Parkinson
+    Membership.find_or_create_by(group: federal_dept_climate_change, person: martin_parkinson, start_date: Date.new(2007, 12, 3), end_date: Date.new(2010, 3, 8), positions: [Position.create(title: 'Secretary')])
+    Membership.find_or_create_by(group: federal_dept_climate_change_and_energy_efficiency, person: martin_parkinson, start_date: Date.new(2010, 3, 8), end_date: Date.new(2011, 3, 7), positions: [Position.create(title: 'Secretary')])
+    Membership.find_or_create_by(group: federal_dept_treasury, person: martin_parkinson, start_date: Date.new(2011, 3, 7), end_date: Date.new(2014, 12, 12), positions: [Position.create(title: 'Secretary')])
+    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: martin_parkinson, start_date: Date.new(2016, 1, 23), end_date: Date.new(2019, 8, 30), positions: [Position.create(title: 'Secretary')])
+
+    # Prime Ministers
+    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: tony_abbott, start_date: Date.new(2015, 9, 18), end_date: Date.new(2015, 9, 15), positions: [Position.create(title: 'Prime Minister')])
+    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: malcolm_turnbull, start_date: Date.new(2015, 9, 15), end_date: Date.new(2018, 8, 23), positions: [Position.create(title: 'Prime Minister')])
+    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: scott_morrison, start_date: Date.new(2018, 8, 24), end_date: Date.new(2022, 5, 23), positions: [Position.create(title: 'Prime Minister')])
+    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: anthony_albanese, start_date: Date.new(2022, 5, 23), positions: [Position.create(title: 'Prime Minister')])
+
+    # Ministers
+    Membership.find_or_create_by(group: federal_dept_climate_change, person: penny_wong, start_date: Date.new(2007, 12, 3), end_date: Date.new(2010, 3, 8), positions: [Position.create(title: 'Minister')])
+    Membership.find_or_create_by(group: federal_dept_climate_change_and_energy_efficiency, person: penny_wong, start_date: Date.new(2010, 3, 8), end_date: Date.new(2010, 9, 14), positions: [Position.create(title: 'Minister')])
+
+    # GDV related
+    Position.find_or_create_by(membership: gdv_sc, title: 'General Manager', start_date: Date.new(2018, 4, 1), end_date: Date.new(2022, 6, 30))
+    Position.find_or_create_by(membership: gdv_kh, title: 'Chief Executive Officer', start_date: Date.new(2018, 4, 1), end_date: Date.new(2022, 6, 30))
+    Position.find_or_create_by(membership: gdv_ie, title: 'Board Chair', start_date: Date.new(2018, 4, 1), end_date: Date.new(2022, 6, 30))
+    Position.find_or_create_by(membership: gdv_pw, title: 'Capital Campaign Chair')
+    Position.find_or_create_by(membership: wi_pw, title: 'Owner')
 
 
     p "creating affiliations"
@@ -321,5 +406,13 @@ namespace :lester do
       evidence: 'https://www.9news.com.au/national/no-conflict-for-lib-staffer-with-grants/1b655e26-39ac-42e8-ad2c-95380e945a29#:~:text=A%20separate%20committee%20decided%20on,%245%20million%20pharmacy%20distribution%20facility.'
     )
 
+    Transfer.find_or_create_by(
+      giver: federal_government,
+      taker: great_barrier_reef_foundation,
+      effective_date: Date.new(2018, 4, 1),
+      transfer_type: 'grant',
+      amount: 443_000_000,
+      evidence: 'https://www.ft.com/content/cdd47fb8-9ece-11e8-85da-eeb7a9ce36e4'
+    )
   end
 end

@@ -38,7 +38,7 @@ class Groups::ShowView < ApplicationView
     render TransfersTableComponent.new(
       entity: group,
       transfers: group.consolidated_transfers(depth:),
-      heading: "Transfers connected to #{group.name} to a depth of #{depth} degrees of separation",
+      heading: "Connected to #{group.name} to a depth of #{depth} degrees of separation",
       summarise_for: summarise_for
     )
 	end

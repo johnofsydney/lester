@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_11_101804) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_18_090345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -37,7 +37,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_101804) do
     t.bigint "group_id", null: false
     t.date "start_date"
     t.date "end_date"
-    t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_memberships_on_group_id"
@@ -48,6 +47,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_101804) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.bigint "membership_id", null: false
+    t.date "start_date"
+    t.date "end_date"
+    t.string "title"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["membership_id"], name: "index_positions_on_membership_id"
   end
 
   create_table "transfers", force: :cascade do |t|
@@ -69,5 +78,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_11_101804) do
   add_foreign_key "affiliations", "groups", column: "sub_group_id"
   add_foreign_key "memberships", "groups"
   add_foreign_key "memberships", "people"
+  add_foreign_key "positions", "memberships"
   add_foreign_key "transfers", "groups", column: "taker_id"
 end

@@ -1,6 +1,7 @@
 class Membership < ApplicationRecord
   belongs_to :person
   belongs_to :group
+  has_many :positions
 
   validates :person_id, uniqueness: { scope: :group_id, message: "should have one membership per group" }
 

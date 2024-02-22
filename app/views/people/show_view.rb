@@ -17,8 +17,9 @@ class People::ShowView < ApplicationView
       ) { person.name }
     end
 
-    div(class: 'direct-descendents') do
-      render PrimaryNodesMenuComponent.new(entity: person)
+    if person.groups.present?
+      hr
+      render People::Groups.new(groups: person.groups, person: person)
     end
 
     depth = 6

@@ -46,6 +46,7 @@ class TransfersTableComponent < ApplicationView
   end
 
   def make_table(transfers)
+    h2 { 'Transfers' }
     h3 { "#{heading} (#{transfers.count} records)" }
     table(class: 'table') do
       tr do

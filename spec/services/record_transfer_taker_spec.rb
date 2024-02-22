@@ -226,6 +226,7 @@ RSpec.describe RecordTransferTaker, type: :service do
       'GetUp Ltd' => 'Get Up',
       'Idameneo (No. 123) Pty Ptd' => 'Idameneo',
       'Idameneo (No.789) Limited' => 'Idameneo',
+      'Alpha Diversification Pty Ltd' => 'Alpha Diversification Pty Ltd',
     }
   end
 

@@ -83,7 +83,7 @@ class MapGroupNames
     return group_names.labor.tas if name.match(/(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour)).+(TAS|Tasmania)/i)
     return group_names.labor.act if name.match(/(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour)).+(ACT|Australian Capital Territory)/i)
     return group_names.labor.nt if name.match(/(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour)).+(NT|N\.T\.|Northern Territory)/i)
-    return group_names.labor.federal if name.match(/(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour))/i)
+    return group_names.labor.federal if name.match(/^(?!.*Alpha).*(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour))/i)
 
     # Can't find it, return the name
     name.titleize

@@ -6,7 +6,6 @@ class CreateMemberships < ActiveRecord::Migration[7.0]
 
       t.date :start_date # TODO: time range for membership
       t.date :end_date
-      t.string :title
 
 
       t.timestamps

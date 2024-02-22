@@ -13,6 +13,7 @@ class ImportsController < ApplicationController
 
   def annual_donor_upload
     file = params['project']['filename'].tempfile
+
     csv = CSV.read(file, headers: true)
     csv.each do |row|
       donation_date = Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30) # saves bothering about the date format
@@ -39,6 +40,8 @@ class ImportsController < ApplicationController
       }
 
       transfer.amount += row['Amount'].to_i
+
+      Rails.logger.info "#{params['project']['filename']} || Transfer: #{transfer.inspect}"
       transfer.save
     end
 
