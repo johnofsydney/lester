@@ -1,4 +1,6 @@
 class Group < ApplicationRecord
+  include PgSearch::Model
+  multisearchable against: [:name]
 
   NAMES = OpenStruct.new(
             coalition: OpenStruct.new(

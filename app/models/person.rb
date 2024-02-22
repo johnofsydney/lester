@@ -1,4 +1,7 @@
 class Person < ApplicationRecord
+  include PgSearch::Model
+  multisearchable against: [:name]
+
   include TransferMethods
 
   has_many :memberships, dependent: :destroy

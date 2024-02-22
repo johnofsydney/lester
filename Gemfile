@@ -73,3 +73,5 @@ end
 
 gem "dockerfile-rails", ">= 1.2", :group => :development
 gem "phlex-rails"
+
+gem 'pg_search'

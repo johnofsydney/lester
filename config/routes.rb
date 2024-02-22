@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'search' => 'search#index'
+
   get '/imports/annual_donor' => 'imports#annual_donor'
   post '/imports/annual_donor_upload' => 'imports#annual_donor_upload'
 
