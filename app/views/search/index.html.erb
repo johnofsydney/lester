@@ -1,5 +1,6 @@
-<h1>Search#index</h1>
-<p>Find me in app/views/search/index.html.erb</p>
+<h1><%= link_to 'Lester', '/home/index/' %> </h1>
+<p>Search for People, parties or Groups</p>
+<p><i>Whole words at this stage, eg "Anthony" or "Albanese"</i></p>
 
 
 <%= form_with url: {controller: "search", action: "index"}, method: :get do %>
@@ -8,8 +9,8 @@
   <%= submit_tag 'Search' %>
 <% end %>
 
-<% if @results.present? %>
-  <%= @results.map{|r| r.content } %>
 
-  <%= render(SearchResultsComponent.new(results: @results)) %>
+
+<% if @results.present? %>
+  <%= render(SearchResults.new(results: @results)) %>
 <% end %>

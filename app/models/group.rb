@@ -1,6 +1,8 @@
 class Group < ApplicationRecord
+  include TransferMethods
   include PgSearch::Model
   multisearchable against: [:name]
+
 
   NAMES = OpenStruct.new(
             coalition: OpenStruct.new(
@@ -59,7 +61,7 @@ class Group < ApplicationRecord
           )
 
 
-  include TransferMethods
+
 
   has_many :memberships, dependent: :destroy
   has_many :people, through: :memberships
@@ -76,15 +78,21 @@ class Group < ApplicationRecord
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
   def nodes(include_looser_nodes: false)
+
+  # return Group.none
     # return people.includes([memberships: [:group, :person]]) # excludes affiliated groups
 
-    return [people + affiliated_groups].compact.flatten.uniq unless include_looser_nodes # TODO work on includes / bullet
+    unless include_looser_nodes # TODO work on includes / bullet
+      return [
+        people.includes(:groups, memberships: [:person, :group]) + affiliated_groups
+      ].compact.flatten.uniq
+    end
 
     [people + affiliated_groups + other_edge_ends].compact.flatten.uniq
   end
 
   def affiliated_groups
-    owning_groups + sub_groups
+    owning_groups.includes([:sub_groups]) + sub_groups.includes([:owning_groups])
   end
 
 

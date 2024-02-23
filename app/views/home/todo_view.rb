@@ -5,6 +5,7 @@ class Home::TodoView < ApplicationView
   def template
     div(class: 'container') do
       div(class: 'row', id: 'todo') do
+        h2 { a(href: '/home/index') { 'Home' } }
         h2 { 'TODO:' }
         div(class: 'col-sm') do
           div(class: 'card') do
@@ -18,7 +19,19 @@ class Home::TodoView < ApplicationView
                 li { s{'Use affiliations, allow smaller grouping for state branches etc'} }
                 li { s{'Use date range for memberships'} }
                 li { s{ 'Several Roles for a membership (different titles) new model, remove title from membership itself' } }
+                li { s{ 'Search' } }
 
+              end
+            end
+          end
+        end
+        div(class: 'col-sm') do
+          div(class: 'card') do
+            div(class: 'card-body') do
+              h5(class: 'card-title') { 'Doing' }
+              ul do
+                li { 'Add Devise' }
+                li { 'Add User Roles' }
               end
             end
           end
@@ -33,7 +46,10 @@ class Home::TodoView < ApplicationView
                 li { 'Better Use of Phlex, components' }
                 li { 'Documentation / Content' }
                 li { 'Theme / Color Scheme' }
-                li { 'Search' }
+                li { 'Faster Search ' }
+                  ul do
+                    li { 'https://mnishiguchi-2019.netlify.app/2019/01/29/rails-postgresql-trigram-search/' }
+                  end
                 li { 'What is a Transaction?' }
                 li { 'D3 JS' }
                 li { 'Shortest Path between any two nodes (include_looser_nodes)' }
@@ -55,8 +71,9 @@ class Home::TodoView < ApplicationView
                 li { 'Import People / Groups / Positions from CSV' }
                 li { 'Add Active Admin to edit all fields' }
                 li { 'Add Audit table' }
-                li { 'Add Devise' }
-                li { 'Add User Roles' }
+
+
+                li { 'Add $$ totals on group and person page, by year' }
               end
             end
           end

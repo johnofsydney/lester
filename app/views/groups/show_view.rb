@@ -13,10 +13,12 @@ class Groups::ShowView < ApplicationView
     render MenuComponent.new(entity: group)
 
     div(class: 'heading') do
+      href = "https://www.google.com/search?q=#{group.name}"
       a(
-        href: "/groups/#{group.id}",
+        href:,
         class: 'btn w-100',
-        style: button_styles(group)
+        style: button_styles(group),
+        target: :_blank
       ) { group.name }
     end
 

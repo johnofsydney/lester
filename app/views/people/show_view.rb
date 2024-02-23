@@ -10,8 +10,9 @@ class People::ShowView < ApplicationView
     render MenuComponent.new(entity: person)
 
     div(class: 'heading') do
+      href = "https://www.google.com/search?q=#{person.name}"
       a(
-        href: "/people/#{person.id}",
+        href:,
         class: 'btn w-100',
         style: button_styles(person)
       ) { person.name }

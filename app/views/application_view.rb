@@ -64,8 +64,12 @@ class ApplicationView < ApplicationComponent
   # style: the CSS style to use
   # link_text: the text to display in the link
   # action: the action to append to the link
-  def link_for(entity:, class: '', style: '', link_text: nil, action: nil)
-    klass_name_plural = class_of(entity)
+  def link_for(entity:, class: '', style: '', link_text: nil, action: nil, klass: nil)
+    klass_name_plural = if klass.present?
+                          klass.to_s.pluralize.downcase
+                        else
+                          class_of(entity)
+                        end
     id = entity.id
     link_text ||= entity.respond_to?(:name) ? entity.name : entity.amount
     href = "/#{klass_name_plural}/#{id}"

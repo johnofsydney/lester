@@ -11,6 +11,7 @@ class Home::IndexView < ApplicationView
       end
 
       div(class: 'row') do
+
         div(class: 'col-sm') do
           div(class: 'card h-100') do
             div(class: 'card-body d-flex flex-column justify-content-between') do
@@ -35,6 +36,15 @@ class Home::IndexView < ApplicationView
               h6(class: 'card-title') { 'Tracking the Flow of Money in Politics' }
               p(class: 'card-text') { 'Money is the lifeblood of political campaigns and lobbying efforts. We track the flow of money, uncovering potential sources of corruption and revealing the extent to which special interests influence our political process.' }
               a(href: '/transfers', class: 'btn btn-primary') { 'Transfers' }
+            end
+          end
+        end
+        div(class: 'col-sm') do
+          div(class: 'card h-100') do
+            div(class: 'card-body d-flex flex-column justify-content-between') do
+              h6(class: 'card-title') { 'Search' }
+              p(class: 'card-text') { 'Search for People, Parties or Groups.' }
+              a(href: '/search', class: 'btn btn-primary') { 'Search' }
             end
           end
         end

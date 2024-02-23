@@ -15,7 +15,15 @@ class Person < ApplicationRecord
   # also results are not consistent between them. Which is correct?
 
   def nodes(include_looser_nodes: false)
-    return groups.includes([:people, memberships: [:person, :group]]) unless include_looser_nodes
+    unless include_looser_nodes
+      return groups.includes(
+        [
+          :people,
+          :memberships,
+          memberships: [:person, :group]
+        ]
+      )
+    end
 
 
     # this + will still work for relations not just arrays
