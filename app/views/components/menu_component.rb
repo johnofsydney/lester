@@ -33,9 +33,16 @@ class MenuComponent < ApplicationView
             link_for(entity: entity, class: 'nav-link', link_text: 'Edit', action: 'edit') if entity
             a(class: 'nav-link', href: new_path) { new_text } if new_path
           end
-          li(class: 'nav-item ml-auto') do
-            a(class: 'nav-link', href: '/') { 'Coming Soon... login' }
-          end
+          # unless current_user
+            li(class: 'nav-item') do
+              a(class: 'nav-link', href: '/users/sign_in') { 'Login' }
+            end
+          # else
+            li(class: 'nav-item') do
+              a(class: 'nav-link', href: '/users/sign_out', data: { turbo_method: :delete }) { 'Logout' }
+            end
+          # end
+
         end
       end
     end

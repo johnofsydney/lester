@@ -30,6 +30,7 @@ class Home::TodoView < ApplicationView
             div(class: 'card-body') do
               h5(class: 'card-title') { 'Doing' }
               ul do
+                li { 'Deploy' }
                 li { 'Add Devise' }
                 li { 'Add User Roles' }
               end

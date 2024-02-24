@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'search' => 'search#index'
 
   get '/imports/annual_donor' => 'imports#annual_donor'
