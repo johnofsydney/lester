@@ -1,6 +1,7 @@
 require 'csv'
 
 class ImportsController < ApplicationController
+  before_action :authenticate_user!
   layout -> { ApplicationLayout }
 
   def annual_associated_entity
@@ -8,10 +9,14 @@ class ImportsController < ApplicationController
   end
 
   def annual_donor
+    return unless current_user
+
     render Imports::AnnualDonorView.new
   end
 
   def annual_donor_upload
+    return unless current_user
+
     file = params['project']['filename'].tempfile
 
     csv = CSV.read(file, headers: true)

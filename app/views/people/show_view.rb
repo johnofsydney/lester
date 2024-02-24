@@ -7,8 +7,6 @@ class People::ShowView < ApplicationView
 	end
 
 	def template
-    render MenuComponent.new(entity: person)
-
     div(class: 'heading') do
       href = "https://www.google.com/search?q=#{person.name}"
       a(

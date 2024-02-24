@@ -4,9 +4,7 @@ class Groups::IndexView < ApplicationView
 	end
 
 	def template
-    render MenuComponent.new(new: {path: '/groups/new', text: 'New Group'})
-
-		h1 { 'Groups' }
+    h1 { 'Groups' }
     ul do
       @groups.sort_by { |group| group.nodes.count }.reverse.each do |group|
         li do

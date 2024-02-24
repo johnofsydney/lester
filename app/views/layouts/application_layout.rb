@@ -18,7 +18,9 @@ class ApplicationLayout < ApplicationView
 			end
 
 			body do
+        render MenuComponent.new
 				main(&block)
+
 			end
 		end
 	end

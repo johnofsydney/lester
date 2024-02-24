@@ -17,15 +17,20 @@ class GroupsController < ApplicationController
 
   # GET /groups/new
   def new
+    return unless current_user
+
     @group = Group.new
   end
 
   # GET /groups/1/edit
   def edit
+    return unless current_user
   end
 
   # POST /groups or /groups.json
   def create
+    return unless current_user
+
     @group = Group.new(group_params)
 
     respond_to do |format|
@@ -45,6 +50,8 @@ class GroupsController < ApplicationController
 
   # PATCH/PUT /groups/1 or /groups/1.json
   def update
+    return unless current_user
+
     respond_to do |format|
       if @group.update(group_params)
         new_membership_params = params.dig(:group, :memberships_attributes, :NEW_RECORD)
@@ -62,6 +69,8 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1 or /groups/1.json
   def destroy
+    return unless current_user
+
     @group.destroy
 
     respond_to do |format|

@@ -10,8 +10,6 @@ class Groups::ShowView < ApplicationView
 	end
 
 	def template
-    render MenuComponent.new(entity: group)
-
     div(class: 'heading') do
       href = "https://www.google.com/search?q=#{group.name}"
       a(

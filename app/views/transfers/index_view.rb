@@ -8,8 +8,6 @@ class Transfers::IndexView < ApplicationView
   end
 
   def template
-    render MenuComponent.new
-
     h3 { "Transfers: (#{transfers.count} records)" }
     table(class: 'table') do
       thead do

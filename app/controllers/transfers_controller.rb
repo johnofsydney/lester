@@ -1,5 +1,7 @@
 class TransfersController < ApplicationController
   before_action :set_transfer, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
+
   layout -> { ApplicationLayout }
 
   def index
@@ -12,15 +14,19 @@ class TransfersController < ApplicationController
   end
 
   def new
+    return unless current_user
   end
 
   def edit
+    return unless current_user
   end
 
   def create
+    return unless current_user
   end
 
   def update
+    return unless current_user
     respond_to do |format|
       if @transfer.update(transfer_params)
         format.html { redirect_to transfer_url(@transfer), notice: "Transfer was successfully updated." }
@@ -34,6 +40,7 @@ class TransfersController < ApplicationController
 
   # DELETE /transfers/1 or /transfers/1.json
   def destroy
+    return unless current_user
     @transfer.destroy
 
     respond_to do |format|

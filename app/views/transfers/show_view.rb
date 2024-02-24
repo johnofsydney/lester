@@ -8,8 +8,6 @@ class Transfers::ShowView < ApplicationView
 
   def template
     div(class: 'container') do
-      render MenuComponent.new(entity: transfer)
-
       div(class: 'heading') do
         a(
           href: "/transfers/#{transfer.id}",
