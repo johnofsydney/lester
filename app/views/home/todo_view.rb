@@ -50,6 +50,8 @@ class Home::TodoView < ApplicationView
                 li { 'Faster Search ' }
                   ul do
                     li { 'https://mnishiguchi-2019.netlify.app/2019/01/29/rails-postgresql-trigram-search/' }
+                    li { 'https://github.com/phillipspc/pg_search_demo' }
+                    li { 'https://pganalyze.com/blog/full-text-search-ruby-rails-postgres' }
                   end
                 li { 'What is a Transaction?' }
                 li { 'D3 JS' }
