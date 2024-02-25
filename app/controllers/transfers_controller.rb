@@ -1,6 +1,6 @@
 class TransfersController < ApplicationController
   before_action :set_transfer, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!
+  before_action :authenticate_user!, only: %i[ new edit update destroy ]
 
   layout -> { ApplicationLayout }
 
