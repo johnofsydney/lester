@@ -120,12 +120,7 @@ class Group < ApplicationRecord
     # incoming_transfers.includes(:giver, :taker).map(&:giver)
   end
 
-
-
-
-
-
-
-
-
+  def transfers_in_value
+    incoming_transfers.sum(:amount)
+  end
 end

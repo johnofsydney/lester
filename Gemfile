@@ -76,3 +76,6 @@ gem "phlex-rails"
 
 gem 'pg_search'
 gem 'devise'
+
+gem "sassc-rails"
+gem 'activeadmin'

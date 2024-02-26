@@ -4,7 +4,7 @@ class Transfers::IndexView < ApplicationView
   attr_reader :transfers
 
   def initialize(transfers:)
-    @transfers = transfers
+    @transfers = transfers.includes(:giver, :taker)
   end
 
   def template

@@ -50,3 +50,4 @@ Transfer.create(giver: paul, taker: alp, amount: 1000, effective_date: 20.years.
 
 Affiliation.create(owning_group: greens_federal, sub_group: greens_nsw, start_date: 20.years.ago)
 Affiliation.create(owning_group: greens_federal, sub_group: greens_vic, start_date: 20.years.ago)
+AdminUser.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
