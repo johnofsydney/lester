@@ -27,7 +27,7 @@ class MenuComponent < ApplicationView
             a(class: 'nav-link', href: '/people/') { 'People' }
           end
           li(class: 'nav-item') do
-            a(class: 'nav-link', href: '/imports/annual_donor/') { 'IMPORT DONATIONS' }
+            a(class: 'nav-link', href: '/imports/') { 'IMPORT DONATIONS' }
           end
           li(class: 'nav-item') do
             link_for(entity: entity, class: 'nav-link', link_text: 'Edit', action: 'edit') if entity

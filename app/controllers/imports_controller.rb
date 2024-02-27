@@ -8,10 +8,10 @@ class ImportsController < ApplicationController
     render Imports::AnnualAssociatedEntityView.new
   end
 
-  def annual_donor
+  def index
     return unless current_user
 
-    render Imports::AnnualDonorView.new
+    render Imports::AnnualDonorForm.new
   end
 
   def annual_donor_upload
@@ -48,6 +48,36 @@ class ImportsController < ApplicationController
 
       Rails.logger.info "#{params['project']['filename']} || Transfer: #{transfer.inspect}"
       transfer.save
+    end
+
+    redirect_to groups_path
+  end
+
+  def people_upload
+    return unless current_user
+
+    file = params['project']['filename'].tempfile
+
+    csv = CSV.read(file, headers: true)
+    csv.each do |row|
+      person = Person.find_or_create_by(name: row['Name'].titleize)
+
+      person.save
+    end
+
+    redirect_to people_path
+  end
+
+  def groups_upload
+    return unless current_user
+
+    file = params['project']['filename'].tempfile
+
+    csv = CSV.read(file, headers: true)
+    csv.each do |row|
+      group = Group.find_or_create_by(name: row['Name'].titleize)
+
+      group.save
     end
 
     redirect_to groups_path

@@ -20,6 +20,7 @@ class Home::TodoView < ApplicationView
                 li { s{'Use date range for memberships'} }
                 li { s{ 'Several Roles for a membership (different titles) new model, remove title from membership itself' } }
                 li { s{ 'Search' } }
+                li { s{'CRUD for People, Groups and Transfers'} "(using AA)" }
 
               end
             end
@@ -33,6 +34,7 @@ class Home::TodoView < ApplicationView
                 li { 'Deploy' }
                 li { 'Add Devise' }
                 li { 'Add User Roles' }
+                li { 'Add Active Admin to edit all fields' }
               end
             end
           end
@@ -42,7 +44,7 @@ class Home::TodoView < ApplicationView
             div(class: 'card-body') do
               h5(class: 'card-title') { 'TODO' }
               ul do
-                li { 'CRUD for People, Groups and Transfers' }
+
                 li { 'Phlex forms' }
                 li { 'Better Use of Phlex, components' }
                 li { 'Documentation / Content' }
@@ -72,7 +74,7 @@ class Home::TodoView < ApplicationView
                 li { 'Import Maps' }
                 li { 'Import Phlex JS' }
                 li { 'Import People / Groups / Positions from CSV' }
-                li { 'Add Active Admin to edit all fields' }
+                li { 'Add Indexes' }
                 li { 'Add Audit table' }
 
 
