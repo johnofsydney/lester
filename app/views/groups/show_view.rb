@@ -34,7 +34,7 @@ class Groups::ShowView < ApplicationView
 
 
 
-    depth = 6
+    depth = 1
     render TransfersTableComponent.new(
       entity: group,
       transfers: group.consolidated_transfers(depth:),

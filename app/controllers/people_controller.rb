@@ -13,6 +13,7 @@ class PeopleController < ApplicationController
   # GET /people/1 or /people/1.json
   def show
     render People::ShowView.new(person: @person)
+
   end
 
   # GET /people/new
@@ -83,7 +84,8 @@ class PeopleController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_person
-    @person = Person.find(params[:id])
+    # @person = Person.find(params[:id])
+    @person = Person.includes(:memberships, :groups, memberships: [:person, :group], groups: [:memberships, :people]).find(params[:id])
   end
 
   # Only allow a list of trusted parameters through. Including nested params for memberships

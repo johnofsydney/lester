@@ -3,7 +3,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-RSpec.describe RecordTransferTaker, type: :service do
+RSpec.describe RecordGroup, type: :service do
 
   let(:group_names) { Group::NAMES }
 

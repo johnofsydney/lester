@@ -7,44 +7,24 @@ class People::Group < ApplicationView
 
   attr_reader :group, :exclude_person, :membership
 
-	def template
-    header_style = element_styles(group)
+  def template
+    tr do
+      td { group.name }
+      td { Membership.find_by(group: group, person: exclude_person)&.positions&.last&.title  }
+      td do
+        if group.memberships.count < 8
+          memberships = group.memberships - Membership.where(person: exclude_person, group: group)
 
-
-
-
-    link_text = "#{group.name}#{memership_timeframe}#{last_position}".html_safe
-
-    div(class: 'group card border-primary mb-3', style: 'max-width: 18rem;') do
-
-      link_for(
-        entity: group,
-        class: 'btn btn-sm btn-outline-primary',
-        style: button_styles(group),
-        link_text:
-      )
-
-      if (group.memberships - Membership.where(person: exclude_person, group: group)).present?
-        div(class: 'card-body text-primary') do
-          group.memberships.each do |membership|
-            next if exclude_person && membership.person == exclude_person
-            person = membership.person
-
-
-            link_for(
-              entity: person,
-              class: 'btn btn-sm btn-outline-primary btn-smaller',
-              style: button_styles(person, 1),
-              link_text: person.name
-            )
-          end
+          "#{memberships.map{|m| m.person.name  }}"
+        else
+          "#{group.memberships.count} members"
         end
       end
     end
   end
 
   def memership_timeframe
-    return unless membership.start_date || membership.end_date
+    return unless membership.start_date && membership.end_date
     "<br>#{membership.start_date.year} - #{membership.end_date.year}"
   end
 

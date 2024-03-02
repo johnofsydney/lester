@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get '/imports/' => 'imports#index'
   post '/imports/annual_donor_upload' => 'imports#annual_donor_upload'
+  post '/imports/federal_parliamentarians_upload' => 'imports#federal_parliamentarians_upload'
   post '/imports/people_upload' => 'imports#people_upload'
   post '/imports/groups_upload' => 'imports#groups_upload'
 

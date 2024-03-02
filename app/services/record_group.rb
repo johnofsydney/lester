@@ -1,4 +1,4 @@
-class RecordTransferTaker
+class RecordGroup
 
 
   attr_reader :name

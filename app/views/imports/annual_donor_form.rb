@@ -17,6 +17,17 @@ class Imports::AnnualDonorForm < Phlex::HTML
     end
 
     div do
+      h2 { 'Import Cleaned List of Federal Parliamentarians'}
+      form(action: '/imports/federal_parliamentarians_upload', enctype: "multipart/form-data", method: 'post') do
+        div(class: "form-group") do
+          input(class: "form-control", type: "file", value: "filename", name: "project[filename]") { "" }
+        end
+
+        button(class: "btn btn-primary", type: "submit") { "Submit" }
+      end
+    end
+
+    div do
       h2 { 'Import Peoples Names'}
       form(action: '/imports/people_upload', enctype: "multipart/form-data", method: 'post') do
         div(class: "form-group") do

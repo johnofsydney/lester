@@ -10,9 +10,17 @@ class People::Groups < ApplicationView
     div(class: 'row') do
       h2 { 'Groups' }
 
-      groups.each do |group|
-        render People::Group.new(group: group, exclude_person: person)
+      table(class: 'table') do
+        tr do
+          th { 'Group' }
+          th { 'Position' }
+          th { 'Other Members' }
+        end
+        groups.each do |group|
+          render People::Group.new(group: group, exclude_person: person)
+        end
       end
+
     end
   end
 end

@@ -34,13 +34,15 @@ class MapGroupNames
     return 'The Local Party of Australia' if name.match?(/The Local Party of Australia/i)
     return 'Katter Australia Party' if name.match?(/(Katter|KAP)/i)
     return 'Australian Conservatives' if name.match?(/Australian Conservatives/i)
+    return 'Federal Independents' if name.match?(/Independent Fed/i)
 
     # specific exceptions
     return group_names.liberals.federal if name.match(/Liberal Party.+Menzies Research Centre/i)
 
     # Liberal National Party (QLD) and Country Liberal Party (NT)
     return group_names.liberals.qld if name.match(/(Liberal National Party|LNP).+(QLD|Queensland)/i)
-    return group_names.liberals.qld if name.match(/Liberal National Party/i)
+    return group_names.liberals.federal if name.match(/Liberal National Party/i)
+    return group_names.liberals.federal if name.match(/Liberal National Fed/i)
     return group_names.liberals.nt if name.match(/Country Liberal.+(NT|N\.T\.|Northern)/i)
 
     # National Party
@@ -49,8 +51,10 @@ class MapGroupNames
     return group_names.nationals.vic if name.match(/(National Party|NAT).+Vic/i)
     return group_names.nationals.federal if name.match(/National Party.+Fed/i)
     return group_names.nationals.federal if name.match(/The Nationals.+Fed/i)
+    return group_names.nationals.federal if name.match(/National.+Fed/i)
     return group_names.nationals.federal if name.match(/NAT-FED/i)
     return group_names.nationals.federal if name.match(/National Party of Australia/i)
+    return group_names.nationals.federal if name.match(/Nat Fed/i)
 
     # Liberals, must come after Liberal Democrats
     return group_names.liberals.nsw if name.match(/Lib.+(NSW|N\.S\.W\.)/i)
@@ -83,7 +87,9 @@ class MapGroupNames
     return group_names.labor.tas if name.match(/(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour)).+(TAS|Tasmania)/i)
     return group_names.labor.act if name.match(/(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour)).+(ACT|Australian Capital Territory)/i)
     return group_names.labor.nt if name.match(/(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour)).+(NT|N\.T\.|Northern Territory)/i)
-    return group_names.labor.federal if name.match(/^(?!.*Alpha).*(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour))/i)
+    return group_names.labor.federal if name.match(
+      /^(?!.*Alpha).*(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour)|Labor Fed)/i
+    )
 
     # Can't find it, return the name
     name.titleize
