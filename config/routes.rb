@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
   devise_for :users
   get 'search' => 'search#index'
+  get 'linker' => 'search#linker'
 
   get '/imports/' => 'imports#index'
   post '/imports/annual_donor_upload' => 'imports#annual_donor_upload'

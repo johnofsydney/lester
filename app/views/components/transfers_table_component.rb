@@ -48,7 +48,7 @@ class TransfersTableComponent < ApplicationView
   def make_table(transfers)
     h2 { 'Transfers' }
     h3 { "#{heading} (#{transfers.count} records)" }
-    table(class: 'table') do
+    table(class: 'table table-striped responsive-table') do
       tr do
         th { 'ID' }
         th { 'Amount' }

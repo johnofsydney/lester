@@ -1,4 +1,5 @@
 class Transfers::ShowView < ApplicationView
+  include ActionView::Helpers::NumberHelper
 
   attr_reader :transfer
 
@@ -13,11 +14,12 @@ class Transfers::ShowView < ApplicationView
           href: "/transfers/#{transfer.id}",
           class: 'btn w-100',
           style: button_styles(transfer)
-        ) { "#{transfer.formatted_amount}" }
+        ) { number_to_currency(transfer.amount, precision: 0) }
       end
 
       div(class: 'row') do
-        h2 { "Transfer of #{transfer.formatted_amount} From #{transfer.giver.name} to #{transfer.taker.name}" }
+        h2 { "Transfer of #{number_to_currency(transfer.amount, precision: 0)} From #{transfer.giver.name} to #{transfer.taker.name}" }
+        # h2 { "Transfer of #{transfer.formatted_amount} From #{transfer.giver.name} to #{transfer.taker.name}" }
 
         div(class: 'row') do
           p do

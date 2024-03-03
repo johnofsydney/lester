@@ -82,13 +82,13 @@ class Groups::ShowView < ApplicationView
     amount = Transfer.where(taker: group).sum(:amount)
     return unless amount.positive?
 
-    number_to_currency amount
+    number_to_currency amount, precision: 0
   end
 
   def money_out
     amount = Transfer.where(giver: group).sum(:amount)
     return unless amount.positive?
 
-    number_to_currency amount
+    number_to_currency amount, precision: 0
   end
 end

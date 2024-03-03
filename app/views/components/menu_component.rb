@@ -18,6 +18,12 @@ class MenuComponent < ApplicationView
       div(class: 'collapse navbar-collapse justify-content-end', id: 'navbarNav') do
         ul(class: 'navbar-nav') do
           li(class: 'nav-item') do
+            a(class: 'nav-link', href: '/search/') { 'Search' }
+          end
+          li(class: 'nav-item') do
+            a(class: 'nav-link', href: '/linker/') { 'Linker' }
+          end
+          li(class: 'nav-item') do
             a(class: 'nav-link', href: '/groups/') { 'Groups' }
           end
           li(class: 'nav-item') do

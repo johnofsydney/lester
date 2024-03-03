@@ -9,7 +9,7 @@ class Transfers::IndexView < ApplicationView
 
   def template
     h3 { "Transfers: (#{transfers.count} records)" }
-    table(class: 'table') do
+    table(class: 'table table-striped responsive-table') do
       thead do
         tr do
           th { 'ID' }
