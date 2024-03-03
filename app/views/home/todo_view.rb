@@ -33,8 +33,8 @@ class Home::TodoView < ApplicationView
               ul do
                 li { 'Deploy' }
                 li { 'Add Devise' }
-                li { 'Add User Roles' }
-                li { 'Add Active Admin to edit all fields' }
+                li {  s{'Add Users'} }
+                li { 'Add AdminUsers / Active Admin to edit all fields' }
               end
             end
           end
