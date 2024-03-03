@@ -11,6 +11,7 @@ class MapGroupNames
   def map_or_return_name(name)
     name = name.strip
 
+    return 'Sugolena' if name.match?(/Sugolena/i)
     return 'Idameneo' if name.match?(/Idameneo/i)
     return 'Get Up' if name.match?(/(GetUp|Get Up)/i)
     return 'Australian Hotels Association' if name.match?(/Australian Hotels Association/i)

@@ -20,7 +20,7 @@ class Home::TodoView < ApplicationView
                 li { s{'Use date range for memberships'} }
                 li { s{ 'Several Roles for a membership (different titles) new model, remove title from membership itself' } }
                 li { s{ 'Search' } }
-                li { s{'CRUD for People, Groups and Transfers'} "(using AA)" }
+                li { s{'CRUD for People, Groups and Transfers'} }
 
               end
             end

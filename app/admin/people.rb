@@ -16,6 +16,7 @@ ActiveAdmin.register Person do
   # end
   filter :id
   filter :name
+  filter :name, as: :string, filters: %i[cont eq start end not_eq]
 
   index do
     selectable_column

@@ -1,3 +1,3 @@
 PgSearch.multisearch_options = {
-  using: [:tsearch]
+  using: { tsearch: { dictionary: 'english', prefix: true } }
 }

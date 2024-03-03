@@ -15,8 +15,10 @@ ActiveAdmin.register Membership do
   #   permitted
   # end
 
-  permit_params :person_id, :group_id, :start_date, :end_date
+  filter :person_name, as: :string, filters: %i[cont eq start end not_eq]
+  filter :group_name, as: :string, filters: %i[cont eq start end not_eq]
 
+  permit_params :person_id, :group_id, :start_date, :end_date
 
   index do
     selectable_column

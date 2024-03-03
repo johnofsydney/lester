@@ -6,6 +6,12 @@ namespace :lester do
     Membership.destroy_all
     Group.destroy_all
     Person.destroy_all
+
+    ActiveRecord::Base.connection.reset_pk_sequence!('transfers')
+    ActiveRecord::Base.connection.reset_pk_sequence!('affiliations')
+    ActiveRecord::Base.connection.reset_pk_sequence!('memberships')
+    ActiveRecord::Base.connection.reset_pk_sequence!('groups')
+    ActiveRecord::Base.connection.reset_pk_sequence!('people')
   end
 
   desc "Generate a report of users who logged in during the last week"
@@ -76,6 +82,7 @@ namespace :lester do
     simon_holmes_acourt = Person.find_or_create_by(name: 'Simon Holmes a Court')
     sally_zou = Person.find_or_create_by(name: 'Sally Zou')
     gina_rinehart = Person.find_or_create_by(name: 'Gina Rinehart')
+    isaac_wakil = Person.find_or_create_by(name: 'Isaac Wakil')
 
     # Great Barrier Reef Foundation
     anna_marsden = Person.find_or_create_by(name: 'Anna Marsden')
@@ -201,6 +208,7 @@ namespace :lester do
     hancock_prospecting = Group.find_or_create_by(name: 'Hancock Prospecting Pty Ltd')
     great_barrier_reef_foundation = Group.find_or_create_by(name: 'Great Barrier Reef Foundation')
 
+
     tyro_payments = Group.find_or_create_by(name: 'Tyro Payments')
     xero = Group.find_or_create_by(name: 'Xero')
     ramsay_health_care = Group.find_or_create_by(name: 'Ramsay Health Care')
@@ -209,6 +217,7 @@ namespace :lester do
 
     # lobby groups, associations of grifters
     the_pharmacy_guild = Group.find_or_create_by(name: 'The Pharmacy Guild Of Australia')
+    sugolena = Group.find_or_create_by(name: 'Sugolena')
 
     # families
     frydenburg_family = Group.find_or_create_by(name: 'Frydenburg Family')
@@ -305,6 +314,8 @@ namespace :lester do
     gdv_pw = Membership.find_or_create_by(group: guide_dogs_victoria, person: paul_wheelton) #, title: 'Capital Campaign Chair')
     wi_pw = Membership.find_or_create_by(group: wheelton_investments, person: paul_wheelton) #, title: 'Owner')
 
+    Membership.find_or_create_by(group: sugolena, person: isaac_wakil) #, title: 'Owner')
+
     Membership.find_or_create_by(group: climate200, person: simon_holmes_acourt) #, title: 'Owner')
     Membership.find_or_create_by(group: atlassian, person: mike_cannon_brookes) #, title: 'Owner')
     Membership.find_or_create_by(group: atlassian, person: scott_farquar) #, title: 'Owner')
@@ -354,10 +365,50 @@ namespace :lester do
     Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: martin_parkinson, start_date: Date.new(2016, 1, 23), end_date: Date.new(2019, 8, 30), positions: [Position.create(title: 'Secretary')])
 
     # Prime Ministers
-    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: tony_abbott, start_date: Date.new(2015, 9, 18), end_date: Date.new(2015, 9, 15), positions: [Position.create(title: 'Prime Minister')])
-    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: malcolm_turnbull, start_date: Date.new(2015, 9, 15), end_date: Date.new(2018, 8, 23), positions: [Position.create(title: 'Prime Minister')])
-    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: scott_morrison, start_date: Date.new(2018, 8, 24), end_date: Date.new(2022, 5, 23), positions: [Position.create(title: 'Prime Minister')])
-    Membership.find_or_create_by(group: federal_dept_prime_minister_and_cabinet, person: anthony_albanese, start_date: Date.new(2022, 5, 23), positions: [Position.create(title: 'Prime Minister')])
+    Membership.find_or_create_by(
+      group: federal_dept_prime_minister_and_cabinet,
+      person: tony_abbott,
+      positions: [
+        Position.create(title: 'Prime Minister')
+        ]
+      )
+    Membership.find_or_create_by(
+      group: federal_dept_prime_minister_and_cabinet,
+      person: malcolm_turnbull,
+      start_date: Date.new(2015, 9, 15),
+      end_date: Date.new(2018, 8, 23),
+      positions: [
+        Position.create(
+          title: 'Prime Minister',
+          start_date: Date.new(2015, 9, 15),
+          end_date: Date.new(2018, 8, 23)
+        )
+      ]
+    )
+    Membership.find_or_create_by(
+      group: federal_dept_prime_minister_and_cabinet,
+      person: scott_morrison,
+      start_date: Date.new(2018, 8, 24),
+      end_date: Date.new(2022, 5, 23),
+      positions: [
+        Position.create(
+          title: 'Prime Minister',
+          start_date: Date.new(2018, 8, 24),
+          end_date: Date.new(2022, 5, 23)
+        )
+      ]
+    )
+    Membership.find_or_create_by(
+      group: federal_dept_prime_minister_and_cabinet,
+      person: anthony_albanese,
+      start_date: Date.new(2022, 5, 23),
+      positions: [
+        Position.create(
+          title: 'Prime Minister',
+          start_date: Date.new(2022, 5, 23)
+        )
+      ]
+    )
 
     # Ministers
     Membership.find_or_create_by(group: federal_dept_climate_change, person: penny_wong, start_date: Date.new(2007, 12, 3), end_date: Date.new(2010, 3, 8), positions: [Position.create(title: 'Minister')])
@@ -404,6 +455,8 @@ namespace :lester do
     Affiliation.find_or_create_by(owning_group: federal_government, sub_group: federal_dept_environment_and_energy)
     Affiliation.find_or_create_by(owning_group: federal_government, sub_group: federal_dept_treasury)
     Affiliation.find_or_create_by(owning_group: federal_government, sub_group: federal_dept_prime_minister_and_cabinet)
+
+
 
     p "creating transfers"
     Transfer.find_or_create_by(

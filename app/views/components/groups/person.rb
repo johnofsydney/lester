@@ -6,42 +6,52 @@ class Groups::Person < ApplicationView
 
   attr_reader :person, :exclude_group
 
-	def template
-    header_style = element_styles(person)
-    membership = Membership.find_by(group: exclude_group, person:)
+  def template
+    tr do
+      td do
+        a(href: "/people/#{person.id}") { person.name }
+      end
+      td do
+        position
+      end
+      td do
+        if person.memberships.count == 1 # it me
+          ''
+        elsif person.memberships.count < 8
+          memberships = person.memberships - Membership.where(person: person, group: exclude_group)
 
-    position = membership.positions.last # TODO: sort by date
-    title = position.title if position&.title
-    timeframe = position.start_date.strftime("%d/%m/%y") if position&.start_date
-    timeframe = "#{timeframe} - #{position.end_date.strftime("%d/%m/%y")}" if position&.end_date
-
-    link_text = "#{person.name}<br>#{title}<br>#{timeframe}".html_safe
-
-    div(class: 'person card border-primary mb-3', style: 'max-width: 18rem;') do
-
-      link_for(
-        entity: person,
-        class: 'btn btn-sm btn-outline-primary',
-        style: button_styles(person),
-        link_text:
-      )
-
-      if (person.memberships - Membership.where(person:, group: exclude_group)).present?
-        div(class: 'card-body text-primary') do
-          person.memberships.each do |membership|
-            next if exclude_group && membership.group == exclude_group
-            group = membership.group
-
-
-            link_for(
-              entity: group,
-              class: 'btn btn-sm btn-outline-primary btn-smaller',
-              style: button_styles(group, 1),
-              link_text: group.name
-            )
+          ul(class: 'list-group list-group-horizontal') do
+            memberships.each do |membership|
+              li(class: 'list-group-item') do
+                a(href: "/groups/#{membership.group.id}") { membership.group.name }
+              end
+            end
           end
+        else
+          "#{group.memberships.count} members"
         end
       end
     end
+  end
+
+  private
+
+  def position
+    position = Membership.find_by(group: exclude_group, person: person)&.positions&.last
+
+    return '' unless position
+
+    result = position.title
+    return '' unless result
+
+    if position.end_date.present? && position.start_date.present?
+      result += " (#{position.start_date} - #{position.end_date})"
+    elsif position.start_date.present?
+      result += " (since #{position.start_date})"
+    elsif position.end_date.present?
+      result += " (until #{position.end_date})"
+    end
+
+    result
   end
 end

@@ -9,13 +9,23 @@ class People::Group < ApplicationView
 
   def template
     tr do
-      td { group.name }
-      td { Membership.find_by(group: group, person: exclude_person)&.positions&.last&.title  }
       td do
-        if group.memberships.count < 8
+        a(href: "/groups/#{group.id}") { group.name }
+      end
+      td { position  }
+      td do
+        if group.memberships.count == 1
+          ''
+        elsif group.memberships.count < 8
           memberships = group.memberships - Membership.where(person: exclude_person, group: group)
 
-          "#{memberships.map{|m| m.person.name  }}"
+          ul(class: 'list-group list-group-horizontal') do
+          memberships.each do |membership|
+              li(class: 'list-group-item') do
+                a(href: "/people/#{membership.person.id}") { membership.person.name }
+              end
+            end
+          end
         else
           "#{group.memberships.count} members"
         end
@@ -37,5 +47,26 @@ class People::Group < ApplicationView
     timeframe = "#{timeframe} - #{position.end_date.strftime("%d/%m/%y")}" if position&.end_date
 
     "<br>#{title}: #{timeframe}"
+  end
+
+private
+
+  def position
+    position = Membership.find_by(group: group, person: exclude_person)&.positions&.last
+
+    return '' unless position
+
+    result = position.title
+    return '' unless result
+
+    if position.end_date.present? && position.start_date.present?
+      result += " (#{position.start_date} - #{position.end_date})"
+    elsif position.start_date.present?
+      result += " (since #{position.start_date})"
+    elsif position.end_date.present?
+      result += " (until #{position.end_date})"
+    end
+
+    result
   end
 end

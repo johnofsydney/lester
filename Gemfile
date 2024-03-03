@@ -79,3 +79,5 @@ gem 'devise'
 
 gem "sassc-rails"
 gem 'activeadmin'
+
+gem 'money-rails', '~> 1.12'

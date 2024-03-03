@@ -42,13 +42,6 @@ class FileIngestor
         person = Person.find_or_create_by(name: row['Member'].titleize)
         party = RecordGroup.call(row['Party'].titleize)
 
-        parliament = Group.find_or_create_by(name: "Federal Parliament")
-
-        # create (or find) a membership for each person in the parliament
-        membership_parliament = Membership.find_or_create_by(person: person, group: parliament)
-        membership_parliament.start_date = first_elected
-        membership_parliament.save
-
         # create (or find) a membership for each person in their party
         membership_party = Membership.find_or_create_by(person: person, group: party)
         membership_party.start_date = first_elected

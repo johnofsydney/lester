@@ -1,12 +1,12 @@
 <%= render MenuComponent.new %>
 
 <p>Search for People, parties or Groups</p>
-<p><i>Whole words at this stage, eg "Anthony" or "Albanese"</i></p>
+<p><i>Whole words or the beginning of a word, eg "Anthony" or "Alba"</i></p>
 
 
 <%= form_with url: {controller: "search", action: "index"}, method: :get do %>
   <%= label_tag :query, 'Search' %>
-  <%= text_field_tag :query %>
+  <%= text_field_tag :query, '', autofocus: true %>
   <%= submit_tag 'Search' %>
 <% end %>
 
