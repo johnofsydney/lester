@@ -21,7 +21,10 @@ class Home::TodoView < ApplicationView
                 li { s{ 'Several Roles for a membership (different titles) new model, remove title from membership itself' } }
                 li { s{ 'Search' } }
                 li { s{'CRUD for People, Groups and Transfers'} }
-
+                li { s{'Deploy' } }
+                li { s{'Add Devise' } }
+                li { s{'Add AdminUsers / Active Admin to edit all fields' } }
+                li { s{'Node Linker - surface' } }
               end
             end
           end
@@ -31,10 +34,10 @@ class Home::TodoView < ApplicationView
             div(class: 'card-body') do
               h5(class: 'card-title') { 'Doing' }
               ul do
-                li { 'Deploy' }
-                li { 'Add Devise' }
-                li {  s{'Add Users'} }
-                li { 'Add AdminUsers / Active Admin to edit all fields' }
+                li { 'Node Linker - should consider memberships only? (Not affiliations)' }
+                li { 'Node Linker - should consider overlapping memberships only?' }
+                li { 'Node Linker - should consider several paths' }
+                li { 'Node Linker - use BuildQueue class' }
               end
             end
           end
@@ -49,22 +52,13 @@ class Home::TodoView < ApplicationView
                 li { 'Better Use of Phlex, components' }
                 li { 'Documentation / Content' }
                 li { 'Theme / Color Scheme' }
-                li { 'Faster Search ' }
-                  ul do
-                    li { 'https://mnishiguchi-2019.netlify.app/2019/01/29/rails-postgresql-trigram-search/' }
-                    li { 'https://github.com/phillipspc/pg_search_demo' }
-                    li { 'https://pganalyze.com/blog/full-text-search-ruby-rails-postgres' }
-                  end
-                li { 'What is a Transaction?' }
+
                 li { 'D3 JS' }
                 li { 'Shortest Path between any two nodes (include_looser_nodes)' }
                 li { 'Deployment' }
                 li { 'Tests' }
                 li { 'Get ASX data programatically' }
-                li { 'Node Linker - should consider memberships only? (Not affiliations)' }
-                li { 'Node Linker - should consider overlapping memberships only?' }
-                li { 'Node Linker - should consider several paths' }
-                li { 'Node Linker - surface' }
+
                 li { 'Several Memberships one person in one group' }
                 li { 'Pagination' }
                 li { 'Affiliations need start and end times as well' }
