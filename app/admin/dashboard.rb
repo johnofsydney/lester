@@ -21,6 +21,19 @@ ActiveAdmin.register_page "Dashboard" do
             end
           end
         end
+        panel "Recent Suggestions" do
+          ul do
+            Suggestion.order(created_at: :desc).last(10).map do |suggestion|
+              li link_to(suggestion.headline, admin_suggestion_path(suggestion))
+              ul do
+                li suggestion.description
+                li suggestion.evidence
+                li suggestion.suggested_by
+              end
+
+            end
+          end
+        end
       end
 
       column do

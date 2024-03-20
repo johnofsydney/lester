@@ -36,6 +36,9 @@ class MenuComponent < ApplicationView
             a(class: 'nav-link', href: '/home/index/') { 'About' }
           end
           li(class: 'nav-item') do
+            a(class: 'nav-link', href: '/home/suggestions/') { 'Make a Suggestion' }
+          end
+          li(class: 'nav-item') do
             a(class: 'nav-link', href: '/admin/') { 'Admin' }
           end
         end

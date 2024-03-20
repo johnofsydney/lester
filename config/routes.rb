@@ -4,6 +4,9 @@ Rails.application.routes.draw do
 
   get 'search' => 'search#index'
   get 'linker' => 'search#linker'
+  get '/home/suggestions' => 'home#suggestions'
+  get '/home/suggestion_received' => 'home#suggestion_received'
+  post '/home/post_suggestions' => 'home#post_suggestions'
 
   get '/imports/' => 'imports#index'
   post '/imports/annual_donor_upload' => 'imports#annual_donor_upload'
