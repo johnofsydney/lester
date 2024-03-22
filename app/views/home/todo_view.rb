@@ -25,6 +25,8 @@ class Home::TodoView < ApplicationView
                 li { s{'Add Devise' } }
                 li { s{'Add AdminUsers / Active Admin to edit all fields' } }
                 li { s{'Node Linker - surface' } }
+                li { s{'Make memberships for groups' } }
+                li { s{'Several Memberships one person in one group'} }
               end
             end
           end
@@ -34,6 +36,8 @@ class Home::TodoView < ApplicationView
             div(class: 'card-body') do
               h5(class: 'card-title') { 'Doing' }
               ul do
+                li { 'Auto Deployment' }
+                li { 'Write tests for Build Queue service and attend to TODOs' }
                 li { 'Node Linker - should consider memberships only? (Not affiliations)' }
                 li { 'Node Linker - should consider overlapping memberships only?' }
                 li { 'Node Linker - should consider several paths' }
@@ -47,21 +51,19 @@ class Home::TodoView < ApplicationView
             div(class: 'card-body') do
               h5(class: 'card-title') { 'TODO' }
               ul do
-
-                li { 'Phlex forms' }
+                li { 'Add evidence to each model, as an Array' }
                 li { 'Better Use of Phlex, components' }
                 li { 'Documentation / Content' }
                 li { 'Theme / Color Scheme' }
 
                 li { 'D3 JS' }
                 li { 'Shortest Path between any two nodes (include_looser_nodes)' }
-                li { 'Deployment' }
+
                 li { 'Tests' }
                 li { 'Get ASX data programatically' }
 
-                li { 'Several Memberships one person in one group' }
+
                 li { 'Pagination' }
-                li { 'Affiliations need start and end times as well' }
                 li { 'More tests for record transfer taker' }
                 li { 'Javascript' }
                 li { 'jQuery' }

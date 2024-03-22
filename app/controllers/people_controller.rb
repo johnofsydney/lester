@@ -84,8 +84,7 @@ class PeopleController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_person
-    # @person = Person.find(params[:id])
-    @person = Person.includes(:memberships, :groups, memberships: [:person, :group], groups: [:memberships, :people]).find(params[:id])
+    @person = Person.find(params[:id])
   end
 
   # Only allow a list of trusted parameters through. Including nested params for memberships

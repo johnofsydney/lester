@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_20_063732) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -47,14 +47,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_063732) do
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.bigint "person_id", null: false
+    t.string "member_type"
+    t.bigint "member_id"
     t.bigint "group_id", null: false
     t.date "start_date"
     t.date "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_memberships_on_group_id"
-    t.index ["person_id"], name: "index_memberships_on_person_id"
+    t.index ["member_type", "member_id"], name: "index_memberships_on_member"
   end
 
   create_table "people", force: :cascade do |t|
@@ -120,7 +121,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_20_063732) do
   end
 
   add_foreign_key "memberships", "groups"
-  add_foreign_key "memberships", "people"
   add_foreign_key "positions", "memberships"
   add_foreign_key "transfers", "groups", column: "taker_id"
 end

@@ -1,6 +1,6 @@
 class Groups::People < ApplicationView
 	def initialize(people:, group: nil)
-		@people = people
+    @people = people.sort_by { |person| person.memberships.count }.reverse
     @group = group
 	end
 

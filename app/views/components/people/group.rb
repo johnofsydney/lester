@@ -2,7 +2,7 @@ class People::Group < ApplicationView
 	def initialize(group:, exclude_person: nil)
 		@group = group
     @exclude_person = exclude_person
-    @membership = Membership.find_by(group: group, person: exclude_person)
+    @membership = Membership.find_by(group: group, member: exclude_person)
 	end
 
   attr_reader :group, :exclude_person, :membership
@@ -17,12 +17,13 @@ class People::Group < ApplicationView
         if group.memberships.count == 1
           ''
         elsif group.memberships.count < 8
-          memberships = group.memberships - Membership.where(person: exclude_person, group: group)
+          memberships = group.memberships - Membership.where(member: exclude_person, group: group)
 
           ul(class: 'list-group list-group-horizontal') do
           memberships.each do |membership|
               li(class: 'list-group-item') do
-                a(href: "/people/#{membership.person.id}") { membership.person.name }
+                a(href: "/people/#{membership.member.id}") { membership.member.name }
+                # TODO FIX THIS FOR GROUPS AS MEMBERS
               end
             end
           end
@@ -52,7 +53,7 @@ class People::Group < ApplicationView
 private
 
   def position
-    position = Membership.find_by(group: group, person: exclude_person)&.positions&.last
+    position = Membership.find_by(group: group, member: exclude_person)&.positions&.last
 
     return '' unless position
 

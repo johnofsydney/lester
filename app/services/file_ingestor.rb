@@ -29,7 +29,6 @@ class FileIngestor
 
         transfer.amount += row['Amount'].to_i
 
-        # Rails.logger.info "#{params['project']['filename']} || Transfer: #{transfer.inspect}"
         p "#{file} || Transfer: #{transfer.inspect}"
         transfer.save
       end
@@ -43,7 +42,7 @@ class FileIngestor
         party = RecordGroup.call(row['Party'].titleize)
 
         # create (or find) a membership for each person in their party
-        membership_party = Membership.find_or_create_by(person: person, group: party)
+        membership_party = Membership.find_or_create_by(member: person, group: party)
         membership_party.start_date = first_elected
         membership_party.save
       end

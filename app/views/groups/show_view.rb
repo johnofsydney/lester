@@ -1,5 +1,3 @@
-# require_relative '../components/transfers_table_component'
-
 class Groups::ShowView < ApplicationView
   include ActionView::Helpers::NumberHelper
 

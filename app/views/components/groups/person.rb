@@ -18,12 +18,13 @@ class Groups::Person < ApplicationView
         if person.memberships.count == 1 # it me
           ''
         elsif person.memberships.count < 8
-          memberships = person.memberships - Membership.where(person: person, group: exclude_group)
+          memberships = person.memberships - Membership.where(member: person, group: exclude_group)
 
           ul(class: 'list-group list-group-horizontal') do
             memberships.each do |membership|
               li(class: 'list-group-item') do
                 a(href: "/groups/#{membership.group.id}") { membership.group.name }
+                # TODO FIX THIS FOR GROUPS AS MEMBERS
               end
             end
           end
@@ -37,7 +38,7 @@ class Groups::Person < ApplicationView
   private
 
   def position
-    position = Membership.find_by(group: exclude_group, person: person)&.positions&.last
+    position = Membership.find_by(group: exclude_group, member: person)&.positions&.last
 
     return '' unless position
 

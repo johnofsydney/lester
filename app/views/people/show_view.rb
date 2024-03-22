@@ -18,10 +18,10 @@ class People::ShowView < ApplicationView
 
     if person.groups.present?
       hr
-      render People::Groups.new(groups: person.groups.includes(:people), person: person)
+      render People::Groups.new(groups: person.groups, person: person)
     end
 
-    depth = 1
+    depth = 6
 
     render TransfersTableComponent.new(
       entity: person,

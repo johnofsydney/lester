@@ -4,8 +4,9 @@ class Person < ApplicationRecord
 
   include TransferMethods
 
-  has_many :memberships, dependent: :destroy
+  has_many :memberships, as: :member, dependent: :destroy
   has_many :groups, through: :memberships
+
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
@@ -16,13 +17,7 @@ class Person < ApplicationRecord
 
   def nodes(include_looser_nodes: false)
     unless include_looser_nodes
-      return groups.includes(
-        [
-          :people,
-          :memberships,
-          memberships: [:person, :group]
-        ]
-      )
+      return groups
     end
 
 
