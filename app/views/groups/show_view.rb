@@ -37,10 +37,9 @@ class Groups::ShowView < ApplicationView
       hr
       div(class: 'row') do
         h2 { 'Affiliated Groups' }
-        # render Groups::AffiliatedGroups.new(groups: group.affiliated_groups)
         ul(class: 'list-group list-group-horizontal') do
           group.affiliated_groups.each do |group|
-            li(class: 'list-group-item') do
+            li(class: 'list-group-item horizontal-button') do
               a(href: "/groups/#{group.id}") { group.name }
             end
           end

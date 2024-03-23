@@ -22,7 +22,7 @@ class Groups::Person < ApplicationView
 
           ul(class: 'list-group list-group-horizontal') do
             memberships.each do |membership|
-              li(class: 'list-group-item') do
+              li(class: 'list-group-item horizontal-button') do
                 a(href: "/groups/#{membership.group.id}") { membership.group.name }
                 # TODO FIX THIS FOR GROUPS AS MEMBERS
               end

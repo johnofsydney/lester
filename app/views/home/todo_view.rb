@@ -5,7 +5,6 @@ class Home::TodoView < ApplicationView
   def template
     div(class: 'container') do
       div(class: 'row', id: 'todo') do
-        h2 { a(href: '/home/index') { 'Home' } }
         h2 { 'TODO:' }
         div(class: 'col-sm') do
           div(class: 'card') do
@@ -27,6 +26,8 @@ class Home::TodoView < ApplicationView
                 li { s{'Node Linker - surface' } }
                 li { s{'Make memberships for groups' } }
                 li { s{'Several Memberships one person in one group'} }
+                li { s{'New Server'} }
+                li { s{'Domain name'} }
               end
             end
           end
@@ -78,12 +79,6 @@ class Home::TodoView < ApplicationView
               end
             end
           end
-        end
-      end
-
-      footer(class: 'footer mt-auto py-3 bg-light') do
-        div(class: 'container') do
-          span(class: 'text-muted') { 'Place sticky footer content here.' }
         end
       end
     end

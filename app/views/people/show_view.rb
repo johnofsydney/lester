@@ -12,7 +12,8 @@ class People::ShowView < ApplicationView
       a(
         href:,
         class: 'btn w-100',
-        style: button_styles(person)
+        style: button_styles(person),
+        target: :_blank
       ) { person.name }
     end
 
