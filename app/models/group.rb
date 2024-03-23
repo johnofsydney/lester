@@ -63,13 +63,10 @@ class Group < ApplicationRecord
 
 
 
-  has_many :memberships, dependent: :destroy
-  has_many :people, through: :memberships
+  has_many :memberships
+  has_many :people, through: :memberships, source: :member, source_type: 'Person'
+  has_many :groups, through: :memberships, source: :member, source_type: 'Group' # these are the groups that _belong_ to _this_ group
 
-  has_many :affiliations_as_owning_group, class_name: 'Affiliation', foreign_key: 'owning_group_id', dependent: :destroy
-  has_many :affiliations_as_sub_group, class_name: 'Affiliation', foreign_key: 'sub_group_id', dependent: :destroy
-  has_many :sub_groups, through: :affiliations_as_owning_group, source: :sub_group
-  has_many :owning_groups, through: :affiliations_as_sub_group, source: :owning_group
 
   # these are a bit weird, hence the transfers method below
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
@@ -78,21 +75,22 @@ class Group < ApplicationRecord
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
   def nodes(include_looser_nodes: false)
-
-  # return Group.none
-    # return people.includes([memberships: [:group, :person]]) # excludes affiliated groups
-
     unless include_looser_nodes # TODO work on includes / bullet
-      return [
-        people.includes(:groups, memberships: [:person, :group]) + affiliated_groups
-      ].compact.flatten.uniq
+      return people + groups
+      # TODO should this be:
+      # return people + affilaietd_groups
+
     end
 
     [people + affiliated_groups + other_edge_ends].compact.flatten.uniq
   end
 
   def affiliated_groups
-    owning_groups.includes([:sub_groups]) + sub_groups.includes([:owning_groups])
+    groups_as_child_member = Group.joins(:memberships)
+                            .where(memberships: { member: self, member_type: 'Group' })
+                            .where.not(id: self.id)
+
+    groups_as_child_member + groups
   end
 
 

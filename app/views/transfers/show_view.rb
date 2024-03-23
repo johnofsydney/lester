@@ -1,10 +1,11 @@
 class Transfers::ShowView < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :transfer
+  attr_reader :transfer, :depth
 
   def initialize(transfer:)
     @transfer = transfer
+    @depth = 6
   end
 
   def template
@@ -19,7 +20,6 @@ class Transfers::ShowView < ApplicationView
 
       div(class: 'row') do
         h2 { "Transfer of #{number_to_currency(transfer.amount, precision: 0)} From #{transfer.giver.name} to #{transfer.taker.name}" }
-        # h2 { "Transfer of #{transfer.formatted_amount} From #{transfer.giver.name} to #{transfer.taker.name}" }
 
         div(class: 'row') do
           p do
@@ -41,10 +41,14 @@ class Transfers::ShowView < ApplicationView
       end
       div(class: 'row') do
         div(class: 'col', id: 'descendents-of-giver') do
-          descendents = transfer.giver.consolidated_descendents(depth: 8)
+          descendents = transfer.giver.consolidated_descendents(depth:, transfer:)
 
-          p { "Associated People and Groups of #{transfer.giver.name}" }
-          table(class: 'table') do
+          p do
+            plain "Associated People and Groups of "
+            strong {transfer.giver.name}
+            plain " (depth: #{depth})"
+          end
+          table(class: 'table', id: 'giver-table') do
             thead do
               tr do
                 th { 'Name' }
@@ -62,10 +66,14 @@ class Transfers::ShowView < ApplicationView
           end
         end
         div(class: 'col', id: 'descendents-of-taker') do
-          descendents = transfer.taker.consolidated_descendents(depth: 8)
+          descendents = transfer.taker.consolidated_descendents(depth:)
 
-          p { "Associated People and Groups of #{transfer.taker.name}" }
-          table(class: 'table') do
+          p do
+            plain "Associated People and Groups of "
+            strong {transfer.taker.name}
+            plain " (depth: #{depth})"
+          end
+          table(class: 'table', id: 'taker-table') do
             thead do
               tr do
                 th { 'Name' }

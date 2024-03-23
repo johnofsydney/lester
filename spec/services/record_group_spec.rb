@@ -38,7 +38,7 @@ RSpec.describe RecordGroup, type: :service do
       'LNP-QLD' => group_names.liberals.qld,
       'Lib-Fed' => group_names.liberals.federal,
       'Lib-NSW' => group_names.liberals.nsw,
-      'Liberal National Party' => group_names.liberals.qld,
+      'Liberal National Party' => group_names.liberals.federal,
       'Liberal National Party (LNP-QLD)' => group_names.liberals.qld,
       'Liberal National Party LNP QLD' => group_names.liberals.qld,
       'Liberal National Party of QLD' => group_names.liberals.qld,

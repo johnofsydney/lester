@@ -12,16 +12,17 @@ class People::ShowView < ApplicationView
       a(
         href:,
         class: 'btn w-100',
-        style: button_styles(person)
+        style: button_styles(person),
+        target: :_blank
       ) { person.name }
     end
 
     if person.groups.present?
       hr
-      render People::Groups.new(groups: person.groups.includes(:people), person: person)
+      render People::Groups.new(groups: person.groups, person: person)
     end
 
-    depth = 1
+    depth = 6
 
     render TransfersTableComponent.new(
       entity: person,

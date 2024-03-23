@@ -39,6 +39,8 @@ class MapGroupNames
 
     # specific exceptions
     return group_names.liberals.federal if name.match(/Liberal Party.+Menzies Research Centre/i)
+    return group_names.labor.federal if name.match(/The Australian Labour Party National Secretar/i)
+    return group_names.labor.federal if name.match(/ALP National \(ALP-FED\)/i)
 
     # Liberal National Party (QLD) and Country Liberal Party (NT)
     return group_names.liberals.qld if name.match(/(Liberal National Party|LNP).+(QLD|Queensland)/i)
@@ -52,10 +54,11 @@ class MapGroupNames
     return group_names.nationals.vic if name.match(/(National Party|NAT).+Vic/i)
     return group_names.nationals.federal if name.match(/National Party.+Fed/i)
     return group_names.nationals.federal if name.match(/The Nationals.+Fed/i)
-    return group_names.nationals.federal if name.match(/National.+Fed/i)
+    return group_names.nationals.federal if name.match(/Nationals.+Fed/i)
     return group_names.nationals.federal if name.match(/NAT-FED/i)
     return group_names.nationals.federal if name.match(/National Party of Australia/i)
     return group_names.nationals.federal if name.match(/Nat Fed/i)
+    return group_names.nationals.federal if name.match(/National Party/i)
 
     # Liberals, must come after Liberal Democrats
     return group_names.liberals.nsw if name.match(/Lib.+(NSW|N\.S\.W\.)/i)
@@ -68,6 +71,8 @@ class MapGroupNames
     return group_names.liberals.act if name.match(/Lib.+ACT/i)
     return group_names.liberals.federal if name.match(/Lib.+(Fed|FEC)/i)
     return group_names.liberals.federal if name.match(/Lib.+Australia/i)
+    return group_names.liberals.nsw if name.match(/Liberal Party Avalon/i)
+    return group_names.liberals.federal if name.match(/Liberal Party Of Aus/i)
 
     # Greens
     return group_names.greens.nsw if name.match(/((Greens|GRN).+(NSW|N\.S\.W)|(NSW|N\.S\.W\.).+(Greens|GRN))/i)
@@ -91,6 +96,7 @@ class MapGroupNames
     return group_names.labor.federal if name.match(
       /^(?!.*Alpha).*(ALP|CLP|Australian (Labor|Labour)|Country (Labor|Labour)|Labor Fed)/i
     )
+    return group_names.labor.tas if name.match(/Tasmanian Labor/i)
 
     # Can't find it, return the name
     name.titleize

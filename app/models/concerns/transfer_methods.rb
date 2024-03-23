@@ -38,7 +38,7 @@ module TransferMethods
       consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:)
     end
 
-    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [])
+    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil)
       current_depth_memberships = []
       queue.each do |node|
 
@@ -57,11 +57,11 @@ module TransferMethods
       visited_membership_ids = visited_membership_ids.flatten.uniq
 
       # get the nodes from the current depth. remove the visited nodes. store the rest in the queue (if there are overlapping memberships)
-      queue = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter).call
+      queue = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter, transfer).call
 
       depth -= 1
       counter += 1
-      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:)
+      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:, transfer:)
     end
 
     private

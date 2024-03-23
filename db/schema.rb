@@ -40,18 +40,6 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table "affiliations", force: :cascade do |t|
-    t.bigint "owning_group_id", null: false
-    t.bigint "sub_group_id", null: false
-    t.date "start_date"
-    t.date "end_date"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["owning_group_id"], name: "index_affiliations_on_owning_group_id"
-    t.index ["sub_group_id"], name: "index_affiliations_on_sub_group_id"
-  end
-
   create_table "groups", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -59,14 +47,15 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.bigint "person_id", null: false
+    t.string "member_type"
+    t.bigint "member_id"
     t.bigint "group_id", null: false
     t.date "start_date"
     t.date "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["group_id"], name: "index_memberships_on_group_id"
-    t.index ["person_id"], name: "index_memberships_on_person_id"
+    t.index ["member_type", "member_id"], name: "index_memberships_on_member"
   end
 
   create_table "people", force: :cascade do |t|
@@ -131,10 +120,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "affiliations", "groups", column: "owning_group_id"
-  add_foreign_key "affiliations", "groups", column: "sub_group_id"
   add_foreign_key "memberships", "groups"
-  add_foreign_key "memberships", "people"
   add_foreign_key "positions", "memberships"
   add_foreign_key "transfers", "groups", column: "taker_id"
 end
