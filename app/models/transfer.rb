@@ -13,7 +13,5 @@ class Transfer < ApplicationRecord
     message: "should have unique combination of giver_type, giver_id, taker_id, amount, and effective_date"
   }
 
-  def formatted_amount
-    "$#{amount}"
-  end
+  store_accessor :data, %i(donations)
 end

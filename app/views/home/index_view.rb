@@ -8,9 +8,10 @@ class Home::IndexView < ApplicationView
     end
 
     div(class: 'row') do
-      h1 { 'About Join The Dots' }
-
-      p { "Join The Dots is a platform dedicated to illuminating the intricate web of connections between people. Our mission is to provide transparency in the realm of political influence, empowering individuals to make informed decisions about their leaders and representatives." }
+      p do
+        strong { "Join The Dots" }
+        plain " is a platform dedicated to illuminating the intricate web of connections between people. Our mission is to provide transparency in the realm of political influence, empowering individuals to make informed decisions about their leaders and representatives."
+      end
 
       p { "At the core of Join The Dots are three main components: People, Groups, and Transfers." }
 

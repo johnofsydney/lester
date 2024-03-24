@@ -4,7 +4,7 @@ class Transfers::IndexView < ApplicationView
   attr_reader :transfers
 
   def initialize(transfers:)
-    @transfers = transfers.includes(:giver, :taker)
+    @transfers = transfers
   end
 
   def template
@@ -21,7 +21,7 @@ class Transfers::IndexView < ApplicationView
         end
       end
       tbody do
-        transfers.find_each do |transfer|
+        transfers.each do |transfer|
           tr do
             td do
               if transfer.id
@@ -31,8 +31,8 @@ class Transfers::IndexView < ApplicationView
               end
             end
             td { number_to_currency(transfer.amount.to_s, precision: 0) }
-            td { transfer.effective_date.to_s }
-            td { transfer.transfer_type }
+            td { transfer.effective_date.strftime('%d/%m/%Y') }
+            td { transfer.transfer_type.titleize }
             td { transfer.giver.name if transfer.giver }
             td { transfer.taker.name if transfer.taker }
           end

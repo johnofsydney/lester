@@ -28,6 +28,7 @@ class Home::TodoView < ApplicationView
                 li { s{'Several Memberships one person in one group'} }
                 li { s{'New Server'} }
                 li { s{'Domain name'} }
+                li { 'Auto Deployment' }
               end
             end
           end
@@ -37,7 +38,9 @@ class Home::TodoView < ApplicationView
             div(class: 'card-body') do
               h5(class: 'card-title') { 'Doing' }
               ul do
-                li { 'Auto Deployment' }
+
+                li { 'Javascript' }
+                li { 'jQuery' }
                 li { 'Write tests for Build Queue service and attend to TODOs' }
                 li { 'Node Linker - should consider memberships only? (Not affiliations)' }
                 li { 'Node Linker - should consider overlapping memberships only?' }
@@ -53,6 +56,7 @@ class Home::TodoView < ApplicationView
               h5(class: 'card-title') { 'TODO' }
               ul do
                 li { 'Add evidence to each model, as an Array' }
+                li { 'More Data from the AEC' }
                 li { 'Better Use of Phlex, components' }
                 li { 'Documentation / Content' }
                 li { 'Theme / Color Scheme' }
@@ -66,8 +70,7 @@ class Home::TodoView < ApplicationView
 
                 li { 'Pagination' }
                 li { 'More tests for record transfer taker' }
-                li { 'Javascript' }
-                li { 'jQuery' }
+
                 li { 'Import Maps' }
                 li { 'Import Phlex JS' }
                 li { 'Import People / Groups / Positions from CSV' }
