@@ -2,6 +2,16 @@ class SearchController < ApplicationController
   def index
     search_term = params[:query]
     @results = PgSearch.multisearch(search_term)
+
+    @transfers_recent = Transfer.order(id: :desc).last(5)
+    @transfers_large = Transfer.order(amount: :desc).last(5)
+    @people_recent = Person.order(id: :desc).last(5)
+    @people_nodeish = Person.all.sort_by { |person| person.nodes.count }.reverse.last(5)
+    @groups_recent = Group.order(id: :desc).last(5)
+    @groups_nodeish = Group.all.sort_by { |group| group.nodes.count }.reverse.last(5)
+
+    @random = @transfers_recent.take(2)
+    
   end
 
   def linker

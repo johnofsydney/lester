@@ -14,3 +14,7 @@
 <% if @results.present? %>
   <%= render(SearchResults.new(results: @results)) %>
 <% end %>
+
+<% if @random.present? %>
+  <%= @random.inspect %>
+<% end %>
