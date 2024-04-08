@@ -14,4 +14,8 @@ class Transfer < ApplicationRecord
   }
 
   store_accessor :data, %i(donations)
+
+  def financial_year
+    effective_date.year
+  end
 end

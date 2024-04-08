@@ -29,7 +29,7 @@ class Transfers::ShowView < ApplicationView
           span { 'To: ' }
           link_for(entity: transfer.taker)
         end
-        p do
+        p(class: 'text-truncate') do
           span { 'Evidence: ' }
           a(href: transfer.evidence) { transfer.evidence }
         end
@@ -39,11 +39,13 @@ class Transfers::ShowView < ApplicationView
       end
     end
     div(class: 'row') do
-      div(class: 'col', id: 'descendents-of-giver') do
-        descendents = transfer.giver.consolidated_descendents(depth:, transfer:)
+      giver_descendents = transfer.giver.consolidated_descendents(depth:, transfer:)
+      taker_descendents = transfer.taker.consolidated_descendents(depth:)
 
+      div(class: 'col', id: 'descendents-of-giver') do
         p do
           plain "Associated People and Groups of "
+          br
           strong {transfer.giver.name}
           plain " (depth: #{depth})"
         end
@@ -51,24 +53,24 @@ class Transfers::ShowView < ApplicationView
           thead do
             tr do
               th { 'Name' }
-              th { 'Depth' }
+              th(class: 'text-end') { 'Depth' }
             end
           end
           tbody do
-            descendents.each do |descendent|
+            giver_descendents.each do |descendent|
               tr(class: "depth-#{descendent.depth}") do
                 td { link_for(entity: descendent) }
-                td { descendent.depth }
+                td(class: 'text-end') { descendent.depth }
               end
             end
           end
         end
       end
-      div(class: 'col', id: 'descendents-of-taker') do
-        descendents = transfer.taker.consolidated_descendents(depth:)
 
+      div(class: 'col', id: 'descendents-of-taker') do
         p do
           plain "Associated People and Groups of "
+          br
           strong {transfer.taker.name}
           plain " (depth: #{depth})"
         end
@@ -76,14 +78,14 @@ class Transfers::ShowView < ApplicationView
           thead do
             tr do
               th { 'Name' }
-              th { 'Depth' }
+              th(class: 'text-end') { 'Depth' }
             end
           end
           tbody do
-            descendents.each do |descendent|
+            taker_descendents.each do |descendent|
               tr(class: "depth-#{descendent.depth}") do
                 td { link_for(entity: descendent) }
-                td { descendent.depth }
+                td(class: 'text-end') { descendent.depth }
               end
             end
           end
@@ -94,14 +96,28 @@ class Transfers::ShowView < ApplicationView
     end
     if transfer.data.present?
       div(class: 'row') do
-        p do
-          transfer.data.to_s
+
+        h4 do
+          "A single 'transfer' can represent multiple single payments. This transfer represents the following payments:"
+        end
+
+        table(class: 'table table-striped') do
+          thead do
+            tr do
+              th { 'Payment Type' }
+              th(class: 'text-end') { 'Amount' }
+              th(class: 'text-end') { 'Date' }
+            end
+          end
+          transfer.data['donations'].each do |donation|
+            tbody do
+              td { donation['transfer_type'] }
+              td(class: 'text-end') { number_to_currency(donation['amount'], precision: 0) }
+              td(class: 'text-end') { donation['donation_date'] }
+            end
+          end
         end
       end
-    end
-
-    script do
-      "console.log(123)"
     end
   end
 end

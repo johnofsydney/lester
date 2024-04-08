@@ -36,6 +36,7 @@ class NodeLinker
       if index == 0
         summary << node.name
       else
+        raise "Membership is now polymorphic. Affiliation is deleted"
         previous_node = path[index - 1]
         membership = Membership.find_by(person: previous_node, group: node) || Membership.find_by(person: node, group: previous_node)
         affiliation = Affiliation.find_by(owning_group: previous_node, sub_group: node) || Affiliation.find_by(owning_group: node, sub_group: previous_node)
