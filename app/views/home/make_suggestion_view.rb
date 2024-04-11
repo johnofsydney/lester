@@ -3,8 +3,8 @@ class Home::MakeSuggestionView < ApplicationView
   end
 
   def template
-    div do
-      h2 { 'Send us a suggestion...' }
+    div(id: 'suggestions') do
+      p { 'Send us a suggestion...' }
       p { 'The effectiveness of this application relies on having comprehensive data, and if you know of a person or group of interest please let us know' }
       p { 'Similarly if you know of an interesting transfer of funds from one entity to another, again, please let us know' }
       p do
@@ -31,7 +31,7 @@ class Home::MakeSuggestionView < ApplicationView
         end
 
 
-        button(class: "btn btn-primary", type: "submit") { "Submit" }
+        button(class: "btn btn-primary margin-above", type: "submit") { "Submit" }
       end
     end
   end

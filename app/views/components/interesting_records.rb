@@ -8,11 +8,39 @@ class InterestingRecords < ApplicationView
   attr_reader :records
 
   def template
-    h2 { 'Interesting and / or New Records' }
-    ul do
-      @records.each do |record|
-        li do
-          a(href: "/transfers/#{record.id}") { text(record) }
+    div(class: 'margin-above') do
+      h2 { 'Interesting and / or New Records' }
+      div(class: 'row') do
+        div(class: 'col') do
+          ul do
+            @records.transfers.each do |record|
+              li do
+                a(href: "/transfers/#{record.id}") { text(record) }
+              end
+            end
+          end
+        end
+      end
+      div(class: 'row') do
+
+        div(class: 'col') do
+          ul do
+            @records.groups.each do |record|
+              li do
+                a(href: "/groups/#{record.id}") { text(record) }
+              end
+            end
+          end
+        end
+
+        div(class: 'col') do
+          ul do
+            @records.people.each do |record|
+              li do
+                a(href: "/people/#{record.id}") { text(record) }
+              end
+            end
+          end
         end
       end
     end
@@ -29,10 +57,10 @@ class InterestingRecords < ApplicationView
   end
 
   def text_for_group(record)
-    "Group: #{record.name} \nNodes: #{record.nodes.count}"
+    "Group: #{record.name}"
   end
 
   def text_for_person(record)
-    "Person: #{record.name} \nNodes: #{record.nodes.count}"
+    "Person: #{record.name}"
   end
 end

@@ -10,7 +10,11 @@ class SearchController < ApplicationController
     groups_recent = Group.order(id: :desc).last(5).sample(2)
     groups_nodeish = Group.all.sort_by { |group| group.nodes.count }.reverse.last(5).sample(2)
 
-    @records = transfers_recent + transfers_large + people_recent + people_nodeish + groups_recent + groups_nodeish
+    @records = OpenStruct.new(
+      transfers: transfers_recent + transfers_large,
+      people: people_recent + people_nodeish,
+      groups: groups_recent + groups_nodeish
+    )
 
   end
 

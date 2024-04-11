@@ -36,20 +36,40 @@ class NodeLinker
       if index == 0
         summary << node.name
       else
-        raise "Membership is now polymorphic. Affiliation is deleted"
         previous_node = path[index - 1]
-        membership = Membership.find_by(person: previous_node, group: node) || Membership.find_by(person: node, group: previous_node)
-        affiliation = Affiliation.find_by(owning_group: previous_node, sub_group: node) || Affiliation.find_by(owning_group: node, sub_group: previous_node)
+
+        node_type = node.is_a?(Group) ? 'Group' : 'Person'
+        previous_node_type = previous_node.is_a?(Group) ? 'Group' : 'Person'
+
+        membership = Membership.find_by(member_id: previous_node.id, member_type: previous_node_type, group: node) || Membership.find_by(member_id: node.id, member_type: node_type, group: previous_node)
+
         transfer = Transfer.find_by(giver: previous_node, taker: node) || Transfer.find_by(giver: node, taker: previous_node)
 
         if membership
-          if membership.positions.empty?
-            summary << "=>"
-          else
-            summary << "=> #{membership.positions.last.title} =>"
+          is_or_was = if membership.end_date.nil?
+                        'is'
+                      elsif membership.end_date < Time.now.to_date
+                        'was'
+                      else
+                        'was'
+                      end
+          has_or_had = if membership.end_date.nil?
+                        'has'
+                      elsif membership.end_date < Time.now.to_date
+                        'had'
+                      else
+                        'had'
+                      end
+            member_or_title = membership&.positions&.last&.title || 'member'
+
+          if previous_node_type == 'Group' && node_type == 'Group'
+            summary << "#{is_or_was} affiliated to "
+          elsif previous_node_type == 'Group' && node_type == 'Person'
+            summary << "that #{has_or_had} a #{member_or_title}: "
+          elsif previous_node_type == 'Person' && node_type == 'Group'
+            summary << "who #{is_or_was} a #{member_or_title} of "
           end
-        elsif affiliation
-          summary << "=> #{affiliation.description} =>"
+
         elsif transfer
           summary << "=> transfer #{transfer.transfer_type} of $#{transfer.amount} =>"
         end
@@ -59,5 +79,8 @@ class NodeLinker
     end
 
     return summary
+  end
+
+  def membership
   end
 end
