@@ -47,7 +47,7 @@ class TransfersTableComponent < ApplicationView
 
   def make_table(transfers)
     h2 { 'Transfers' }
-    h3 { "#{heading} (#{transfers.count} records)" }
+    h5 { "#{heading} (#{transfers.count} records)" }
     table(class: 'table table-striped responsive-table') do
       tr do
         th { 'ID' }
@@ -87,7 +87,7 @@ class TransfersTableComponent < ApplicationView
   def row_style(transfer)
     return '' unless transfer.depth && transfer.direction
 
-    transparency = 0.65 - (0.1 * transfer.depth)
+    transparency = 0.7 - (0.1 * transfer.depth)
 
     if transfer.direction == 'incoming'
       "background-color: rgba(60, 200, 0, #{transparency});"

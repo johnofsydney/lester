@@ -7,7 +7,8 @@ class ShortestPathResults < ApplicationView
 
   def template
     return if shortest_path.empty?
-    div(class: 'card') do
+
+    div(class: 'results') do
       h3 { "#{shortest_path.first} => #{shortest_path.last}" }
       shortest_path.each do |piece|
         p { piece }

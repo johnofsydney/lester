@@ -84,3 +84,15 @@ button {
   border-top-width: 1px;
   border-left-width: 1px;
 }
+
+.results {
+  margin-top: 20px;
+}
+
+#suggestions .form-control {
+  width: 100%;
+}
+
+.margin-above {
+  margin-top: 20px;
+}

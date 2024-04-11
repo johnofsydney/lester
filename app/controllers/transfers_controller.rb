@@ -5,8 +5,9 @@ class TransfersController < ApplicationController
   layout -> { ApplicationLayout }
 
   def index
-    render Transfers::IndexView.new(transfers: Transfer.includes([:giver, :taker]).all)
-    # TODO: make this a search page otherwise it will be too slow. dont bother to paginate
+    transfers = Transfer.order(amount: :desc)
+    render Transfers::IndexView.new(transfers:)
+
   end
 
   def show

@@ -4,7 +4,6 @@
 
 
 <%= form_with url: {controller: "search", action: "index"}, method: :get do %>
-  <%= label_tag :query, 'Search' %>
   <%= text_field_tag :query, '', autofocus: true %>
   <%= submit_tag 'Search' %>
 <% end %>
@@ -13,4 +12,8 @@
 
 <% if @results.present? %>
   <%= render(SearchResults.new(results: @results)) %>
+<% end %>
+
+<% if @results.empty? && @records.present? %>
+  <%= render(InterestingRecords.new(records: @records)) %>
 <% end %>
