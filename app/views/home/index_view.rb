@@ -23,12 +23,14 @@ class Home::IndexView < ApplicationView
 
       p do
         "At Join The Dots, we track and aggregate publicly available political donations from the Australian Electoral Commission (AEC) website, organizing them by year. We also record all individuals and groups involved in making donations, as well as the recipient groups. We currently store;"
-        ul(style: 'list-style-type: none;') do
-          li do
-            a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records for the last 5 years' }
-          end
+      end
+
+      ul(style: 'list-style-type: none;') do
+        li do
+          a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records for the last 5 years' }
         end
       end
+
 
       p { "For groups where the owners, major shareholders, or key personnel can be identified through public records, we add these individuals to the group in our database. This enhances the depth and accuracy of our data, providing a more comprehensive view of the connections of the individual." }
 
