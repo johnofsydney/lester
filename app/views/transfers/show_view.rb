@@ -94,7 +94,7 @@ class Transfers::ShowView < ApplicationView
 
       end
     end
-    if transfer.data.present?
+    if transfer.data.present? && transfer.data['donations'].present?
       div(class: 'row') do
 
         h4 do
