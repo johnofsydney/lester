@@ -27,7 +27,7 @@ class Home::IndexView < ApplicationView
 
       ul(style: 'list-style-type: none;') do
         li do
-          a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records for the last 10 years' }
+          a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records since 2018' }
           a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term') { 'Federal MPs and Senators since 2016' }
         end
       end

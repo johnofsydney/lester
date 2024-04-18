@@ -42,6 +42,7 @@ class Home::TodoView < ApplicationView
               h5(class: 'card-title') { 'Doing' }
               ul do
 
+                li { 'make some groups non-following' }
                 li { 'Documentation / Content' }
                 li { 'Images for ABout' }
                 li { 'Write tests for Build Queue service and attend to TODOs' }
