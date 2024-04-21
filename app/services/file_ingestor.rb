@@ -37,40 +37,85 @@ class FileIngestor
     end
 
     def federal_parliamentarians_upload(file)
+      parliament = RecordGroup.call('Australian Federal Parliament')
+
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        next if Person.find_by(name: row['name'])
+        next if Person.find_by(name: row['name']) # GUARD! IS TOO STRICT!
+        print "."
 
-        person = Person.find_or_create_by(name: row['name'].titleize)
-
-        party = RecordGroup.call(row['party'].titleize)
+        # Start and End Dates for Person in Parliament
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 
-        # membership of a party
-        if Membership.where(member: person, group: party).empty?
-          print "."
-          membership = Membership.find_or_create_by(member: person, group: party)
-          membership.save
-          Position.create(membership: membership, title: 'Party Member 1')
+        person = Person.find_or_create_by(name: row['name'].titleize)
+        federal_party = RecordGroup.call(row['party'].titleize)
+        state_party = RecordGroup.call(
+          row['party'].downcase.gsub('federal', row['state'])
+        )
 
-          # membership of a party for a state
-          print "."
-          state_party = RecordGroup.call(row['party'].titleize + ' ' + row['state'].upcase)
 
-          state_membership = Membership.find_or_create_by(member: person, group: state_party)
-          state_membership.save
-          Position.create(membership: state_membership, title: 'Party Member 2  ')
+        senator = file.match?(/senator/i) ? true : false
+        # senator = row['electorate'].match?(/Queensland|New South Wales|Victoria|Tasmania|South Australia|Western Australia|Northern Territory|Australian Capital Territory/i) ? true : false
+        independent = federal_party.name.match?(/Independent/)
+        major_party = federal_party.name.match?(/ALP|Liberals|Greens|Nationals|One Nation/)
 
-          # membership of the parliament
-          print "."
-          parliament = RecordGroup.call('Australian Federal Parliament')
+        title = senator ? 'Senator' : 'MP'
+        electorate_naming = senator ? 'Senators for' : 'Electorate of'
+
+        # TODO: THIS DOES NOT WORK WELL, ESP SENATORS
+        electorate = RecordGroup.call("#{electorate_naming} #{row['electorate']} (#{federal_party.less_level})")
+
+
+        if Membership.where(member: person, group: parliament).empty?
           parliament_membership = Membership.find_or_create_by(member: person, group: parliament, start_date: start_date, end_date: end_date)
-          Position.create(membership: parliament_membership, title: 'Member of Parliament', start_date: start_date, end_date: end_date)
+          parliament_membership.save
+          Position.create(membership: parliament_membership, title:, start_date: start_date, end_date: end_date)
         end
 
-        # membership of a party ofr their state
+
+
+        # if Membership.where(member: person, group: electorate).empty?
+        # end
+
+        next if independent
+
+        if Membership.where(member: person, group: federal_party).empty?
+          federal_membership = Membership.find_or_create_by(member: person, group: federal_party)
+          federal_membership.save
+          Position.create(membership: federal_membership, title: 'Party Member Of Federal Party') unless independent
+
+          if major_party
+            state_membership = Membership.find_or_create_by(member: person, group: state_party)
+            state_membership.save
+            Position.create(membership: state_membership, title: 'Member of State Party')
+          end
+        end
       end
+    end
+
+    def ministries_upload(file)
+      csv = CSV.read(file, headers: true)
+      csv.each do |row|
+        ministry_group = RecordGroup.call(row['group'])
+        person = Person.find_by(name: row['person'].titleize) || raise
+        title = row['title']
+        start_date = parse_date(row['start_date'])
+        end_date = parse_date(row['end_date'])
+
+
+        membership = Membership.find_or_create_by(member: person, group: ministry_group, start_date: start_date, end_date: end_date)
+
+        Position.create(membership: membership, title: title, start_date: start_date, end_date: end_date)
+        rescue => e
+
+          p "Error: #{e}"
+          binding.pry
+      end
+    end
+
+    def member_of_parliament_upload(file)
+      raise 'hell'
     end
 
     def parse_date(date)

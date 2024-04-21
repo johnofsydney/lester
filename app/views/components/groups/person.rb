@@ -20,9 +20,11 @@ class Groups::Person < ApplicationView
         elsif person.memberships.count < 8
           memberships = person.memberships - Membership.where(member: person, group: exclude_group)
 
-          ul(class: 'list-group list-group-horizontal') do
+          # ul(class: 'list-group list-group-horizontal') do
+          ul(class: 'list-group') do
             memberships.each do |membership|
-              li(class: 'list-group-item horizontal-button') do
+              # li(class: 'list-group-item horizontal-button') do
+              li(class: 'list-group-item') do
                 a(href: "/groups/#{membership.group.id}") { membership.group.name }
                 # TODO FIX THIS FOR GROUPS AS MEMBERS
               end

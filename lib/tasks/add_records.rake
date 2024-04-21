@@ -30,56 +30,71 @@ namespace :lester do
 
 
     donation_files = [
-      'csv_data/Annual_Donations_Made_2018.csv',
-      'csv_data/Annual_Donations_Made_2019.csv',
-      'csv_data/Annual_Donations_Made_2020.csv',
-      'csv_data/Annual_Donations_Made_2021.csv',
-      'csv_data/Annual_Donations_Made_2022.csv',
-      'csv_data/Annual_Donations_Made_2023.csv',
+      # 'csv_data/Annual_Donations_Made_2018.csv',
+      # 'csv_data/Annual_Donations_Made_2019.csv',
+      # 'csv_data/Annual_Donations_Made_2020.csv',
+      # 'csv_data/Annual_Donations_Made_2021.csv',
+      # 'csv_data/Annual_Donations_Made_2022.csv',
+      # 'csv_data/Annual_Donations_Made_2023.csv',
     ]
 
-    other_files = [
-      'csv_data/Federal_Members_2024.csv'
+    federal_parliamentarians = [
+      # 'csv_data/Federal_Members_2024.csv'
+      'csv_data/wiki_feds_current_mps_cleaned.csv',
+      'csv_data/wiki_feds_current_senators_cleaned.csv',
+      'csv_data/wiki_feds_ending_2019_cleaned.csv',
+      'csv_data/wiki_feds_ending_2022_cleaned.csv',
+      'csv_data/wiki_feds_senators_ending_2019_cleaned.csv',
+      'csv_data/wiki_feds_senators_ending_2022_cleaned.csv'
     ]
 
     donation_files.each do |file|
       FileIngestor.annual_donor_ingest(file)
     end
 
-    # others
-    other_files.each do |file|
+    # Federal Parliamentarians
+    federal_parliamentarians.each do |file|
       FileIngestor.federal_parliamentarians_upload(file)
     end
 
+    FileIngestor.ministries_upload('csv_data/ministries.csv')
+
+    # others
+    # membership_details.each do |file|
+    #   FileIngestor.membership_details._upload(file)
+    # end
+
+    # FileIngestor.more_details()
+
     p "creating people"
     # coalition members
-    josh_frydenburg = Person.find_or_create_by(name: 'Josh Frydenburg')
-    peter_dutton = Person.find_or_create_by(name: 'Peter Dutton')
-    scott_morrison = Person.find_or_create_by(name: 'Scott Morrison')
+    josh_frydenburg = Person.find_by(name: 'Josh Frydenburg')
+    peter_dutton = Person.find_by(name: 'Peter Dutton')
+    scott_morrison = Person.find_by(name: 'Scott Morrison')
     warren_entsch = Person.find_or_create_by(name: 'Warren Entsch')
     arthur_sinodinos = Person.find_or_create_by(name: 'Arthur Sinodinos')
     bill_heffernan = Person.find_or_create_by(name: 'Bill Heffernan')
-    barnaby_joyce = Person.find_or_create_by(name: 'Barnaby Joyce')
+    barnaby_joyce = Person.find_by(name: 'Barnaby Joyce')
     malcolm_turnbull = Person.find_or_create_by(name: 'Malcolm Turnbull')
-    tony_abbott = Person.find_or_create_by(name: 'Tony Abbot')
-    michael_mccormack = Person.find_or_create_by(name: 'Michael McCormack')
+    tony_abbott = Person.find_by(name: 'Tony Abbot')
+    michael_mccormack = Person.find_or_create_by(name: 'Michael Mc Cormack')
 
     # labor members
-    anthony_albanese = Person.find_or_create_by(name: 'Anthony Albanese')
-    tanya_plibersek = Person.find_or_create_by(name: 'Tanya Plibersek')
+    anthony_albanese = Person.find_by(name: 'Anthony Albanese')
+    tanya_plibersek = Person.find_by(name: 'Tanya Plibersek')
     kevin_rudd = Person.find_or_create_by(name: 'Kevin Rudd')
     mark_latham = Person.find_or_create_by(name: 'Mark Latham')
     eddie_obeid = Person.find_or_create_by(name: 'Eddie Obeid')
     ian_macdonald = Person.find_or_create_by(name: 'Ian Macdonald')
     joe_tripodi = Person.find_or_create_by(name: 'Joe Tripodi')
     adele_tahan = Person.find_or_create_by(name: 'Adele Tahan')
-    penny_wong = Person.find_or_create_by(name: 'Penny Wong')
+    penny_wong = Person.find_by(name: 'Penny Wong')
 
     # minor party members
-    bob_brown = Person.find_or_create_by(name: 'Bob Brown')
-    allegra_spender = Person.find_or_create_by(name: 'Allegra Spender')
-    zalie_stegall = Person.find_or_create_by(name: 'Zali Stegall')
-    pauline_hanson = Person.find_or_create_by(name: 'Pauline Hanson')
+    bob_brown = Person.find_by(name: 'Bob Brown')
+    allegra_spender = Person.find_by(name: 'Allegra Spender')
+    zalie_stegall = Person.find_by(name: 'Zali Stegall')
+    pauline_hanson = Person.find_by(name: 'Pauline Hanson')
 
 
     # business people
@@ -250,10 +265,10 @@ namespace :lester do
     # federal_dept_prime_minister_and_cabinet = Group.find_or_create_by(name: 'Department of The Prime Minister and Cabinet')
     # federal_dept_infrastructure_transport_regional_development = Group.find_or_create_by(name: 'Department of Infrastructure, Transport and Regional Development')
 
-    morrison_ministry = Group.find_or_create_by(name: 'Morrison Ministry')
-    albanese_ministry = Group.find_or_create_by(name: 'Albanese Ministry')
-    turnbull_ministry = Group.find_or_create_by(name: 'Turnbull Ministry')
-    abbott_ministry = Group.find_or_create_by(name: 'Abbott Ministry')
+    # morrison_ministry = Group.find_or_create_by(name: 'Morrison Ministry')
+    # albanese_ministry = Group.find_or_create_by(name: 'Albanese Ministry')
+    # turnbull_ministry = Group.find_or_create_by(name: 'Turnbull Ministry')
+    # abbott_ministry = Group.find_or_create_by(name: 'Abbott Ministry')
 
     # attendees of maiden speeches
     barnarbys_maiden_speech = Group.find_or_create_by(name: 'Barnarby Joyce Maiden Speech Attendees')
@@ -283,7 +298,7 @@ namespace :lester do
     Membership.find_or_create_by(group: labor_nsw, member: ian_macdonald, start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7))
     Membership.find_or_create_by(group: labor_nsw, member: eddie_obeid, start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6))
     Membership.find_or_create_by(group: labor_nsw, member: adele_tahan)
-    Membership.find_or_create_by(group: labor_federal, member: penny_wong, start_date: Date.new(1988, 7, 3))
+    # Membership.find_or_create_by(group: labor_federal, member: penny_wong, start_date: Date.new(1988, 7, 3))
 
     Membership.find_or_create_by(group: greens_tas, member: bob_brown)
 
@@ -387,79 +402,79 @@ namespace :lester do
     Membership.find_or_create_by(group: great_barrier_reef_foundation, member: larry_marshall, positions: [Position.create(title: 'Director')])
     Membership.find_or_create_by(group: great_barrier_reef_foundation, member: katherine_woodthorpe, positions: [Position.create(title: 'Director')])
 
-    # Thodey
-    # https://en.wikipedia.org/wiki/David_Thodey
-    Membership.find_or_create_by(group: tyro_payments, member: david_thodey, positions: [Position.create(title: 'ChairPerson')])
-    Membership.find_or_create_by(group: xero, member: david_thodey, positions: [Position.create(title: 'ChairPerson')])
-    Membership.find_or_create_by(group: ramsay_health_care, member: david_thodey, positions: [Position.create(title: 'Board Member')])
-    # Parkinson
-    # https://en.wikipedia.org/wiki/Martin_Parkinson
-    m1 = Membership.find_or_create_by(group: morrison_ministry, member: martin_parkinson, positions: [Position.create(title: 'Secretary')])
+    # # Thodey
+    # # https://en.wikipedia.org/wiki/David_Thodey
+    # Membership.find_or_create_by(group: tyro_payments, member: david_thodey, positions: [Position.create(title: 'ChairPerson')])
+    # Membership.find_or_create_by(group: xero, member: david_thodey, positions: [Position.create(title: 'ChairPerson')])
+    # Membership.find_or_create_by(group: ramsay_health_care, member: david_thodey, positions: [Position.create(title: 'Board Member')])
+    # # Parkinson
+    # # https://en.wikipedia.org/wiki/Martin_Parkinson
+    # m1 = Membership.find_or_create_by(group: morrison_ministry, member: martin_parkinson, positions: [Position.create(title: 'Secretary')])
 
 
-    # Prime Ministers
-    Membership.find_or_create_by(
-      group: abbott_ministry,
-      member: tony_abbott,
-      positions: [
-        Position.create(title: 'Prime Minister')
-        ]
-      )
-    Membership.find_or_create_by(
-      group: turnbull_ministry,
-      member: malcolm_turnbull,
-      start_date: Date.new(2015, 9, 15),
-      end_date: Date.new(2018, 8, 23),
-      positions: [
-        Position.create(
-          title: 'Prime Minister',
-          start_date: Date.new(2015, 9, 15),
-          end_date: Date.new(2018, 8, 23)
-        )
-      ]
-    )
-    Membership.find_or_create_by(
-      group: turnbull_ministry,
-      member: scott_morrison,
-      start_date: Date.new(2015, 9, 15),
-      end_date: Date.new(2018, 8, 23),
-      positions: [
-        Position.create(
-          title: 'Treasurer',
-          start_date: Date.new(2015, 9, 21),
-          end_date: Date.new(2018, 8, 23)
-        )
-      ]
-    )
-    Membership.find_or_create_by(
-      group: morrison_ministry,
-      member: scott_morrison,
-      start_date: Date.new(2018, 8, 24),
-      end_date: Date.new(2022, 5, 23),
-      positions: [
-        Position.create(
-          title: 'Prime Minister',
-          start_date: Date.new(2018, 8, 24),
-          end_date: Date.new(2022, 5, 23)
-        )
-      ]
-    )
-    Membership.find_or_create_by(
-      group: albanese_ministry,
-      member: anthony_albanese,
-      start_date: Date.new(2022, 5, 23),
-      positions: [
-        Position.create(
-          title: 'Prime Minister',
-          start_date: Date.new(2022, 5, 23)
-        )
-      ]
-    )
+    # # Prime Ministers
+    # Membership.find_or_create_by(
+    #   group: abbott_ministry,
+    #   member: tony_abbott,
+    #   positions: [
+    #     Position.create(title: 'Prime Minister')
+    #     ]
+    #   )
+    # Membership.find_or_create_by(
+    #   group: turnbull_ministry,
+    #   member: malcolm_turnbull,
+    #   start_date: Date.new(2015, 9, 15),
+    #   end_date: Date.new(2018, 8, 23),
+    #   positions: [
+    #     Position.create(
+    #       title: 'Prime Minister',
+    #       start_date: Date.new(2015, 9, 15),
+    #       end_date: Date.new(2018, 8, 23)
+    #     )
+    #   ]
+    # )
+    # Membership.find_or_create_by(
+    #   group: turnbull_ministry,
+    #   member: scott_morrison,
+    #   start_date: Date.new(2015, 9, 15),
+    #   end_date: Date.new(2018, 8, 23),
+    #   positions: [
+    #     Position.create(
+    #       title: 'Treasurer',
+    #       start_date: Date.new(2015, 9, 21),
+    #       end_date: Date.new(2018, 8, 23)
+    #     )
+    #   ]
+    # )
+    # Membership.find_or_create_by(
+    #   group: morrison_ministry,
+    #   member: scott_morrison,
+    #   start_date: Date.new(2018, 8, 24),
+    #   end_date: Date.new(2022, 5, 23),
+    #   positions: [
+    #     Position.create(
+    #       title: 'Prime Minister',
+    #       start_date: Date.new(2018, 8, 24),
+    #       end_date: Date.new(2022, 5, 23)
+    #     )
+    #   ]
+    # )
+    # Membership.find_or_create_by(
+    #   group: albanese_ministry,
+    #   member: anthony_albanese,
+    #   start_date: Date.new(2022, 5, 23),
+    #   positions: [
+    #     Position.create(
+    #       title: 'Prime Minister',
+    #       start_date: Date.new(2022, 5, 23)
+    #     )
+    #   ]
+    # )
 
-    # Ministers
-    Membership.find_or_create_by(group: albanese_ministry, member: penny_wong, positions: [Position.create(title: 'Foreign Minister')])
-    Membership.find_or_create_by(group: morrison_ministry, member: josh_frydenburg, positions: [Position.create(title: 'Minister')])
-    Membership.find_or_create_by(group: morrison_ministry, member: michael_mccormack, positions: [Position.create(title: 'Minister')])
+    # # Ministers
+    # Membership.find_or_create_by(group: albanese_ministry, member: penny_wong, positions: [Position.create(title: 'Foreign Minister')])
+    # Membership.find_or_create_by(group: morrison_ministry, member: josh_frydenburg, positions: [Position.create(title: 'Minister')])
+    # Membership.find_or_create_by(group: morrison_ministry, member: michael_mccormack, positions: [Position.create(title: 'Minister')])
 
     # GDV related
     # Position.find_or_create_by(membership: gdv_sc, title: 'General Manager', start_date: Date.new(2011, 1, 1), end_date: Date.new(2016, 3, 1))
@@ -508,10 +523,10 @@ namespace :lester do
     Membership.find_or_create_by(group: labor_federal, member: labor_act)
 
 
-    Membership.find_or_create_by(group: federal_government, member: morrison_ministry, start_date: Date.new(2018, 8, 24), end_date: Date.new(2022, 6, 30))
-    Membership.find_or_create_by(group: federal_government, member: albanese_ministry, start_date: Date.new(2022, 6, 30))
-    Membership.find_or_create_by(group: federal_government, member: abbott_ministry, start_date: Date.new(2013, 9, 18), end_date: Date.new(2015, 9, 14))
-    Membership.find_or_create_by(group: federal_government, member: turnbull_ministry, start_date: Date.new(2015, 9, 15), end_date: Date.new(2018, 8, 23))
+    # Membership.find_or_create_by(group: federal_government, member: morrison_ministry, start_date: Date.new(2018, 8, 24), end_date: Date.new(2022, 6, 30))
+    # Membership.find_or_create_by(group: federal_government, member: albanese_ministry, start_date: Date.new(2022, 6, 30))
+    # Membership.find_or_create_by(group: federal_government, member: abbott_ministry, start_date: Date.new(2013, 9, 18), end_date: Date.new(2015, 9, 14))
+    # Membership.find_or_create_by(group: federal_government, member: turnbull_ministry, start_date: Date.new(2015, 9, 15), end_date: Date.new(2018, 8, 23))
 
 
 

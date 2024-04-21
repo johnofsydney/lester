@@ -121,4 +121,11 @@ class Group < ApplicationRecord
   def transfers_in_value
     incoming_transfers.sum(:amount)
   end
+
+  def less_level
+    name.gsub(/(Federal|NSW|VIC|SA|WA|TAS|ACT|NT)/, '')
+        .gsub('(', '')
+        .gsub(')', '')
+        .strip
+  end
 end
