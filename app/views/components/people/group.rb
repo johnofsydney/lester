@@ -61,11 +61,11 @@ private
     return '' unless result
 
     if position.end_date.present? && position.start_date.present?
-      result += " (#{position.start_date.strftime("%d/%m/%y")} - #{position.end_date})"
+      result += " (#{position.start_date.strftime("%d/%m/%y")} - #{position.end_date.strftime("%d/%m/%y")})"
     elsif position.start_date.present?
       result += " (since #{position.start_date.strftime("%d/%m/%y")})"
     elsif position.end_date.present?
-      result += " (until #{position.end_date})"
+      result += " (until #{position.end_date.strftime("%d/%m/%y")})"
     end
 
     result

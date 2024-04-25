@@ -8,7 +8,7 @@ module TransferMethods
 
       queue.each do |node|
         # next  if node.nodes.count > 4
-        return results  if node.nodes.count > 15
+        # return results  if node.nodes.count > 15
         visited_nodes << node # store the current node as visited
         current_depth_memberships << node.memberships.to_a
 

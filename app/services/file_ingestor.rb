@@ -98,19 +98,39 @@ class FileIngestor
       csv = CSV.read(file, headers: true)
       csv.each do |row|
         ministry_group = RecordGroup.call(row['group'])
-        person = Person.find_by(name: row['person'].titleize) || raise
+        person = Person.find_or_create_by(name: row['person'].titleize) || 'Should be find for politicians, but find or create for list of staffers etc'
+        # person = Person.find_by(name: row['person'].titleize) || raise 'Person Not Found'
         title = row['title']
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 
-
-        membership = Membership.find_or_create_by(member: person, group: ministry_group, start_date: start_date, end_date: end_date)
-
-        Position.create(membership: membership, title: title, start_date: start_date, end_date: end_date)
+        # the party membership may not exist, if so, we need to create it
+        membership = Membership.find_or_create_by(
+          member_type: "Person",
+          member_id: person.id,
+          group: ministry_group
+        )
+        # create position for each row, with unique dates and title
+        Position.find_or_create_by(membership: membership, title: title, start_date: start_date, end_date: end_date)
         rescue => e
 
           p "Error: #{e}"
           binding.pry
+      end
+    end
+
+    def affiliations_upload(file)
+      csv = CSV.read(file, headers: true)
+      csv.each do |row|
+        print ":"
+        owning_group = RecordGroup.call(row['group'])
+        member_group = RecordGroup.call(row['member_group'])
+
+        membership = Membership.find_or_create_by(
+          member_type: "Group",
+          member_id: member_group.id,
+          group: owning_group
+        )
       end
     end
 

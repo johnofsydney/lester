@@ -1,4 +1,5 @@
 class People::ShowView < ApplicationView
+  include ActionView::Helpers::NumberHelper
 
   attr_reader :person
 
@@ -16,6 +17,22 @@ class People::ShowView < ApplicationView
         target: :_blank
       ) { person.name }
     end
+
+    if money_in.present? || money_out.present?
+      hr
+      div(class: 'row') do
+        h2 { 'Money Summary' }
+        div(class: 'col') do
+          h3 { 'Money In' }
+          p { money_in }
+        end
+        div(class: 'col') do
+          h3 { 'Money Out' }
+          p { money_out }
+        end
+      end
+    end
+
 
     if person.groups.present?
       hr
@@ -41,5 +58,19 @@ class People::ShowView < ApplicationView
         Group::NAMES.send(group).send(state) if Group::NAMES.send(group)
       end
     end.flatten.compact
+  end
+
+    def money_in
+    amount = Transfer.where(taker: person).sum(:amount)
+    return unless amount.positive?
+
+    number_to_currency amount, precision: 0
+  end
+
+  def money_out
+    amount = Transfer.where(giver: person).sum(:amount)
+    return unless amount.positive?
+    # binding.pry
+    number_to_currency amount, precision: 0
   end
 end
