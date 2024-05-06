@@ -8,6 +8,7 @@ RSpec.describe RecordPerson, type: :service do
       "Kelly O'Dwyer" => "Kelly O'Dwyer",
       "Michael McCormack" => "Michael McCormack",
       "John Coote MP" => "John Coote",
+      "Andrew D M Murray AM" => "Andrew D M Murray",
     }
   end
 

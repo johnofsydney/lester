@@ -23,8 +23,28 @@ class RecordDonation
   end
 
   def person_or_group
+    regex_for_3_or_4_capitals = /HCF|INPEX|CMAX|SDA/
+    regex_for_company_words_1 = /Corporation|Transport|Tax Aid|Outcomes|Lifestyle/i
+    regex_for_company_words_2 = /business|technology|shopping|toyota|bank|promotions|publications/i
+    regex_for_company_words_3 = /institute|horticultural|cleaning|technologies|centre/i
+    regex_for_company_words_4 = /Services|investments|entertainment|Insurance|Commerce/i
+    regex_for_company_words_5 = /Public|affairs|nimbin hemp|company|workpac|wren oil/i
+    regex_for_company_words_6 = /plumbing|division|federal|office|advisory/i
+    regex_for_company_words_7 = /company|events|commerce|webdrill/i
+
+    return 'group' if name.match?(regex_for_3_or_4_capitals)  # Check for acronyms
+    return 'group' if name.match?(regex_for_company_words_1)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_2)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_3)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_4)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_5)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_6)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_7)  # Check for company names
+
+
     return 'group' if name.match?(/(PricewaterhouseCoopers|MSD)/)
     return 'person' if name.match?(/(?:MP|OAM|AO)$/)  # Check for individuals with MP or OAM
+    return 'person' if name.match?(/\bMP\b|\bDr\b/)  # Check for individuals with MP or OAM
     return 'group' if name.match?(/(limited|incorporated|ltd|government|associat|management|group|trust)/i)  # Check for company names
     return 'group' if name.match?(/(australia|management|capital|windfarm|engineering|energy)/i)  # Check for company names
     return 'group' if name.match?(/(guild|foundation|trust|retail|council|union|club|alliance)/i)  # Check for company names

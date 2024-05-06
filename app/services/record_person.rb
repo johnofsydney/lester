@@ -17,7 +17,7 @@ class RecordPerson
 
   def cleaned_up_name(name)
     regex_for_removal_elected = /\bMP\b|\bSenator\b/
-    regex_for_removal_honours = /\bOAM\b|\bAO\b/
+    regex_for_removal_honours = /\bOAM\b|\bAO\b|\bAM\b/
     regex_for_removal_titles = /\bQC\b|\bProf\b|\bDr\b/
 
     name.gsub(regex_for_removal_elected, '')

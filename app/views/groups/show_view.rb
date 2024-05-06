@@ -49,7 +49,7 @@ class Groups::ShowView < ApplicationView
 
     if group.people.present?
       hr
-      render Groups::People.new(people: group.people.includes([:memberships]), group: group)
+      render Groups::People.new(people: group.people, group: group)
     end
 
     depth = 6

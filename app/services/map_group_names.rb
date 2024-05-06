@@ -17,6 +17,8 @@ class MapGroupNames
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
     return 'Australian Council of Trade Unions' if name.match?(/ACTU/i)
     return 'Climate 200' if name.match?(/(Climate 200|Climate200)/i)
+    return 'Australian Chamber of Commerce and Industry' if name.match?(/Australian Chamber of Commerce and Industry/i)
+    return 'Australian Chamber of Commerce and Industry' if name.match?(/Australia Chamber of Commerce and Industry/i)
 
           # Independents
     return 'David Pocock Campaign' if name.match?(/David Pocock/i)
@@ -116,6 +118,7 @@ class MapGroupNames
     return group_names.labor.federal if name.match?(/Australian Labor Party/i)
     return group_names.labor.federal if name.match?(/ALP Nat/i)
     return group_names.labor.federal if name.match?(/ALP Bruce Fea/i)
+    return group_names.labor.federal if name.match?(/Australia Labor Party (ALP)/i)
 
     # Can't find it, return the name
     cleaned_up_name(name)
@@ -127,15 +130,15 @@ class MapGroupNames
 
   def cleaned_up_name(name)
     regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
-    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b/i
+    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b/i
 
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b/i
-    regex_for_titleize_2 = /\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
+    regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
     regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b/i
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b/i
 
-    name.titleize
+    name.strip
         .gsub(regex_for_two_and_three_chars) { |chars| chars.upcase }
         .gsub(regex_for_longer_acronyms) { |chars| chars.upcase }
         .gsub(regex_for_titleize) { |word| word.titleize }
@@ -144,6 +147,5 @@ class MapGroupNames
         .gsub(regex_for_downcase) { |word| word.downcase }
         .gsub(/^the/) { |word| word.titleize }
         .gsub(/Pty Limited|Pty\. Ltd\./, 'Pty Ltd')
-        .strip
   end
 end
