@@ -11,9 +11,7 @@ class MapGroupNames
   def map_or_return_name(name)
     name = name.strip
 
-    return 'Sugolena' if name.match?(/Sugolena/i)
-    return 'Idameneo' if name.match?(/Idameneo/i)
-    return 'Get Up' if name.match?(/(GetUp|Get Up)/i)
+    return 'Get Up Limited' if name.match?(/(GetUp|Get Up)/i)
     return 'Australian Hotels Association' if name.match?(/Australian Hotels Association/i)
     return 'Advance Australia' if name.match?(/Advance Aus/i)
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
@@ -59,6 +57,7 @@ class MapGroupNames
     return group_names.nationals.federal if name.match(/The Nationals.+Fed/i)
     return group_names.nationals.federal if name.match(/Nationals.+Fed/i)
     return group_names.nationals.federal if name.match(/NAT-FED/i)
+    return group_names.nationals.federal if name.match(/NAT FED/i)
     return group_names.nationals.federal if name.match(/National Party of Australia/i)
     return group_names.nationals.federal if name.match(/Nat Fed/i)
     return group_names.nationals.federal if name.match(/National Party/i)
@@ -86,6 +85,7 @@ class MapGroupNames
     return group_names.greens.nt if name.match(/((Greens|GRN).+(NT|N\.T\.|Northern Territory)|(NT|N\.T\.|Northern Territory).+(Greens|GRN))/i)
     return group_names.greens.wa if name.match(/((Greens|GRN).+(Western Australia|WA|W\.A\.)|(Western Australia|WA|W\.A\.).+(Greens|GRN))/i)
     return group_names.greens.tas if name.match(/((Greens|GRN).+TAS|TAS.+(Greens|GRN))/i)
+    return group_names.greens.act if name.match(/((Greens|GRN).+ACT|ACT.+(Greens|GRN))/i)
     return group_names.greens.federal if name.match(/((Greens|GRN).+Fed|Australian (Greens|GRN))/i)
 
     # Labor
@@ -102,8 +102,9 @@ class MapGroupNames
     return group_names.labor.sa if name.match?(/Labor.+(South Australia|SA)/i)
     return group_names.labor.vic if name.match?(/Labor.+(Victoria|Vic)/i)
     return group_names.labor.wa if name.match?(/Labor.+(Western Australia|WA)/i)
+    return group_names.labor.wa if name.match?(/WA ALP/i) # WA ALP
     return group_names.labor.tas if name.match?(/Labor.+(Tasmania|Tas)/i)
-    return group_names.labor.act if name.match?(/Labor.+(Australian Captitol Territory|ACT)/i)
+    return group_names.labor.act if name.match?(/Labor.+(Australian Capital Territory|ACT)/i)
     return group_names.labor.nt if name.match?(/Labor.+(Northern Territory|NT)/i)
     return group_names.labor.federal if name.match?(/Labor.+Fed/i)
     return group_names.labor.tas if name.match(/Tasmanian.+Labor/i)
@@ -112,12 +113,37 @@ class MapGroupNames
     return group_names.labor.federal if name.match?(/Alp National Secretaria/i)
     return group_names.labor.federal if name.match?(/Alp.+Labor Business Forum/i)
     return group_names.labor.federal if name.match?(/Alp.+Fed/i)
+    return group_names.labor.federal if name.match?(/Australian Labor Party/i)
+    return group_names.labor.federal if name.match?(/ALP Nat/i)
+    return group_names.labor.federal if name.match?(/ALP Bruce Fea/i)
 
     # Can't find it, return the name
-    name.titleize
+    cleaned_up_name(name)
   end
 
   def group_names
     Group::NAMES
+  end
+
+  def cleaned_up_name(name)
+    regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
+    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b/i
+
+    regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b/i
+    regex_for_titleize_2 = /\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
+    regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b/i
+
+    regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b/i
+
+    name.titleize
+        .gsub(regex_for_two_and_three_chars) { |chars| chars.upcase }
+        .gsub(regex_for_longer_acronyms) { |chars| chars.upcase }
+        .gsub(regex_for_titleize) { |word| word.titleize }
+        .gsub(regex_for_titleize_2) { |word| word.titleize }
+        .gsub(regex_for_titleize_3) { |word| word.titleize }
+        .gsub(regex_for_downcase) { |word| word.downcase }
+        .gsub(/^the/) { |word| word.titleize }
+        .gsub(/Pty Limited|Pty\. Ltd\./, 'Pty Ltd')
+        .strip
   end
 end

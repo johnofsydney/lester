@@ -1,4 +1,4 @@
-group,member_group
+group,member_group,start_date,end_date
 Greens Federal, Greens NSW
 Greens Federal, Greens VIC
 Greens Federal, Greens QLD
@@ -22,3 +22,7 @@ Nationals Federal, Liberals SA
 Nationals Federal, Liberals TAS
 Nationals Federal, Liberals ACT
 Nationals Federal, Liberals NT
+Australian Federal Government, Abbott Ministry, 18/9/2013, 14/9/2015
+Australian Federal Government, Turnbull Ministry, 15/9/2015, 23/8/2018
+Australian Federal Government, Morrison Ministry, 24/8/2018, 30/6/2022
+Australian Federal Government, Albanese Ministry, 30/6/2022

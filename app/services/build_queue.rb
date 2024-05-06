@@ -31,7 +31,7 @@ class BuildQueue
       true
     elsif node.is_a?(Group) && next_node.is_a?(Group)
       transfer_date = transfer&.effective_date
-      return true unless transfer_date # TODO This works for trnafers. But not general connections...
+      return true unless transfer_date # TODO This works for transfers. But not general connections...
 
       membership = Membership.find_by(member: next_node, group: node) || Membership.find_by(member: node, group: next_node)
 

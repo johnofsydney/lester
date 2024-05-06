@@ -62,7 +62,8 @@ class Group < ApplicationRecord
 
 
 
-
+  # TODO: memberships are only working on one direction, need to fix this
+  # affiliated groups are not being followed from child to parent to other child
   has_many :memberships
   has_many :people, through: :memberships, source: :member, source_type: 'Person'
   has_many :groups, through: :memberships, source: :member, source_type: 'Group' # these are the groups that _belong_ to _this_ group

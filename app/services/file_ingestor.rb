@@ -8,7 +8,7 @@ class FileIngestor
         financial_year = Dates::FinancialYear.new(donation_date)
 
         transfer = Transfer.find_or_create_by(
-          giver: Donor::RecordDonation.call(row["Donor Name"]),
+          giver: RecordDonation.call(row["Donor Name"]),
           taker: RecordGroup.call(row["Donation Made To"]),
           effective_date: financial_year.last_day, # group all donations for a financial year. There are too many otherwise.
           transfer_type: 'donations',
@@ -19,7 +19,7 @@ class FileIngestor
         transfer.donations ||= []
 
         transfer.donations << {
-          giver: Donor::RecordDonation.call(row["Donor Name"])&.name,
+          giver: RecordDonation.call(row["Donor Name"])&.name,
           taker: RecordGroup.call(row["Donation Made To"])&.name,
           effective_date: financial_year.last_day,
           donation_date: row['Date'],
@@ -30,7 +30,6 @@ class FileIngestor
 
         transfer.amount += row['Amount'].to_i
 
-        # p "#{file} || Transfer: #{transfer.inspect}"
         p "Donations: #{transfer.donations.inspect}"
         transfer.save
       end
@@ -48,8 +47,10 @@ class FileIngestor
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 
-        person = Person.find_or_create_by(name: row['name'].titleize)
-        federal_party = RecordGroup.call(row['party'].titleize)
+        person = RecordPerson.call(row['name'])
+
+        # TODO: indeoendent do not have party!
+        federal_party = RecordGroup.call(row['party'])
         state_party = RecordGroup.call(
           row['party'].downcase.gsub('federal', row['state'])
         )
@@ -98,8 +99,8 @@ class FileIngestor
       csv = CSV.read(file, headers: true)
       csv.each do |row|
         ministry_group = RecordGroup.call(row['group'])
-        person = Person.find_or_create_by(name: row['person'].titleize) || 'Should be find for politicians, but find or create for list of staffers etc'
-        # person = Person.find_by(name: row['person'].titleize) || raise 'Person Not Found'
+
+        person = RecordPerson.call(row['person'])
         title = row['title']
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
@@ -115,7 +116,33 @@ class FileIngestor
         rescue => e
 
           p "Error: #{e}"
-          binding.pry
+      end
+    end
+
+    def general_upload(file)
+      csv = CSV.read(file, headers: true)
+      csv.each do |row|
+        print "-"
+        group = RecordGroup.call(row['group'])
+        person = RecordPerson.call(row['person'])
+
+        title = row['title']
+        start_date = parse_date(row['start_date'])
+        end_date = parse_date(row['end_date'])
+
+        # the membership may not exist, if so, we need to create it
+        membership = Membership.find_or_create_by(
+          member_type: "Person",
+          member_id: person.id,
+          group: group
+        )
+        # create position for each row, with unique dates and title
+        if (title || start_date || end_date)
+          Position.find_or_create_by(membership:, title:, start_date:, end_date:)
+        end
+        rescue => e
+
+          p "Error: #{e}"
       end
     end
 
@@ -129,7 +156,27 @@ class FileIngestor
         membership = Membership.find_or_create_by(
           member_type: "Group",
           member_id: member_group.id,
-          group: owning_group
+          group: owning_group,
+          start_date: parse_date(row['start_date']),
+          end_date: parse_date(row['end_date'])
+        )
+      end
+    end
+
+    def transfers_upload(file)
+      csv = CSV.read(file, headers: true)
+      csv.each do |row|
+        print "+"
+        giver = RecordGroup.call(row['giver'])
+        taker = RecordGroup.call(row['taker'])
+
+        transfer = Transfer.find_or_create_by(
+          giver: giver,
+          taker: taker,
+          effective_date: parse_date(row['effective_date']),
+          transfer_type: row['transfer_type'],
+          amount: row['amount'],
+          evidence: row['evidence']
         )
       end
     end
