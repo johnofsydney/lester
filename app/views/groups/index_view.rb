@@ -6,7 +6,7 @@ class Groups::IndexView < ApplicationView
 	def template
     h1 { 'Groups' }
     ul do
-      @groups.sort_by { |group| group.nodes.count }.reverse.each do |group|
+      @groups.each do |group|
         li do
           a(href: "/groups/#{group.id}") { group.name }
         end

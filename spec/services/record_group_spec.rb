@@ -1,5 +1,3 @@
-# FILEPATH: /Users/john/Projects/John/lester/spec/services/party/record_donation_spec.rb
-
 require 'rails_helper'
 require 'spec_helper'
 
@@ -221,11 +219,9 @@ RSpec.describe RecordGroup, type: :service do
       'Australian Hotels Association (N.S.W.)' => 'Australian Hotels Association',
       'Australian Hotels Association (SA Branch)' => 'Australian Hotels Association',
       'Australian Hotels Association - Federal Office' => 'Australian Hotels Association',
-      'GetUp' => 'Get Up',
-      'GetUp Limited' => 'Get Up',
-      'GetUp Ltd' => 'Get Up',
-      'Idameneo (No. 123) Pty Ptd' => 'Idameneo',
-      'Idameneo (No.789) Limited' => 'Idameneo',
+      'GetUp' => 'Get Up Limited',
+      'GetUp Limited' => 'Get Up Limited',
+      'GetUp Ltd' => 'Get Up Limited',
       'Alpha Diversification Pty Ltd' => 'Alpha Diversification Pty Ltd',
     }
   end

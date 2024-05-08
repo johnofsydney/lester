@@ -15,21 +15,25 @@ class Groups::Person < ApplicationView
         position
       end
       td do
-        if person.memberships.count == 1 # it me
+        if person.memberships.length == 1 # it me
           ''
-        elsif person.memberships.count < 8
+        elsif person.memberships.length < 8
           memberships = person.memberships - Membership.where(member: person, group: exclude_group)
 
-          ul(class: 'list-group list-group-horizontal') do
-            memberships.each do |membership|
-              li(class: 'list-group-item horizontal-button') do
-                a(href: "/groups/#{membership.group.id}") { membership.group.name }
-                # TODO FIX THIS FOR GROUPS AS MEMBERS
+          # ul(class: 'list-group list-group-horizontal') do
+          if memberships.length < 300
+            ul(class: 'list-group') do
+              memberships.each do |membership|
+                li(class: 'list-group-item') do
+                  a(href: "/groups/#{membership.group.id}") { membership.group.name }
+                  # TODO FIX THIS FOR GROUPS AS MEMBERS
+                end
               end
             end
           end
+
         else
-          "#{group.memberships.count} members"
+          "#{group.memberships.length} members"
         end
       end
     end

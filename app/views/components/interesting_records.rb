@@ -11,19 +11,18 @@ class InterestingRecords < ApplicationView
     div(class: 'margin-above') do
       h2 { 'Interesting and / or New Records' }
       div(class: 'row') do
-        div(class: 'col') do
+
+        div(class: 'col-md-3') do
           ul do
-            @records.transfers.each do |record|
+            @records.people.each do |record|
               li do
-                a(href: "/transfers/#{record.id}") { text(record) }
+                a(href: "/people/#{record.id}") { text(record) }
               end
             end
           end
         end
-      end
-      div(class: 'row') do
 
-        div(class: 'col') do
+        div(class: 'col-md-4') do
           ul do
             @records.groups.each do |record|
               li do
@@ -33,15 +32,23 @@ class InterestingRecords < ApplicationView
           end
         end
 
-        div(class: 'col') do
+
+
+        div(class: 'col-md-5') do
           ul do
-            @records.people.each do |record|
+            @records.transfers.each do |record|
               li do
-                a(href: "/people/#{record.id}") { text(record) }
+                a(href: "/transfers/#{record.id}") { text(record) }
               end
             end
           end
         end
+
+
+      end
+      div(class: 'row') do
+
+
       end
     end
   end
@@ -53,14 +60,14 @@ class InterestingRecords < ApplicationView
   end
 
   def text_for_transfer(record)
-    "Transfer: #{number_to_currency(record.amount, precision: 0)} \nFrom: #{record.giver.name} \nTo: #{record.taker.name} \nYear: #{record.financial_year}"
+    "#{number_to_currency(record.amount, precision: 0)} \nFrom: #{record.giver.name} \nTo: #{record.taker.name} \nYear: #{record.financial_year}"
   end
 
   def text_for_group(record)
-    "Group: #{record.name}"
+    "#{record.name}"
   end
 
   def text_for_person(record)
-    "Person: #{record.name}"
+    "#{record.name}"
   end
 end

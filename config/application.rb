@@ -37,6 +37,6 @@ module Sunshine01
     # Don't generate system test files.
     config.generators.system_tests = nil
 
-    config.log_level = :info
+    config.log_level = :debug
   end
 end

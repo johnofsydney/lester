@@ -6,8 +6,8 @@ class PeopleController < ApplicationController
 
   # GET /people or /people.json
   def index
-    @people = Person.all
-    render People::IndexView.new(people: @people)
+    people = Person.order(:name)
+    render People::IndexView.new(people:)
   end
 
   # GET /people/1 or /people/1.json

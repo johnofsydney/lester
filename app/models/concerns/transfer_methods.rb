@@ -1,5 +1,7 @@
 module TransferMethods
   extend ActiveSupport::Concern
+  MAX_GROUP_SIZE_TO_FINISH = 15
+  MAX_SIZE_TO_ACCEPT_DONATIONS = 150
 
   included do
     # depth is the number of degrees of separation from the invoking node, 0 being the invoking node itself
@@ -7,6 +9,12 @@ module TransferMethods
       current_depth_memberships = []
 
       queue.each do |node|
+        # next  if node.nodes.count > MAX_GROUP_SIZE_TO_FINISH
+
+        return results  if node.nodes.count > MAX_SIZE_TO_ACCEPT_DONATIONS * 100
+        # TODO: use summarise_for here
+
+
         visited_nodes << node # store the current node as visited
         current_depth_memberships << node.memberships.to_a
 
@@ -41,6 +49,8 @@ module TransferMethods
     def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil)
       current_depth_memberships = []
       queue.each do |node|
+        # next  if node.nodes.count > 4
+        return results  if node.nodes.count > 1500
 
         visited_nodes << node # store the current node as visited
         current_depth_memberships << node.memberships.to_a

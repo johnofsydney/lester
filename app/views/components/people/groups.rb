@@ -13,7 +13,7 @@ class People::Groups < ApplicationView
       table(class: 'table') do
         tr do
           th { 'Group' }
-          th { 'Position' }
+          th { '(Last) Position' }
           th { 'Other Members' }
         end
         groups.each do |group|

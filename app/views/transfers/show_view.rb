@@ -97,8 +97,12 @@ class Transfers::ShowView < ApplicationView
     if transfer.data.present? && transfer.data['donations'].present?
       div(class: 'row') do
 
-        h4 do
-          "A single 'transfer' can represent multiple single payments. This transfer represents the following payments:"
+        hr
+
+        p do
+          plain "A single 'transfer' can represent multiple single payments inthe same financial year. "
+          i { "This "}
+          plain "transfer represents the following payments:"
         end
 
         table(class: 'table table-striped') do

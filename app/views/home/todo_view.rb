@@ -42,8 +42,11 @@ class Home::TodoView < ApplicationView
               h5(class: 'card-title') { 'Doing' }
               ul do
 
+                li { 'use size instead of count' }
+                li { 'investigate ransack for filtering' }
+                li { 'make some groups non-following' }
                 li { 'Documentation / Content' }
-                li { 'Images for ABout' }
+                li { 'Images for About' }
                 li { 'Write tests for Build Queue service and attend to TODOs' }
                 li { 'Node Linker - should consider memberships only? (Not affiliations)' }
                 li { 'Node Linker - should consider overlapping memberships only?' }
@@ -60,6 +63,7 @@ class Home::TodoView < ApplicationView
               ul do
                 li { 'Add evidence to each model, as an Array' }
                 li { 'More Data from the AEC. Referendum data' }
+                li { 'More Data from Fed Gov Expenditure: https://www.tenders.gov.au/senateorder/list' }
                 li { 'Move search alinker forms to Phlex' }
 
                 li { 'Theme / Color Scheme' }
