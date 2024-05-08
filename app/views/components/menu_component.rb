@@ -40,14 +40,13 @@ class MenuComponent < ApplicationView
             li(class: 'nav-item') do
               a(class: 'nav-link', href: '/people/') { 'People' }
             end
-            li(class: 'nav-item') do
-              a(class: 'nav-link', href: '/home/index/') { 'About' }
-            end
+
             li(class: 'nav-item') do
               a(class: 'nav-link', href: '/home/suggestions/') { 'Make a Suggestion' }
             end
+
             li(class: 'nav-item') do
-              a(class: 'nav-link', href: '/admin/') { 'Admin' }
+              a(class: 'nav-link', href: '/home/index/') { 'About' }
             end
           end
         end

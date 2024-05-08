@@ -16,13 +16,14 @@ RSpec.describe RecordDonation, type: :service do
         'Hon Paul Everingham',
         'Ian Wall AM',
         'Roland Williams CBE',
+        'Mr. Chris Morbey',
+        'Ms. Stephanie Reed',
 
       ]
     end
 
     it 'expect all people to be reported as person' do
       people_names.each do |name|
-        p name
         expect(RecordDonation.new(name).person_or_group).to eq('person')
       end
     end
@@ -70,7 +71,6 @@ RSpec.describe RecordDonation, type: :service do
 
     it 'expect all groups to be reported as group', :aggregate_failures do
       group_names.each do |name|
-        p name
         expect(RecordDonation.new(name).person_or_group).to eq('group')
       end
     end
