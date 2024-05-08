@@ -82,14 +82,19 @@ class FileIngestor
         next if independent
 
         if Membership.where(member: person, group: federal_party).empty?
+          next if independent
           federal_membership = Membership.find_or_create_by(member: person, group: federal_party)
           federal_membership.save
-          Position.create(membership: federal_membership, title: 'Party Member Of Federal Party') unless independent
+          title = major_party ? 'Party Member (Federal)' : 'Party Member'
+          Position.create(membership: federal_membership, title:)
 
           if major_party
             state_membership = Membership.find_or_create_by(member: person, group: state_party)
             state_membership.save
-            Position.create(membership: state_membership, title: 'Member of State Party')
+            Position.create(
+              membership: state_membership,
+              title: "Party Member (#{state_party.state})"
+            )
           end
         end
       end

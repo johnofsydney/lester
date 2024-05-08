@@ -129,4 +129,8 @@ class Group < ApplicationRecord
         .gsub(')', '')
         .strip
   end
+
+  def state
+    name.match(/(NSW|VIC|QLD|SA|WA|TAS|ACT|NT)/).to_s
+  end
 end
