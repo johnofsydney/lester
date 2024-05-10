@@ -27,8 +27,6 @@ namespace :lester do
     ActiveRecord::Base.connection.reset_pk_sequence!('groups')
     ActiveRecord::Base.connection.reset_pk_sequence!('people')
 
-
-
     donation_files = [
       'csv_data/Annual_Donations_Made_2018.csv',
       'csv_data/Annual_Donations_Made_2019.csv',
@@ -37,6 +35,10 @@ namespace :lester do
       'csv_data/Annual_Donations_Made_2022.csv',
       'csv_data/Annual_Donations_Made_2023.csv',
     ]
+
+    donation_files.each do |file|
+      FileIngestor.annual_donor_ingest(file)
+    end
 
     federal_parliamentarians = [
       'csv_data/wiki_feds_current_mps_cleaned.csv',
@@ -47,21 +49,15 @@ namespace :lester do
       'csv_data/wiki_feds_senators_ending_2022_cleaned.csv'
     ]
 
+    federal_parliamentarians.each do |file|
+      FileIngestor.federal_parliamentarians_upload(file)
+    end
+
     federal_ministries = [
       'csv_data/ministries_morrison.csv',
       'csv_data/ministries_turnbull.csv',
     ]
 
-    donation_files.each do |file|
-      FileIngestor.annual_donor_ingest(file)
-    end
-
-    # Federal Parliamentarians
-    federal_parliamentarians.each do |file|
-      FileIngestor.federal_parliamentarians_upload(file)
-    end
-
-    # Federal Ministries
     federal_ministries.each do |file|
       FileIngestor.ministries_upload(file)
     end
@@ -69,17 +65,9 @@ namespace :lester do
     FileIngestor.general_upload('csv_data/other_people_groups_positions.csv')
 
     FileIngestor.affiliations_upload('csv_data/affiliations.csv')
-
-
     FileIngestor.transfers_upload('csv_data/other_transfers.csv')
 
 
-
-
-
-
-    # sunny_ridge_strawberry_farm = Group.find_or_create_by(name: 'Sunny Ridge Strawberry Farm')
-    # waratah_group = Group.find_or_create_by(name: 'Waratah Group (Australia) Pty Ltd)')
 
 
 
