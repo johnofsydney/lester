@@ -129,6 +129,9 @@ class FileIngestor
       csv.each do |row|
         print "-"
         group = RecordGroup.call(row['group'])
+
+        next unless row['person'].present?
+
         person = RecordPerson.call(row['person'])
 
         title = row['title']
@@ -191,6 +194,8 @@ class FileIngestor
     end
 
     def parse_date(date)
+      return nil unless date.present?
+
       begin
         Date.parse(date)
       rescue => exception
