@@ -18,7 +18,8 @@ RSpec.describe RecordDonation, type: :service do
         'Roland Williams CBE',
         'Mr. Chris Morbey',
         'Ms. Stephanie Reed',
-
+        'Antony Pasin MP',
+        'Andrew Wilkie',
       ]
     end
 

@@ -5,15 +5,14 @@ class SearchController < ApplicationController
 
     transfers_recent = Transfer.order(id: :desc).last(5).sample(2)
     transfers_large = Transfer.order(amount: :desc).last(5).sample(2)
-    people_recent = Person.order(id: :desc).last(5).sample(2)
-    people_nodeish = Person.all.sort_by { |person| person.nodes.count }.reverse.last(5).sample(2)
-    groups_recent = Group.order(id: :desc).last(5).sample(2)
-    groups_nodeish = Group.all.sort_by { |group| group.nodes.count }.reverse.last(5).sample(2)
+
+    person_ids = (0..Person.last.id).to_a.sample(9),
+    group_ids = (0..Group.last.id).to_a.sample(9)
 
     @records = OpenStruct.new(
+      people: Person.where(id: person_ids),
+      groups: Group.where(id: group_ids),
       transfers: transfers_recent + transfers_large,
-      people: people_recent + people_nodeish,
-      groups: groups_recent + groups_nodeish
     )
 
   end

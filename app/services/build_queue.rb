@@ -26,9 +26,7 @@ class BuildQueue
       # if it is 1, give us the next level of nodes without conditions
       true
     elsif node.is_a?(Person) && next_node.is_a?(Group)
-      # if the next_node, linked to node is a Group, then we want to add it to the queue
-
-      true
+      return next_node.memberships.size < 150
     elsif node.is_a?(Group) && next_node.is_a?(Group)
       transfer_date = transfer&.effective_date
       return true unless transfer_date # TODO This works for transfers. But not general connections...

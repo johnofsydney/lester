@@ -7,6 +7,7 @@ class FileIngestor
         donation_date = Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30) # saves bothering about the date format
         financial_year = Dates::FinancialYear.new(donation_date)
 
+        # TODO: Transfer.taker can be a group or a person. Use RecordGroup.call
         transfer = Transfer.find_or_create_by(
           giver: RecordDonation.call(row["Donor Name"]),
           taker: RecordGroup.call(row["Donation Made To"]),
@@ -18,6 +19,7 @@ class FileIngestor
         transfer.data ||= {}
         transfer.donations ||= []
 
+        # TODO: Transfer.taker can be a group or a person. Use RecordGroup.call
         transfer.donations << {
           giver: RecordDonation.call(row["Donor Name"])&.name,
           taker: RecordGroup.call(row["Donation Made To"])&.name,
@@ -43,58 +45,70 @@ class FileIngestor
         next if Person.find_by(name: row['name']) # GUARD! IS TOO STRICT!
         print "."
 
+        person = RecordPerson.call(row['name'])
+
+        senator = file.match?(/senator/i) ? true : false
+        title = senator ? 'Senator' : 'MP'
+
         # Start and End Dates for Person in Parliament
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 
-        person = RecordPerson.call(row['name'])
-
-        # TODO: indeoendent do not have party!
-        federal_party = RecordGroup.call(row['party'])
-        state_party = RecordGroup.call(
-          row['party'].downcase.gsub('federal', row['state'])
-        )
-
-
-        senator = file.match?(/senator/i) ? true : false
-        # senator = row['electorate'].match?(/Queensland|New South Wales|Victoria|Tasmania|South Australia|Western Australia|Northern Territory|Australian Capital Territory/i) ? true : false
-        independent = federal_party.name.match?(/Independent/)
-        major_party = federal_party.name.match?(/ALP|Liberals|Greens|Nationals|One Nation/)
-
-        title = senator ? 'Senator' : 'MP'
-        electorate_naming = senator ? 'Senators for' : 'Electorate of'
-
-        # TODO: THIS DOES NOT WORK WELL, ESP SENATORS
-        electorate = RecordGroup.call("#{electorate_naming} #{row['electorate']} (#{federal_party.less_level})")
-
-
         if Membership.where(member: person, group: parliament).empty?
           parliament_membership = Membership.find_or_create_by(member: person, group: parliament, start_date: start_date, end_date: end_date)
-          parliament_membership.save
-          Position.create(membership: parliament_membership, title:, start_date: start_date, end_date: end_date)
+          # parliament_membership.save
+          Position.create(membership: parliament_membership, title:, start_date:, end_date:)
         end
 
+        # this relies on the csv file being cleaned, so that independents have /indepedent/ in the party column
+        independent = row['party'].match?(/Independent/)
 
-
-        # if Membership.where(member: person, group: electorate).empty?
-        # end
-
+        # independents are not in a party, so we don't need to create a party membership for them
+        # we also don't need to create a branch / electorate membership for them, that's handled independently
         next if independent
 
+        federal_party = RecordGroup.call(row['party'])
+        major_party = federal_party.name.match?(/ALP|Liberals|Greens|Nationals/)
+
+        # For MPs who belong to a party, create a membership and position.
+        # For major parties, also create a state membership and position
         if Membership.where(member: person, group: federal_party).empty?
-          next if independent
           federal_membership = Membership.find_or_create_by(member: person, group: federal_party)
-          federal_membership.save
-          title = major_party ? 'Party Member (Federal)' : 'Party Member'
+          title = major_party ? 'Federal Parliamentary Party Member' : 'Party Member'
+
           Position.create(membership: federal_membership, title:)
 
+          # MPs are members of a branch, which is a subgroup of party
+          # this is where we can add preselectors who choose the candidates for the electorate
+          # for major parties the branch is a subgroup of the state party
+          # for minor parties the branch is a subgroup of the federal party
+          unless senator
+            branch_name = "#{federal_party.less_level} Branch for #{row['electorate']} Electorate"
+            branch = RecordGroup.call(branch_name)
+
+            branch_membership = Membership.find_or_create_by(member: person, group: branch)
+            Position.create(membership: branch_membership, title: 'Candidate', start_date:, end_date:)
+          end
+
           if major_party
+            state_party = RecordGroup.call(row['party'].downcase.gsub('federal', row['state']))
             state_membership = Membership.find_or_create_by(member: person, group: state_party)
-            state_membership.save
-            Position.create(
-              membership: state_membership,
-              title: "Party Member (#{state_party.state})"
-            )
+
+            Position.create(membership: state_membership, title: "Party Member (#{state_party.state})")
+
+            # affiliate the branch with the state party
+            Membership.find_or_create_by(
+              member_type: "Group",
+              member_id: branch.id,
+              group: state_party,
+            ) unless senator
+          else
+            # affiliate the branch with the federal party
+            Membership.find_or_create_by(
+              member_type: "Group",
+              member_id: branch.id,
+              group: federal_party,
+            ) unless senator
           end
         end
       end
