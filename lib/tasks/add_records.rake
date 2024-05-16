@@ -78,7 +78,7 @@ namespace :lester do
     # Membership.find_or_create_by(group: labor_nsw, member: ian_macdonald, start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7))
     # Membership.find_or_create_by(group: labor_nsw, member: eddie_obeid, start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6))
 
-    # Membership.find_or_create_by(group: one_nation, member: pauline_hanson)
+
     # Membership.find_or_create_by(group: one_nation, member: mark_latham, start_date: Date.new(2018, 11, 15), end_date: Date.new(2022, 6, 30))
 
   end

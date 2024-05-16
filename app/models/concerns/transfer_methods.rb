@@ -1,7 +1,7 @@
 module TransferMethods
   extend ActiveSupport::Concern
-  MAX_GROUP_SIZE_TO_FINISH = 15
-  MAX_SIZE_TO_ACCEPT_DONATIONS = 150
+  MAX_GROUP_SIZE_TO_FINISH = 15 # TODO: use or discard
+  MAX_SIZE_TO_ACCEPT_DONATIONS = 550 # TODO: use or discard
 
   included do
     # depth is the number of degrees of separation from the invoking node, 0 being the invoking node itself
@@ -9,11 +9,8 @@ module TransferMethods
       current_depth_memberships = []
 
       queue.each do |node|
-        # next  if node.nodes.count > MAX_GROUP_SIZE_TO_FINISH
-
-        return results  if node.nodes.count > MAX_SIZE_TO_ACCEPT_DONATIONS * 100
-        # TODO: use summarise_for here
-
+        # members and affiliate groups.
+        return results  if node.name == 'Federal Parliment' # TODO: use or discard
 
         visited_nodes << node # store the current node as visited
         current_depth_memberships << node.memberships.to_a
@@ -30,6 +27,7 @@ module TransferMethods
       end
 
       return results if depth == 0
+
 
       # add current memberships to visited memberships
       visited_membership_ids << current_depth_memberships.flatten.pluck(:id)

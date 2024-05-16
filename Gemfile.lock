@@ -87,6 +87,7 @@ GEM
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
     byebug (11.1.3)
+    capitalize-names (1.2.0)
     cgi (0.3.6)
     coderay (1.1.3)
     concurrent-ruby (1.2.2)
@@ -316,6 +317,7 @@ DEPENDENCIES
   activeadmin
   bootsnap
   bullet
+  capitalize-names
   debug
   devise
   dockerfile-rails (>= 1.2)

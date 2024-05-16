@@ -1,3 +1,5 @@
+require 'capitalize_names'
+
 class RecordPerson
   attr_reader :name
 
@@ -19,6 +21,8 @@ class RecordPerson
     regex_for_removal_elected = /\bMP\b|\bSenator\b/
     regex_for_removal_honours = /\bOAM\b|\bAO\b|\bAM\b/
     regex_for_removal_titles = /\bQC\b|\bProf\b|\bDr\b/
+
+    name = CapitalizeNames.capitalize(name)
 
     name.gsub(regex_for_removal_elected, '')
         .gsub(regex_for_removal_honours, '')

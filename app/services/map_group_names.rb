@@ -1,5 +1,6 @@
-class MapGroupNames
+require 'capitalize_names'
 
+class MapGroupNames
   def initialize(name)
     @name = map_or_return_name(name)
   end
@@ -117,8 +118,10 @@ class MapGroupNames
     return group_names.labor.federal if name.match?(/Alp.+Fed/i)
     return group_names.labor.federal if name.match?(/Australian Labor Party/i)
     return group_names.labor.federal if name.match?(/ALP Nat/i)
+    return group_names.labor.federal if name.match?(/ALP-Nat/i)
     return group_names.labor.federal if name.match?(/ALP Bruce Fea/i)
     return group_names.labor.federal if name.match?(/Australia Labor Party (ALP)/i)
+    return group_names.labor.federal if name.match?(/Australia Labor Party/i)
 
     # Can't find it, return the name
     cleaned_up_name(name)
@@ -135,17 +138,20 @@ class MapGroupNames
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
     regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b/i
+    regex_for_titleize_4 = /\bTax\b|\bAid\b/i
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b/i
 
-    name.strip
-        .gsub(regex_for_two_and_three_chars) { |chars| chars.upcase }
-        .gsub(regex_for_longer_acronyms) { |chars| chars.upcase }
-        .gsub(regex_for_titleize) { |word| word.titleize }
-        .gsub(regex_for_titleize_2) { |word| word.titleize }
-        .gsub(regex_for_titleize_3) { |word| word.titleize }
-        .gsub(regex_for_downcase) { |word| word.downcase }
-        .gsub(/^the/) { |word| word.titleize }
-        .gsub(/Pty Limited|Pty\. Ltd\./, 'Pty Ltd')
+    CapitalizeNames.capitalize(name.strip)
+                   .gsub(regex_for_two_and_three_chars) { |chars| chars.upcase }
+                   .gsub(regex_for_longer_acronyms) { |chars| chars.upcase }
+                   .gsub(regex_for_titleize) { |word| word.titleize }
+                   .gsub(regex_for_titleize_2) { |word| word.titleize }
+                   .gsub(regex_for_titleize_3) { |word| word.titleize }
+                   .gsub(regex_for_titleize_4) { |word| word.titleize }
+                   .gsub(regex_for_downcase) { |word| word.downcase }
+                   .gsub(/^the/) { |word| word.titleize }
+                   .gsub(/australia/) { |word| word.titleize }
+                   .gsub(/Pty Limited|Pty\. Ltd\./, 'Pty Ltd')
   end
 end

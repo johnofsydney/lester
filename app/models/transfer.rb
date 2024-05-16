@@ -2,7 +2,7 @@ require 'active_support/all'
 
 class Transfer < ApplicationRecord
   belongs_to :giver, polymorphic: true  # could be a Person or a Group
-  belongs_to :taker, class_name: 'Group'
+  belongs_to :taker, class_name: 'Group' # Taker MUST also become polymorphic
 
   validates :amount, presence: true
   validates :effective_date, presence: true
