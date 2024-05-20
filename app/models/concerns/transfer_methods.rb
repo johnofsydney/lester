@@ -16,12 +16,12 @@ module TransferMethods
         current_depth_memberships << node.memberships.to_a
 
         # TODO: are the transfer methods in Person and Group helpful or harmful?
-        Transfer.where(giver: node).includes([:giver, :taker]).each do |transfer|
+        Transfer.where(giver: node).find_each do |transfer|
           results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
         end
 
         next unless node.class == Group # TODO - get rid of this, people can accept transfers too (make taker polymorphic as well)
-        Transfer.where(taker: node).includes([:giver, :taker]).each do |transfer|
+        Transfer.where(taker: node).find_each do |transfer|
           results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
         end
       end
