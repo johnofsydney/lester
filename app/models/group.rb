@@ -133,4 +133,17 @@ class Group < ApplicationRecord
   def state
     name.match(/(NSW|VIC|QLD|SA|WA|TAS|ACT|NT)/).to_s
   end
+
+  def self.summarise_for(group)
+    major_groupings = %i(coalition nationals labor green liberals)
+    states = %i[federal nsw vic qld sa wa nt act tas]
+
+    list = major_groupings.map do |major_group|
+      states.map do |state|
+        NAMES.send(major_group).send(state) if NAMES.send(major_group)
+      end
+    end
+
+    list.flatten.compact.uniq - [group.name]
+  end
 end

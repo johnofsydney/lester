@@ -120,7 +120,7 @@ class FileIngestor
         ministry_group = RecordGroup.call(row['group'])
 
         person = RecordPerson.call(row['person'])
-        title = row['title']
+        title = row['title'].strip
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 
@@ -131,7 +131,7 @@ class FileIngestor
           group: ministry_group
         )
         # create position for each row, with unique dates and title
-        Position.find_or_create_by(membership: membership, title: title, start_date: start_date, end_date: end_date)
+        Position.find_or_create_by(membership:, title:, start_date:, end_date:)
         rescue => e
 
           p "Error: #{e}"
@@ -148,7 +148,7 @@ class FileIngestor
 
         person = RecordPerson.call(row['person'])
 
-        title = row['title']
+        title = row['title'].strip
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 

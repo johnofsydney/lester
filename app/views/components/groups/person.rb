@@ -42,7 +42,7 @@ class Groups::Person < ApplicationView
   private
 
   def position
-    position = Membership.find_by(group: exclude_group, member: person)&.positions&.last
+    position = choose_latest_position
 
     return '' unless position
 
@@ -58,5 +58,13 @@ class Groups::Person < ApplicationView
     end
 
     result
+  end
+
+  def choose_latest_position
+    positions = Membership.find_by(group: exclude_group, member: person)&.positions
+
+    return nil unless positions
+
+    positions.sort_by(&:start_date).last
   end
 end

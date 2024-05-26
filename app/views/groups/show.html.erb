@@ -1,11 +1,33 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @group %>
-
+<%= turbo_stream_from(:updates) %>
 
 <div>
-  <%= link_to "Edit this group", edit_group_path(@group) %> |
-  <%= link_to "Back to groups", groups_path %>
-
-  <%= button_to "Destroy this group", @group, method: :delete %>
+  <%= render Groups::Heading.new(group: @group) %>
 </div>
+
+<div>
+  <%= render Groups::MoneySummary.new(group: @group) %>
+</div>
+
+<div>
+  <%= render Groups::AffiliatedGroups.new(group: @group) %>
+</div>
+
+<div>
+  <%= render Groups::People.new(group: @group) %>
+</div>
+
+<div>
+  <%= render TransfersTableComponent.new(
+        entity: @group,
+        transfers: @group.consolidated_transfers(depth: 0),
+        heading: "Directly Connected to #{@group.name}",
+        summarise_for: Group.summarise_for(@group)
+      )
+    %>
+</div>
+
+
+<%= turbo_frame_tag :feed, src: activity_feed_path, loading: :lazy do %>
+  <p>Loading More Transfer Records...</p>
+  <hr>
+<% end %>
