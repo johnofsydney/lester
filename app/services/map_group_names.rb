@@ -138,7 +138,7 @@ class MapGroupNames
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
     regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b/i
-    regex_for_titleize_4 = /\bTax\b|\bAid\b/i
+    regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|/i
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b/i
 

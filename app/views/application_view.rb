@@ -7,6 +7,8 @@ class ApplicationView < ApplicationComponent
 	# can change that to `Phlex::HTML` if you want to keep views and
 	# components independent.
 
+  register_element :turbo_frame
+
   def element_styles(instance, style = '')
     {
       'background_color' => background_color(instance),

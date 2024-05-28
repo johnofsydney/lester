@@ -1,5 +1,9 @@
 class Groups::ShowView < ApplicationView
-  include ActionView::Helpers::NumberHelper
+  # include ActionView::Helpers::NumberHelper
+
+  # include Phlex::Rails::Helpers::TurboStream
+  # include Phlex::Rails::Helpers::TurboStreamFrom
+  # include Phlex::Rails::Helpers::TurboFrameTag
 
   attr_reader :group, :depth
 
@@ -9,6 +13,23 @@ class Groups::ShowView < ApplicationView
 	end
 
 	def template
-    # all moved to the erb show page (for now?)
+    render Common::Heading.new(entity: group)
+    render Common::MoneySummary.new(entity: group)
+    render Groups::AffiliatedGroups.new(group:)
+    render Groups::People.new(group:)
+
+    render TransfersTableComponent.new(
+      entity: group,
+      transfers: group.consolidated_transfers(depth: 0),
+      heading: "Directly Connected to #{group.name}",
+      summarise_for: Group.summarise_for(group)
+    )
+
+    turbo_frame(id: 'feed', src: activity_feed_path, loading: :lazy) do
+      p do
+        p { 'Loading More Transfer Records...'}
+        hr
+      end
+    end
   end
 end

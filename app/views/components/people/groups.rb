@@ -7,20 +7,23 @@ class People::Groups < ApplicationView
   attr_reader :groups, :person
 
 	def template
-    div(class: 'row') do
-      h2 { 'Groups' }
+    if person.groups.present?
+    hr
+      div(class: 'row') do
+        h2 { 'Groups' }
 
-      table(class: 'table') do
-        tr do
-          th { 'Group' }
-          th { '(Last) Position' }
-          th { 'Other Members' }
+        table(class: 'table') do
+          tr do
+            th { 'Group' }
+            th { '(LastXXXXX) Position' }
+            th { 'Other Members' }
+          end
+          groups.each do |group|
+            render People::Group.new(group: group, exclude_person: person)
+          end
         end
-        groups.each do |group|
-          render People::Group.new(group: group, exclude_person: person)
-        end
+
       end
-
     end
   end
 end

@@ -1,11 +1,10 @@
-class Groups::MoneySummary < ApplicationView
+class Common::MoneySummary < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :group #, :depth
+  attr_reader :entity
 
-  	def initialize(group:)
-		@group = group
-    # @depth = depth
+  	def initialize(entity:)
+		@entity = entity
 	end
 
   def template
@@ -26,14 +25,14 @@ class Groups::MoneySummary < ApplicationView
   end
 
   def money_in
-    amount = Transfer.where(taker: group).sum(:amount)
+    amount = Transfer.where(taker: entity).sum(:amount)
     return unless amount.positive?
 
     number_to_currency amount, precision: 0
   end
 
   def money_out
-    amount = Transfer.where(giver: group).sum(:amount)
+    amount = Transfer.where(giver: entity).sum(:amount)
     return unless amount.positive?
 
     number_to_currency amount, precision: 0

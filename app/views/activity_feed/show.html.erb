@@ -3,7 +3,7 @@
     <%= render TransfersTableComponent.new(
         entity: @group,
         transfers: @group.consolidated_transfers(depth: 6),
-        heading: "Connected to groups and people that are connected to #{@group.name} to a depth of #{6} degrees of separation",
+        heading: "Transfers Connected to groups and people that are connected to #{@group.name} to a depth of #{6} degrees of separation",
         summarise_for: Group.summarise_for(@group),
         remove_zero_degrees: true
       )

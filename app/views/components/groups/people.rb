@@ -9,13 +9,13 @@ class Groups::People < ApplicationView
 	def template
     if people.present?
       hr
-        div(class: 'row') do
+      div(class: 'row') do
         h2 { 'People' }
 
         table(class: 'table table-striped responsive-table') do
           tr do
             th { 'Person' }
-            th { 'Position' }
+            th { '(Last) Position' }
             th { 'Other Groups' }
           end
           people.each do |person|
