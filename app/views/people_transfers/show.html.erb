@@ -1,0 +1,12 @@
+<%= turbo_frame_tag :feed do %>
+  <div>
+    <%= render TransfersTableComponent.new(
+        entity: @person,
+        transfers: @person.consolidated_transfers(depth: 6),
+        heading: "Transfers connected to groups and people that are connected to #{@person.name} to a depth of #{6} degrees of separation",
+        summarise_for: Group.summarise_for,
+        remove_zero_degrees: true
+      )
+    %>
+  </div>
+<% end %>

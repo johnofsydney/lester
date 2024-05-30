@@ -65,6 +65,6 @@ class Groups::Person < ApplicationView
 
     return nil unless positions
 
-    positions.sort_by(&:start_date).last
+    positions.order(start_date: :desc).last
   end
 end

@@ -53,7 +53,7 @@ class People::Group < ApplicationView
 private
 
   def position
-    position = Membership.find_by(group: group, member: exclude_person)&.positions&.last
+    position = membership&.last_position
 
     return '' unless position
 

@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :people
   resources :activity_feed
   resources :people_transfers
+  resources :transfer_details
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   get '/home/todo' => 'home#todo'

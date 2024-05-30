@@ -1,0 +1,5 @@
+<%= turbo_frame_tag :feed do %>
+  <div>
+    <%= render Transfers::TableOfBothSides.new(transfer: @transfer) %>
+  </div>
+<% end %>
