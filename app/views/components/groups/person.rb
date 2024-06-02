@@ -2,25 +2,23 @@ class Groups::Person < ApplicationView
 	def initialize(person:, exclude_group: nil)
 		@person = person
     @exclude_group = exclude_group
+    @membership = Membership.find_by(group: exclude_group, member: person)
 	end
 
-  attr_reader :person, :exclude_group
+  attr_reader :person, :exclude_group, :membership
 
   def template
     tr do
       td do
         a(href: "/people/#{person.id}") { person.name }
       end
-      td do
-        position
-      end
+      td { last_position_and_title }
       td do
         if person.memberships.length == 1 # it me
           ''
         elsif person.memberships.length < 8
           memberships = person.memberships - Membership.where(member: person, group: exclude_group)
 
-          # ul(class: 'list-group list-group-horizontal') do
           if memberships.length < 300
             ul(class: 'list-group') do
               memberships.each do |membership|
@@ -31,7 +29,6 @@ class Groups::Person < ApplicationView
               end
             end
           end
-
         else
           "#{group.memberships.length} members"
         end
@@ -41,8 +38,8 @@ class Groups::Person < ApplicationView
 
   private
 
-  def position
-    position = choose_latest_position
+  def last_position_and_title
+    position = membership&.last_position
 
     return '' unless position
 
@@ -58,13 +55,5 @@ class Groups::Person < ApplicationView
     end
 
     result
-  end
-
-  def choose_latest_position
-    positions = Membership.find_by(group: exclude_group, member: person)&.positions
-
-    return nil unless positions
-
-    positions.order(start_date: :desc).last
   end
 end

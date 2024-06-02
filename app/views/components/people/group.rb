@@ -12,7 +12,7 @@ class People::Group < ApplicationView
       td do
         a(href: "/groups/#{group.id}") { group.name }
       end
-      td { position  }
+      td { last_position_and_title  }
       td do
         if group.memberships.count == 1
           ''
@@ -34,25 +34,9 @@ class People::Group < ApplicationView
     end
   end
 
-  def memership_timeframe
-    return unless membership.start_date && membership.end_date
-    "<br>#{membership.start_date.year} - #{membership.end_date.year}"
-  end
-
-  def last_position
-    return if membership.positions.empty?
-
-    position = membership.positions.last # TODO: sort by date
-    title = position.title if position&.title
-    timeframe = position.start_date.strftime("%d/%m/%y") if position&.start_date
-    timeframe = "#{timeframe} - #{position.end_date.strftime("%d/%m/%y")}" if position&.end_date
-
-    "<br>#{title}: #{timeframe}"
-  end
-
 private
 
-  def position
+  def last_position_and_title
     position = membership&.last_position
 
     return '' unless position

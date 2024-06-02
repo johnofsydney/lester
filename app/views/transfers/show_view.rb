@@ -70,7 +70,7 @@ class Transfers::ShowView < ApplicationView
       end
     end
 
-    turbo_frame(id: 'feed', src: transfer_detail_path, loading: :lazy) do
+    turbo_frame(id: 'feed', src: lazy_load_transfer_path, loading: :lazy) do
       p do
         p { 'Loading More Transfer Records...'}
         hr

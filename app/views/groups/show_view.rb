@@ -25,7 +25,7 @@ class Groups::ShowView < ApplicationView
       summarise_for: Group.summarise_for(group)
     )
 
-    turbo_frame(id: 'feed', src: activity_feed_path, loading: :lazy) do
+    turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do
       p do
         p { 'Loading More Transfer Records...'}
         hr
