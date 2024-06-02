@@ -19,5 +19,9 @@ class Membership < ApplicationRecord
     base.where(group_id: self.group.id)
         .or(base.where(member_id: self.member.id))
   end
+
+  def last_position
+    positions.order(start_date: :desc).first
+  end
 end
 

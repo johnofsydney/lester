@@ -29,8 +29,8 @@ class RecordDonation
     regex_for_company_words_3 = /institute|horticultural|cleaning|technologies|centre/i
     regex_for_company_words_4 = /Services|investments|entertainment|Insurance|Commerce/i
     regex_for_company_words_5 = /Public|affairs|nimbin hemp|company|workpac|wren oil/i
-    regex_for_company_words_6 = /plumbing|division|federal|office|advisory/i
-    regex_for_company_words_7 = /company|events|commerce|webdrill/i
+    regex_for_company_words_6 = /plumbing|division|federal|office|advisory|deloitte touche/i
+    regex_for_company_words_7 = /company|events|commerce|webdrill|private|restaurant/i
 
     return 'group' if name.match?(regex_for_3_or_4_capitals)  # Check for acronyms
     return 'group' if name.match?(regex_for_company_words_1)  # Check for company names

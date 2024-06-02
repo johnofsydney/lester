@@ -1,16 +1,23 @@
 class Groups::AffiliatedGroups < ApplicationView
-	def initialize(groups:)
-		@groups = groups
+
+  attr_reader :group
+	def initialize(group:)
+		@group = group
 	end
 
-  attr_reader :groups
+  def template
 
-	def template
-    div(class: 'row') do
-      h2 { 'Affiliated Groups' }
-
-      groups.each do |group|
-        render Groups::AffiliatedGroup.new(group: group)
+    if group.affiliated_groups.present?
+      hr
+      div(class: 'row') do
+        h2 { 'Affiliated Groups' }
+        ul(class: 'list-group list-group-horizontal', style: 'flex-wrap: wrap;') do
+          group.affiliated_groups.each do |group|
+            li(class: 'list-group-item horizontal-button') do
+              a(href: "/groups/#{group.id}") { group.name }
+            end
+          end
+        end
       end
     end
   end

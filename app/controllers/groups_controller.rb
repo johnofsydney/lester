@@ -12,7 +12,7 @@ class GroupsController < ApplicationController
 
   # GET /groups/1 or /groups/1.json
   def show
-    render Groups::ShowView.new(group: @group)
+    render Groups::ShowView.new(group: @group, depth: 6)
   end
 
   # GET /groups/new

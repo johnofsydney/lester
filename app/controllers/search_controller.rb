@@ -6,12 +6,9 @@ class SearchController < ApplicationController
     transfers_recent = Transfer.order(id: :desc).last(5).sample(2)
     transfers_large = Transfer.order(amount: :desc).last(5).sample(2)
 
-    person_ids = (0..Person.last.id).to_a.sample(9),
-    group_ids = (0..Group.last.id).to_a.sample(9)
-
     @records = OpenStruct.new(
-      people: Person.where(id: person_ids),
-      groups: Group.where(id: group_ids),
+      people: Person.where(id: (0..Person.last.id).to_a.sample(9)),
+      groups: Group.where(id: (0..Group.last.id).to_a.sample(9)),
       transfers: transfers_recent + transfers_large,
     )
 
