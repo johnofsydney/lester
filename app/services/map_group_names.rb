@@ -15,6 +15,7 @@ class MapGroupNames
     return 'Get Up Limited' if name.match?(/(GetUp|Get Up)/i)
     return 'Australian Hotels Association' if name.match?(/Australian Hotels Association/i)
     return 'Advance Australia' if name.match?(/Advance Aus/i)
+    return 'Advance Australia' if name.match?(/Advanced Aus/i)
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
     return 'Australian Council of Trade Unions' if name.match?(/ACTU/i)
     return 'Climate 200' if name.match?(/(Climate 200|Climate200)/i)
