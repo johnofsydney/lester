@@ -25,14 +25,14 @@ class Common::MoneySummary < ApplicationView
   end
 
   def money_in
-    amount = Transfer.where(taker: entity).sum(:amount)
+    amount = Transfer.where(taker_type: entity.class.name, take_id: entity.id).sum(:amount)
     return unless amount.positive?
 
     number_to_currency amount, precision: 0
   end
 
   def money_out
-    amount = Transfer.where(giver: entity).sum(:amount)
+    amount = Transfer.where(giver_type: entity.class.name, giver_id: entity.id).sum(:amount)
     return unless amount.positive?
 
     number_to_currency amount, precision: 0

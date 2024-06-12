@@ -120,7 +120,7 @@ class FileIngestor
         ministry_group = RecordGroup.call(row['group'])
 
         person = RecordPerson.call(row['person'])
-        title = row['title'].strip
+        title = row['title'].strip if row['title']
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 
@@ -148,9 +148,9 @@ class FileIngestor
 
         person = RecordPerson.call(row['person'])
 
-        title = row['title'].strip
-        start_date = parse_date(row['start_date'])
-        end_date = parse_date(row['end_date'])
+        title = row['title'].strip if row['title'].present?
+        start_date = parse_date(row['start_date']) if row['start_date'].present?
+        end_date = parse_date(row['end_date']) if row['end_date'].present?
 
         # the membership may not exist, if so, we need to create it
         membership = Membership.find_or_create_by(
