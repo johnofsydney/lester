@@ -17,7 +17,7 @@ class Common::MoneySummary < ApplicationView
           p { money_in }
 
           # TODO: make this work for people as well
-          if money_in.present? && entity.is_a?(Group)
+          if money_in.present? && entity.is_a?(Group) # charts only work for groups for now (need to refactor those controllers)
             turbo_frame(id: 'money_in_charts', src: lazy_load_group_path, loading: :lazy) do
               p do
                 p { 'Loading Chart...'}
@@ -31,7 +31,7 @@ class Common::MoneySummary < ApplicationView
           p { money_out }
 
           # TODO: make this work for people as well
-          if money_out.present? && entity.is_a?(Group)
+          if money_out.present? && entity.is_a?(Group) # charts only work for groups for now (need to refactor those controllers)
             turbo_frame(id: 'money_out_charts', src: lazy_load_group_path, loading: :lazy) do
               p do
                 p { 'Loading Chart...'}
