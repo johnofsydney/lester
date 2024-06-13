@@ -107,14 +107,14 @@ class FileIngestor
               member_type: "Group",
               member_id: branch.id,
               group: state_party,
-            ) unless senator
+            ) unless senator || true
           else
             # affiliate the branch with the federal party
             Membership.find_or_create_by(
               member_type: "Group",
               member_id: branch.id,
               group: federal_party,
-            ) unless senator
+            ) unless senator || true
           end
         end
       end
