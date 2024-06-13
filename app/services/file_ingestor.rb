@@ -88,7 +88,7 @@ class FileIngestor
           # for major parties the branch is a subgroup of the state party
           # for minor parties the branch is a subgroup of the federal party
           # add this back later if wanted
-          unless senator && false
+          unless senator || true # it is the || true which prevents this from running. remove if needed
             branch_name = "#{federal_party.less_level} Branch for #{row['electorate']} Electorate"
             branch = RecordGroup.call(branch_name)
 
@@ -126,7 +126,7 @@ class FileIngestor
         ministry_group = RecordGroup.call(row['group'])
 
         person = RecordPerson.call(row['person'])
-        title = row['title'].strip
+        title = row['title'].strip if row['title']
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 
@@ -155,8 +155,8 @@ class FileIngestor
         person = RecordPerson.call(row['person'])
 
         title = row['title'].strip if row['title'].present?
-        start_date = parse_date(row['start_date'])
-        end_date = parse_date(row['end_date'])
+        start_date = parse_date(row['start_date']) if row['start_date'].present?
+        end_date = parse_date(row['end_date']) if row['end_date'].present?
 
         # the membership may not exist, if so, we need to create it
         membership = Membership.find_or_create_by(

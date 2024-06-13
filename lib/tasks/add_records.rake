@@ -28,11 +28,11 @@ namespace :lester do
     ActiveRecord::Base.connection.reset_pk_sequence!('people')
 
     donation_files = [
-      # 'csv_data/Annual_Donations_Made_2018.csv',
-      # 'csv_data/Annual_Donations_Made_2019.csv',
-      # 'csv_data/Annual_Donations_Made_2020.csv',
-      # 'csv_data/Annual_Donations_Made_2021.csv',
-      # 'csv_data/Annual_Donations_Made_2022.csv',
+      'csv_data/Annual_Donations_Made_2018.csv',
+      'csv_data/Annual_Donations_Made_2019.csv',
+      'csv_data/Annual_Donations_Made_2020.csv',
+      'csv_data/Annual_Donations_Made_2021.csv',
+      'csv_data/Annual_Donations_Made_2022.csv',
       'csv_data/Annual_Donations_Made_2023.csv',
     ]
 
@@ -42,10 +42,10 @@ namespace :lester do
 
     federal_parliamentarians = [
       'csv_data/wiki_feds_current_mps_cleaned.csv',
-      # 'csv_data/wiki_feds_current_senators_cleaned.csv',
-      # 'csv_data/wiki_feds_ending_2019_cleaned.csv',
-      # 'csv_data/wiki_feds_ending_2022_cleaned.csv',
-      # 'csv_data/wiki_feds_senators_ending_2019_cleaned.csv',
+      'csv_data/wiki_feds_current_senators_cleaned.csv',
+      'csv_data/wiki_feds_ending_2019_cleaned.csv',
+      'csv_data/wiki_feds_ending_2022_cleaned.csv',
+      'csv_data/wiki_feds_senators_ending_2019_cleaned.csv',
       'csv_data/wiki_feds_senators_ending_2022_cleaned.csv'
     ]
 
@@ -54,8 +54,8 @@ namespace :lester do
     end
 
     federal_ministries = [
-      # 'csv_data/ministries_morrison.csv',
-      # 'csv_data/ministries_turnbull.csv',
+      'csv_data/ministries_morrison.csv',
+      'csv_data/ministries_turnbull.csv',
     ]
 
     federal_ministries.each do |file|
