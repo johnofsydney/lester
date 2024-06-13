@@ -6,11 +6,15 @@ class FileIngestor
       csv.each do |row|
         donation_date = Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30) # saves bothering about the date format
         financial_year = Dates::FinancialYear.new(donation_date)
+        giver = RecordPersonOrGroup.call(row["Donor Name"])
+        taker = RecordPersonOrGroup.call(row["Donation Made To"])
 
         # TODO: Transfer.taker can be a group or a person. Use RecordGroup.call
         transfer = Transfer.find_or_create_by(
-          giver: RecordDonation.call(row["Donor Name"]),
-          taker: RecordGroup.call(row["Donation Made To"]),
+          giver_id: giver.id,
+          giver_type: giver.class.name,
+          taker_id: taker.id,
+          taker_type: taker.class.name,
           effective_date: financial_year.last_day, # group all donations for a financial year. There are too many otherwise.
           transfer_type: 'donations',
           evidence: 'https://transparency.aec.gov.au/AnnualDonor',
@@ -20,9 +24,10 @@ class FileIngestor
         transfer.donations ||= []
 
         # TODO: Transfer.taker can be a group or a person. Use RecordGroup.call
+        # this is for the JSON data field, recording each individual donation
         transfer.donations << {
-          giver: RecordDonation.call(row["Donor Name"])&.name,
-          taker: RecordGroup.call(row["Donation Made To"])&.name,
+          giver: giver.name,
+          taker: taker.name,
           effective_date: financial_year.last_day,
           donation_date: row['Date'],
           transfer_type: 'donation',
@@ -82,7 +87,8 @@ class FileIngestor
           # this is where we can add preselectors who choose the candidates for the electorate
           # for major parties the branch is a subgroup of the state party
           # for minor parties the branch is a subgroup of the federal party
-          unless senator
+          # add this back later if wanted
+          unless senator && false
             branch_name = "#{federal_party.less_level} Branch for #{row['electorate']} Electorate"
             branch = RecordGroup.call(branch_name)
 
@@ -134,7 +140,7 @@ class FileIngestor
         Position.find_or_create_by(membership:, title:, start_date:, end_date:)
         rescue => e
 
-          p "Error: #{e}"
+        p "Error: #{e} | row#{row.inspect}"
       end
     end
 
@@ -148,7 +154,7 @@ class FileIngestor
 
         person = RecordPerson.call(row['person'])
 
-        title = row['title'].strip
+        title = row['title'].strip if row['title'].present?
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
 
@@ -164,7 +170,7 @@ class FileIngestor
         end
         rescue => e
 
-          p "Error: #{e}"
+        p "General Upload | Error: #{e} | row#{row.inspect}"
       end
     end
 

@@ -1,4 +1,4 @@
-<%= turbo_stream_from(:updates) %>
+
 
 <div>
   <%= render Groups::Heading.new(group: @group) %>
@@ -27,7 +27,6 @@
 </div>
 
 
-<%= turbo_frame_tag :feed, src: activity_feed_path, loading: :lazy do %>
-  <p>Loading More Transfer Records...</p>
-  <hr>
-<% end %>
+
+
+<%= bar_chart(@data) %>
