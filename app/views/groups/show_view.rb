@@ -15,6 +15,7 @@ class Groups::ShowView < ApplicationView
 	def template
     render Common::Heading.new(entity: group)
     render Common::MoneySummary.new(entity: group)
+
     render Groups::AffiliatedGroups.new(group:)
     render Groups::People.new(group:)
 

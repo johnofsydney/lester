@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-RSpec.describe RecordDonation, type: :service do
+RSpec.describe RecordPersonOrGroup, type: :service do
   describe '#person_or_group' do
 
     let(:people_names) do
@@ -25,7 +25,7 @@ RSpec.describe RecordDonation, type: :service do
 
     it 'expect all people to be reported as person' do
       people_names.each do |name|
-        expect(RecordDonation.new(name).person_or_group).to eq('person')
+        expect(RecordPersonOrGroup.new(name).person_or_group).to eq('person')
       end
     end
 
@@ -74,7 +74,7 @@ RSpec.describe RecordDonation, type: :service do
 
     it 'expect all groups to be reported as group', :aggregate_failures do
       group_names.each do |name|
-        expect(RecordDonation.new(name).person_or_group).to eq('group')
+        expect(RecordPersonOrGroup.new(name).person_or_group).to eq('group')
       end
     end
   end

@@ -96,7 +96,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
   create_table "transfers", force: :cascade do |t|
     t.string "giver_type"
     t.bigint "giver_id"
-    t.bigint "taker_id", null: false
+    t.string "taker_type"
+    t.bigint "taker_id"
     t.integer "amount", default: 0
     t.text "evidence"
     t.text "transfer_type"
@@ -105,7 +106,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
     t.datetime "updated_at", null: false
     t.json "data"
     t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
-    t.index ["taker_id"], name: "index_transfers_on_taker_id"
+    t.index ["taker_type", "taker_id"], name: "index_transfers_on_taker"
   end
 
   create_table "users", force: :cascade do |t|
@@ -122,5 +123,4 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
 
   add_foreign_key "memberships", "groups"
   add_foreign_key "positions", "memberships"
-  add_foreign_key "transfers", "groups", column: "taker_id"
 end

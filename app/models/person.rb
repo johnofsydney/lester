@@ -8,6 +8,7 @@ class Person < ApplicationRecord
   has_many :groups, through: :memberships
 
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
+  has_many :incoming_transfers, class_name: 'Transfer', foreign_key: 'taker_id', as: :taker
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 

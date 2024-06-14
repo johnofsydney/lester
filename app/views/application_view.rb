@@ -33,8 +33,7 @@ class ApplicationView < ApplicationComponent
   end
 
   def background_color(item)
-    background_color = safe_name(item)
-    "#" + text_to_hex(background_color)
+    "#" + text_to_hex(safe_name(item))
   end
 
   def color(item)

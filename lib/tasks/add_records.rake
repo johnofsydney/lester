@@ -12,7 +12,7 @@ namespace :lester do
     ActiveRecord::Base.connection.reset_pk_sequence!('people')
   end
 
-  desc "Generate a report of users who logged in during the last week"
+  desc "Destroy all records and re-populate"
   task populate: :environment do
 
     Transfer.destroy_all
