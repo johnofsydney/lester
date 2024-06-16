@@ -20,6 +20,7 @@ class MapGroupNames
     return 'Climate 200' if name.match?(/(Climate 200|Climate200)/i)
     return 'Australian Chamber of Commerce and Industry' if name.match?(/Australian Chamber of Commerce and Industry/i)
     return 'Australian Chamber of Commerce and Industry' if name.match?(/Australia Chamber of Commerce and Industry/i)
+    return 'Hadley Holdings Pty Ltd' if name.match?(/Hadley Holdings/i)
 
           # Independents
     return 'David Pocock Campaign' if name.match?(/David Pocock/i)
@@ -37,7 +38,7 @@ class MapGroupNames
     return 'Katter Australia Party' if name.match?(/(Katter|KAP)/i)
     return 'Australian Conservatives' if name.match?(/Australian Conservatives/i)
     return 'Federal Independents' if name.match?(/Independent Fed/i)
-    return 'Waringah Independents' if name.match?(/[Warringah|Waringah].+independent/i)
+    return 'Waringah Independents' if name.match?(/(Warringah|Waringah).+(independent|Independant)/i)
     return 'Lambie Network' if name.match?(/Lambie/i)
 
     return "Pauline Hanson's One Nation" if name.match?(/Pauline Hanson|One Nation/i)
@@ -56,6 +57,7 @@ class MapGroupNames
     # National Party
     return group_names.nationals.nsw if name.match(/(National Party|NAT).+(New South Wales|NSW|N\.S\.W\.)/i)
     return group_names.nationals.wa if name.match(/(National Party|NAT).+(Western Australia|WA|W\.A\.)/i)
+    return group_names.nationals.tas if name.match(/National Tasmania/i)
     return group_names.nationals.vic if name.match(/(National Party|NAT).+Vic/i)
     return group_names.nationals.federal if name.match(/National Party.+Fed/i)
     return group_names.nationals.federal if name.match(/The Nationals.+Fed/i)
@@ -73,6 +75,7 @@ class MapGroupNames
     return group_names.liberals.qld if name.match(/Lib.+(QLD|Queensland)/i)
     return group_names.liberals.sa if name.match(/Lib.+(South Australia|SA|S\.A\.)/i)
     return group_names.liberals.nt if name.match(/Lib.+(Northern Territory|NT|N\.T\.)/i)
+    return group_names.liberals.nt if name.match(/Clp-Nt/i)
     return group_names.liberals.wa if name.match(/Lib.+(Western Australia|Western Australia|WA|W\.A\.)/i)
     return group_names.liberals.tas if name.match(/Lib.+TAS/i)
     return group_names.liberals.act if name.match(/Lib.+(ACT|Australian Capital Territory)/i)
@@ -123,6 +126,7 @@ class MapGroupNames
     return group_names.labor.federal if name.match?(/ALP Bruce Fea/i)
     return group_names.labor.federal if name.match?(/Australia Labor Party (ALP)/i)
     return group_names.labor.federal if name.match?(/Australia Labor Party/i)
+    return group_names.labor.vic if name.match?(/Alp Vic Branch/i)
 
     # Can't find it, return the name
     cleaned_up_name(name)
@@ -140,7 +144,7 @@ class MapGroupNames
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
     regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b/i
     regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b/i
-    regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b/i
+    regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b/i
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b/i
 
