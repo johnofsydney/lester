@@ -20,6 +20,16 @@ RSpec.describe RecordPersonOrGroup, type: :service do
         'Ms. Stephanie Reed',
         'Antony Pasin MP',
         'Andrew Wilkie',
+        'Faehrmann, Catriona',
+        'Mcleod, Fiona',
+        'Murray, Ronald James',
+        "O'rourke, Barry Leonard",
+        'Pitcher, Ronald',
+        'Sriranganathan, Jonathan',
+        'Strofield, Jonathan',
+        'Wanless, Ronald',
+        'Hon Paul Everingham',
+        'Spencer Grammer'
       ]
     end
 
@@ -69,6 +79,28 @@ RSpec.describe RecordPersonOrGroup, type: :service do
         'Westreet Investments',
         'WorkPac',
         'Wren Oil',
+        'Alp Vic Branch',
+        'CEC',
+        'Clp-Nt',
+        'Contura Mining',
+        'Lib - Fed',
+        'Lib - Sa',
+        'Lib - Vic',
+        'Lib - Wa',
+        'Lib Fed',
+        'Lib Vic',
+        'Lib-Act',
+        'Lib-Fec',
+        'Lib-Fed',
+        'Lib-Sa',
+        'Lib-Tas',
+        'Lib-Vic',
+        'Lib-Wa',
+        'Nat - Fed',
+        'Nat-Fed',
+        'Spectrum Health',
+        'Victorian Socialists',
+        'Warringah Independent'
       ]
     end
 
