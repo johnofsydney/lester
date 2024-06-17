@@ -40,6 +40,7 @@ class MapGroupNames
     return 'Federal Independents' if name.match?(/Independent Fed/i)
     return 'Waringah Independents' if name.match?(/(Warringah|Waringah).+(independent|Independant)/i)
     return 'Lambie Network' if name.match?(/Lambie/i)
+    return 'United Australia Party' if name.match?(/United Australia Party/i)
 
     return "Pauline Hanson's One Nation" if name.match?(/Pauline Hanson|One Nation/i)
 
