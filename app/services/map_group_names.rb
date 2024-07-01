@@ -40,6 +40,7 @@ class MapGroupNames
     return 'Federal Independents' if name.match?(/Independent Fed/i)
     return 'Waringah Independents' if name.match?(/(Warringah|Waringah).+(independent|Independant)/i)
     return 'Lambie Network' if name.match?(/Lambie/i)
+    return 'United Australia Party' if name.match?(/United Australia Party/i)
 
     return "Pauline Hanson's One Nation" if name.match?(/Pauline Hanson|One Nation/i)
 
@@ -138,7 +139,7 @@ class MapGroupNames
 
   def cleaned_up_name(name)
     regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
-    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b/i
+    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b/i
 
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i

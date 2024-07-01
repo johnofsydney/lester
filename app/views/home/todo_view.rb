@@ -32,6 +32,7 @@ class Home::TodoView < ApplicationView
                 li { 'Javascript' }
                 li { 'jQuery' }
                 li { 'Import Maps' }
+                li { 'Add $$ totals on group and person page, by year' }
               end
             end
           end
@@ -83,9 +84,6 @@ class Home::TodoView < ApplicationView
                 li { 'Import People / Groups / Positions from CSV' }
                 li { 'Add Indexes' }
                 li { 'Add Audit table' }
-
-
-                li { 'Add $$ totals on group and person page, by year' }
               end
             end
           end
