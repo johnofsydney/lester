@@ -11,33 +11,25 @@ class Common::MoneySummary < ApplicationView
     if money_in.present? || money_out.present?
       hr
       div(class: 'row') do
-        h2 { 'Money Summary' }
-        div(class: 'col') do
-          h3 { 'Money In' }
-          p { money_in }
+        h2 { 'Money Summary *' }
+        h4 do
+          plain '* transfers in and out'
+          strong { ' ...that we know about' }
+        end
+        if money_in.present?
+          div(class: 'col') do
+            h3 { 'Money In' }
+            p { money_in }
 
-          # TODO: make this work for people as well
-          if money_in.present? && entity.is_a?(Group) # charts only work for groups for now (need to refactor those controllers)
-            turbo_frame(id: 'money_in_charts', src: lazy_load_group_path, loading: :lazy) do
-              p do
-                p { 'Loading Chart...'}
-                hr
-              end
-            end
+            render Common::MoneyGraphs.new(entity:)
           end
         end
-        div(class: 'col') do
-          h3 { 'Money Out' }
-          p { money_out }
+        if money_out.present?
+          div(class: 'col') do
+            h3 { 'Money Out' }
+            p { money_out }
 
-          # TODO: make this work for people as well
-          if money_out.present? && entity.is_a?(Group) # charts only work for groups for now (need to refactor those controllers)
-            turbo_frame(id: 'money_out_charts', src: lazy_load_group_path, loading: :lazy) do
-              p do
-                p { 'Loading Chart...'}
-                hr
-              end
-            end
+            render Common::MoneyGraphs.new(entity:, giver: true)
           end
         end
       end

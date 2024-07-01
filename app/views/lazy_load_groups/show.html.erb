@@ -1,21 +1,3 @@
-<%= turbo_frame_tag :money_in_charts do %>
-  <div>
-    <%= bar_chart(@transfers_as_taker_by_name, colors: @taker_colors, prefix: "$", thousands: ",") %>
-  </div>
-  <div>
-    <%= column_chart(@transfers_as_taker_by_year, prefix: "$", thousands: ",", xtitle: 'Financial Year') %>
-  </div>
-<% end %>
-
-<%= turbo_frame_tag :money_out_charts do %>
-  <div>
-    <%= bar_chart(@transfers_as_giver_by_name, colors: @giver_colors, prefix: "$", thousands: ",") %>
-  </div>
-  <div>
-    <%= column_chart(@transfers_as_giver_by_year, prefix: "$", thousands: ",", xtitle: 'Financial Year') %>
-  </div>
-<% end %>
-
 <%= turbo_frame_tag :feed do %>
   <div>
     <%= render TransfersTableComponent.new(

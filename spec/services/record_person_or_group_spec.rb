@@ -100,7 +100,25 @@ RSpec.describe RecordPersonOrGroup, type: :service do
         'Nat-Fed',
         'Spectrum Health',
         'Victorian Socialists',
-        'Warringah Independent'
+        'Warringah Independent',
+        'Lib - Fed',
+        'Lib - Sa',
+        'Lib - Vic',
+        'Lib - Wa',
+        'Lib Fed',
+        'Lib Vic',
+        'Lib-Act',
+        'Lib-Fec',
+        'Lib-Fed',
+        'Lib-Sa',
+        'Lib-Tas',
+        'Lib-Vic',
+        'Lib-Wa',
+        'Groundswell Giving',
+        'Alp Vic Branch',
+        'Campact E.V.',
+        'Clp-Nt',
+        'Corrs Chambers Westgarth',
       ]
     end
 
