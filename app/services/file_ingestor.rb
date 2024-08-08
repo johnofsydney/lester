@@ -9,7 +9,6 @@ class FileIngestor
         giver = RecordPersonOrGroup.call(row["Donor Name"])
         taker = RecordPersonOrGroup.call(row["Donation Made To"])
 
-        # TODO: Transfer.taker can be a group or a person. Use RecordGroup.call
         transfer = Transfer.find_or_create_by(
           giver_id: giver.id,
           giver_type: giver.class.name,
@@ -23,7 +22,6 @@ class FileIngestor
         transfer.data ||= {}
         transfer.donations ||= []
 
-        # TODO: Transfer.taker can be a group or a person. Use RecordGroup.call
         # this is for the JSON data field, recording each individual donation
         transfer.donations << {
           giver: giver.name,

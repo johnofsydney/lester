@@ -36,10 +36,6 @@ namespace :lester do
       'csv_data/Annual_Donations_Made_2023.csv',
     ]
 
-    donation_files.each do |file|
-      FileIngestor.annual_donor_ingest(file)
-    end
-
     federal_parliamentarians = [
       'csv_data/wiki_feds_current_mps_cleaned.csv',
       'csv_data/wiki_feds_current_senators_cleaned.csv',
@@ -49,22 +45,33 @@ namespace :lester do
       'csv_data/wiki_feds_senators_ending_2022_cleaned.csv'
     ]
 
-    federal_parliamentarians.each do |file|
-      FileIngestor.federal_parliamentarians_upload(file)
-    end
-
     federal_ministries = [
       'csv_data/ministries_morrison.csv',
       'csv_data/ministries_turnbull.csv',
     ]
 
+    # using data sourced from the AEC
+    donation_files.each do |file|
+      FileIngestor.annual_donor_ingest(file)
+    end
+
+    # using data sourced from wikipedia
+    federal_parliamentarians.each do |file|
+      FileIngestor.federal_parliamentarians_upload(file)
+    end
+
+    # using data sourced from wikipedia
     federal_ministries.each do |file|
       FileIngestor.ministries_upload(file)
     end
 
+    # From a file created and maintained by me, whenever noteworthy people or groups appear in the news
     FileIngestor.general_upload('csv_data/other_people_groups_positions.csv')
 
+    # From a file created and maintained by me, linking groups to groups, whenever information comes to light
     FileIngestor.affiliations_upload('csv_data/affiliations.csv')
+
+    # From a file created and maintained by me, whenever noteworthy money transfers appear in the news
     FileIngestor.transfers_upload('csv_data/other_transfers.csv')
 
 
