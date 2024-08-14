@@ -1,6 +1,5 @@
 class Groups::ShowView < ApplicationView
   # include ActionView::Helpers::NumberHelper
-
   # include Phlex::Rails::Helpers::TurboStream
   # include Phlex::Rails::Helpers::TurboStreamFrom
   # include Phlex::Rails::Helpers::TurboFrameTag
@@ -21,12 +20,12 @@ class Groups::ShowView < ApplicationView
 
     render TransfersTableComponent.new(
       entity: group,
-      transfers: group.consolidated_transfers(depth: 0),
+      transfers: group.consolidated_transfers(depth: 0), # <== This is building a table with transfers directly connected to the group
       heading: "Directly Connected to #{group.name}",
       summarise_for: Group.summarise_for(group)
     )
 
-    turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do
+    turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do  # <== This is lazy loading a turbo frame
       p do
         p { 'Loading More Transfer Records...'}
         hr
