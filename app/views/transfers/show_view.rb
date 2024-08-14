@@ -18,53 +18,48 @@ class Transfers::ShowView < ApplicationView
     end
 
     # money summary
-    div(class: 'row') do
-      h2 { "Transfer of #{number_to_currency(transfer.amount, precision: 0)} From #{transfer.giver.name} to #{transfer.taker.name}" }
+    h4 { "Transfer of #{number_to_currency(transfer.amount, precision: 0)} From #{transfer.giver.name} to #{transfer.taker.name}" }
 
-      div(class: 'row') do
-        p do
-          span { 'From: ' }
-          link_for(entity: transfer.giver)
-        end
-        p do
-          span { 'To: ' }
-          link_for(entity: transfer.taker)
-        end
-        p(class: 'text-truncate') do
-          span { 'Evidence: ' }
-          a(href: transfer.evidence) { transfer.evidence }
-        end
-        p do
-          span { "Effective Date: #{transfer.effective_date}"}
-        end
+    div(class: 'row') do
+      p do
+        span { 'From: ' }
+        link_for(entity: transfer.giver)
+      end
+      p do
+        span { 'To: ' }
+        link_for(entity: transfer.taker)
+      end
+      p(class: 'text-truncate') do
+        span { 'Evidence: ' }
+        a(href: transfer.evidence) { transfer.evidence }
+      end
+      p do
+        span { "Effective Date: #{transfer.effective_date}"}
       end
     end
 
     if transfer.data.present? && transfer.data['donations'].present?
-      div(class: 'row') do
+      hr
 
-        hr
+      p do
+        plain "A single 'transfer' can represent multiple single payments inthe same financial year. "
+        i { "This "}
+        plain "transfer represents the following payments:"
+      end
 
-        p do
-          plain "A single 'transfer' can represent multiple single payments inthe same financial year. "
-          i { "This "}
-          plain "transfer represents the following payments:"
-        end
-
-        table(class: 'table table-striped') do
-          thead do
-            tr do
-              th { 'Payment Type' }
-              th(class: 'text-end') { 'Amount' }
-              th(class: 'text-end') { 'Date' }
-            end
+      table(class: 'table table-striped') do
+        thead do
+          tr do
+            th { 'Payment Type' }
+            th(class: 'text-end') { 'Amount' }
+            th(class: 'text-end') { 'Date' }
           end
-          transfer.data['donations'].each do |donation|
-            tbody do
-              td { donation['transfer_type'] }
-              td(class: 'text-end') { number_to_currency(donation['amount'], precision: 0) }
-              td(class: 'text-end') { donation['donation_date'] }
-            end
+        end
+        transfer.data['donations'].each do |donation|
+          tbody do
+            td { donation['transfer_type'] }
+            td(class: 'text-end') { number_to_currency(donation['amount'], precision: 0) }
+            td(class: 'text-end') { donation['donation_date'] }
           end
         end
       end

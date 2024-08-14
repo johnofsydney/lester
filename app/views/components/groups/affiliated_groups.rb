@@ -9,8 +9,7 @@ class Groups::AffiliatedGroups < ApplicationView
 
     if group.affiliated_groups.present?
       hr
-      div(class: 'row') do
-        h2 { 'Affiliated Groups' }
+        h4 { 'Affiliated Groups' }
         ul(class: 'list-group list-group-horizontal', style: 'flex-wrap: wrap;') do
           group.affiliated_groups.each do |group|
             li(class: 'list-group-item horizontal-button') do
@@ -18,7 +17,6 @@ class Groups::AffiliatedGroups < ApplicationView
             end
           end
         end
-      end
     end
   end
 end

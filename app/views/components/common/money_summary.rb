@@ -10,27 +10,25 @@ class Common::MoneySummary < ApplicationView
   def template
     if money_in.present? || money_out.present?
       hr
-      div(class: 'row') do
-        h2 { 'Money Summary *' }
-        h4 do
-          plain '* transfers in and out'
-          strong { ' ...that we know about' }
-        end
-        if money_in.present?
-          div(class: 'col') do
-            h3 { 'Money In' }
-            p { money_in }
+      h4 { 'Money Summary *' }
+      h6 do
+        plain '* transfers in and out'
+        em { ' ...that we know about' }
+      end
+      if money_in.present?
+        div(class: 'col') do
+          h5 { 'Money In' }
+          p { money_in }
 
-            render Common::MoneyGraphs.new(entity:)
-          end
+          render Common::MoneyGraphs.new(entity:)
         end
-        if money_out.present?
-          div(class: 'col') do
-            h3 { 'Money Out' }
-            p { money_out }
+      end
+      if money_out.present?
+        div(class: 'col') do
+          h5 { 'Money Out' }
+          p { money_out }
 
-            render Common::MoneyGraphs.new(entity:, giver: true)
-          end
+          render Common::MoneyGraphs.new(entity:, giver: true)
         end
       end
     end
