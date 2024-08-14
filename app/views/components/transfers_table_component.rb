@@ -15,6 +15,8 @@ class TransfersTableComponent < ApplicationView
   def template
     return nil if transfers.empty?
 
+    hr
+
     return make_table(transfers) if (summarise_for.nil? && exclude.nil?)
 
     # TODO: also deal with summarise outbound?
@@ -46,8 +48,8 @@ class TransfersTableComponent < ApplicationView
   end
 
   def make_table(transfers)
-    h2 { 'Transfers' }
-    h5 { "#{heading} (#{transfers.count} records)" }
+    h4 { 'Transfers' }
+    p { "#{heading} (#{transfers.count} records)" }
     table(class: 'table table-striped responsive-table') do
       tr do
         th { 'ID' }

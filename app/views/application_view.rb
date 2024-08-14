@@ -27,6 +27,7 @@ class ApplicationView < ApplicationComponent
       'display' => 'inline-block',
       'margin' => '0.25rem',
       'padding'=> '0.25rem',
+      'font_size' => 'x-large',
     }.map{|key, value| "#{key.to_s.dasherize}: #{value};"}
      .join('; ') + ';'
 
