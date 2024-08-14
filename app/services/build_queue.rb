@@ -24,10 +24,8 @@ class BuildQueue
 
   def can_add_to_queue?(node, next_node)
     if counter > 200
-      binding.pry
-      # if counter is 0 it the current node.
-      # if it is 1, give us the next level of nodes without conditions
-      true
+      raise "Counter exceeded"
+      # TODO: remove
     elsif node.is_a?(Person) && next_node.is_a?(Group)
       # Don't add the group to the queue if it is so big that not all individuals would know each other
       return next_node.memberships.size < MAX_GROUP_SIZE_TO_FOLLOW
