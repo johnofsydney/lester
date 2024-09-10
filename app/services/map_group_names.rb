@@ -10,19 +10,28 @@ class MapGroupNames
   end
 
   def map_or_return_name(name)
-    name = name.strip
+    name = name.gsub(/\s+/, ' ').strip
 
     return 'Get Up Limited' if name.match?(/(GetUp|Get Up)/i)
     return 'Australian Hotels Association' if name.match?(/Australian Hotels Association/i)
-    return 'Advance Australia' if name.match?(/Advance Aus/i)
+    return 'Advance Australia' if name.match?(/Advance Aus|Advanced Aus/i)
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
     return 'Australian Council of Trade Unions' if name.match?(/ACTU/i)
     return 'Climate 200' if name.match?(/(Climate 200|Climate200)/i)
     return 'Australian Chamber of Commerce and Industry' if name.match?(/Australian Chamber of Commerce and Industry/i)
     return 'Australian Chamber of Commerce and Industry' if name.match?(/Australia Chamber of Commerce and Industry/i)
     return 'Hadley Holdings Pty Ltd' if name.match?(/Hadley Holdings/i)
+    return 'University of NSW' if name.match?(/University of (NSW|New South Wales)|UNSW/i)
+    return 'Australian Communities Foundation Limited' if name.match?(/Australian Communities Foundation/i)
+    return 'Australians for Unity Ltd' if name.match?(/(Australia|Australian|Australians) for Unity|\bAFUL\b/i)
+    return 'Australians for Indigenous Consititutional Recognition' if name.match?(/Australians for (Indigenous|Indigneous) (Constitution|Constitutional|Consititutional) (Recognition|Recgonition|Recongition)|\bAICR\b|\b\(aicr\)\b/i)
+    return 'Climate Action Network Australia' if name.match?(/Climate Action Network Australia/i)
+    return 'Stand UP: Jewish Commitment TO A Better World Ltd' if name.match?(/(Tand|Stand) UP: Jewish Commitment TO A Better World Ltd/i)
+    return 'The Australia Institute' if name.match?(/Australia Institute/i)
+    return 'The Dugdale Trust for Women and Girls' if name.match?(/The Dugdale Trust for (Women|Womens) and Girls/i)
+    return 'Uphold and Recognise Limited' if name.match?(/Uphold.+Recognise/i)
 
-          # Independents
+    # Independents
     return 'David Pocock Campaign' if name.match?(/David Pocock/i)
     return 'Zali Steggall Campaign' if name.match?(/Zali Steggall/i)
     return 'Kim for Canberra' if name.match?(/Kim for Canberra/i)
@@ -144,10 +153,11 @@ class MapGroupNames
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
     regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b/i
-    regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b/i
-    regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b/i
+    regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|\bTo\b/i
+    regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b|\bGum Tree\b/i
+    regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b|\bGum Tree\b/i
 
-    regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b/i
+    regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
 
     CapitalizeNames.capitalize(name.strip)
                    .gsub(regex_for_two_and_three_chars) { |chars| chars.upcase }
@@ -157,6 +167,7 @@ class MapGroupNames
                    .gsub(regex_for_titleize_3) { |word| word.titleize }
                    .gsub(regex_for_titleize_4) { |word| word.titleize }
                    .gsub(regex_for_titleize_5) { |word| word.titleize }
+                   .gsub(regex_for_titleize_6) { |word| word.titleize }
                    .gsub(regex_for_downcase) { |word| word.downcase }
                    .gsub(/^the/) { |word| word.titleize }
                    .gsub(/australia/) { |word| word.titleize }

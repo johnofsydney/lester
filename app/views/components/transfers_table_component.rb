@@ -65,7 +65,7 @@ class TransfersTableComponent < ApplicationView
         tr(style: row_style(transfer)) do
           td do
             if transfer.id
-              a(href: "/transfers/#{transfer.id}") { transfer.id}
+              link_for(entity: transfer, link_text: transfer.id, klass: 'Transfer')
             else
               ''
             end
@@ -73,12 +73,12 @@ class TransfersTableComponent < ApplicationView
           td { number_to_currency(transfer.amount.to_s, precision: 0) }
           td { transfer.effective_date.year.to_s }
           if transfer.giver.id
-            td { a(href: "/#{class_of(transfer.giver)}/#{transfer.giver.id}") { transfer.giver.name } }
+            td { link_for(entity: transfer.giver) if transfer.giver}
           elsif transfer.giver
             td { transfer.giver.name } # only for summary rows
           end
 
-          td { a(href: "/#{class_of(transfer.taker)}/#{transfer.taker.id}") { transfer.taker.name } if transfer.taker}
+          td { link_for(entity: transfer.taker) if transfer.taker}
           td { transfer.depth }
           td { transfer.direction }
         end

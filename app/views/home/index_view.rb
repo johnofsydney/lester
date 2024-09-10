@@ -7,7 +7,7 @@ class Home::IndexView < ApplicationView
       h1(class: 'display-4') { '...follow the money...' }
     end
 
-    div(class: 'row') do
+    div(class: 'row margin-above') do
       p do
         strong { "Join The Dots" }
         plain " is a platform dedicated to illuminating the web of connections between people, organisations and money."
@@ -26,14 +26,10 @@ class Home::IndexView < ApplicationView
       end
 
       ul(style: 'list-style-type: none;') do
-        li do
-          a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records since 2018' }
-        end
-        li do
-          a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term') { 'Federal MPs and Senators since 2016' }
-        end
+        li { a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records since 2018' } }
+        li { a(href: 'https://transparency.aec.gov.au/ReferendumDonor') { 'AEC 2023 Referendum Donor Returns' } }
+        li { a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term') { 'Federal MPs and Senators since 2016' } }
       end
-
 
       p { "For groups where the owners, major shareholders, or key personnel can be identified through public records, we add these individuals to the group in our database. This enhances the depth and accuracy of our data, providing a more comprehensive view of the connections of the individual." }
 

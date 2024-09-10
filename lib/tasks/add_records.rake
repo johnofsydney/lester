@@ -27,7 +27,7 @@ namespace :lester do
     ActiveRecord::Base.connection.reset_pk_sequence!('groups')
     ActiveRecord::Base.connection.reset_pk_sequence!('people')
 
-    donation_files = [
+    annual_donation_files = [
       'csv_data/Annual_Donations_Made_2018.csv',
       'csv_data/Annual_Donations_Made_2019.csv',
       'csv_data/Annual_Donations_Made_2020.csv',
@@ -51,9 +51,11 @@ namespace :lester do
     ]
 
     # using data sourced from the AEC
-    donation_files.each do |file|
+    annual_donation_files.each do |file|
       FileIngestor.annual_donor_ingest(file)
     end
+
+    FileIngestor.referendum_donor_ingest('csv_data/Referendum_Donations_Made_2023.csv')
 
     # using data sourced from wikipedia
     federal_parliamentarians.each do |file|

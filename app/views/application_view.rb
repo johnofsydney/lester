@@ -78,6 +78,6 @@ class ApplicationView < ApplicationComponent
 
     href += "/#{action}" if action
 
-    a(href: href, class:, style:) { link_text }
+    a(href: href, class:, style:, data_turbo: "false") { link_text }
   end
 end

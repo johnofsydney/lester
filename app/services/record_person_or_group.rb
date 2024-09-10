@@ -25,7 +25,7 @@ class RecordPersonOrGroup
   end
 
   def person_or_group
-    regex_for_3_or_4_capitals = /\bHCF\b|\bINPEX\b|\bCMAX\b|\bSDA\b|\bONA\b|\bSPP\b|\bACCI\b|\bACTU\b|\bCEC\b|\bCLP|\bMSD\b/i
+    regex_for_3_or_4_capitals = /\bHCF\b|\bINPEX\b|\bCMAX\b|\bSDA\b|\bONA\b|\bSPP\b|\bACCI\b|\bACTU\b|\bCEC\b|\bCLP|\bMSD\b|\bUNSW\b|\bAICR\b|\bAFUL\b/i
     regex_for_company_words_1 = /Corporation|Transport|Tax Aid|Outcomes|Lifestyle/i
     regex_for_company_words_2 = /business|technology|shopping|toyota|bank|promotions|publications/i
     regex_for_company_words_3 = /institute|horticultural|cleaning|technologies|centre/i
@@ -33,14 +33,17 @@ class RecordPersonOrGroup
     regex_for_company_words_5 = /Public|affairs|nimbin hemp|company|workpac|wren oil/i
     regex_for_company_words_6 = /plumbing|division|federal|office|advisory|deloitte touche/i
     regex_for_company_words_7 = /company|events|commerce|webdrill|private|restaurant|Mining/i
-    regex_for_company_words_8 = /enterprise|lendlease|party|healthcare|agency|team|lawyers/i
-    regex_for_company_words_9 = /national\b|\bbranch\b/i
+    regex_for_company_words_8 = /enterprise|lendlease|party|healthcare|agency|team|lawyers|employment/i
+    regex_for_company_words_9 = /national\b|\bbranch\b|\binstitution\b/i
 
     regex_for_party_words_1 = /\bLib - Fed\b|\bLib - Sa\b|\bLib - Wa\b|\bLib - Vic\b/i
     regex_for_party_words_2 = /\bLib Fed\b|\bLib Vic\b/i
     regex_for_party_words_3 = /\bLib-Act\b|\bLib-Fec\b|\bLib-Fed\b|\bLib-Sa\b|\bLib-Tas\b|\bLib-Vic\b|\bLib-Wa\b/i
     regex_for_party_words_4 = /\bNat - Fed\b|\bNat-Fed\b/i
-    regex_for_party_words_5 = /\bSocialists\b/i
+    regex_for_party_words_5 = /\bSocialists\b|\bCommittee\b|\bFund\b|\b(Dialogues|Dialogue)\b|\bForum\b/i
+
+    regex_for_campaign_words_1 = /\bFor Yes\b|\bFor No\b\bFor The\b/i
+    regex_for_campaign_words_2 = /Constitutional|Empowered|Employment/i
 
     return 'group' if name.match?(regex_for_3_or_4_capitals)  # Check for acronyms
     return 'group' if name.match?(regex_for_company_words_1)  # Check for company names
@@ -59,6 +62,12 @@ class RecordPersonOrGroup
     return 'group' if name.match?(regex_for_party_words_4)  # Check for party related names
     return 'group' if name.match?(regex_for_party_words_5)  # Check for party related names
 
+    return 'group' if name.match?(regex_for_campaign_words_1)  # Check for campaign related names
+    return 'group' if name.match?(regex_for_campaign_words_2)  # Check for campaign related names
+
+    return 'group' if name.match?(/Not A Race/i)
+    return 'group' if name.match?(/NIB Health/i)
+    return 'group' if name.match?(/Jewish Commitment To A Better World/i)
     return 'group' if name.match?(/PricewaterhouseCoopers/i)
     return 'group' if name.match?(/\bSpectrum Health\b/i)
     return 'group' if name.match?(/\bGroundswell Giving\b/i)
@@ -81,11 +90,12 @@ class RecordPersonOrGroup
     return 'group' if name.match?(/(limited|incorporated|ltd|government|associat|management|group|trust)/i)  # Check for company names
     return 'group' if name.match?(/(australia|management|capital|windfarm|engineering|energy)/i)  # Check for company names
     return 'group' if name.match?(/(guild|foundation|trust|retail|council|union|club|alliance)/i)  # Check for company names
-    return 'group' if name.match?(/(nsw|queensland|state|tasmania|south|northern|territory|western)/i)  # Check for states names
-    return 'group' if name.match?(/(n\.s\.w|qld|s\.a\.|n\.t\.|w\.a\.)/i)  # Check for states abbreviations
+    return 'group' if name.match?(/(new south wales|queensland|state|tasmania|south|northern|territory|western)/i)  # Check for states names
+    return 'group' if name.match?(/\b(nsw|n\.s\.w|qld|s\.a\.|n\.t\.|w\.a\.)\b/i)  # Check for states abbreviations
     return 'group' if name.match?(/( pl$|t\/as|trading as| p\/l)/i)  # Check for company endings
     return 'group' if name.match?(/&|\(/)  # Check for entries with ampersands (considered as companies)
     return 'group' if name.match?(/\d/)  # Check for entries with numbers (considered as companies)
+    return 'group' if name.match?(/\+/)  # Check for entries with signs (considered as companies)
     return 'couple' if name.match(/ and /)  # Check for couples
     return 'person' if name.match?(/^[A-Z][a-z]+, [A-Z][a-z]+$/)  # Check for names in the format "Lastname, Firstname"
 
