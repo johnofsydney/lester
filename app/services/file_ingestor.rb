@@ -35,7 +35,46 @@ class FileIngestor
 
         transfer.amount += row['Amount'].to_i
 
-        p "Donations: #{transfer.donations.inspect}"
+        print 'd'
+        transfer.save
+      end
+    end
+
+    def referendum_donor_ingest(file)
+      csv = CSV.read(file, headers: true)
+      csv.each do |row|
+        donation_date = parse_date(row['Date'])
+        financial_year = Dates::FinancialYear.new(donation_date)
+        giver = RecordPersonOrGroup.call(row["Donor Name"])
+        taker = RecordPersonOrGroup.call(row["Donation Made To"])
+
+        transfer = Transfer.find_or_create_by(
+          giver_id: giver.id,
+          giver_type: giver.class.name,
+          taker_id: taker.id,
+          taker_type: taker.class.name,
+          effective_date: financial_year.last_day, # group all donations for a financial year. There are too many otherwise.
+          transfer_type: 'donations',
+          evidence: 'https://transparency.aec.gov.au/ReferendumDonor',
+        )
+
+        transfer.data ||= {}
+        transfer.donations ||= []
+
+        # this is for the JSON data field, recording each individual donation
+        transfer.donations << {
+          giver: giver.name,
+          taker: taker.name,
+          effective_date: financial_year.last_day,
+          donation_date:,
+          transfer_type: 'donation',
+          evidence: 'https://transparency.aec.gov.au/ReferendumDonor',
+          amount: row['Amount'].to_i
+        }
+
+        transfer.amount += row['Amount'].to_i
+
+        print 'd'
         transfer.save
       end
     end
@@ -46,9 +85,9 @@ class FileIngestor
       csv = CSV.read(file, headers: true)
       csv.each do |row|
         next if Person.find_by(name: row['name']) # GUARD! IS TOO STRICT!
-        print "."
 
         person = RecordPerson.call(row['name'])
+        print 'p'
 
         senator = file.match?(/senator/i) ? true : false
         title = senator ? 'Senator' : 'MP'
@@ -145,7 +184,6 @@ class FileIngestor
     def general_upload(file)
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        print "-"
         group = RecordGroup.call(row['group'])
 
         next unless row['person'].present?
@@ -153,6 +191,7 @@ class FileIngestor
         person = RecordPerson.call(row['person'])
 
         title = row['title'].strip if row['title'].present?
+        evidence = row['evidence'].strip if row['evidence'].present?
         start_date = parse_date(row['start_date']) if row['start_date'].present?
         end_date = parse_date(row['end_date']) if row['end_date'].present?
 
@@ -164,10 +203,13 @@ class FileIngestor
         )
         # create position for each row, with unique dates and title
         if (title || start_date || end_date)
-          Position.find_or_create_by(membership:, title:, start_date:, end_date:)
+          position = Position.find_or_create_by(membership:, title:, start_date:, end_date:)
         end
-        rescue => e
 
+        membership.update(evidence:) if evidence
+        position.update(evidence:) if evidence && position
+
+        rescue => e
         p "General Upload | Error: #{e} | row#{row.inspect}"
       end
     end
@@ -175,9 +217,10 @@ class FileIngestor
     def affiliations_upload(file)
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        print ":"
         owning_group = RecordGroup.call(row['group'])
         member_group = RecordGroup.call(row['member_group'])
+
+        evidence = row['evidence'].strip if row['evidence'].present?
 
         membership = Membership.find_or_create_by(
           member_type: "Group",
@@ -186,13 +229,16 @@ class FileIngestor
           start_date: parse_date(row['start_date']),
           end_date: parse_date(row['end_date'])
         )
+
+        membership.update(evidence:) if evidence
+
+        print 'm'
       end
     end
 
     def transfers_upload(file)
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        print "+"
         giver = RecordGroup.call(row['giver'])
         taker = RecordGroup.call(row['taker'])
 
@@ -204,6 +250,8 @@ class FileIngestor
           amount: row['amount'],
           evidence: row['evidence']
         )
+
+        print 't'
       end
     end
 

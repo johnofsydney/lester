@@ -29,7 +29,9 @@ RSpec.describe RecordPersonOrGroup, type: :service do
         'Strofield, Jonathan',
         'Wanless, Ronald',
         'Hon Paul Everingham',
-        'Spencer Grammer'
+        'Spencer Grammer',
+        'Ainsworth, Stephen',
+        'Anne Ainsworth',
       ]
     end
 

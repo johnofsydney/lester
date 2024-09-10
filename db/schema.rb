@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_09_231656) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,6 +54,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
     t.date "end_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "evidence"
     t.index ["group_id"], name: "index_memberships_on_group_id"
     t.index ["member_type", "member_id"], name: "index_memberships_on_member"
   end
@@ -80,6 +81,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_05_051714) do
     t.string "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "evidence"
     t.index ["membership_id"], name: "index_positions_on_membership_id"
   end
 

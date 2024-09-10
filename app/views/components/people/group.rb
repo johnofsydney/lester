@@ -22,8 +22,7 @@ class People::Group < ApplicationView
           ul(class: 'list-group list-group-horizontal') do
           memberships.each do |membership|
               li(class: 'list-group-item') do
-                a(href: "/people/#{membership.member.id}") { membership.member.name }
-                # TODO FIX THIS FOR GROUPS AS MEMBERS
+                a(href: "/#{membership.member_type.downcase.pluralize}/#{membership.member.id}") { membership.member.name }
               end
             end
           end
