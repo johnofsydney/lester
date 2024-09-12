@@ -239,8 +239,8 @@ class FileIngestor
     def transfers_upload(file)
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        giver = RecordGroup.call(row['giver'])
-        taker = RecordGroup.call(row['taker'])
+        giver = RecordPersonOrGroup.call(row["giver"])
+        taker = RecordPersonOrGroup.call(row["taker"])
 
         transfer = Transfer.find_or_create_by(
           giver: giver,
