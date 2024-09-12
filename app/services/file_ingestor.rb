@@ -79,6 +79,47 @@ class FileIngestor
       end
     end
 
+    def election_donations_ingest(file)
+      csv = CSV.read(file, headers: true)
+      csv.each do |row|
+        next if row["Donation Made To"].match?(/unendorsed/i)
+
+        donation_date = parse_date(row['Date'])
+        financial_year = Dates::FinancialYear.new(donation_date)
+        giver = RecordPersonOrGroup.call(row["Name"])
+        taker = RecordPersonOrGroup.call(row["Donation Made To"])
+
+        transfer = Transfer.find_or_create_by(
+          giver_id: giver.id,
+          giver_type: giver.class.name,
+          taker_id: taker.id,
+          taker_type: taker.class.name,
+          effective_date: financial_year.last_day, # group all donations for a financial year. There are too many otherwise.
+          transfer_type: 'donations',
+          evidence: 'https://transparency.aec.gov.au/Donor',
+        )
+
+        transfer.data ||= {}
+        transfer.donations ||= []
+
+        # this is for the JSON data field, recording each individual donation
+        transfer.donations << {
+          giver: giver.name,
+          taker: taker.name,
+          effective_date: financial_year.last_day,
+          donation_date:,
+          transfer_type: 'donation',
+          evidence: 'https://transparency.aec.gov.au/Donor',
+          amount: row['Value'].to_i
+        }
+
+        transfer.amount += row['Value'].to_i
+
+        print 'd'
+        transfer.save
+      end
+    end
+
     def federal_parliamentarians_upload(file)
       parliament = RecordGroup.call('Australian Federal Parliament')
 

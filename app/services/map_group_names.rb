@@ -17,7 +17,7 @@ class MapGroupNames
     return 'Advance Australia' if name.match?(/Advance Aus|Advanced Aus/i)
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
     return 'Australian Council of Trade Unions' if name.match?(/ACTU/i)
-    return 'Climate 200' if name.match?(/(Climate 200|Climate200)/i)
+    return 'Climate 200 Pty Ltd' if name.match?(/(Climate 200|Climate200)/i)
     return 'Australian Chamber of Commerce and Industry' if name.match?(/Australian Chamber of Commerce and Industry/i)
     return 'Australian Chamber of Commerce and Industry' if name.match?(/Australia Chamber of Commerce and Industry/i)
     return 'Hadley Holdings Pty Ltd' if name.match?(/Hadley Holdings/i)
@@ -30,6 +30,8 @@ class MapGroupNames
     return 'The Australia Institute' if name.match?(/Australia Institute/i)
     return 'The Dugdale Trust for Women and Girls' if name.match?(/The Dugdale Trust for (Women|Womens) and Girls/i)
     return 'Uphold and Recognise Limited' if name.match?(/Uphold.+Recognise/i)
+    return 'Keldoulis Investments Pty Ltd' if name.match?(/Keldoulis Investments/i)
+    return 'Turner Components Pty Ltd' if name.match?(/Turner Components/i)
 
     # Independents
     return 'David Pocock Campaign' if name.match?(/David Pocock/i)
