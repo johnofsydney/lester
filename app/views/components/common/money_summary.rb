@@ -5,7 +5,7 @@ class Common::MoneySummary < ApplicationView
 
   def initialize(entity:)
 		@entity = entity
-	end
+  end
 
   def template
     if money_in.present? || money_out.present?

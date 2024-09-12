@@ -20,7 +20,6 @@ module TransferMethods
           results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
         end
 
-        next unless node.class == Group # TODO - get rid of this, people can accept transfers too (make taker polymorphic as well)
         Transfer.where(taker: node).find_each do |transfer|
           results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
         end
