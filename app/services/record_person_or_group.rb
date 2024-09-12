@@ -26,7 +26,7 @@ class RecordPersonOrGroup
 
   def person_or_group
     regex_for_3_or_4_capitals = /\bHCF\b|\bINPEX\b|\bCMAX\b|\bSDA\b|\bONA\b|\bSPP\b|\bACCI\b|\bACTU\b|\bCEC\b|\bCLP|\bMSD\b|\bUNSW\b|\bAICR\b|\bAFUL\b/i
-    regex_for_company_words_1 = /Corporation|Transport|Tax Aid|Outcomes|Lifestyle/i
+    regex_for_company_words_1 = /Corporation|Transport|Tax Aid|Outcomes|Lifestyle|active super/i
     regex_for_company_words_2 = /business|technology|shopping|toyota|bank|promotions|publications/i
     regex_for_company_words_3 = /institute|horticultural|cleaning|technologies|centre/i
     regex_for_company_words_4 = /Services|investments|entertainment|Insurance|Commerce/i
