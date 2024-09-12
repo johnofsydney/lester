@@ -77,6 +77,10 @@ namespace :lester do
     FileIngestor.transfers_upload('csv_data/other_transfers.csv')
 
 
+    # Using data sourced from the AEC
+    FileIngestor.election_donations_ingest('csv_data/Election_Donations_Made_to_2022.csv')
+
+
 
 
 
