@@ -40,6 +40,7 @@ class RecordPerson
     return 'Tony Windsor' if name.match?(/Antony Harold Curties Windsor/i)
     return 'Bob Katter' if name.match?(/Robert.+Katter/i)
     return 'Malcolm Turnbull' if name.match?(/Malcolm.+Turnbull/i)
+    return 'Helen Haines' if name.match?(/Helen.+Haines/i)
 
     name.gsub(regex_for_removal_elected, '')
         .gsub(regex_for_removal_honours, '')
