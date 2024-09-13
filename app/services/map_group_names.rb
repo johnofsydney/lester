@@ -26,18 +26,20 @@ class MapGroupNames
     return 'Australians for Unity Ltd' if name.match?(/(Australia|Australian|Australians) for Unity|\bAFUL\b/i)
     return 'Australians for Indigenous Consititutional Recognition' if name.match?(/Australians for (Indigenous|Indigneous) (Constitution|Constitutional|Consititutional) (Recognition|Recgonition|Recongition)|\bAICR\b|\b\(aicr\)\b/i)
     return 'Climate Action Network Australia' if name.match?(/Climate Action Network Australia/i)
-    return 'Stand UP: Jewish Commitment TO A Better World Ltd' if name.match?(/(Tand|Stand) UP: Jewish Commitment TO A Better World Ltd/i)
+    return 'Stand UP: Jewish Commitment TO A Better World' if name.match?(/(Tand|Stand) UP: Jewish Commitment TO A Better World/i)
     return 'The Australia Institute' if name.match?(/Australia Institute/i)
     return 'The Dugdale Trust for Women and Girls' if name.match?(/The Dugdale Trust for (Women|Womens) and Girls/i)
     return 'Uphold and Recognise Limited' if name.match?(/Uphold.+Recognise/i)
     return 'Keldoulis Investments Pty Ltd' if name.match?(/Keldoulis Investments/i)
     return 'Turner Components Pty Ltd' if name.match?(/Turner Components/i)
 
+
+    return 'Australian Energy Producers' if name.match?(/\bAPPEA\b|Australian Energy Producers/i)
+
     # Independents
-    return 'David Pocock Campaign' if name.match?(/David Pocock/i)
-    return 'Zali Steggall Campaign' if name.match?(/Zali Steggall/i)
-    return 'Kim for Canberra' if name.match?(/Kim for Canberra/i)
-    return 'Helen Haines Campaign' if name.match?(/Helen Haines/i)
+
+    # return 'Kim for Canberra' if name.match?(/Kim for Canberra/i)
+    # return 'Helen Haines Campaign' if name.match?(/Helen Haines/i)
 
     return 'Liberal Democratic Party' if name.match?(/Liberal.+Democrat/i)
 
@@ -158,6 +160,7 @@ class MapGroupNames
     regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|\bTo\b/i
     regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b|\bGum Tree\b/i
     regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b|\bGum Tree\b/i
+    regex_for_titleize_7 = /\bVictoria\b|\bQueensland\b|\bTasmania\b/i
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
 
@@ -170,6 +173,7 @@ class MapGroupNames
                    .gsub(regex_for_titleize_4) { |word| word.titleize }
                    .gsub(regex_for_titleize_5) { |word| word.titleize }
                    .gsub(regex_for_titleize_6) { |word| word.titleize }
+                   .gsub(regex_for_titleize_7) { |word| word.titleize }
                    .gsub(regex_for_downcase) { |word| word.downcase }
                    .gsub(/^the/) { |word| word.titleize }
                    .gsub(/australia/) { |word| word.titleize }
