@@ -10,9 +10,19 @@ class Groups::Person < ApplicationView
   def template
     tr do
       td do
-        a(href: "/people/#{person.id}") { person.name }
+        span { a(href: "/people/#{person.id}") { person.name } }
+        if membership.evidence.present?
+          span { '   ' }
+          span { a(href: membership.evidence, target: '_blank') { '...' } }
+        end
       end
-      td { last_position_and_title }
+      td do
+        span {last_position_and_title}
+        if last_position&.evidence.present?
+          span { '   ' }
+          span { a(href: last_position.evidence, target: '_blank') { '...' } }
+        end
+      end
       td do
         if person.memberships.length == 1 # it me
           ''
@@ -37,6 +47,10 @@ class Groups::Person < ApplicationView
   end
 
   private
+
+  def last_position
+    membership&.last_position
+  end
 
   def last_position_and_title
     position = membership&.last_position

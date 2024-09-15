@@ -237,6 +237,7 @@ class FileIngestor
         end_date = parse_date(row['end_date']) if row['end_date'].present?
 
         # the membership may not exist, if so, we need to create it
+        # There is no start date or end date added to the membership at this point
         membership = Membership.find_or_create_by(
           member_type: "Person",
           member_id: person.id,
@@ -247,8 +248,8 @@ class FileIngestor
           position = Position.find_or_create_by(membership:, title:, start_date:, end_date:)
         end
 
-        membership.update(evidence:) if evidence
-        position.update(evidence:) if evidence && position
+        membership.update!(evidence:) if evidence
+        position.update!(evidence:) if evidence && position
 
         rescue => e
         p "General Upload | Error: #{e} | row#{row.inspect}"

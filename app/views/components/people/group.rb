@@ -11,8 +11,19 @@ class People::Group < ApplicationView
     tr do
       td do
         a(href: "/groups/#{group.id}") { group.name }
+        if membership.evidence.present?
+          span { '   ' }
+          span { a(href: membership.evidence, target: '_blank') { '...' } }
+        end
       end
-      td { last_position_and_title  }
+      td do
+        span {last_position_and_title}
+
+        if last_position&.evidence.present?
+          span { '   ' }
+          span { a(href: last_position.evidence, target: '_blank') { '...' } }
+        end
+      end
       td do
         if group.memberships.count == 1
           ''
@@ -34,6 +45,9 @@ class People::Group < ApplicationView
   end
 
 private
+  def last_position
+    membership&.last_position
+  end
 
   def last_position_and_title
     position = membership&.last_position
