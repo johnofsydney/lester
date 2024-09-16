@@ -125,8 +125,6 @@ class FileIngestor
 
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        next if Person.find_by(name: row['name']) # GUARD! IS TOO STRICT!
-
         person = RecordPerson.call(row['name'])
         print 'p'
 
