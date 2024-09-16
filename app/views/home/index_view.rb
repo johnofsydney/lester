@@ -28,6 +28,7 @@ class Home::IndexView < ApplicationView
       ul(style: 'list-style-type: none;') do
         li { a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records since 2018' } }
         li { a(href: 'https://transparency.aec.gov.au/ReferendumDonor') { 'AEC 2023 Referendum Donor Returns' } }
+        li { a(href: 'https://transparency.aec.gov.au/Donor') { 'AEC Election Donor Returns since 2007' } }
         li { a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term') { 'Federal MPs and Senators since 2016' } }
       end
 
