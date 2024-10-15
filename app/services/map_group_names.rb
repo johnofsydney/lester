@@ -41,6 +41,12 @@ class MapGroupNames
     return 'Inpex Corporation' if name.match?(/Inpex/i)
     return 'Barton Deakin Pty Ltd' if name.match?(/Barton Deakin/i)
     return 'Mineralogy Pty Ltd' if name.match?(/Mineralogy/i)
+    return 'Bluescope Steel Limited' if name.match?(/Bluescope Steel/i)
+    return 'Gilbert & Tobin' if name.match?(/Gilbert . Tobin/i)
+    return 'JMR Management Consultancy Services Pty Ltd' if name.match?(/JMR Management Consultancy/i)
+    return 'NIB Health Funds Limited' if name.match?(/NIB Health Funds/i)
+    return 'Origin Energy' if name.match?(/Origin Energy/i)
+    return 'Woodside Energy Group Ltd' if name.match?(/Woodside Energy/i)
 
 
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers
@@ -162,7 +168,7 @@ class MapGroupNames
 
   def cleaned_up_name(name)
     regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
-    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bNIOA\b/i
+    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bNIOA\b|\bACDC\b|\bCFMEU\b/i
 
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b|\bIan\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
