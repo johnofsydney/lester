@@ -42,7 +42,7 @@ class MenuComponent < ApplicationView
             end
 
             li(class: 'nav-item') do
-              a(class: 'nav-link', href: '/home/suggestions/') { 'Make a Suggestion' }
+              a(class: 'nav-link', href: '/home/suggestions/') { 'Suggestions/Corrections' }
             end
 
             li(class: 'nav-item') do

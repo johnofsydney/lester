@@ -6,7 +6,7 @@ class Groups::People < ApplicationView
 
   attr_reader :people, :group
 
-	def template
+  def template
     if people.present?
       hr
       h2 { 'People' }

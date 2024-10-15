@@ -121,6 +121,7 @@ RSpec.describe RecordPersonOrGroup, type: :service do
         'Campact E.V.',
         'Clp-Nt',
         'Corrs Chambers Westgarth',
+        'Guide Dogs Victoria'
       ]
     end
 

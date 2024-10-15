@@ -29,7 +29,6 @@ class RecordPersonOrGroup
 
     regex_for_company_words_1 = /Corporation|Transport|Tax Aid|Outcomes|Lifestyle|active super/i
     regex_for_company_words_2 = /business|technology|shopping|toyota|\bbank\b|promotions|publications/i
-
     regex_for_company_words_3 = /institute|horticultural|cleaning|technologies|centre/i
     regex_for_company_words_4 = /Services|investments|entertainment|Insurance|Commerce/i
     regex_for_company_words_5 = /Public|affairs|nimbin hemp|company|workpac|wren oil/i
@@ -37,6 +36,7 @@ class RecordPersonOrGroup
     regex_for_company_words_7 = /company|events|commerce|webdrill|private|restaurant|Mining/i
     regex_for_company_words_8 = /enterprise|lendlease|party|healthcare|agency|team|lawyers|employment/i
     regex_for_company_words_9 = /national\b|\bbranch\b|\binstitution\b|\bcommunity\b/i
+    regex_for_company_words_10 = /guide dogs/i
 
     regex_for_party_words_1 = /\bLib - Fed\b|\bLib - Sa\b|\bLib - Wa\b|\bLib - Vic\b/i
     regex_for_party_words_2 = /\bLib Fed\b|\bLib Vic\b/i
@@ -57,6 +57,7 @@ class RecordPersonOrGroup
     return 'group' if name.match?(regex_for_company_words_7)  # Check for company names
     return 'group' if name.match?(regex_for_company_words_8)  # Check for company names
     return 'group' if name.match?(regex_for_company_words_9)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_10)  # Check for company names
 
     return 'group' if name.match?(regex_for_party_words_1)  # Check for party related names
     return 'group' if name.match?(regex_for_party_words_2)  # Check for party related names

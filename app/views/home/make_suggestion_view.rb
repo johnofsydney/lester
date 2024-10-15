@@ -7,6 +7,7 @@ class Home::MakeSuggestionView < ApplicationView
       p { 'Send us a suggestion...' }
       p { 'The effectiveness of this application relies on having comprehensive data, and if you know of a person or group of interest please let us know' }
       p { 'Similarly if you know of an interesting transfer of funds from one entity to another, again, please let us know' }
+      p { 'Also, if you think we have something wrong, please let us know that too' }
       p do
         plain 'Any addition to our database'
         strong {' must '}
@@ -23,7 +24,7 @@ class Home::MakeSuggestionView < ApplicationView
         end
         div(class: "form-group") do
           label(for: "evidence") { "Evidence" }
-          input(class: "form-control", type: "text", name: "evidence", required: true)
+          input(class: "form-control", type: "text", name: "evidence")
         end
         div(class: "form-group") do
           label(for: "suggested_by") { "Your Email (Optional)" }

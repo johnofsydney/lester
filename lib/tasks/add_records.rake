@@ -5,7 +5,11 @@ namespace :lester do
     FileIngestor.general_upload('csv_data/new_people_groups_positions-2024-09-13.csv')
 
 
-    # THis is a reminder, to add more info on ministries, should also add what the ministry is responsible for (also existing records)
+    # From a file created and maintained by me, linking groups to groups, whenever information comes to light
+    FileIngestor.affiliations_upload('csv_data/affiliations-2024-09-18.csv')
+
+
+    # This is a reminder, to add more info on ministries, should also add what the ministry is responsible for (also existing records)
     federal_ministries = [
       # 'csv_data/ministries_morrison.csv',
       # 'csv_data/ministries_turnbull.csv',

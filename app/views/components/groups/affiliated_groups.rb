@@ -13,7 +13,8 @@ class Groups::AffiliatedGroups < ApplicationView
         ul(class: 'list-group list-group-horizontal', style: 'flex-wrap: wrap;') do
           group.affiliated_groups.each do |group|
             li(class: 'list-group-item horizontal-button') do
-              a(href: "/groups/#{group.id}") { group.name }
+              span {a(href: "/groups/#{group.id}") { group.name }}
+              span {a(href: "/groups/#{group.id}") { '...' }}
             end
           end
         end

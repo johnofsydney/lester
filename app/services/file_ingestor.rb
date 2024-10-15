@@ -229,7 +229,8 @@ class FileIngestor
 
         person = RecordPerson.call(row['person'])
 
-        title = row['title'].strip if row['title'].present?
+        title = CapitalizeNames.capitalize(row['title'].strip) if row['title'].present?
+
         evidence = row['evidence'].strip if row['evidence'].present?
         start_date = parse_date(row['start_date']) if row['start_date'].present?
         end_date = parse_date(row['end_date']) if row['end_date'].present?

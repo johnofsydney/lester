@@ -84,6 +84,7 @@ class Home::TodoView < ApplicationView
                 li { 'Import People / Groups / Positions from CSV' }
                 li { 'Add Indexes' }
                 li { 'Add Audit table' }
+                li { 'Ex Members of a group should appear last (app/views/components/groups/people.rb:3)' }
               end
             end
           end
@@ -92,3 +93,12 @@ class Home::TodoView < ApplicationView
     end
   end
 end
+
+# https://www.theguardian.com/commentisfree/2016/mar/01/larissa-waters-ban-donations-from-mining-companies-and-stop-ministers-working-for-them
+
+# https://www.parliament.nsw.gov.au/members/downloadables/Pages/downloadable-lists.aspx
+#
+
+# https://www.echo.net.au/2015/02/former-pollies-staffers-mine-rich-vein-new-jobs/
+#
+# https://www.nioa.com.au/about
