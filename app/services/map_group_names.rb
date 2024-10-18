@@ -32,8 +32,25 @@ class MapGroupNames
     return 'Uphold and Recognise Limited' if name.match?(/Uphold.+Recognise/i)
     return 'Keldoulis Investments Pty Ltd' if name.match?(/Keldoulis Investments/i)
     return 'Turner Components Pty Ltd' if name.match?(/Turner Components/i)
+    return 'Glencore Australia' if name.match?(/Glencore Australia/i)
+    return 'Whitehaven Coal Limited' if name.match?(/Whitehaven Coal/i)
+    return 'Woodside Energy' if name.match?(/Woodside Energy/i)
+    return 'Origin Energy' if name.match?(/Origin Energy/i)
+    return 'Sentinel Property Group' if name.match?(/Sentinel Property Group/i)
+    return 'Chevron Australia Pty Ltd' if name.match?(/Chevron Australia/i)
+    return 'Inpex Corporation' if name.match?(/Inpex/i)
+    return 'Barton Deakin Pty Ltd' if name.match?(/Barton Deakin/i)
+    return 'Mineralogy Pty Ltd' if name.match?(/Mineralogy/i)
+    return 'Bluescope Steel Limited' if name.match?(/Bluescope Steel/i)
+    return 'Gilbert & Tobin' if name.match?(/Gilbert . Tobin/i)
+    return 'JMR Management Consultancy Services Pty Ltd' if name.match?(/JMR Management Consultancy/i)
+    return 'NIB Health Funds Limited' if name.match?(/NIB Health Funds/i)
+    return 'Origin Energy' if name.match?(/Origin Energy/i)
+    return 'Woodside Energy Group Ltd' if name.match?(/Woodside Energy/i)
+    return 'Pricewaterhousecoopers' if name.match?(/Pricewaterhousecoopers/i)
 
 
+    # https://en.wikipedia.org/wiki/Australian_Energy_Producers
     return 'Australian Energy Producers' if name.match?(/\bAPPEA\b|Australian Energy Producers/i)
 
     # Independents
@@ -48,7 +65,7 @@ class MapGroupNames
     return 'Sustainable Australia Party' if name.match?(/Sustainable Australia/i)
     return 'Centre Alliance' if name.match?(/Centre Alliance/i)
     return 'The Local Party of Australia' if name.match?(/The Local Party of Australia/i)
-    return 'Katter Australia Party' if name.match?(/(Katter|KAP)/i)
+    return 'Katter Australia Party' if name.match?(/(Katter.+Australia|KAP)/i)
     return 'Australian Conservatives' if name.match?(/Australian Conservatives/i)
     return 'Federal Independents' if name.match?(/Independent Fed/i)
     return 'Waringah Independents' if name.match?(/(Warringah|Waringah).+(independent|Independant)/i)
@@ -152,15 +169,16 @@ class MapGroupNames
 
   def cleaned_up_name(name)
     regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
-    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b/i
+    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bNIOA\b|\bACDC\b|\bCFMEU\b/i
 
-    regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b/i
+    regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b|\bIan\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
-    regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b/i
-    regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|\bTo\b/i
-    regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b|\bGum Tree\b/i
-    regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b|\bGum Tree\b/i
+    regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b|\bOil\b/i
+    regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|\bTo\b|\bYes\b/i
+    regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b|\bGum Tree\b|\bYe Family\b/i
+    regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b/i
     regex_for_titleize_7 = /\bVictoria\b|\bQueensland\b|\bTasmania\b/i
+
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
 
@@ -178,5 +196,6 @@ class MapGroupNames
                    .gsub(/^the/) { |word| word.titleize }
                    .gsub(/australia/) { |word| word.titleize }
                    .gsub(/Pty Limited|Pty\. Ltd\./, 'Pty Ltd')
+                   .gsub('(t/as Clubsnsw)', '(T/As ClubsNSW)')
   end
 end
