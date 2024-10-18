@@ -47,6 +47,7 @@ class MapGroupNames
     return 'NIB Health Funds Limited' if name.match?(/NIB Health Funds/i)
     return 'Origin Energy' if name.match?(/Origin Energy/i)
     return 'Woodside Energy Group Ltd' if name.match?(/Woodside Energy/i)
+    return 'Pricewaterhousecoopers' if name.match?(/Pricewaterhousecoopers/i)
 
 
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers

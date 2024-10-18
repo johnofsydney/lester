@@ -10,6 +10,8 @@ RSpec.describe RecordPerson, type: :service do
       "John Coote MP" => "John Coote",
       "Andrew D M Murray AM" => "Andrew D M Murray",
       "Arthur Sinodinos AO" => "Arthur Sinodinos",
+      "Hon Paul Smith" => "Paul Smith",
+      "Jimmy Hon" => "Jimmy Hon",
     }
   end
 
@@ -18,10 +20,9 @@ RSpec.describe RecordPerson, type: :service do
       person = described_class.new('Test Name')
       expect(person.name).to eq('Test Name')
     end
-
-
   end
 
+  # TODO: Make the other similar tests use this format which reports the failing name
   describe '.call' do
     it 'creates or finds a group with the given name' do
       expect(Person).to receive(:find_or_create_by).with(name: 'Test Name')

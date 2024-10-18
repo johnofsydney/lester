@@ -36,7 +36,7 @@ class RecordPersonOrGroup
     regex_for_company_words_7 = /company|events|commerce|webdrill|private|restaurant|Mining/i
     regex_for_company_words_8 = /enterprise|lendlease|party|healthcare|agency|team|lawyers|employment/i
     regex_for_company_words_9 = /national\b|\bbranch\b|\binstitution\b|\bcommunity\b/i
-    regex_for_company_words_10 = /guide dogs/i
+    regex_for_company_words_10 = /guide dogs|\bcommunikate\b|\bDirectors\b|Hunter Land|\b\bTrading|Readyco|Stockland/i
 
     regex_for_party_words_1 = /\bLib - Fed\b|\bLib - Sa\b|\bLib - Wa\b|\bLib - Vic\b/i
     regex_for_party_words_2 = /\bLib Fed\b|\bLib Vic\b/i

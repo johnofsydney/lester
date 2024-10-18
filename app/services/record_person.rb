@@ -20,7 +20,7 @@ class RecordPerson
   def cleaned_up_name(name)
     regex_for_removal_elected = /\bMP\b|\bSenator\b/i
     regex_for_removal_honours = /\bOAM\b|\bAO\b|\bAM\b|\bCSC\b|\bCBE\b/i
-    regex_for_removal_titles = /\bQC\b|\bProf\b|\bDr\b/i
+    regex_for_removal_titles = /\bQC\b|\bProf\b|\bDr\b|^Hon\b/i
     regex_for_removal_normal_titles = /\bMr\b|\bMs\b|\bMs\b|\bMiss\b/i
 
     name = CapitalizeNames.capitalize(name)
@@ -41,6 +41,11 @@ class RecordPerson
     return 'Bob Katter' if name.match?(/Robert.+Katter/i)
     return 'Malcolm Turnbull' if name.match?(/Malcolm.+Turnbull/i)
     return 'Helen Haines' if name.match?(/Helen.+Haines/i)
+    return 'Greg Cheesman' if name.match?(/Greg.+Cheesman/i)
+    return 'Jacinta Nampijinpa Price' if name.match?(/Jacinta.+Price/i)
+    return 'Kerryn Phelps' if name.match?(/Kerryn.+Phelps/i)
+    return 'Mike Cannon Brookes' if name.match?(/(Mike|Michael) Cannon.+Brookes/i)
+    return 'Fraser Anning' if name.match?(/Fraser.+Anning/i)
 
     name.gsub(regex_for_removal_elected, '')
         .gsub(regex_for_removal_honours, '')
