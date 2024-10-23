@@ -33,8 +33,12 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def transfers
-    if giver
+    if giver && entity.is_category?
+      Transfer.where(giver_type: 'Group', giver_id: [entity.groups.pluck(:id)])
+    elsif giver
       Transfer.where(giver_type: entity.class.name, giver_id: entity.id)
+    elsif entity.is_category?
+      Transfer.where(taker_type: 'Group', taker_id: [entity.groups.pluck(:id)])
     else
       Transfer.where(taker_type: entity.class.name, taker_id: entity.id)
     end

@@ -150,4 +150,6 @@ class Group < ApplicationRecord
       list.flatten.compact.uniq
     end
   end
+
+  def is_category? = category?
 end

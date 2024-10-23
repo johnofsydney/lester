@@ -36,4 +36,6 @@ class Person < ApplicationRecord
   def other_edge_ends
     outgoing_transfers.map(&:taker)
   end
+
+  def is_category? = false
 end

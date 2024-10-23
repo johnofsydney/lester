@@ -15,12 +15,17 @@ class Common::MoneySummary < ApplicationView
         plain '* transfers in and out'
         em { ' ...that we know about' }
       end
+      if is_category?
+        p { "Figures below are aggregates of the payments to member groups and people of #{entity.name}" }
+      else
+        p { "Payments directly to & from #{entity.name}" }
+      end
       if money_in.present?
         div(class: 'col') do
           h5 { 'Money In' }
           p { money_in }
 
-          render Common::MoneyGraphs.new(entity:)
+          render Common::MoneyGraphs.new(entity:, giver: false)
         end
       end
       if money_out.present?
@@ -35,16 +40,37 @@ class Common::MoneySummary < ApplicationView
   end
 
   def money_in
-    amount = Transfer.where(taker_type: entity.class.name, taker_id: entity.id).sum(:amount)
+    if is_category?
+      to_groups = Transfer.where(taker_type: 'Group', taker_id: [entity.groups.pluck(:id)]).sum(:amount)
+      to_people = Transfer.where(taker_type: 'Person', taker_id: [entity.people.pluck(:id)]).sum(:amount)
+
+      amount = to_groups + to_people
+    else
+      amount = Transfer.where(taker_type: entity.class.name, taker_id: entity.id).sum(:amount)
+    end
+
     return unless amount.positive?
 
     number_to_currency amount, precision: 0
   end
 
   def money_out
-    amount = Transfer.where(giver_type: entity.class.name, giver_id: entity.id).sum(:amount)
+    if is_category?
+      from_groups = Transfer.where(giver_type: 'Group', giver_id: [entity.groups.pluck(:id)])
+                            .where.not(taker_id: [entity.groups.pluck(:id)])
+                            .sum(:amount)
+      from_people = Transfer.where(giver_type: 'Person', giver_id: [entity.people.pluck(:id)]).sum(:amount)
+
+      amount = from_groups + from_people
+    else
+      amount = Transfer.where(giver_type: entity.class.name, giver_id: entity.id).sum(:amount)
+    end
     return unless amount.positive?
 
     number_to_currency amount, precision: 0
+  end
+
+  def is_category?
+    entity.is_category?
   end
 end
