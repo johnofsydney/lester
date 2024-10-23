@@ -2,11 +2,14 @@ namespace :lester do
   desc "Augment"
   task augment: :environment do
     # From a file created and maintained by me, whenever noteworthy people or groups appear in the news
-    FileIngestor.general_upload('csv_data/new_people_groups_positions-2024-09-13.csv')
+    # COMPLETE
+    # FileIngestor.general_upload('csv_data/new_people_groups_positions-2024-09-13.csv')
 
 
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
-    FileIngestor.affiliations_upload('csv_data/affiliations-2024-09-18.csv')
+    # COMPLETE
+    # FileIngestor.affiliations_upload('csv_data/affiliations-2024-09-18.csv')
+    FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-23.csv')
 
 
     # This is a reminder, to add more info on ministries, should also add what the ministry is responsible for (also existing records)

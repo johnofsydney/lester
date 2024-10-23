@@ -6,7 +6,7 @@ class GroupsController < ApplicationController
 
   # GET /groups or /groups.json
   def index
-    groups = Group.order(:name)
+    groups = Group.where.not(category: true).order(:name)
     render Groups::IndexView.new(groups:)
   end
 

@@ -68,6 +68,10 @@ class Group < ApplicationRecord
   has_many :people, through: :memberships, source: :member, source_type: 'Person'
   has_many :groups, through: :memberships, source: :member, source_type: 'Group' # these are the groups that _belong_ to _this_ group
 
+  def parent_groups
+    Group.joins(:memberships).where(memberships: { member: self, member_type: 'Group' }).where.not(id: self.id)
+  end
+
 
   # these are a bit weird, hence the transfers method below
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
@@ -87,11 +91,7 @@ class Group < ApplicationRecord
   end
 
   def affiliated_groups
-    groups_as_child_member = Group.joins(:memberships)
-                            .where(memberships: { member: self, member_type: 'Group' })
-                            .where.not(id: self.id)
-
-    groups_as_child_member + groups
+    parent_groups + groups
   end
 
 

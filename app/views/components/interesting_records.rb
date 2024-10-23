@@ -14,6 +14,16 @@ class InterestingRecords < ApplicationView
 
         div(class: 'col-md-3') do
           ul do
+            Group.where(category: true).each do |group|
+              li do
+                a(href: "/groups/#{group.id}") { group.name }
+              end
+            end
+          end
+        end
+
+        div(class: 'col-md-3') do
+          ul do
             @records.people.each do |record|
               li do
                 a(href: "/people/#{record.id}") { text(record) }

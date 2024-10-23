@@ -29,6 +29,7 @@ button {
 }
 
 .reverse {
+  display: flex;
   flex-direction: row-reverse;
 }
 
@@ -40,7 +41,7 @@ button {
   gap: 20px;
 }
 
-.right {
+.flex-right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
