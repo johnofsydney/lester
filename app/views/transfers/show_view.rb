@@ -13,7 +13,7 @@ class Transfers::ShowView < ApplicationView
       a(
         href: "/transfers/#{transfer.id}",
         class: 'btn w-100',
-        style: button_styles(transfer)
+        style: color_styles(transfer)
       ) { number_to_currency(transfer.amount, precision: 0) }
     end
 

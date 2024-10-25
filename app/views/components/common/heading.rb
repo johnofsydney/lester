@@ -16,13 +16,16 @@ class Common::Heading < ApplicationView
 
     a(
       href:,
-      class: 'btn w-100',
-      style: button_styles(entity),
+      class: 'btn w-100 btn-lg',
+      style: "#{color_styles(entity)}; font-size: 1.5em;",
       target: :_blank
     ) { entity.name }
   end
 
   def button_without_link
-    button(class: 'btn w-100', style: button_styles(entity)) { entity.name }
+    button(
+      class: 'btn w-100',
+      style: "#{color_styles(entity)}; font-size: 1.5em;",
+      ) { entity.name }
   end
 end

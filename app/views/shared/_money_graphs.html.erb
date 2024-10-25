@@ -1,6 +1,39 @@
-<div>
-  <%= bar_chart(transfers_by_name, colors:, prefix: "$", thousands: ",") %>
+
+<div class="graph rounded bg-light mt-3">
+  <%= bar_chart(
+    transfers_by_name,
+    colors:,
+    prefix: "$",
+    thousands: ",",
+    download: true,
+    title: "#{entity.name.upcase}: Top 5 #{giver ? 'recipients' : 'funders' }",
+    dataset: {borderWidth: 2}
+  ) %>
+  <span class="bottom-right text-muted small"><%= entity.data_time_range %></span>
 </div>
-<div>
-  <%= column_chart(transfers_by_year, prefix: "$", thousands: ",", xtitle: 'Financial Year') %>
+<div class="graph rounded bg-light mt-3">
+  <%= pie_chart(
+    transfers_by_name,
+    colors:,
+    prefix: "$",
+    thousands: ",",
+    download: true,
+    legend: 'left',
+    title: "#{entity.name.upcase}: Top 5 #{giver ? 'recipients' : 'funders' }",
+    donut: true,
+    ) %>
+    <span class="bottom-right text-muted small"><%= entity.data_time_range %></span>
+</div>
+<div class="graph rounded bg-light mt-3">
+  <%= column_chart(
+    transfers_by_year,
+    prefix: "$",
+    thousands: ",",
+    download: true,
+    xtitle: 'Financial Year',
+    title: "#{entity.name.upcase}: #{giver ? 'Outgoing' : 'Incoming' } Transfers by Year",
+    stacked: true,
+    dataset: {borderWidth: 2}
+    ) %>
+    <span class="bottom-right text-muted small"><%= entity.data_time_range %></span>
 </div>

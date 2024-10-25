@@ -9,34 +9,67 @@ class Common::MoneySummary < ApplicationView
 
   def template
     if money_in.present? || money_out.present?
-      hr
-      h4 { 'Money Summary *' }
-      h6 do
-        plain '* transfers in and out'
-        em { ' ...that we know about' }
-      end
-      if is_category?
-        p { "Figures below are aggregates of the payments to member groups and people of #{entity.name}" }
-      else
-        p { "Payments directly to & from #{entity.name}" }
-      end
-      if money_in.present?
-        div(class: 'col') do
-          h5 { 'Money In' }
-          p { money_in }
+      div(class: 'margin-above ') do
 
-          render Common::MoneyGraphs.new(entity:, giver: false)
+        div(id: 'summary', class: 'graph rounded bg-light mt-3') do
+          h4 do
+            span {title}
+            span { ' ' }
+            span {
+              a(href: "/about", class: 'gentle-link') { '...' }
+            }
+          end
+          if money_in.present? && money_out.present?
+            div(id: 'in-out-totals') do
+              h6 { "To #{entity.name}: #{money_in}" } if money_in
+              h6 { "From #{entity.name}: #{money_out}" } if money_out
+            end
+          end
+
+        end
+
+        if money_in.present?
+          div(class: 'col') do
+            render Common::MoneyGraphs.new(entity:, giver: false)
+          end
+        end
+        if money_out.present?
+          div(class: 'col') do
+            render Common::MoneyGraphs.new(entity:, giver: true)
+          end
         end
       end
-      if money_out.present?
-        div(class: 'col') do
-          h5 { 'Money Out' }
-          p { money_out }
 
-          render Common::MoneyGraphs.new(entity:, giver: true)
-        end
-      end
     end
+  end
+
+  def title
+    to_or_from = if money_in.present? && money_out.present?
+                    'To & From'
+                  elsif money_in.present?
+                    'To'
+                  elsif money_out.present?
+                    'From'
+                  end
+
+
+    aggregate_suffix = if money_in.present? && money_out.present?
+                         nil
+                       elsif money_in.present?
+                         ": #{money_in}"
+                       elsif money_out.present?
+                         ": #{money_out}"
+                       end
+
+    if entity.is_category?
+      "Aggregate Transfers #{to_or_from} member groups and people of category: #{entity.name.upcase}"
+    else
+      "Transfers #{to_or_from} #{entity.name.upcase}#{aggregate_suffix}"
+    end
+  end
+
+  def category_title
+    "Aggregate Transfers to / from to member groups and people of category: #{entity.name.upcase}"
   end
 
   def money_in
