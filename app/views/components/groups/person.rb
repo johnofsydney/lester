@@ -13,14 +13,14 @@ class Groups::Person < ApplicationView
         span { a(href: "/people/#{person.id}") { person.name } }
         if membership.evidence.present?
           span { '   ' }
-          span { a(href: membership.evidence, target: '_blank') { '...' } }
+          span { a(href: membership.evidence, class: 'gentle-link', target: '_blank') { '...' } }
         end
       end
       td do
         span {last_position_and_title}
         if last_position&.evidence.present?
           span { '   ' }
-          span { a(href: last_position.evidence, target: '_blank') { '...' } }
+          span { a(href: last_position.evidence, class: 'gentle-link', target: '_blank') { '...' } }
         end
       end
       td do

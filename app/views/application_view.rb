@@ -9,28 +9,12 @@ class ApplicationView < ApplicationComponent
 
   register_element :turbo_frame
 
-  def element_styles(instance, style = '')
+  def color_styles(instance)
     {
       'background_color' => background_color(instance),
       'color' => color(instance),
-    }.map{|key, value| "#{key.to_s.dasherize}: #{value};"}
-     .join('; ') + style + ';'
-  end
-  def button_styles(instance, depth = 0)
-
-    background_color = depth.zero? ? background_color(instance) : color(instance)
-    color = depth.zero? ? color(instance) : background_color(instance)
-
-    {
-      'background_color' => background_color(instance),
-      'color' => color(instance),
-      'display' => 'inline-block',
-      'margin' => '0.25rem',
-      'padding'=> '0.25rem',
-      'font_size' => 'x-large',
     }.map{|key, value| "#{key.to_s.dasherize}: #{value};"}
      .join('; ') + ';'
-
   end
 
   def background_color(item)

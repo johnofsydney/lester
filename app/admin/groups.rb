@@ -28,7 +28,7 @@ ActiveAdmin.register Group do
       group.memberships.count
     end
     column('Transfers In') do |group|
-      number_to_currency group.transfers_in_value, precision: 0
+      number_to_currency group.incoming_transfers.sum(:amount), precision: 0
     end
   end
 end

@@ -10,6 +10,8 @@ class MapGroupNames
   end
 
   def map_or_return_name(name)
+    raise 'Name is required' if name.blank?
+
     name = name.gsub(/\s+/, ' ').strip
 
     return 'Get Up Limited' if name.match?(/(GetUp|Get Up)/i)
@@ -169,7 +171,8 @@ class MapGroupNames
 
   def cleaned_up_name(name)
     regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
-    regex_for_longer_acronyms = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bNIOA\b|\bACDC\b|\bCFMEU\b/i
+    regex_for_longer_acronyms_1 = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bNIOA\b|\bACDC\b|\bCFMEU\b/i
+    regex_for_longer_acronyms_2 = /\bPESA\b|\bRISC\b|\bJERA\b/i
 
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b|\bIan\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
@@ -184,7 +187,8 @@ class MapGroupNames
 
     CapitalizeNames.capitalize(name.strip)
                    .gsub(regex_for_two_and_three_chars) { |chars| chars.upcase }
-                   .gsub(regex_for_longer_acronyms) { |chars| chars.upcase }
+                   .gsub(regex_for_longer_acronyms_1) { |chars| chars.upcase }
+                   .gsub(regex_for_longer_acronyms_2) { |chars| chars.upcase }
                    .gsub(regex_for_titleize) { |word| word.titleize }
                    .gsub(regex_for_titleize_2) { |word| word.titleize }
                    .gsub(regex_for_titleize_3) { |word| word.titleize }

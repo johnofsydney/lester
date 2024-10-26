@@ -71,7 +71,38 @@ module TransferMethods
       consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:, transfer:)
     end
 
+    def data_time_range
+      from_date = all_transfers.order(:effective_date).limit(1).take.effective_date
+      to_date =  all_transfers.order(effective_date: :desc).limit(1).take.effective_date
+
+      "#{from_date.year} to #{to_date.year}"
+    end
+
+    def category_incoming_transfers
+      return Transfer.none unless self.is_category?
+
+      @category_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: [self.groups.pluck(:id)])
+                                               .where.not(giver_id: [self.groups.pluck(:id)])
+                                               .or(Transfer.where(taker_type: 'Person', taker_id: [self.people.pluck(:id)]))
+    end
+
+    def category_outgoing_transfers
+      return Transfer.none unless self.is_category?
+
+      @category_outgoing_transfers ||= Transfer.where(giver_type: 'Group', giver_id: [self.groups.pluck(:id)])
+                                               .where.not(taker_id: [self.groups.pluck(:id)])
+                                               .or(Transfer.where(giver_type: 'Person', giver_id: [self.people.pluck(:id)]))
+    end
+
     private
+
+    def all_transfers
+      @all_transfers ||= if self.is_category?
+                            category_outgoing_transfers.or(category_incoming_transfers)
+                          else
+                            self.incoming_transfers.or(self.outgoing_transfers)
+                          end
+    end
 
 
     def transfer_struct(transfer:, depth:, direction:)

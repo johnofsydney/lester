@@ -102,3 +102,6 @@ end
 # https://www.echo.net.au/2015/02/former-pollies-staffers-mine-rich-vein-new-jobs/
 # start again from here:
 # Minerals Council of Australia staff...
+
+
+# https://thenightly.com.au/opinion/political/cameron-milner-albanese-governments-future-made-in-australia-fund-has-been-lucrative-for-a-select-few-c-16466931

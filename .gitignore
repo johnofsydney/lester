@@ -34,3 +34,4 @@
 /.vscode/*
 
 database.bak
+load_latest_database.sh

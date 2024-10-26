@@ -68,6 +68,9 @@ class Group < ApplicationRecord
   has_many :people, through: :memberships, source: :member, source_type: 'Person'
   has_many :groups, through: :memberships, source: :member, source_type: 'Group' # these are the groups that _belong_ to _this_ group
 
+  def parent_groups
+    Group.joins(:memberships).where(memberships: { member: self, member_type: 'Group' }).where.not(id: self.id)
+  end
 
   # these are a bit weird, hence the transfers method below
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
@@ -80,26 +83,13 @@ class Group < ApplicationRecord
       return people + groups
       # TODO should this be:
       # return people + affilaietd_groups
-
     end
 
     [people + affiliated_groups + other_edge_ends].compact.flatten.uniq
   end
 
   def affiliated_groups
-    groups_as_child_member = Group.joins(:memberships)
-                            .where(memberships: { member: self, member_type: 'Group' })
-                            .where.not(id: self.id)
-
-    groups_as_child_member + groups
-  end
-
-
-  def transfers
-    OpenStruct.new(
-      incoming: Transfer.where(taker: self).order(amount: :desc),
-      outgoing: Transfer.where(giver: self, giver_type: 'Group').order(amount: :desc)
-    )
+    parent_groups + groups
   end
 
   def other_edge_ends
@@ -115,15 +105,10 @@ class Group < ApplicationRecord
 
     outgoing_transfers.map(&:taker) +
     incoming_transfers.map(&:giver)
-    # outgoing_transfers.includes(:giver, :taker).map(&:taker) +
-    # incoming_transfers.includes(:giver, :taker).map(&:giver)
-  end
-
-  def transfers_in_value
-    incoming_transfers.sum(:amount)
   end
 
   def less_level
+    # only called from a disused section in FileIngestor
     name.gsub(/(Federal|NSW|VIC|SA|WA|TAS|ACT|NT)/, '')
         .gsub('(', '')
         .gsub(')', '')
@@ -150,4 +135,6 @@ class Group < ApplicationRecord
       list.flatten.compact.uniq
     end
   end
+
+  def is_category? = category?
 end

@@ -12,10 +12,6 @@ class Person < ApplicationRecord
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
-  def incoming_transfers = []
-  # TODO: this method clashes with transfer.incoming below
-  # also results are not consistent between them. Which is correct?
-
   def nodes(include_looser_nodes: false)
     unless include_looser_nodes
       return groups
@@ -36,4 +32,6 @@ class Person < ApplicationRecord
   def other_edge_ends
     outgoing_transfers.map(&:taker)
   end
+
+  def is_category? = false
 end

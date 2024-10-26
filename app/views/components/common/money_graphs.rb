@@ -14,7 +14,8 @@ class Common::MoneyGraphs < ApplicationView
     render partial: "shared/money_graphs", locals: {
       colors: colors(transfers, giver:),
       transfers_by_year: group_by_year(transfers),
-      transfers_by_name: group_by_name(transfers, giver:)
+      transfers_by_name: group_by_name(transfers, giver:),
+      entity:, giver:
     }
   end
 
@@ -33,11 +34,15 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def transfers
-    if giver
-      Transfer.where(giver_type: entity.class.name, giver_id: entity.id)
-    else
-      Transfer.where(taker_type: entity.class.name, taker_id: entity.id)
-    end
+    @transfers ||= if giver && entity.is_category?
+                     entity.category_outgoing_transfers
+                   elsif giver
+                     entity.outgoing_transfers
+                   elsif entity.is_category?
+                     entity.category_incoming_transfers
+                   else
+                     entity.incoming_transfers
+                   end
   end
 
   def group_by_year(query)

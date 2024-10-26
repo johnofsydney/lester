@@ -29,6 +29,7 @@ button {
 }
 
 .reverse {
+  display: flex;
   flex-direction: row-reverse;
 }
 
@@ -40,7 +41,7 @@ button {
   gap: 20px;
 }
 
-.right {
+.flex-right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -93,6 +94,42 @@ button {
   width: 100%;
 }
 
-.margin-above {
+.graph {
   margin-top: 20px;
+  border: #063cd2 solid 1px;
+  padding: 2rem 1rem;
+  position: relative;
+}
+
+.gentle-link {
+  color: rgb(175, 175, 175);
+  font-style: italic;
+  text-decoration: none;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 5px;
+}
+
+.brand-text {
+  font-size: 1.75rem;
+}
+
+#searchbox-container {
+  margin-top: 40px;
+}
+
+#suggestions-container {
+  margin-top: 40px;
+}
+
+.column-heading {
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid #007bff;
+  /* Bootstrap primary color */
+  padding-bottom: 5px;
 }
