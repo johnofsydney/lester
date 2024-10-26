@@ -11,10 +11,10 @@ namespace :lester do
     gambling = RecordGroup.call('Gambling', category: true)
     consulting = RecordGroup.call('Consulting', category: true)
     pharmaceuticals = RecordGroup.call('Pharmaceuticals', category: true)
-    retail = RecordGroup.call('Retail', category: true)
+    # retail = RecordGroup.call('Retail', category: true)
     energy = RecordGroup.call('Energy', category: true)
     insurance = RecordGroup.call('Insurance', category: true)
-    labour_hire = RecordGroup.call('Labour Hire', category: true)
+    # labour_hire = RecordGroup.call('Labour Hire', category: true)
     banking = RecordGroup.call('Banking', category: true)
     defence = RecordGroup.call('Defence', category: true)
     weaponry = RecordGroup.call('Weaponry', category: true)
@@ -50,7 +50,7 @@ namespace :lester do
     end
 
     # Pharmaceuticals
-    ['Novartis Pharmaceuticals Australia Pty Ltd', 'Organon Pharma Pty Ltd', 'Pfizer Australia Pty Ltd', 'The Pharmacy Guild of Australia'].each do |company|
+    ['Novartis Pharmaceuticals Australia Pty Ltd', 'Organon Pharma Pty Ltd', 'Pfizer Australia Pty Ltd', 'The Pharmacy Guild of Australia', 'Medicines Australia Limited', 'Bayer Australia Ltd', 'Roche Products Pty Ltd', 'Sanofi-Aventis Australia Pty Ltd', 'MSD'].each do |company|
       Membership.find_or_create_by(member: Group.find_by(name: company), group: pharmaceuticals)
     end
 
@@ -64,9 +64,9 @@ namespace :lester do
     end
 
     # Labour Hire
-    ['Programmed Skilled Workforce Limited'].each do |company|
-      Membership.find_or_create_by(member: Group.find_by(name: company), group: labour_hire)
-    end
+    # ['Programmed Skilled Workforce Limited'].each do |company|
+    #   Membership.find_or_create_by(member: Group.find_by(name: company), group: labour_hire)
+    # end
 
     # Banking
     Group.where('name LIKE ?', "%Bank%").each do |group|

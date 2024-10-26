@@ -34,17 +34,15 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def transfers
-    if giver && entity.is_category?
-      Transfer.where(giver_type: 'Group', giver_id: [entity.groups.pluck(:id)])
-              .or(Transfer.where(giver_type: 'Person', giver_id: [entity.people.pluck(:id)]))
-    elsif giver
-      Transfer.where(giver_type: entity.class.name, giver_id: entity.id)
-    elsif entity.is_category?
-      Transfer.where(taker_type: 'Group', taker_id: [entity.groups.pluck(:id)])
-              .or(Transfer.where(taker_type: 'Person', taker_id: [entity.people.pluck(:id)]))
-    else
-      Transfer.where(taker_type: entity.class.name, taker_id: entity.id)
-    end
+    @transfers ||= if giver && entity.is_category?
+                     entity.category_outgoing_transfers
+                   elsif giver
+                     entity.outgoing_transfers
+                   elsif entity.is_category?
+                     entity.category_incoming_transfers
+                   else
+                     entity.incoming_transfers
+                   end
   end
 
   def group_by_year(query)

@@ -72,7 +72,6 @@ class Group < ApplicationRecord
     Group.joins(:memberships).where(memberships: { member: self, member_type: 'Group' }).where.not(id: self.id)
   end
 
-
   # these are a bit weird, hence the transfers method below
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
   has_many :incoming_transfers, class_name: 'Transfer', foreign_key: 'taker_id', as: :taker
@@ -84,7 +83,6 @@ class Group < ApplicationRecord
       return people + groups
       # TODO should this be:
       # return people + affilaietd_groups
-
     end
 
     [people + affiliated_groups + other_edge_ends].compact.flatten.uniq
@@ -92,14 +90,6 @@ class Group < ApplicationRecord
 
   def affiliated_groups
     parent_groups + groups
-  end
-
-
-  def transfers
-    OpenStruct.new(
-      incoming: Transfer.where(taker: self).order(amount: :desc),
-      outgoing: Transfer.where(giver: self, giver_type: 'Group').order(amount: :desc)
-    )
   end
 
   def other_edge_ends
@@ -115,15 +105,10 @@ class Group < ApplicationRecord
 
     outgoing_transfers.map(&:taker) +
     incoming_transfers.map(&:giver)
-    # outgoing_transfers.includes(:giver, :taker).map(&:taker) +
-    # incoming_transfers.includes(:giver, :taker).map(&:giver)
-  end
-
-  def transfers_in_value
-    incoming_transfers.sum(:amount)
   end
 
   def less_level
+    # only called from a disused section in FileIngestor
     name.gsub(/(Federal|NSW|VIC|SA|WA|TAS|ACT|NT)/, '')
         .gsub('(', '')
         .gsub(')', '')

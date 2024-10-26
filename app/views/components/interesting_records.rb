@@ -8,57 +8,47 @@ class InterestingRecords < ApplicationView
   attr_reader :records
 
   def template
-    div(class: 'margin-above') do
-      h2 { 'Interesting and / or New Records' }
-      div(class: 'row') do
+    list_group_options = "list-group mb-4"
+    div(id: 'suggestions-container') do
+      h3(class: 'text-secondary') { 'Suggestions' }
+      div(class: 'row mt-4') do
 
-        div(class: 'col-md-3') do
-          ul do
-            Group.where(category: true).each do |group|
-              li do
-                a(href: "/groups/#{group.id}") { group.name }
-              end
+      div(class: 'col-md-4') do
+        h6(class: 'column-heading text-primary mb-3') { 'Categories' }
+        div(class: list_group_options) do
+
+          Group.where(category: true).each do |group|
+            div(class: 'class: list-group-item list-group-item-action') do
+              a(href: "/groups/#{group.id}") { group.name }
+
             end
+
           end
         end
-
-        div(class: 'col-md-3') do
-          ul do
-            @records.people.each do |record|
-              li do
-                a(href: "/people/#{record.id}") { text(record) }
-              end
-            end
-          end
-        end
-
-        div(class: 'col-md-4') do
-          ul do
-            @records.groups.each do |record|
-              li do
-                a(href: "/groups/#{record.id}") { text(record) }
-              end
-            end
-          end
-        end
-
-
-
-        div(class: 'col-md-5') do
-          ul do
-            @records.transfers.each do |record|
-              li do
-                a(href: "/transfers/#{record.id}") { text(record) }
-              end
-            end
-          end
-        end
-
-
       end
-      div(class: 'row') do
+        div(class: 'col-md-4') do
+          h6(class: 'column-heading text-primary') { 'People' }
+          div(class: list_group_options) do
 
+            @records.people.each do |record|
+              div(class: 'class: list-group-item list-group-item-action') do
+                a(href: "/people/#{record.id}") { record.name }
+              end
+            end
+          end
+        end
+        div(class: 'col-md-4') do
+          h6(class: 'column-heading text-primary') { 'Groups' }
+          div(class: list_group_options) do
 
+            @records.groups.each do |record|
+              div(class: 'class: list-group-item list-group-item-action') do
+                a(href: "/groups/#{record.id}") { text_for_group(record) }
+                # a(href: "/groups/#{record.id}") { record.name }
+              end
+            end
+          end
+        end
       end
     end
   end
@@ -73,9 +63,11 @@ class InterestingRecords < ApplicationView
     "#{number_to_currency(record.amount, precision: 0)} \nFrom: #{record.giver.name} \nTo: #{record.taker.name} \nYear: #{record.financial_year}"
   end
 
-  def text_for_group(record)
-    "#{record.name}"
-  end
+def text_for_group(record)
+  name = record.name
+  truncated_name = name.length > 40 ? "#{name[0, 20]}..." : name
+  truncated_name
+end
 
   def text_for_person(record)
     "#{record.name}"

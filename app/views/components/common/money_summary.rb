@@ -45,11 +45,11 @@ class Common::MoneySummary < ApplicationView
 
   def title
     to_or_from = if money_in.present? && money_out.present?
-                    'To & From'
+                    'to & from'
                   elsif money_in.present?
-                    'To'
+                    'to'
                   elsif money_out.present?
-                    'From'
+                    'from'
                   end
 
 
@@ -68,18 +68,11 @@ class Common::MoneySummary < ApplicationView
     end
   end
 
-  def category_title
-    "Aggregate Transfers to / from to member groups and people of category: #{entity.name.upcase}"
-  end
-
   def money_in
     if is_category?
-      to_groups = Transfer.where(taker_type: 'Group', taker_id: [entity.groups.pluck(:id)]).sum(:amount)
-      to_people = Transfer.where(taker_type: 'Person', taker_id: [entity.people.pluck(:id)]).sum(:amount)
-
-      amount = to_groups + to_people
+      amount = entity.category_incoming_transfers.sum(:amount)
     else
-      amount = Transfer.where(taker_type: entity.class.name, taker_id: entity.id).sum(:amount)
+      amount = entity.incoming_transfers.sum(:amount)
     end
 
     return unless amount.positive?
@@ -89,14 +82,9 @@ class Common::MoneySummary < ApplicationView
 
   def money_out
     if is_category?
-      from_groups = Transfer.where(giver_type: 'Group', giver_id: [entity.groups.pluck(:id)])
-                            .where.not(taker_id: [entity.groups.pluck(:id)])
-                            .sum(:amount)
-      from_people = Transfer.where(giver_type: 'Person', giver_id: [entity.people.pluck(:id)]).sum(:amount)
-
-      amount = from_groups + from_people
+      amount = entity.category_outgoing_transfers.sum(:amount)
     else
-      amount = Transfer.where(giver_type: entity.class.name, giver_id: entity.id).sum(:amount)
+      amount = entity.outgoing_transfers.sum(:amount)
     end
     return unless amount.positive?
 

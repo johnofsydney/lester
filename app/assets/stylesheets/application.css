@@ -113,3 +113,23 @@ button {
   right: 0;
   padding: 5px;
 }
+
+.brand-text {
+  font-size: 1.75rem;
+}
+
+#searchbox-container {
+  margin-top: 40px;
+}
+
+#suggestions-container {
+  margin-top: 40px;
+}
+
+.column-heading {
+  font-weight: bold;
+  text-transform: uppercase;
+  border-bottom: 2px solid #007bff;
+  /* Bootstrap primary color */
+  padding-bottom: 5px;
+}
