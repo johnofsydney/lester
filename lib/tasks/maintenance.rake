@@ -14,7 +14,7 @@ namespace :lester do
   task remove_duplicates: :environment do
     #  NIOA family
     upper_family = Group.find 1165
-    upper.destroy
+    upper_family.destroy
 
     # NIOA Group
     duplicated_people_nioa_group = [
@@ -28,5 +28,10 @@ namespace :lester do
     end
     upper_group = Group.find 1164
     upper_group.destroy
+
+    # EY => Ernst & Young
+    ey = Group.find_by(name: 'EY')
+    ernst_and_young = Group.find_by(name: 'Ernst & Young')
+    ey.merge_into(ernst_and_young)
   end
 end

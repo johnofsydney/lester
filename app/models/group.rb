@@ -137,4 +137,11 @@ class Group < ApplicationRecord
   end
 
   def is_category? = category?
+
+  def merge_into(replacement_group)
+    # TODO - also update all the transfers
+    Membership.where(member: self).update_all(member_id: replacement_group.id)
+
+    self.destroy
+  end
 end
