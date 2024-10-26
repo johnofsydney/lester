@@ -19,9 +19,10 @@ namespace :lester do
     defence = RecordGroup.call('Defence', category: true)
     weaponry = RecordGroup.call('Weaponry', category: true)
 
-    coalition = RecordGroup.call('Liberal / National Coalition', category: true)
-    labor = RecordGroup.call('Australian Labor Party', category: true)
-    greens = RecordGroup.call('The Greens', category: true)
+    ### GROUP.CREATE ###
+    coalition = Group.create(name: 'Liberal / National Coalition (category)', category: true)
+    labor = Group.create(name: 'Australian Labor Party (category)', category: true)
+    greens = Group.create(name: 'The Greens (category)', category: true)
 
     # Diggin and Drilling
     # Minerals Council of Australia

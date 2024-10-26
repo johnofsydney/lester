@@ -17,7 +17,7 @@ class InterestingRecords < ApplicationView
         h6(class: 'column-heading text-primary mb-3') { 'Categories' }
         div(class: list_group_options) do
 
-          Group.where(category: true).each do |group|
+          Group.where(category: true).order(id: :desc).each do |group|
             div(class: 'class: list-group-item list-group-item-action') do
               a(href: "/groups/#{group.id}") { group.name }
 
@@ -44,7 +44,6 @@ class InterestingRecords < ApplicationView
             @records.groups.each do |record|
               div(class: 'class: list-group-item list-group-item-action') do
                 a(href: "/groups/#{record.id}") { text_for_group(record) }
-                # a(href: "/groups/#{record.id}") { record.name }
               end
             end
           end
