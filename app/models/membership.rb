@@ -1,7 +1,7 @@
 class Membership < ApplicationRecord
   belongs_to :member, polymorphic: true  # could be a Person or a Group
   belongs_to :group
-  has_many :positions
+  has_many :positions, dependent: :destroy
 
   # validates :person_id, uniqueness: { scope: :group_id, message: "should have one membership per group" }
 

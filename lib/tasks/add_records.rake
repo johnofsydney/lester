@@ -9,7 +9,7 @@ namespace :lester do
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
     # COMPLETE
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-09-18.csv')
-    FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-23.csv')
+    # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-23.csv')
 
 
     # This is a reminder, to add more info on ministries, should also add what the ministry is responsible for (also existing records)
