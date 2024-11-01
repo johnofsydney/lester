@@ -12,6 +12,33 @@
   <span class="bottom-right text-muted small"><%= entity.data_time_range %></span>
 </div>
 <div class="graph rounded bg-light mt-3">
+  <%= column_chart [
+        {
+            name: "The Union Education Foundation Limited",
+            data: Transfer.where(giver: Group.find_by(name: 'The Union Education Foundation Limited')).group_by_year(:effective_date).sum(:amount).transform_keys{ |key| key.year },
+            stack: "stack 1"
+        },
+        {
+            name: "Maurice Blackburn Pty Ltd",
+            data: Transfer.where(giver: Group.find_by(name: 'Maurice Blackburn Pty Ltd')).group_by_year(:effective_date).sum(:amount).transform_keys{ |key| key.year },
+            stack: "stack 1"
+        },
+        {
+            name: "The Mclean Forum Limited",
+            data: Transfer.where(giver: Group.find_by(name: 'The Mclean Forum Limited')).group_by_year(:effective_date).sum(:amount).transform_keys{ |key| key.year },
+            stack: "stack 1"
+        },
+        # {
+        #     name: "PWD-Operated Data",
+        #     data: Transfer.where(giver_type: 'Person', taker_type: 'Person').group_by_year(:effective_date).count,
+        #     stack: "stack 2"
+        # }
+    ], stacked: true
+%>
+  <span class="bottom-right text-muted small"><%= entity.data_time_range %></span>
+</div>
+
+<div class="graph rounded bg-light mt-3">
   <%= pie_chart(
     transfers_by_name,
     colors:,

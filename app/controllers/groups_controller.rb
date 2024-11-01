@@ -1,13 +1,18 @@
 class GroupsController < ApplicationController
   before_action :set_group, only: %i[ show edit update destroy ]
+  before_action :set_page, only: %i[ index ]
   before_action :authenticate_user!, only: %i[ new edit update destroy ]
 
   layout -> { ApplicationLayout }
 
   # GET /groups or /groups.json
   def index
-    groups = Group.where.not(category: true).order(:name)
-    render Groups::IndexView.new(groups:)
+    @groups = Rails.cache.fetch("groups_index_#{params[:page]}", expires_in: 12.hours) do
+
+      Group.where.not(category: true).order(:name).limit(per_page).offset(paginate_offset).to_a
+    end
+
+    render Groups::IndexView.new(groups: @groups, page: @page)
   end
 
   # GET /groups/1 or /groups/1.json
@@ -83,6 +88,10 @@ class GroupsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_group
       @group = Group.find(params[:id])
+    end
+
+    def set_page
+      @page = (params[:page] || 0).to_i
     end
 
     # Only allow a list of trusted parameters through.

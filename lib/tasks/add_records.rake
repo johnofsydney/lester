@@ -9,13 +9,13 @@ namespace :lester do
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
     # COMPLETE
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-09-18.csv')
-    FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-23.csv')
+    # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-23.csv') - affiliations mostly for Australian Energy Producers
+    FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-29.csv') # adding more categories
 
 
     # This is a reminder, to add more info on ministries, should also add what the ministry is responsible for (also existing records)
     federal_ministries = [
-      # 'csv_data/ministries_morrison.csv',
-      # 'csv_data/ministries_turnbull.csv',
+      'csv_data/ministries_albanese.csv',
     ]
 
     # using data sourced from wikipedia

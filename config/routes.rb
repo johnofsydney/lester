@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  get 'groups/page=:page' => 'groups#index'
+
   get 'search' => 'search#index'
   get 'linker' => 'search#linker'
   get '/home/suggestions' => 'home#suggestions'

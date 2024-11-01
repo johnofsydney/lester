@@ -157,40 +157,53 @@ class FileIngestor
           federal_membership = Membership.find_or_create_by(member: person, group: federal_party)
           title = major_party ? 'Federal Parliamentary Party Member' : 'Party Member'
 
-          Position.create(membership: federal_membership, title:)
+          if major_party
+            'Federal Parliamentary Party Member'
+            # start / end date - for when they a member of the federal parliamentary party (as opposed to any other branch they might also be in)
+            Position.create(membership: federal_membership, title:, start_date:, end_date:)
+          else
+            title = 'Party Member'
+            # no start / end date - we dont know when they became a member of this minor party
+            Position.create(membership: federal_membership, title:)
+          end
 
           # MPs are members of a branch, which is a subgroup of party
           # this is where we can add preselectors who choose the candidates for the electorate
           # for major parties the branch is a subgroup of the state party
           # for minor parties the branch is a subgroup of the federal party
           # add this back later if wanted
-          unless senator || true # it is the || true which prevents this from running. remove if needed
-            branch_name = "#{federal_party.less_level} Branch for #{row['electorate']} Electorate"
-            branch = RecordGroup.call(branch_name)
 
-            branch_membership = Membership.find_or_create_by(member: person, group: branch)
-            Position.create(membership: branch_membership, title: 'Candidate', start_date:, end_date:)
-          end
+          # Local Branch membership ==> too hard basket
+          # unless senator || true # it is the || true which prevents this from running. remove if needed
+          #   branch_name = "#{federal_party.less_level} Branch for #{row['electorate']} Electorate"
+          #   branch = RecordGroup.call(branch_name)
+
+          #   branch_membership = Membership.find_or_create_by(member: person, group: branch)
+          #   Position.create(membership: branch_membership, title: 'Candidate', start_date:, end_date:)
+          # end
 
           if major_party
+            # if the person belongs to a _major_ party, they also belong to the state party too
             state_party = RecordGroup.call(row['party'].downcase.gsub('federal', row['state']))
             state_membership = Membership.find_or_create_by(member: person, group: state_party)
 
+            # dont need start and end date because we dont know when they joined the local state party.
             Position.create(membership: state_membership, title: "Party Member (#{state_party.state})")
 
-            # affiliate the branch with the state party
-            Membership.find_or_create_by(
-              member_type: "Group",
-              member_id: branch.id,
-              group: state_party,
-            ) unless senator || true
-          else
-            # affiliate the branch with the federal party
-            Membership.find_or_create_by(
-              member_type: "Group",
-              member_id: branch.id,
-              group: federal_party,
-            ) unless senator || true
+          # Local Branch membership ==> too hard basket
+          #   # affiliate the branch with the state party
+          #   Membership.find_or_create_by(
+          #     member_type: "Group",
+          #     member_id: branch.id,
+          #     group: state_party,
+          #   ) unless senator || true
+          # else
+          #   # affiliate the branch with the federal party
+          #   Membership.find_or_create_by(
+          #     member_type: "Group",
+          #     member_id: branch.id,
+          #     group: federal_party,
+          #   ) unless senator || true
           end
         end
       end
@@ -263,6 +276,8 @@ class FileIngestor
       csv.each do |row|
         owning_group = RecordGroup.call(row['group'])
         member_group = RecordGroup.call(row['member_group'])
+
+        next unless owning_group && member_group
 
         evidence = row['evidence'].strip if row['evidence'].present?
 

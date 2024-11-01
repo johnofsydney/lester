@@ -20,7 +20,7 @@ class RecordPerson
   def cleaned_up_name(name)
     regex_for_removal_elected = /\bMP\b|\bSenator\b/i
     regex_for_removal_honours = /\bOAM\b|\bAO\b|\bAM\b|\bCSC\b|\bCBE\b/i
-    regex_for_removal_titles = /\bQC\b|\bProf\b|\bDr\b|^Hon\b/i
+    regex_for_removal_titles = /\bQC\b|\bKC\b|\bProf\b|\bDr\b|^Hon\b/i
     regex_for_removal_normal_titles = /\bMr\b|\bMs\b|\bMs\b|\bMiss\b/i
 
     name = CapitalizeNames.capitalize(name)
