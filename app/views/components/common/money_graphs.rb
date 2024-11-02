@@ -11,7 +11,6 @@ class Common::MoneyGraphs < ApplicationView
 	end
 
   def template
-    # binding.pry
     render partial: "shared/money_graphs", locals: {
       colors: colors(transfers, giver:),
       transfers_by_year: group_by_year,
