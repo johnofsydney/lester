@@ -36,8 +36,7 @@ namespace :lester do
           print "#{person.name}, "
           p.update(start_date: m.start_date, end_date: m.end_date)
         end
-      end #.sole.update(start_date: m.start_date, end_date: m.end_date)
-      # puts 'm'
+      end
     end
   end
 end
