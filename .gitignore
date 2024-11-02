@@ -35,3 +35,4 @@
 
 database.bak
 load_latest_database.sh
+backup_latest_database_local.sh
