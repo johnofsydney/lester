@@ -12,26 +12,31 @@ namespace :lester do
 
   desc "Remove Duplicates"
   task remove_duplicates: :environment do
-    #  NIOA family
-    upper_family = Group.find 1165
-    upper_family.destroy
+    ## MERGING EXAMPLE ##
+    # ey = Group.find_by(name: 'EY')
+    # ernst_and_young = Group.find_by(name: 'Ernst & Young')
+    # ey.merge_into(ernst_and_young)
+  end
 
-    # NIOA Group
-    duplicated_people_nioa_group = [
-      Person.find_by(name: 'Hon. Ellen Lord'),
-      Person.find_by(name: '. Ken Anderson'),
-      Person.find_by(name: 'Hon. David Feeney'),
-      Person.find_by(name: 'Hon. Christopher Pyne'),
-    ]
-    duplicated_people_nioa_group.each do |person|
-      person.destroy
+  desc "Add time range for party memberships"
+  task add_time_range_for_party_memberships: :environment do
+    positions = Position.where(title: ['MP', 'Senator']) # MP in the Parliament of Australia.
+
+    positions.each do |position|
+      m = position.membership
+
+      next unless m.start_date.present? || m.end_date.present?
+      next unless m.member_type == 'Person'
+
+      person = Person.find(m.member_id)
+      person.positions.where(title: 'Federal Parliamentary Party Member').each do |p|
+        if Position.where(membership_id: p.membership_id, title: 'Federal Parliamentary Party Member').count > 1
+          raise "Multiple positions for #{person.name}"
+        else
+          print "#{person.name}, "
+          p.update(start_date: m.start_date, end_date: m.end_date)
+        end
+      end
     end
-    upper_group = Group.find 1164
-    upper_group.destroy
-
-    # EY => Ernst & Young
-    ey = Group.find_by(name: 'EY')
-    ernst_and_young = Group.find_by(name: 'Ernst & Young')
-    ey.merge_into(ernst_and_young)
   end
 end

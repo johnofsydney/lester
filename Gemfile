@@ -84,3 +84,4 @@ gem 'money-rails', '~> 1.12'
 gem 'capitalize-names'
 
 gem "chartkick"
+gem "groupdate"

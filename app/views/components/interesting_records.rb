@@ -20,9 +20,7 @@ class InterestingRecords < ApplicationView
           Group.where(category: true).order(id: :desc).each do |group|
             div(class: 'class: list-group-item list-group-item-action') do
               a(href: "/groups/#{group.id}") { group.name }
-
             end
-
           end
         end
       end

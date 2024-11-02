@@ -13,9 +13,9 @@ class Common::MoneyGraphs < ApplicationView
   def template
     render partial: "shared/money_graphs", locals: {
       colors: colors(transfers, giver:),
-      transfers_by_year: group_by_year(transfers),
-      transfers_by_name: group_by_name(transfers, giver:),
-      entity:, giver:
+      transfers_by_year: group_by_year,
+      transfers_by_name: group_by_name(giver:),
+      entity:, giver:, top_six:, others:
     }
   end
 
@@ -45,35 +45,55 @@ class Common::MoneyGraphs < ApplicationView
                    end
   end
 
-  def group_by_year(query)
-    query.group(:effective_date)
+  def group_by_year
+    transfers.group(:effective_date)
          .sum(:amount)
          .sort_by{|k, _v| k }
          .to_h
          .transform_keys{ |key| key.year }
   end
 
-  def group_by_name(query, giver: false)
+  def all_the_groups
+    # sorts the giver or takers by the amount of money they have given or taken (sum)
+    # does not consider year
     if giver
-      all_the_groups = query.group(:taker_id, :taker_type)
+      all_the_groups = transfers.group(:taker_id, :taker_type)
                           .sum(:amount)
                           .transform_keys{ |key| name_for_bar_graph(key) }
                           .sort_by{|k, v| v}
     else
-      all_the_groups = query.group(:giver_id, :giver_type)
+      all_the_groups = transfers.group(:giver_id, :giver_type)
                           .sum(:amount)
                           .transform_keys{ |key| name_for_bar_graph(key) }
                           .sort_by{|k, v| v}
     end
+  end
 
+  def top_five
+    all_the_groups.last(5)
+  end
 
-    last_five = all_the_groups.last(5)
-    sum_others = (all_the_groups - last_five).map{|a| a.last}.sum
+  def others
+    all_the_groups - top_five
+  end
+
+  def top_six
+    sum_others = others.map{|a| a.last}.sum
 
     if sum_others.zero?
-      last_five.to_h
+      top_five.to_h
     else
-      last_five.to_h.merge('Others' => sum_others).sort_by { |_k, value| value }
+      top_five.to_h.merge('Others' => sum_others).sort_by { |_k, value| value }
+    end
+  end
+
+  def group_by_name(giver: false)
+    sum_others = others.map{|a| a.last}.sum
+
+    if sum_others.zero?
+      top_five.to_h
+    else
+      top_five.to_h.merge('Others' => sum_others).sort_by { |_k, value| value }
     end
   end
 
