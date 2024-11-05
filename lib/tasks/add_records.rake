@@ -25,6 +25,7 @@ namespace :lester do
 
     lobbyists = [
       'csv_data/lobbyists_2024-11-04.csv',
+      'csv_data/lobyyists_2024-11-05.csv',
     ]
 
     lobbyists.each do |file|
