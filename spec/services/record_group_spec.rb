@@ -223,6 +223,7 @@ RSpec.describe RecordGroup, type: :service do
       'GetUp Limited' => 'Get Up Limited',
       'GetUp Ltd' => 'Get Up Limited',
       'Alpha Diversification Pty Ltd' => 'Alpha Diversification Pty Ltd',
+      'Actus Services Pty Ltd' => 'Actus Services Pty Ltd',
     }
   end
 
