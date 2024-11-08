@@ -10,7 +10,7 @@ class Groups::Person < ApplicationView
   def template
     tr do
       td do
-        span { a(href: "/people/#{person.id}") { person.name } }
+        span { link_for(entity: person) }
         if membership.evidence.present?
           span { '   ' }
           span { a(href: membership.evidence, class: 'gentle-link', target: '_blank') { '...' } }
@@ -33,7 +33,7 @@ class Groups::Person < ApplicationView
             ul(class: 'list-group') do
               memberships.each do |membership|
                 li(class: 'list-group-item') do
-                  a(href: "/groups/#{membership.group.id}") { membership.group.name }
+                  link_for(entity: membership.group)
                   # TODO FIX THIS FOR GROUPS AS MEMBERS
                 end
               end

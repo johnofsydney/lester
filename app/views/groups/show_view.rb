@@ -12,11 +12,22 @@ class Groups::ShowView < ApplicationView
   end
 
   def template
+    page_number = 0
+
     render Common::Heading.new(entity: group)
     render Common::MoneySummary.new(entity: group)
+    # turbo_frame(id: 'money_summary', src: "/groups/money_summary/#{group.id}", loading: :lazy) do
+    #   h4 { 'Fetching Money Summary...'  }
+    # end
 
-    render Groups::AffiliatedGroups.new(group:)
-    render Groups::People.new(group:)
+    turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}/page=#{page_number}", loading: :lazy) do
+      h4 { 'Fetching Affiliated Groups...'  }
+    end
+
+
+    turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}/page=#{page_number}", loading: :lazy) do
+      h4 { 'Fetching People...'  }
+    end
 
     render TransfersTableComponent.new(
     entity: group,

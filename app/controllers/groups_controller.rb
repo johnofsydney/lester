@@ -1,4 +1,6 @@
 class GroupsController < ApplicationController
+  include Constants
+
   before_action :set_group, only: %i[ show edit update destroy ]
   before_action :set_page, only: %i[ index ]
   before_action :authenticate_user!, only: %i[ new edit update destroy ]
@@ -83,6 +85,27 @@ class GroupsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def affiliated_groups
+    @group = Group.find(params[:group_id])
+    @page = params[:page].to_i
+
+    render Groups::AffiliatedGroups.new(group: @group)
+  end
+
+  def money_summary
+    render Common::MoneySummary.new(entity: Group.find(params[:group_id]))
+  end
+
+  def group_people
+    @group = Group.find(params[:group_id])
+    @page = params[:page].to_i
+
+    @people = @group.people.order(:name).offset(@page * Constants::VIEW_TABLE_LIST_LIMIT).limit(Constants::VIEW_TABLE_LIST_LIMIT)
+
+    render Groups::PeopleTable.new(people: @people, exclude_group: @group, page: @page)
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

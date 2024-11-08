@@ -4,6 +4,10 @@ Rails.application.routes.draw do
 
   get 'groups/page=:page' => 'groups#index'
 
+  get 'groups/group_people/:group_id/page=:page' => 'groups#group_people'
+  get 'groups/affiliated_groups/:group_id/page=:page' => 'groups#affiliated_groups'
+  get 'groups/money_summary/:group_id' => 'groups#money_summary'
+
   get 'search' => 'search#index'
   get 'linker' => 'search#linker'
   get '/home/suggestions' => 'home#suggestions'

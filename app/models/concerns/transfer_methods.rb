@@ -1,7 +1,5 @@
 module TransferMethods
   extend ActiveSupport::Concern
-  MAX_GROUP_SIZE_TO_FINISH = 15 # TODO: use or discard
-  MAX_SIZE_TO_ACCEPT_DONATIONS = 550 # TODO: use or discard
 
   included do
     # depth is the number of degrees of separation from the invoking node, 0 being the invoking node itself
@@ -89,9 +87,12 @@ module TransferMethods
     def category_outgoing_transfers
       return Transfer.none unless self.is_category?
 
-      @category_outgoing_transfers ||= Transfer.where(giver_type: 'Group', giver_id: [self.groups.pluck(:id)])
-                                               .where.not(taker_id: [self.groups.pluck(:id)])
-                                               .or(Transfer.where(giver_type: 'Person', giver_id: [self.people.pluck(:id)]))
+      group_ids = self.groups.pluck(:id)
+      people_ids = self.people.pluck(:id)
+
+      @category_outgoing_transfers ||= Transfer.where(giver_type: 'Group', giver_id: group_ids)
+                                               .where.not(taker_id: group_ids)
+                                               .or(Transfer.where(giver_type: 'Person', giver_id: people_ids))
     end
 
     private
