@@ -1,6 +1,6 @@
 <%= turbo_frame_tag :feed do %>
   <div>
-    <% depth = @group.category? ? 1 : 4 %>
+    <% depth = @group.category? ? 1 : Constants::MAX_SEARCH_DEPTH %>
     <%= render TransfersTableComponent.new(
         entity: @group,
         transfers: @group.consolidated_transfers(depth: depth), # <== Because we are recursively fetching the transfers, we need to specify the depth.
