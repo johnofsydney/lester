@@ -8,7 +8,7 @@ class PeopleController < ApplicationController
     people = Person.order(:name)
     render People::IndexView.new(people:)
   end
-``
+
   def show
     render People::ShowView.new(person: @person)
   end
