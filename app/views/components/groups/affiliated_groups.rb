@@ -67,11 +67,11 @@ class Groups::AffiliatedGroups < ApplicationView
             end
           end
         else
-          chunk_size = count / 3
+          chunk_size = count # / 3
 
           div(class: 'row') do
             affiliated_groups.reject{|group| group.category? }.sort_by(&:name).each_slice(chunk_size).to_a.each do |chunk|
-              ul(class: 'col-md-4') do
+              ul(class: 'col') do
                 chunk.each do |affiliate|
                   li(class: 'list-group-item') do
                     evidence = Membership.find_by(group_id: group.id, member: affiliate)&.evidence

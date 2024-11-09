@@ -100,36 +100,44 @@ class GroupsController < ApplicationController
   def group_people
     @group = Group.find(params[:group_id])
     @page = params[:page].to_i
+    @pages = (@group.people.count.to_f / page_size).ceil
 
-    @people = @group.people.order(:name).offset(@page * Constants::VIEW_TABLE_LIST_LIMIT).limit(Constants::VIEW_TABLE_LIST_LIMIT)
+    @people = @group.people
+                    .order(:name)
+                    .offset(@page * page_size)
+                    .limit(page_size)
 
-    render Groups::PeopleTable.new(people: @people, exclude_group: @group, page: @page)
+    render Groups::PeopleTable.new(people: @people, exclude_group: @group, page: @page, pages: @pages)
   end
 
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_group
-      @group = Group.find(params[:id])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_group
+    @group = Group.find(params[:id])
+  end
+
+  def set_page
+    @page = (params[:page] || 0).to_i
+  end
+
+  # Only allow a list of trusted parameters through.
+  def group_params
+    params.require(:group).permit(:name, memberships_attributes: [:id, :title, :start_date, :end_date, :_destroy])
+  end
+
+  def update_group(group)
+    people_ids = group_params['people_ids'].select(&:present?).map(&:to_i)
+
+    people_ids.each do |id|
+      person = Person.find(id)
+      person.groups << group unless person.groups.include?(group)
     end
 
-    def set_page
-      @page = (params[:page] || 0).to_i
-    end
+    group
+  end
 
-    # Only allow a list of trusted parameters through.
-    def group_params
-      params.require(:group).permit(:name, memberships_attributes: [:id, :title, :start_date, :end_date, :_destroy])
-    end
-
-    def update_group(group)
-      people_ids = group_params['people_ids'].select(&:present?).map(&:to_i)
-
-      people_ids.each do |id|
-        person = Person.find(id)
-        person.groups << group unless person.groups.include?(group)
-      end
-
-      group
-    end
+  def page_size
+    @page_size ||= Constants::VIEW_TABLE_LIST_LIMIT
+  end
 end

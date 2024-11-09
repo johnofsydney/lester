@@ -50,15 +50,15 @@ class TransfersTableComponent < ApplicationView
   def make_table(transfers)
     h4 { 'Transfers' }
     p { "#{heading} (#{transfers.count} records)" }
-    table(class: 'table table-striped responsive-table') do
+    table(class: 'table table-striped responsive-table no-overflow') do
       tr do
         th { 'ID' }
         th { 'Amount' }
         th { 'Year' }
         th { 'Giver' }
         th { 'Taker' }
-        th { 'Depth' }
-        th { 'Direction' }
+        th(class: 'mobile-display-none') { 'Depth' }
+        th(class: 'mobile-display-none') { 'Direction' }
       end
 
       transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
@@ -79,8 +79,8 @@ class TransfersTableComponent < ApplicationView
           end
 
           td { link_for(entity: transfer.taker) if transfer.taker}
-          td { transfer.depth }
-          td { transfer.direction }
+          td(class: 'mobile-display-none') { transfer.depth }
+          td(class: 'mobile-display-none') { transfer.direction }
         end
       end
     end
