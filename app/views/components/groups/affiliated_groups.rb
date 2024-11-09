@@ -27,7 +27,7 @@ class Groups::AffiliatedGroups < ApplicationView
                 li(class: 'list-group-item horizontal-button') do
                   evidence = Membership.find_by(group_id: group.id, member: category)&.evidence
 
-                  span {a(href: "/groups/#{category.id}") { category.name }}
+                  span {a(href: "/groups/#{category.id}", data_turbo: "false" ) { category.name }}
                   span {a(href: evidence, target: '_blank') { ' ...' }} if evidence.present?
                 end
               end
@@ -42,7 +42,7 @@ class Groups::AffiliatedGroups < ApplicationView
                     li(class: 'list-group-item') do
                       evidence = Membership.find_by(group_id: group.id, member: category)&.evidence
 
-                      span {a(href: "/groups/#{category.id}") { category.name }}
+                      span {a(href: "/groups/#{category.id}", data_turbo: "false" ) { category.name }}
                       span {a(href: evidence, target: '_blank') { ' ...' }} if evidence.present?
                     end
                   end

@@ -1,6 +1,6 @@
 <%= turbo_frame_tag :feed do %>
   <div>
-  <% depth = 4 %>
+  <% depth = Constants::MAX_SEARCH_DEPTH %>
     <%= render TransfersTableComponent.new(
         entity: @person,
         transfers: @person.consolidated_transfers(depth: depth),

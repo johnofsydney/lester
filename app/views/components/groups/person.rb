@@ -40,7 +40,7 @@ class Groups::Person < ApplicationView
             end
           end
         else
-          "#{person.memberships.length} members"
+          "#{person.memberships.length} other groups"
         end
       end
     end

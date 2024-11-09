@@ -3,7 +3,7 @@ class Transfers::TableOfBothSides < ApplicationView
 
 	def initialize(transfer:)
 		@transfer = transfer
-    @depth = 6
+    @depth = Constants::MAX_SEARCH_DEPTH
 	end
 
   def template
