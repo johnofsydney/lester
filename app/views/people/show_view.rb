@@ -22,10 +22,8 @@ class People::ShowView < ApplicationView
     )
 
     turbo_frame(id: 'feed', src: lazy_load_person_path, loading: :lazy) do
-      p do
-        p { 'Loading More Transfer Records...'}
-        hr
-      end
+      p(class: 'grey') { 'Fetching More Transfer Records...'  }
+      hr
     end
 	end
 end
