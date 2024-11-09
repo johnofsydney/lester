@@ -1,8 +1,4 @@
 class Groups::ShowView < ApplicationView
-  # include ActionView::Helpers::NumberHelper
-  # include Phlex::Rails::Helpers::TurboStream
-  # include Phlex::Rails::Helpers::TurboStreamFrom
-  # include Phlex::Rails::Helpers::TurboFrameTag
 
   attr_reader :group, :depth
 
@@ -16,9 +12,6 @@ class Groups::ShowView < ApplicationView
 
     render Common::Heading.new(entity: group)
     render Common::MoneySummary.new(entity: group)
-    # turbo_frame(id: 'money_summary', src: "/groups/money_summary/#{group.id}", loading: :lazy) do
-    #   h4 { 'Fetching Money Summary...'  }
-    # end
 
     turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}/page=#{page_number}", loading: :lazy) do
       p(class: 'grey') { 'Fetching People...'  }

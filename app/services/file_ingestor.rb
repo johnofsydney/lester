@@ -311,7 +311,6 @@ class FileIngestor
 
         print "l"
 
-
         rescue => e
         p "Lobbyist Upload | Error: #{e} | row#{row.inspect}"
       end

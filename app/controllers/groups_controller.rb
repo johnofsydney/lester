@@ -7,7 +7,6 @@ class GroupsController < ApplicationController
 
   layout -> { ApplicationLayout }
 
-  # GET /groups or /groups.json
   def index
     @groups = Rails.cache.fetch("groups_index_#{params[:page]}", expires_in: 12.hours) do
 
@@ -17,73 +16,8 @@ class GroupsController < ApplicationController
     render Groups::IndexView.new(groups: @groups, page: @page)
   end
 
-  # GET /groups/1 or /groups/1.json
   def show
     render Groups::ShowView.new(group: @group, depth: Constants::MAX_SEARCH_DEPTH)
-  end
-
-  # GET /groups/new
-  def new
-    # return unless current_user
-
-    # @group = Group.new
-  end
-
-  # GET /groups/1/edit
-  def edit
-    return unless current_user
-  end
-
-  # POST /groups or /groups.json
-  def create
-    # return unless current_user
-
-    # @group = Group.new(group_params)
-
-    # respond_to do |format|
-    #   if @group.save
-    #     new_membership_params = params.dig(:group, :memberships_attributes, :NEW_RECORD)
-    #     if new_membership_params
-    #       @group.memberships.create(new_membership_params.permit(:person_id, :title, :start_date, :end_date))
-    #     end
-    #     format.html { redirect_to group_url(@group), notice: "Group was successfully created." }
-    #     format.json { render :show, status: :created, location: @group }
-    #   else
-    #     format.html { render :new, status: :unprocessable_entity }
-    #     format.json { render json: @group.errors, status: :unprocessable_entity }
-    #   end
-    # end
-  end
-
-  # PATCH/PUT /groups/1 or /groups/1.json
-  def update
-    # return unless current_user
-
-    # respond_to do |format|
-    #   if @group.update(group_params)
-    #     new_membership_params = params.dig(:group, :memberships_attributes, :NEW_RECORD)
-    #     if new_membership_params
-    #       @group.memberships.create(new_membership_params.permit(:person_id, :title, :start_date, :end_date))
-    #     end
-    #     format.html { redirect_to group_url(@group), notice: "Group was successfully updated." }
-    #     format.json { render :show, status: :ok, location: @group }
-    #   else
-    #     format.html { render :edit, status: :unprocessable_entity }
-    #     format.json { render json: @group.errors, status: :unprocessable_entity }
-    #   end
-    # end
-  end
-
-  # DELETE /groups/1 or /groups/1.json
-  def destroy
-    # return unless current_user
-
-    # @group.destroy
-
-    # respond_to do |format|
-    #   format.html { redirect_to groups_url, notice: "Group was successfully destroyed." }
-    #   format.json { head :no_content }
-    # end
   end
 
   def affiliated_groups
@@ -138,6 +72,6 @@ class GroupsController < ApplicationController
   end
 
   def page_size
-    @page_size ||= Constants::VIEW_TABLE_LIST_LIMIT
+    @page_size ||= Constants::PAGE_LIMIT
   end
 end

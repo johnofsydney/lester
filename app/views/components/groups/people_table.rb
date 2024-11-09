@@ -16,7 +16,6 @@ class Groups::PeopleTable < ApplicationView
         hr
         h4 { 'People' }
 
-
         page_nav
 
         table(class: 'table table-striped responsive-table') do

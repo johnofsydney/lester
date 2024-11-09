@@ -13,42 +13,6 @@ class TransfersController < ApplicationController
     render Transfers::ShowView.new(transfer: @transfer)
   end
 
-  def new
-    # return unless current_user
-  end
-
-  def edit
-    # return unless current_user
-  end
-
-  def create
-    # return unless current_user
-  end
-
-  def update
-    # return unless current_user
-    # respond_to do |format|
-    #   if @transfer.update(transfer_params)
-    #     format.html { redirect_to transfer_url(@transfer), notice: "Transfer was successfully updated." }
-    #     format.json { render :show, status: :ok, location: @transfer }
-    #   else
-    #     format.html { render :edit, status: :unprocessable_entity }
-    #     format.json { render json: @transfer.errors, status: :unprocessable_entity }
-    #   end
-    # end
-  end
-
-  # DELETE /transfers/1 or /transfers/1.json
-  def destroy
-    # return unless current_user
-    # @transfer.destroy
-
-    # respond_to do |format|
-    #   format.html { redirect_to people_url, notice: "Transfer was successfully destroyed." }
-    #   format.json { head :no_content }
-    # end
-  end
-
   private
 
   def set_transfer

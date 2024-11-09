@@ -50,7 +50,7 @@ class TransfersTableComponent < ApplicationView
   def make_table(transfers)
     h4 { 'Transfers' }
     p { "#{heading} (#{transfers.count} records)" }
-    table(class: 'table table-striped responsive-table no-overflow') do
+    table(class: 'table table-striped responsive-table') do
       tr do
         th { 'ID' }
         th { 'Amount' }
