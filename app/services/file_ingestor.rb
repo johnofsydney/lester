@@ -271,6 +271,51 @@ class FileIngestor
       end
     end
 
+    def lobbyists_upload(file)
+      lobbyists = Group.find_or_create_by(name: 'Lobbyists', category: true)
+
+      csv = CSV.read(file, headers: true)
+      csv.each do |row|
+        group = RecordGroup.call(row['company'])
+        person = RecordPerson.call(row['person'])
+        title = if row['title'].present?
+          CapitalizeNames.capitalize(row['title'].strip)
+                         .gsub(/\bCEO\b/i) { |word| word.titleize }
+        end
+
+        evidence = 'https://lobbyists.ag.gov.au/register'
+
+        # Create a membership for the named person in the named group
+        # the membership may not exist, if so, we need to create it
+        membership = Membership.find_or_create_by(
+          member: person,
+          group: group
+        )
+        # create position for each row, with unique dates and title
+        position = Position.find_or_create_by(membership:, title:)
+
+        membership.update!(evidence:)
+        position.update!(evidence:)
+
+        print "m"
+
+        # Create a membership for the named person and group inthe lobbyists category
+        membership = Membership.find_or_create_by(
+          member: person,
+          group: lobbyists
+        )
+        membership = Membership.find_or_create_by(
+          member: group,
+          group: lobbyists
+        )
+
+        print "l"
+
+        rescue => e
+        p "Lobbyist Upload | Error: #{e} | row#{row.inspect}"
+      end
+    end
+
     def affiliations_upload(file)
       csv = CSV.read(file, headers: true)
       csv.each do |row|

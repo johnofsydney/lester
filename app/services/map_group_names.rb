@@ -18,7 +18,7 @@ class MapGroupNames
     return 'Australian Hotels Association' if name.match?(/Australian Hotels Association/i)
     return 'Advance Australia' if name.match?(/Advance Aus|Advanced Aus/i)
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
-    return 'Australian Council of Trade Unions' if name.match?(/ACTU/i)
+    return 'Australian Council of Trade Unions' if name.match?(/\bACTU\b/i)
     return 'Climate 200 Pty Ltd' if name.match?(/(Climate 200|Climate200)/i)
     return 'Australian Chamber of Commerce and Industry' if name.match?(/Australian Chamber of Commerce and Industry/i)
     return 'Australian Chamber of Commerce and Industry' if name.match?(/Australia Chamber of Commerce and Industry/i)

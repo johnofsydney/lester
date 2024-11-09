@@ -84,7 +84,7 @@ class Home::TodoView < ApplicationView
                 li { 'Import People / Groups / Positions from CSV' }
                 li { 'Add Indexes' }
                 li { 'Add Audit table' }
-                li { 'Ex Members of a group should appear last (app/views/components/groups/people.rb:3)' }
+                li { 'Ex Members of a group should appear last (or not at all eg Lidia Thorpe) (app/views/components/groups/people.rb:3)' }
               end
             end
           end

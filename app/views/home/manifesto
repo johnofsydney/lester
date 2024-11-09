@@ -1,0 +1,52 @@
+# Join The Dots
+
+1. Join The Dots is not partisan. It exists only to shine a light on connections between people, groups and money. I don't care about the political affiliations/sympathies of any of these people or groups.
+2. Join The Dots is not just a site for collecting and aggregating donation data (1). This is one dataset we have. The other point of the site is to list who belonged to the company that made the donation. And Who else works for that company? And do they have any relatives? And have any of those relatives received any government funding perhaps? One of my favourite discoveries so far is Sally Zou. She hasn't made any direct donations to anyone. But she has controlled donations of $1,264,792 into the Liberal Party, via her companies: Aus Gold Mining, Australian Romance and Transcendent Australia. Mostly to the South Australian branch. https://jointhedots.au/people/843
+3. Data Structure
+
+- Technically is described by the database schema here: https://github.com/johnofsydney/lester/blob/main/db/schema.rb
+
+## The three main tables are People, Groups and Transfers
+
+### Transfers
+
+- One transfer in our system accounts for all payments within a financial year. eg https://jointhedots.au/transfers/3352
+- A Transfer has a giver and a taker. A _Giver_ can be a person or a group and a _Taker_ can be either a person or a group.
+- A Transfer requires _Evidence_ - so far most transfers are donations taken from the AEC data. The evidence is listed on the individual transfer page.
+
+### People
+
+- No evidence is required to record a person in the people table in the database
+- Most people are
+  - members of parliament
+  - donors
+  - belong to a company (see below)
+
+### Groups
+
+- No evidence is required to record a group in the groups table in the database
+- Most groups are
+  - political parties
+  - donors
+  - Any other company can be added
+
+## Memberships
+
+- A person belongs to a group through a join table called memberships.
+- A person can belong to many groups and a group can have many member people
+- The Membership should record the evidence of the connection between the person and the group.
+- The Membership can have an optional start_date and end_date
+- A membership can also be between 2 groups instead of a group and a person. In other aspects it is the same as a membership between a group and a person.
+
+## Positions
+
+- each membership can have several positions
+- if there are many positions, we can consider the most recent one is considered current (unless expired)
+- a position can have an optional start_date and end_date
+- eg
+  - Membership = Liberal / National Coalitionn AND Peter Dutton
+    - Position_1 = Home Affairs Minister: 20/12/2017 - 30/3/2021
+    - Position_2 = Minister for Defence: 30/3/2021 - 23/5/2022
+    - Position_3 = Leader of the Opposition: 30/5/2022 ...
+
+(1) Of course donation data is an important dataset within Join The Dots. It's easy to explain and it's easy to graph, so it's easy to post about. Other sites already do this, but I hope to make Join The Dots the best of all of them.

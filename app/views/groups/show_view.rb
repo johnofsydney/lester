@@ -1,8 +1,4 @@
 class Groups::ShowView < ApplicationView
-  # include ActionView::Helpers::NumberHelper
-  # include Phlex::Rails::Helpers::TurboStream
-  # include Phlex::Rails::Helpers::TurboStreamFrom
-  # include Phlex::Rails::Helpers::TurboFrameTag
 
   attr_reader :group, :depth
 
@@ -12,11 +8,20 @@ class Groups::ShowView < ApplicationView
   end
 
   def template
+    page_number = 0
+
     render Common::Heading.new(entity: group)
     render Common::MoneySummary.new(entity: group)
 
-    render Groups::AffiliatedGroups.new(group:)
-    render Groups::People.new(group:)
+    turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}/page=#{page_number}", loading: :lazy) do
+      p(class: 'grey') { 'Fetching People...'  }
+      hr
+    end
+
+    turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}/page=#{page_number}", loading: :lazy) do
+      p(class: 'grey') { 'Fetching Affiliated Groups...'  }
+      hr
+    end
 
     render TransfersTableComponent.new(
     entity: group,
@@ -26,10 +31,8 @@ class Groups::ShowView < ApplicationView
     )
 
     turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do  # <== This is lazy loading a turbo frame
-      p do
-        p { 'Loading More Transfer Records...'}
-        hr
-      end
+      p(class: 'grey') { 'Fetching More Transfer Records...'}
+      hr
     end
   end
 end

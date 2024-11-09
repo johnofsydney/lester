@@ -8,38 +8,40 @@ class Common::MoneySummary < ApplicationView
   end
 
   def template
-    if money_in.present? || money_out.present?
-      div(class: 'margin-above ') do
+    turbo_frame(id: 'money_summary') do
+      if money_in.present? || money_out.present?
+        div(class: 'margin-above ') do
 
-        div(id: 'summary', class: 'graph rounded bg-light mt-3') do
-          h4 do
-            span {title}
-            span { ' ' }
-            span {
-              a(href: "/about", class: 'gentle-link') { '...' }
-            }
+          div(id: 'summary', class: 'graph rounded bg-light mt-3') do
+            h4 do
+              span {title}
+              span { ' ' }
+              span {
+                a(href: "/about", class: 'gentle-link') { '...' }
+              }
+            end
+            if money_in.present? && money_out.present?
+              div(id: 'in-out-totals') do
+                h6 { "To #{entity.name}: #{money_in}" } if money_in
+                h6 { "From #{entity.name}: #{money_out}" } if money_out
+              end
+            end
+
           end
-          if money_in.present? && money_out.present?
-            div(id: 'in-out-totals') do
-              h6 { "To #{entity.name}: #{money_in}" } if money_in
-              h6 { "From #{entity.name}: #{money_out}" } if money_out
+
+          if money_in.present?
+            div(class: 'col') do
+              render Common::MoneyGraphs.new(entity:, giver: false)
             end
           end
-
-        end
-
-        if money_in.present?
-          div(class: 'col') do
-            render Common::MoneyGraphs.new(entity:, giver: false)
+          if money_out.present?
+            div(class: 'col') do
+              render Common::MoneyGraphs.new(entity:, giver: true)
+            end
           end
         end
-        if money_out.present?
-          div(class: 'col') do
-            render Common::MoneyGraphs.new(entity:, giver: true)
-          end
-        end
+
       end
-
     end
   end
 

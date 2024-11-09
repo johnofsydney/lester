@@ -133,3 +133,24 @@ button {
   /* Bootstrap primary color */
   padding-bottom: 5px;
 }
+
+@media (max-width: 1000px) {
+  .mobile-only {
+    /* Add your mobile-specific styles here */
+    background-color: #f8f9fa;
+    /* Example: Light background color */
+    padding: 10px;
+    /* Example: Padding */
+    font-size: 14px;
+    /* Example: Smaller font size */
+  }
+
+  .mobile-display-none {
+    display: none;
+  }
+}
+
+.grey {
+  color: grey;
+  font-style: italic;
+}

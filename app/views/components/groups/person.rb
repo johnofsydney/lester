@@ -10,7 +10,7 @@ class Groups::Person < ApplicationView
   def template
     tr do
       td do
-        span { a(href: "/people/#{person.id}") { person.name } }
+        span { link_for(entity: person) }
         if membership.evidence.present?
           span { '   ' }
           span { a(href: membership.evidence, class: 'gentle-link', target: '_blank') { '...' } }
@@ -33,14 +33,14 @@ class Groups::Person < ApplicationView
             ul(class: 'list-group') do
               memberships.each do |membership|
                 li(class: 'list-group-item') do
-                  a(href: "/groups/#{membership.group.id}") { membership.group.name }
+                  link_for(entity: membership.group)
                   # TODO FIX THIS FOR GROUPS AS MEMBERS
                 end
               end
             end
           end
         else
-          "#{group.memberships.length} members"
+          "#{person.memberships.length} other groups"
         end
       end
     end
@@ -63,9 +63,9 @@ class Groups::Person < ApplicationView
     if position.end_date.present? && position.start_date.present?
       result += " | (#{position.formatted_start_date} - #{position.formatted_end_date})"
     elsif position.start_date.present?
-      result += " | (since #{position.start_date})"
+      result += " | (since #{position.formatted_start_date})"
     elsif position.end_date.present?
-      result += " | (until #{position.end_date})"
+      result += " | (until #{position.formatted_end_date})"
     end
 
     result

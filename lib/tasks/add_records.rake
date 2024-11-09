@@ -10,17 +10,26 @@ namespace :lester do
     # COMPLETE
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-09-18.csv')
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-23.csv') - affiliations mostly for Australian Energy Producers
-    FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-29.csv') # adding more categories
+    # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-29.csv') # adding more categories
 
 
-    # This is a reminder, to add more info on ministries, should also add what the ministry is responsible for (also existing records)
+    # This is a reminder, to add more info on ministries.
     federal_ministries = [
-      'csv_data/ministries_albanese.csv',
+      # 'csv_data/ministries_albanese.csv',
     ]
 
     # using data sourced from wikipedia
     federal_ministries.each do |file|
       FileIngestor.ministries_upload(file)
+    end
+
+    lobbyists = [
+      'csv_data/lobbyists_2024-11-04.csv',
+      'csv_data/lobyyists_2024-11-05.csv',
+    ]
+
+    lobbyists.each do |file|
+      FileIngestor.lobbyists_upload(file)
     end
   end
 

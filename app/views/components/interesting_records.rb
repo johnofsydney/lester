@@ -17,7 +17,18 @@ class InterestingRecords < ApplicationView
         h6(class: 'column-heading text-primary mb-3') { 'Categories' }
         div(class: list_group_options) do
 
-          Group.where(category: true).order(id: :desc).each do |group|
+          Group.where(category: true)
+               .where(name: ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'])
+               .order(:name)
+               .find_each do |group|
+            div(class: 'class: list-group-item list-group-item-action') do
+              a(href: "/groups/#{group.id}") { group.name }
+            end
+          end
+          Group.where(category: true)
+               .where.not(name: ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'])
+               .order(:name)
+               .find_each do |group|
             div(class: 'class: list-group-item list-group-item-action') do
               a(href: "/groups/#{group.id}") { group.name }
             end
