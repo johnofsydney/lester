@@ -276,12 +276,9 @@ class FileIngestor
 
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        group = RecordGroup.call(row['company'])
+
         person = RecordPerson.call(row['person'])
-        title = if row['title'].present?
-          CapitalizeNames.capitalize(row['title'].strip)
-                         .gsub(/\bCEO\b/i) { |word| word.titleize }
-        end
+
 
         evidence = 'https://lobbyists.ag.gov.au/register'
 
@@ -291,6 +288,12 @@ class FileIngestor
           group: lobbyists,
           evidence: evidence
         )
+
+        group = RecordGroup.call(row['company']) if row['company'].present?
+        title = if row['title'].present?
+          CapitalizeNames.capitalize(row['title'].strip)
+                         .gsub(/\bCEO\b/i) { |word| word.titleize }
+        end
 
         next if group.nil?
         # Create a membership for the named person in the named group
