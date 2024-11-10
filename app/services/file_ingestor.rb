@@ -285,6 +285,14 @@ class FileIngestor
 
         evidence = 'https://lobbyists.ag.gov.au/register'
 
+        # Create a membership for the named person and group inthe lobbyists category
+        membership = Membership.find_or_create_by(
+          member: person,
+          group: lobbyists,
+          evidence: evidence
+        )
+
+        next if group.nil?
         # Create a membership for the named person in the named group
         # the membership may not exist, if so, we need to create it
         membership = Membership.find_or_create_by(
@@ -299,14 +307,11 @@ class FileIngestor
 
         print "m"
 
-        # Create a membership for the named person and group inthe lobbyists category
-        membership = Membership.find_or_create_by(
-          member: person,
-          group: lobbyists
-        )
+
         membership = Membership.find_or_create_by(
           member: group,
-          group: lobbyists
+          group: lobbyists,
+          evidence: evidence
         )
 
         print "l"
