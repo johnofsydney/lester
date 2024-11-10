@@ -50,6 +50,8 @@ class MapGroupNames
     return 'Origin Energy' if name.match?(/Origin Energy/i)
     return 'Woodside Energy Group Ltd' if name.match?(/Woodside Energy/i)
     return 'Pricewaterhousecoopers' if name.match?(/Pricewaterhousecoopers/i)
+    return 'CMAX Advisory' if name.match?(/CMAX (Advisory|Communications)/i)
+    return 'Corporate Affairs Australia Pty Ltd' if name.match?(/Corporate Affairs (Australia Pty Ltd|Advisory)/i)
 
 
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers
