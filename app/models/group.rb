@@ -3,6 +3,8 @@ class Group < ApplicationRecord
   include PgSearch::Model
   multisearchable against: [:name]
 
+  MAJOR_POLITICAL_CATEGORIES = ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens']
+
 
   NAMES = OpenStruct.new(
             coalition: OpenStruct.new(
@@ -80,16 +82,11 @@ class Group < ApplicationRecord
 
   # scopes
   scope :major_political_categories, -> do
-    where(category: true).where(name: ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'])
-                         .order(:name)
+    where(category: true).where(name: MAJOR_POLITICAL_CATEGORIES).order(:name)
   end
-  scope :non_major_political_categories, -> do
-    where(category: true).where.not(name: ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'])
-                               .order(:name)
+  scope :other_categories, -> do
+    where(category: true).where.not(name: MAJOR_POLITICAL_CATEGORIES).order(:name)
   end
-
-
-
 
   def nodes(include_looser_nodes: false)
     unless include_looser_nodes # TODO work on includes / bullet

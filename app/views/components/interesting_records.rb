@@ -27,7 +27,7 @@ class InterestingRecords < ApplicationView
         div(class: 'col-md-4') do
           h6(class: 'column-heading text-primary mb-3') { 'Categories' }
           div(class: list_group_options) do
-            Group.non_major_political_categories.find_each do |group|
+            Group.other_categories.find_each do |group|
               div(class: 'class: list-group-item list-group-item-action') do
                 a(href: "/groups/#{group.id}") { group.name }
               end
