@@ -12,31 +12,30 @@ class InterestingRecords < ApplicationView
     div(id: 'suggestions-container') do
       h3(class: 'text-secondary') { 'Suggestions' }
       div(class: 'row mt-4') do
-
-      div(class: 'col-md-4') do
-        h6(class: 'column-heading text-primary mb-3') { 'Categories' }
-        div(class: list_group_options) do
-
-          Group.where(category: true)
-               .where(name: ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'])
-               .order(:name)
-               .find_each do |group|
-            div(class: 'class: list-group-item list-group-item-action') do
-              a(href: "/groups/#{group.id}") { group.name }
-            end
-          end
-          Group.where(category: true)
-               .where.not(name: ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'])
-               .order(:name)
-               .find_each do |group|
-            div(class: 'class: list-group-item list-group-item-action') do
-              a(href: "/groups/#{group.id}") { group.name }
-            end
+        Group.major_political_categories.find_each do |group|
+          div(class: 'col') do
+            a(
+              href: "/groups/#{group.id}",
+              class: 'btn w-100',
+              style: "#{color_styles(group)}; height: 100%",
+              target: :_blank
+            ) { group.name }
           end
         end
       end
+      div(class: 'row mt-4') do
         div(class: 'col-md-4') do
-          h6(class: 'column-heading text-primary') { 'People' }
+          h6(class: 'column-heading text-primary mb-3') { 'Categories' }
+          div(class: list_group_options) do
+            Group.other_categories.find_each do |group|
+              div(class: 'class: list-group-item list-group-item-action') do
+                a(href: "/groups/#{group.id}") { group.name }
+              end
+            end
+          end
+        end
+        div(class: 'col-md-4') do
+          h6(class: 'column-heading text-primary mb-3') { 'People' }
           div(class: list_group_options) do
 
             @records.people.each do |record|
@@ -47,9 +46,8 @@ class InterestingRecords < ApplicationView
           end
         end
         div(class: 'col-md-4') do
-          h6(class: 'column-heading text-primary') { 'Groups' }
+          h6(class: 'column-heading text-primary mb-3') { 'Groups' }
           div(class: list_group_options) do
-
             @records.groups.each do |record|
               div(class: 'class: list-group-item list-group-item-action') do
                 a(href: "/groups/#{record.id}") { text_for_group(record) }

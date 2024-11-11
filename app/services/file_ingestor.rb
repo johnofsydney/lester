@@ -276,15 +276,26 @@ class FileIngestor
 
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        group = RecordGroup.call(row['company'])
+
         person = RecordPerson.call(row['person'])
+
+
+        evidence = 'https://lobbyists.ag.gov.au/register'
+
+        # Create a membership for the named person and group inthe lobbyists category
+        membership = Membership.find_or_create_by(
+          member: person,
+          group: lobbyists,
+          evidence: evidence
+        )
+
+        group = RecordGroup.call(row['company']) if row['company'].present?
         title = if row['title'].present?
           CapitalizeNames.capitalize(row['title'].strip)
                          .gsub(/\bCEO\b/i) { |word| word.titleize }
         end
 
-        evidence = 'https://lobbyists.ag.gov.au/register'
-
+        next if group.nil?
         # Create a membership for the named person in the named group
         # the membership may not exist, if so, we need to create it
         membership = Membership.find_or_create_by(
@@ -299,14 +310,11 @@ class FileIngestor
 
         print "m"
 
-        # Create a membership for the named person and group inthe lobbyists category
-        membership = Membership.find_or_create_by(
-          member: person,
-          group: lobbyists
-        )
+
         membership = Membership.find_or_create_by(
           member: group,
-          group: lobbyists
+          group: lobbyists,
+          evidence: evidence
         )
 
         print "l"

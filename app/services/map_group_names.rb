@@ -50,6 +50,11 @@ class MapGroupNames
     return 'Origin Energy' if name.match?(/Origin Energy/i)
     return 'Woodside Energy Group Ltd' if name.match?(/Woodside Energy/i)
     return 'Pricewaterhousecoopers' if name.match?(/Pricewaterhousecoopers/i)
+    return 'CMAX Advisory' if name.match?(/CMAX (Advisory|Communications)/i)
+    return 'Corporate Affairs Australia Pty Ltd' if name.match?(/Corporate Affairs (Australia Pty Ltd|Advisory)/i)
+    return 'Hawker Britton Pty Ltd' if name.match?(/Hawker Britton.+Pty Ltd/i)
+    return 'Pacific Partners Strategic Advocacy Pty Ltd' if name.match?(/Pacific.+Strategic Advocacy Pty Ltd/i)
+    return 'Probity International Pty Ltd' if name.match?(/Probity International Pty.+Ltd/i)
 
 
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers
@@ -177,7 +182,7 @@ class MapGroupNames
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b|\bIan\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
     regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b|\bOil\b/i
-    regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|\bTo\b|\bYes\b/i
+    regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|\bTo\b|\bYes\b|\bRed\b|\bOne\b|\bSky\b/i
     regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b|\bGum Tree\b|\bYe Family\b/i
     regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b/i
     regex_for_titleize_7 = /\bVictoria\b|\bQueensland\b|\bTasmania\b/i
