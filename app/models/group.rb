@@ -78,6 +78,19 @@ class Group < ApplicationRecord
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
+  # scopes
+  scope :major_political_categories, -> do
+    where(category: true).where(name: ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'])
+                         .order(:name)
+  end
+  scope :non_major_political_categories, -> do
+    where(category: true).where.not(name: ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'])
+                               .order(:name)
+  end
+
+
+
+
   def nodes(include_looser_nodes: false)
     unless include_looser_nodes # TODO work on includes / bullet
       return people + groups
