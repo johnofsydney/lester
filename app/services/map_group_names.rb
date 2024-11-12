@@ -60,13 +60,8 @@ class MapGroupNames
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers
     return 'Australian Energy Producers' if name.match?(/\bAPPEA\b|Australian Energy Producers/i)
 
-    # Independents
-
-    # return 'Kim for Canberra' if name.match?(/Kim for Canberra/i)
-    # return 'Helen Haines Campaign' if name.match?(/Helen Haines/i)
 
     return 'Liberal Democratic Party' if name.match?(/Liberal.+Democrat/i)
-
     return 'Shooters, Fishers and Farmers Party' if name.match?(/Shooters, Fishers and Farmers/i)
     return 'Citizens Party' if name.match?(/(Citizens Party|CEC)/i)
     return 'Sustainable Australia Party' if name.match?(/Sustainable Australia/i)
