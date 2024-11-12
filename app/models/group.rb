@@ -151,6 +151,9 @@ class Group < ApplicationRecord
   def merge_into(replacement_group)
     # TODO - also update all the transfers
     Membership.where(member: self).update_all(member_id: replacement_group.id)
+    Membership.where(group: self).update_all(group_id: replacement_group.id)
+    Transfer.where(giver: self).update_all(giver_id: replacement_group.id)
+    Transfer.where(taker: self).update_all(taker_id: replacement_group.id)
 
     self.destroy
   end

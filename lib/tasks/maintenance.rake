@@ -11,11 +11,15 @@ namespace :lester do
   end
 
   desc "Remove Duplicates"
-  task remove_duplicates: :environment do
+  task merge_duplicates: :environment do
     ## MERGING EXAMPLE ##
     # ey = Group.find_by(name: 'EY')
     # ernst_and_young = Group.find_by(name: 'Ernst & Young')
     # ey.merge_into(ernst_and_young)
+
+    ralph_party = Group.find_by(name: 'United Australia Federal')
+    clive_party = Group.find_by(name: 'United Australia Party')
+    ralph_party.merge_into(clive_party)
   end
 
   desc "Add time range for party memberships"
