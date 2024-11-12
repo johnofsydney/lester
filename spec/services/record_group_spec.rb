@@ -187,16 +187,6 @@ RSpec.describe RecordGroup, type: :service do
       'Australian Conservatives (Qld)'  => 'Australian Conservatives',
       'Australian Conservatives (Vic)'  => 'Australian Conservatives',
       'Australian Conservatives ACP'  => 'Australian Conservatives',
-      # Independents
-      # 'David Pocock' => 'David Pocock Campaign',
-      # 'David Pocock - Davi' => 'David Pocock Campaign',
-      # 'David Pocock Campaign' => 'David Pocock Campaign',
-      # 'David Pocock Pty Ltd' => 'David Pocock Campaign',
-      # 'David Pocock/DAVI' => 'David Pocock Campaign',
-      # 'Zali Steggall' => 'Zali Steggall Campaign',
-      # 'Zali Steggall Campaign' => 'Zali Steggall Campaign',
-      # 'Kim for Canberra' => 'Kim for Canberra',
-      # 'Helen Haines' => 'Helen Haines Campaign',
       # Other
       'climate 200 Pty Ltd' => 'Climate 200 Pty Ltd',
       'climate 200 pty ltd' => 'Climate 200 Pty Ltd',
@@ -224,6 +214,8 @@ RSpec.describe RecordGroup, type: :service do
       'GetUp Ltd' => 'Get Up Limited',
       'Alpha Diversification Pty Ltd' => 'Alpha Diversification Pty Ltd',
       'Actus Services Pty Ltd' => 'Actus Services Pty Ltd',
+      'United Australia Party' => 'United Australia Party',
+      'United Australia Federal' => 'United Australia Party',
     }
   end
 
