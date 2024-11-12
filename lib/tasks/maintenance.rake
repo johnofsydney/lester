@@ -19,7 +19,9 @@ namespace :lester do
 
     ralph_party = Group.find_by(name: 'United Australia Federal')
     clive_party = Group.find_by(name: 'United Australia Party')
+    print "Merging #{ralph_party.name} into #{clive_party.name}... "
     ralph_party.merge_into(clive_party)
+    puts "done."
   end
 
   desc "Add time range for party memberships"
