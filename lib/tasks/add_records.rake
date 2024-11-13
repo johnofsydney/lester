@@ -4,6 +4,7 @@ namespace :lester do
     # From a file created and maintained by me, whenever noteworthy people or groups appear in the news
     # COMPLETE
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-09-13.csv')
+    FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-13.csv')
 
 
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
@@ -20,7 +21,7 @@ namespace :lester do
 
     # using data sourced from wikipedia
     federal_ministries.each do |file|
-      FileIngestor.ministries_upload(file)
+      # FileIngestor.ministries_upload(file)
     end
 
     lobbyists = [
@@ -29,7 +30,7 @@ namespace :lester do
     ]
 
     lobbyists.each do |file|
-      FileIngestor.lobbyists_upload(file)
+      # FileIngestor.lobbyists_upload(file)
     end
   end
 
