@@ -244,7 +244,7 @@ class FileIngestor
 
         title = if row['title'].present?
           CapitalizeNames.capitalize(row['title'].strip)
-                         .gsub(/\bCEO\b/i) { |word| word.capitalize }
+                         .gsub(/\bCEO\b/i) { |word| word.upcase }
         end
 
         evidence = row['evidence'].strip if row['evidence'].present?
