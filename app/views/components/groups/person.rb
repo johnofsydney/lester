@@ -61,7 +61,11 @@ class Groups::Person < ApplicationView
     return '' unless result
 
     if position.end_date.present? && position.start_date.present?
-      result += " | (#{position.formatted_start_date} - #{position.formatted_end_date})"
+      if position.end_date == position.start_date
+        result += " | (#{position.formatted_start_date})"
+      else
+        result += " | (#{position.formatted_start_date} - #{position.formatted_end_date})"
+      end
     elsif position.start_date.present?
       result += " | (since #{position.formatted_start_date})"
     elsif position.end_date.present?
