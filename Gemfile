@@ -85,3 +85,6 @@ gem 'capitalize-names'
 
 gem "chartkick"
 gem "groupdate"
+
+gem 'vite_rails'
+gem 'inertia_rails'
