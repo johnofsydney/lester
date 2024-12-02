@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Join The Dots...</title>
+    <title inertia>Join The Dots...</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -20,7 +20,10 @@
 
       gtag('config', 'G-KRT9EZS95V');
     </script>
+    <%= vite_react_refresh_tag %>
     <%= vite_client_tag %>
+    <%= vite_javascript_tag "inertia" %>
+    <%= inertia_ssr_head %>
     <%= vite_javascript_tag 'application' %>
     <!--
       If using a TypeScript entrypoint file:

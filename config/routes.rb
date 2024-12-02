@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'inertia-example', to: 'inertia_example#index'
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -8,26 +9,30 @@ Rails.application.routes.draw do
   get 'groups/affiliated_groups/:group_id/page=:page' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
 
+  get 'people/:id/network_graph' => 'inertia#network_graph'
+
   get 'search' => 'search#index'
   get 'linker' => 'search#linker'
   get '/home/suggestions' => 'home#suggestions'
   get '/home/suggestion_received' => 'home#suggestion_received'
   post '/home/post_suggestions' => 'home#post_suggestions'
 
-  get '/imports/' => 'imports#index'
-  post '/imports/annual_donor_upload' => 'imports#annual_donor_upload'
-  post '/imports/federal_parliamentarians_upload' => 'imports#federal_parliamentarians_upload'
-  post '/imports/people_upload' => 'imports#people_upload'
-  post '/imports/groups_upload' => 'imports#groups_upload'
+  # get '/imports/' => 'imports#index'
+  # post '/imports/annual_donor_upload' => 'imports#annual_donor_upload'
+  # post '/imports/federal_parliamentarians_upload' => 'imports#federal_parliamentarians_upload'
+  # post '/imports/people_upload' => 'imports#people_upload'
+  # post '/imports/groups_upload' => 'imports#groups_upload'
 
-  resources :transactions do
-    collection do
-      get :summary
-    end
-  end
+  # resources :transactions do
+  #   collection do
+  #     get :summary
+  #   end
+  # end
   resources :transfers
   resources :groups
   resources :people
+
+  # todo: remove these
   resources :lazy_load_groups
   resources :lazy_load_people
   resources :lazy_load_transfers
