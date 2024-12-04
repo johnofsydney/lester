@@ -1,8 +1,9 @@
 class InertiaController < ApplicationController
+
+  layout -> { 'widescreen' }
   def network_graph
     @person = Person.find(params[:id])
-
-    p "network_graph"
+    @nodes = @person.consolidated_descendents(depth: 2)
 
     render inertia: 'PersonNetworkGraph', props: {
       name: @person.name,
@@ -16,48 +17,49 @@ class InertiaController < ApplicationController
   end
 
   def person_nodes
-    @person.consolidated_descendents(depth: 2)
-           .map { |node| configure_node(node) }
+    @nodes.map { |node| configure_node(node) }
   end
 
   def ids_people_descendents
-    @person.consolidated_descendents(depth: 2)
-           .filter{|n| n.klass == 'Person' }
-           .map{|n| n.id }
+    @nodes.filter{|n| n.klass == 'Person' }
+          .map{|n| n.id }
   end
 
   def ids_group_descendents
-    @person.consolidated_descendents(depth: 2)
-           .filter{|n| n.klass == 'Group' }
-           .map{|n| n.id }
+    @nodes.filter{|n| n.klass == 'Group' }
+          .map{|n| n.id }
   end
 
   def person_edges
-    # @person.nodes.map { |node| {from: -@person.id, to: node.id} }
+    all_memberships_of_descendents.map { |membership| configure_edge(membership) }
+  end
 
+  def all_memberships_of_descendents
     Membership.where(member_id: ids_people_descendents, member_type: 'Person')
               .or(Membership.where(member_id: ids_group_descendents, member_type: 'Group'))
               .or(Membership.where(group_id: ids_group_descendents))
-              .map { |membership| configure_edge(membership) }
   end
 
   def configure_edge(membership)
-    member_id = membership.member_type == "Person" ? -membership.member_id : membership.member_id
+    member_id = "#{membership.member_type.downcase}_#{membership.member_id}"
+    group_id = "group_#{membership.group_id}"
     {
-      from: member_id,
-      to: membership.group_id
+      from: group_id,
+      to: member_id
     }
   end
 
   def configure_node(node)
-    id = node.klass == "Person" ? -node.id : node.id
+    id = "#{node.klass.downcase}_#{node.id}"
 
     {
       id: id,
       label: node.name,
+      depth: node.depth,
+      shape: node.shape,
+      color: node.color,
+      mass: node.mass,
+      size: node.size
     }
   end
 end
-
-
-# Membership.where(member_id: 875, member_type: 'Person').or(Membership.where(member_id: 228, member_type: 'Group')).or(Membership.where(group_id: 228))

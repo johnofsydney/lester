@@ -154,3 +154,12 @@ button {
   color: grey;
   font-style: italic;
 }
+
+.wide-container {
+  max-width: 95vw;
+  margin: 0 auto;
+}
+
+.center {
+  text-align: center;
+}
