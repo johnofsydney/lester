@@ -10,12 +10,13 @@ Rails.application.routes.draw do
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
 
   get 'people/:id/network_graph' => 'inertia#network_graph'
+  get 'groups/:id/network_graph' => 'inertia#network_graph_group'
 
   get 'search' => 'search#index'
-  get 'linker' => 'search#linker'
+  # get 'linker' => 'search#linker'
   get '/home/suggestions' => 'home#suggestions'
-  get '/home/suggestion_received' => 'home#suggestion_received'
-  post '/home/post_suggestions' => 'home#post_suggestions'
+  # get '/home/suggestion_received' => 'home#suggestion_received'
+  # post '/home/post_suggestions' => 'home#post_suggestions'
 
   # get '/imports/' => 'imports#index'
   # post '/imports/annual_donor_upload' => 'imports#annual_donor_upload'

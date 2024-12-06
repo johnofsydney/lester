@@ -20,6 +20,7 @@ export default function PersonNetworkGraph({ name, active_nodes, person_edges })
         shape: node.shape,
         mass: node.mass,
         size: node.size,
+        url: node.url
       }
     )
   })
@@ -55,16 +56,27 @@ export default function PersonNetworkGraph({ name, active_nodes, person_edges })
     },
   }
 
+  const events = {
+    selectNode: function (event) {
+      const { nodes } = event;
+      if (nodes.length === 1) {
+        const node = graph.nodes.find(n => n.id === nodes[0]);
+        if (node && node.url) {
+          window.open(node.url, '_blank');
+        }
+      }
+    }
+  }
+
   return (
     <>
       <div id="network">
         <h3 class="center">Network Diagram centred on {name}</h3>
-        {/* <p>{active_nodes}</p>
-        <p>{person_edges}</p> */}
 
         <Graph
           graph={graph}
           options={options}
+          events={events}
           style={{ height: '90vh', width: '100%' }}
         />
       </div>

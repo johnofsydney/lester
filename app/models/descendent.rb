@@ -15,7 +15,7 @@ class Descendent
   end
 
   def shape
-    return 'box' if depth.zero?
+    return 'circle' if depth.zero?
     return 'dot' if member_of_large_group?
 
     klass == 'Person' ? 'dot' : 'box'
@@ -37,9 +37,7 @@ class Descendent
     when 5
       'rgba(180,180,180,1)'
     when 6
-
     end
-
   end
 
   def mass
@@ -60,7 +58,14 @@ class Descendent
   end
 
   def size
+    return 35 if depth.zero?
     return 5 if klass == 'Person'
+  end
+
+  def url
+    klass_name_plural = klass.to_s.pluralize.downcase
+
+    "/#{klass_name_plural}/#{id}"
   end
 
   private

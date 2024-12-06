@@ -3,10 +3,31 @@ class InertiaController < ApplicationController
   layout -> { 'widescreen' }
   def network_graph
     @person = Person.find(params[:id])
-    @nodes = @person.consolidated_descendents(depth: 2)
+    @depth = if params[:depth].present?
+              params[:depth].to_i
+            else
+              2
+            end
+    @nodes = @person.consolidated_descendents(depth: @depth)
 
     render inertia: 'PersonNetworkGraph', props: {
       name: @person.name,
+      active_nodes: active_nodes.to_json,
+      person_edges: person_edges.to_json
+    }
+  end
+
+  def network_graph_group
+    @group = Group.find(params[:id])
+    @depth = if params[:depth].present?
+              params[:depth].to_i
+            else
+              2
+            end
+    @nodes = @group.consolidated_descendents(depth: @depth)
+
+    render inertia: 'PersonNetworkGraph', props: {
+      name: @group.name,
       active_nodes: active_nodes.to_json,
       person_edges: person_edges.to_json
     }
@@ -59,7 +80,8 @@ class InertiaController < ApplicationController
       shape: node.shape,
       color: node.color,
       mass: node.mass,
-      size: node.size
+      size: node.size,
+      url: node.url
     }
   end
 end
