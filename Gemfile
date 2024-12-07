@@ -88,3 +88,7 @@ gem "groupdate"
 
 gem 'vite_rails'
 gem 'inertia_rails'
+
+# TODO:
+# add bootstrap gem?
+# https://dev.to/chmich/setup-bootstrap-on-rails-7-and-vite-g5a

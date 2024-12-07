@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get 'groups/affiliated_groups/:group_id/page=:page' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
 
-  get 'people/:id/network_graph' => 'inertia#network_graph'
+  get 'people/:id/network_graph' => 'inertia#network_graph_person'
   get 'groups/:id/network_graph' => 'inertia#network_graph_group'
 
   get 'search' => 'search#index'

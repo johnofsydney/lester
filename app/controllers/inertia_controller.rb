@@ -1,44 +1,41 @@
 class InertiaController < ApplicationController
 
   layout -> { 'widescreen' }
-  def network_graph
-    @person = Person.find(params[:id])
-    @depth = if params[:depth].present?
-              params[:depth].to_i
-            else
-              2
-            end
-    @nodes = @person.consolidated_descendents(depth: @depth)
 
-    render inertia: 'PersonNetworkGraph', props: {
+  # TODO: Where are affiliated groups???
+  # TODO: Transfers need to be added to the network graph
+
+  def network_graph_person
+    @action = 'network_graph_person'
+    @person = Person.find(params[:id])
+    @depth = define_depth
+    @toast_note = define_toast_note
+    session[:depth] = @depth
+    @nodes = @person.consolidated_descendents(depth: @depth)
+    @active_nodes = @nodes.map { |node| configure_node(node) }
+    @edges = define_edges
+
+    render inertia: 'NetworkGraph', props: {
       name: @person.name,
-      active_nodes: active_nodes.to_json,
-      person_edges: person_edges.to_json
+      json_nodes: @active_nodes.to_json,
+      json_edges: @edges.to_json
     }
   end
 
   def network_graph_group
+    @action = 'network_graph_group'
     @group = Group.find(params[:id])
-    @depth = if params[:depth].present?
-              params[:depth].to_i
-            else
-              2
-            end
+    @depth = define_depth
+    @toast_note = define_toast_note
+    session[:depth] = @depth
     @nodes = @group.consolidated_descendents(depth: @depth)
+    @edges = define_edges
 
-    render inertia: 'PersonNetworkGraph', props: {
+    render inertia: 'NetworkGraph', props: {
       name: @group.name,
-      active_nodes: active_nodes.to_json,
-      person_edges: person_edges.to_json
+      json_nodes: @nodes.map { |node| configure_node(node) }.to_json,
+      json_edges: @edges.to_json
     }
-  end
-
-  def active_nodes
-    person_nodes # + person
-  end
-
-  def person_nodes
-    @nodes.map { |node| configure_node(node) }
   end
 
   def ids_people_descendents
@@ -51,7 +48,7 @@ class InertiaController < ApplicationController
           .map{|n| n.id }
   end
 
-  def person_edges
+  def define_edges
     all_memberships_of_descendents.map { |membership| configure_edge(membership) }
   end
 
@@ -64,6 +61,7 @@ class InertiaController < ApplicationController
   def configure_edge(membership)
     member_id = "#{membership.member_type.downcase}_#{membership.member_id}"
     group_id = "group_#{membership.group_id}"
+
     {
       from: group_id,
       to: member_id
@@ -83,5 +81,26 @@ class InertiaController < ApplicationController
       size: node.size,
       url: node.url
     }
+  end
+
+  def define_toast_note
+    return "Using your setting of depth: #{params[:depth]}. Increase the depth of the network to show more nodes." if depth_in_params?
+    return "Using stored setting of depth: #{session[:depth]}. Increase the depth of the network to show more nodes." if depth_in_session?
+
+    "Using default setting of depth: 2. Increase the depth of the network to show more nodes. Larger value will take longer to calculate."
+  end
+  def define_depth
+    return params[:depth].to_i if depth_in_params?
+    return session[:depth].to_i if depth_in_session?
+
+    2
+  end
+
+  def depth_in_params?
+    params[:depth].present? && params[:depth].to_i > 0
+  end
+
+  def depth_in_session?
+    session[:depth].present? && session[:depth].to_i > 0
   end
 end

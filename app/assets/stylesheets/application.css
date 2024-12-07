@@ -120,10 +120,11 @@ button {
 
 #searchbox-container {
   margin-top: 40px;
+  margin-bottom: 40px;
 }
 
 #suggestions-container {
-  margin-top: 40px;
+  /* margin-top: 40px; */
 }
 
 .column-heading {
@@ -162,4 +163,8 @@ button {
 
 .center {
   text-align: center;
+}
+
+.toast.solid-background {
+  background-color: whitesmoke !important;
 }

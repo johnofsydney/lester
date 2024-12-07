@@ -1,17 +1,8 @@
-// import { Head } from '@inertiajs/react'
 import React from 'react'
-import { useState } from 'react'
 import Graph from 'react-vis-network-graph'
 
-// import inertiaSvg from '/assets/inertia.svg'
-// import reactSvg from '/assets/react.svg'
-// import viteRubySvg from '/assets/vite_ruby.svg'
-
-import cs from './InertiaExample.module.css'
-import { shape } from 'prop-types'
-
-export default function PersonNetworkGraph({ name, active_nodes, person_edges }) {
-  const parsed_nodes = JSON.parse(active_nodes).map((node) => {
+export default function NetworkGraph({ name, json_nodes, json_edges }) {
+  const nodes = JSON.parse(json_nodes).map((node) => {
     return (
       {
         id: node.id,
@@ -25,16 +16,17 @@ export default function PersonNetworkGraph({ name, active_nodes, person_edges })
     )
   })
 
-  const parsed_edges = JSON.parse(person_edges).map((edge) => {
+  const edges = JSON.parse(json_edges).map((edge) => {
     return (
       { from: edge.from, to: edge.to }
     )
   })
 
   const graph = {
-    nodes: parsed_nodes,
-    edges: parsed_edges,
+    nodes: nodes,
+    edges: edges,
   }
+
   const options = {
     interaction: {navigationButtons: true},
     nodes: {
@@ -70,14 +62,14 @@ export default function PersonNetworkGraph({ name, active_nodes, person_edges })
 
   return (
     <>
-      <div id="network">
-        <h3 class="center">Network Diagram centred on {name}</h3>
+      <div  className="bottom-0" id="network">
+        <h3 className="center">Network Diagram centred on {name}</h3>
 
         <Graph
           graph={graph}
           options={options}
           events={events}
-          style={{ height: '90vh', width: '100%' }}
+          style={{ height: '95vh', width: '100%' }}
         />
       </div>
     </>
