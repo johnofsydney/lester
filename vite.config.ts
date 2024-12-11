@@ -8,15 +8,7 @@ export default defineConfig({
     global: 'window', // Had to add this manually
   },
   plugins: [
-    inject({   // => that should be first under plugins array
-      $: 'jquery',
-      jQuery: 'jquery',
-      }),
     react(),
     RubyPlugin()
   ],
-  resolve: {
-    alias: {
-    },
-  },
 })
