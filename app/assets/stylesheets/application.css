@@ -168,3 +168,7 @@ button {
 .toast.solid-background {
   background-color: whitesmoke !important;
 }
+
+.vis-network {
+  border: 1px solid #d6d6d6;
+}
