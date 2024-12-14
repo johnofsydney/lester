@@ -9,7 +9,7 @@ class InterestingRecords < ApplicationView
 
   def template
     list_group_options = "list-group mb-4"
-    div(id: 'suggestions-container') do
+    div(class: 'suggestions-container') do
       h3(class: 'text-secondary') { 'Suggestions' }
       div(class: 'row mt-4') do
         Group.major_political_categories.find_each do |group|

@@ -7,14 +7,13 @@
     <%= text_field_tag :query, '', autofocus: true %>
     <%= submit_tag 'Search' %>
   <% end %>
-
-  <% if @results.present? %>
-    <%= render(SearchResults.new(results: @results)) %>
-  <% end %>
-
-  <% if @results.empty? && @records.present? %>
-    <%= render(InterestingRecords.new(records: @records)) %>
-  <% end %>
-
 </div>
+
+<% if @results.present? %>
+  <%= render(SearchResults.new(results: @results)) %>
+<% end %>
+
+<% if @results.empty? && @records.present? %>
+  <%= render(InterestingRecords.new(records: @records)) %>
+<% end %>
 
