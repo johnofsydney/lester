@@ -54,5 +54,3 @@ class MenuComponent < ApplicationView
     end
   end
 end
-
-

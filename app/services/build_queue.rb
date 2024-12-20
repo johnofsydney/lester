@@ -15,10 +15,20 @@ class BuildQueue
   def call
     return [] if (queue.empty? || queue.nil?)
 
-    queue.map do |node|
-      node.nodes.filter { |next_node| can_add_to_queue?(node, next_node) }
+    queue.map do |queue_node|
+      queue_node.nodes.filter { |next_node| can_add_to_queue?(queue_node, next_node) }
     end.flatten.uniq - visited_nodes
   end
+
+  def with_parents
+    return [] if (queue.empty? || queue.nil?)
+
+    queue.map do |queue_node|
+      queue_node.nodes.filter { |next_node| can_add_to_queue?(queue_node, next_node) }
+                      .map { |next_node| {parent: queue_node, child: next_node} }
+    end.flatten.uniq
+  end
+
 
   private
 

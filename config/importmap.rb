@@ -1,4 +1,5 @@
 # Pin npm packages by running ./bin/importmap
+# STILL USED BY PHLEX LAYOUTS FOR NOW!!
 
 pin "application", preload: true
 pin "@hotwired/turbo-rails", to: "turbo.min.js", preload: true
