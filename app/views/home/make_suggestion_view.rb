@@ -17,28 +17,6 @@ class Home::MakeSuggestionView < ApplicationView
         plain 'Contact us by DM at Bluesky: '
         a(href: 'https://bsky.app/profile/jointhedots.au') { 'jointhedots.au' }
       end
-
-      # form(action: '/home/post_suggestions', enctype: "multipart/form-data", method: 'post') do
-      #   div(class: "form-group") do
-      #     label(for: "headline") { "Headline" }
-      #     input(class: "form-control", type: "text", autofocus: true, name: "headline")
-      #   end
-      #   div(class: "form-group") do
-      #     label(for: "description") { "Description" }
-      #     textarea(class: "form-control", name: "description")
-      #   end
-      #   div(class: "form-group") do
-      #     label(for: "evidence") { "Evidence" }
-      #     input(class: "form-control", type: "text", name: "evidence")
-      #   end
-      #   div(class: "form-group") do
-      #     label(for: "suggested_by") { "Your Email (Optional)" }
-      #     input(class: "form-control", type: "text", name: "suggested_by")
-      #   end
-
-
-      #   button(class: "btn btn-primary margin-above", type: "submit") { "Submit" }
-      # end
     end
   end
 end

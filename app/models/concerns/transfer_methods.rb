@@ -54,7 +54,7 @@ module TransferMethods
           parent = with_parents.filter{ |element| element[:child] == node }.last[:parent]
         end
 
-        results << descendent_struct(node:, depth:, counter:, parent:)
+        results << Descendent.new(node: node, depth: counter, parent:)
       end
 
       return results if depth == 0
@@ -122,10 +122,6 @@ module TransferMethods
         depth:,
         direction:
       )
-    end
-
-    def descendent_struct(node:, depth:, counter:, parent:)
-      Descendent.new(node: node, depth: counter, parent:)
     end
   end
 end
