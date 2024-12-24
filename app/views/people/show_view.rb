@@ -11,7 +11,6 @@ class People::ShowView < ApplicationView
     render Common::Heading.new(entity: person)
     a(href: "/people/#{person.id}/network_graph") { 'Network Graph' }
 
-
     render Common::MoneySummary.new(entity: person)
     render People::Groups.new(groups: person.groups, person: person)
 
@@ -20,7 +19,7 @@ class People::ShowView < ApplicationView
     render TransfersTableComponent.new(
       entity: person,
       transfers: person.consolidated_transfers(depth: 0),
-      heading: "Transfers connected to #{person.name} to a depth of #{depth} degrees of separation",
+      heading: "Directly connected to #{person.name}",
       summarise_for: Group.summarise_for
     )
 

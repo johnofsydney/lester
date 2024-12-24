@@ -37,7 +37,7 @@ class Home::IndexView < ApplicationView
       p { "It's important to note that everything on our website is backed by publicly available information. We do not conduct any original research; rather, we aggregate, format, and arrange the data to reveal underlying patterns and connections. Join The Dots is committed to transparency, accountability and ensuring access to information." }
     end
     p do
-      a(href: 'https://twitter.com/jointhedots_au/') { '@jointhedots_au' }
+      a(href: 'https://bsky.app/profile/jointhedots.au') { 'jointhedots.au on Bluesky' }
     end
   end
 end

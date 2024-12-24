@@ -13,7 +13,6 @@ class Groups::ShowView < ApplicationView
     render Common::Heading.new(entity: group)
     a(href: "/groups/#{group.id}/network_graph") { 'Network Graph' }
 
-
     render Common::MoneySummary.new(entity: group)
 
     turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}/page=#{page_number}", loading: :lazy) do
