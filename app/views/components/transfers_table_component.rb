@@ -50,7 +50,7 @@ class TransfersTableComponent < ApplicationView
   def make_table(transfers)
     h4 { 'Transfers' }
     p { "#{heading} (#{transfers.count} records)" }
-    table(class: 'table table-striped responsive-table') do
+    table(class: 'table responsive-table') do
       tr do
         th { 'ID' }
         th { 'Amount' }
@@ -62,25 +62,25 @@ class TransfersTableComponent < ApplicationView
       end
 
       transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
-        tr(style: row_style(transfer)) do
-          td do
+        tr do
+          td(style: row_style(transfer)) do
             if transfer.id
               link_for(entity: transfer, link_text: transfer.id, klass: 'Transfer')
             else
               ''
             end
           end
-          td { number_to_currency(transfer.amount.to_s, precision: 0) }
-          td { transfer.effective_date.year.to_s }
+          td(style: row_style(transfer)) { number_to_currency(transfer.amount.to_s, precision: 0) }
+          td(style: row_style(transfer)) { transfer.effective_date.year.to_s }
           if transfer.giver.id
-            td { link_for(entity: transfer.giver) if transfer.giver}
+            td(style: row_style(transfer)) { link_for(entity: transfer.giver) if transfer.giver}
           elsif transfer.giver
-            td { transfer.giver.name } # only for summary rows
+            td(style: row_style(transfer)) { transfer.giver.name } # only for summary rows
           end
 
-          td { link_for(entity: transfer.taker) if transfer.taker}
-          td(class: 'mobile-display-none') { transfer.depth }
-          td(class: 'mobile-display-none') { transfer.direction }
+          td(style: row_style(transfer)) { link_for(entity: transfer.taker) if transfer.taker}
+          td(style: row_style(transfer), class: 'mobile-display-none') { transfer.depth }
+          td(style: row_style(transfer), class: 'mobile-display-none') { transfer.direction }
         end
       end
     end

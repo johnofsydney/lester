@@ -36,3 +36,11 @@
 database.bak
 load_latest_database.sh
 backup_latest_database_local.sh
+
+# Vite Ruby
+/public/vite*
+node_modules
+# Vite uses dotenv and suggests to ignore local-only env files. See
+# https://vitejs.dev/guide/env-and-mode.html#env-files
+*.local
+

@@ -41,7 +41,7 @@ module TransferMethods
       consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:)
     end
 
-    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil)
+    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil, with_parents: [] )
       current_depth_memberships = []
       queue.each do |node|
         # next  if node.nodes.count > 4
@@ -50,7 +50,11 @@ module TransferMethods
         visited_nodes << node # store the current node as visited
         current_depth_memberships << node.memberships.to_a
 
-        results << descendent_struct(node:, depth:, counter:)
+        unless with_parents.empty?
+          parent = with_parents.filter{ |element| element[:child] == node }.last[:parent]
+        end
+
+        results << Descendent.new(node: node, depth: counter, parent:)
       end
 
       return results if depth == 0
@@ -62,11 +66,13 @@ module TransferMethods
       visited_membership_ids = visited_membership_ids.flatten.uniq
 
       # get the nodes from the current depth. remove the visited nodes. store the rest in the queue (if there are overlapping memberships)
-      queue = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter, transfer).call
+      service = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter, transfer)
+      queue = service.call
+      with_parents = service.with_parents
 
       depth -= 1
       counter += 1
-      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:, transfer:)
+      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:, transfer:, with_parents:)
     end
 
     def data_time_range
@@ -115,15 +121,6 @@ module TransferMethods
         effective_date: transfer.effective_date,
         depth:,
         direction:
-      )
-    end
-
-    def descendent_struct(node:, depth:, counter:)
-      OpenStruct.new(
-        id: node.id,
-        name: node.name,
-        depth: counter,
-        klass: node.class.to_s,
       )
     end
   end
