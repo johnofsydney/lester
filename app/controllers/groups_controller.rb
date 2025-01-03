@@ -32,16 +32,16 @@ class GroupsController < ApplicationController
   end
 
   def group_people
-    @group = Group.find(params[:group_id])
-    @page = params[:page].to_i
-    @pages = (@group.people.count.to_f / page_size).ceil
+    group = Group.find(params[:group_id])
+    page = params[:page].to_i
+    pages = (group.people.count.to_f / page_size).ceil
 
-    @people = @group.people
-                    .order(:name)
-                    .offset(@page * page_size)
-                    .limit(page_size)
+    people = group.people
+                  .order(:name)
+                  .offset(page * page_size)
+                  .limit(page_size)
 
-    render Groups::PeopleTable.new(people: @people, exclude_group: @group, page: @page, pages: @pages)
+    render Groups::PeopleTable.new(people:, exclude_group: group, page:, pages:)
   end
 
 
