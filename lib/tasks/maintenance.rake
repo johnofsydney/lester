@@ -34,6 +34,14 @@ namespace :lester do
     p "Merging #{jannette_group.name} into #{jannette_lobbying.name}... "
     jannette_group.merge_into(jannette_lobbying)
 
+    # is duplicated in the lobbyists category. fixed memberhip to validate for duplicates
+    lobbyist_category = Group.find_by(name: 'Lobbyists')
+    memberships = Membership.where(group: lobbyist_category, member: jannette_lobbying)
+    if memberships.count > 1
+      memberships.last.destroy
+      p "Deleted duplicate membership for #{jannette_lobbying.name}"
+    end
+
     p "done."
   end
 
