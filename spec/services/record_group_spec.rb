@@ -216,6 +216,10 @@ RSpec.describe RecordGroup, type: :service do
       'Actus Services Pty Ltd' => 'Actus Services Pty Ltd',
       'United Australia Party' => 'United Australia Party',
       'United Australia Federal' => 'United Australia Party',
+      'Registered Clubs Association of NSW (T/As ClubsNSW)' => 'Registered Clubs Association of NSW (T/As ClubsNSW)',
+      'Registered Clubs Association of NSW (t/as Clubsnsw)' => 'Registered Clubs Association of NSW (T/As ClubsNSW)',
+      'Cmax Advisory' => 'CMAX Advisory',
+      'CMAX Advisory' => 'CMAX Advisory',
     }
   end
 
