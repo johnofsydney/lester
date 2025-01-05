@@ -74,6 +74,14 @@ class Group < ApplicationRecord
   end
 
   validates :name, uniqueness: { case_sensitive: false }
+  validates :business_number, uniqueness: { case_sensitive: false }, allow_nil: true
+
+  def business_number=(value)
+    return unless value.present?
+
+    super(value.gsub(/\D/, ''))
+  end
+
 
   # these are a bit weird, hence the transfers method below
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver

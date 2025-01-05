@@ -55,6 +55,8 @@ class MapGroupNames
     return 'Hawker Britton Pty Ltd' if name.match?(/Hawker Britton.+Pty Ltd/i)
     return 'Pacific Partners Strategic Advocacy Pty Ltd' if name.match?(/Pacific.+Strategic Advocacy Pty Ltd/i)
     return 'Probity International Pty Ltd' if name.match?(/Probity International Pty.+Ltd/i)
+    return 'The Pharmacy Guild of Australia' if name.match?(/Pharmacy Guild/i)
+    return 'Your Solutions Compounding Pharmacy' if name.match?(/Your Solutions Compounding Pharmacy/i)
 
 
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers
