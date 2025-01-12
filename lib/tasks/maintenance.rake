@@ -10,6 +10,16 @@ namespace :lester do
     p (groups + people).tally.select { |_, count| count > 1 }.keys
   end
 
+  desc 'Potential People in the Groups Table'
+  task potential_people: :environment do
+    potential_people = Group.order(:name).pluck(:name).filter do |name|
+      service = RecordPersonOrGroup.new(name)
+      service.person_or_group == 'person'
+    end
+
+    p potential_people
+  end
+
   desc "Remove Duplicates"
   task merge_duplicates: :environment do
     ## MERGING EXAMPLE ##
