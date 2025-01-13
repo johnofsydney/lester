@@ -5,7 +5,7 @@ namespace :lester do
     # COMPLETE
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-09-13.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-13.csv')
-    FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-14.csv')
+    # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-14.csv')
 
 
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light

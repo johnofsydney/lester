@@ -58,6 +58,21 @@ class MapGroupNames
     return 'The Pharmacy Guild of Australia' if name.match?(/Pharmacy Guild/i)
     return 'Your Solutions Compounding Pharmacy' if name.match?(/Your Solutions Compounding Pharmacy/i)
 
+    return 'AGL Energy Limited' if name == 'AGL'
+    return 'AIA Australia' if name == 'AIA'
+    return 'AMP Limited' if name == 'AMP'
+    return 'Abbott Medical Australia Pty Ltd' if name == 'Abbot'
+    return 'Abbvie Australia' if name == 'Abbvie'
+    return 'Adecco Australia' if name.match?(/Adecco Australia/)
+    return 'Afterpay Australia Pty Ltd' if name.match?(/Afterpay Pty Ltd/)
+    return 'Agripower Australia Limited' if name.match?(/Agripower/)
+    return 'Amazon Web Services Australia Pty Ltd' if name.match?(/Amazon Web Services Australia|Amazon AWS WEB Services Australia Pty Ltd/i)
+    return 'Amazon Web Services Limited' if name.match?(/Amazon Web Services/i)
+    return 'Amgen Australia' if name.match?(/Amgen Australia/i)
+    return 'Ampol Limited' if name.match?(/Ampol (Ltd|Limited)/i)
+    return 'Angus Knight Group' if name.match?(/Angus Knight (Group|Pty Ltd)/i)
+    return 'Arafura Rare Earths' if name.match?(/Arafura (Rare Earths|Resources)/i)
+
 
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers
     return 'Australian Energy Producers' if name.match?(/\bAPPEA\b|Australian Energy Producers/i)
@@ -173,15 +188,16 @@ class MapGroupNames
   def cleaned_up_name(name)
     regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
     regex_for_longer_acronyms_1 = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bACDC\b|\bCFMEU\b/i
-    regex_for_longer_acronyms_2 = /\bPESA\b|\bRISC\b|\bJERA\b/i
+    regex_for_longer_acronyms_2 = /\bPESA\b|\bRISC\b|\bJERA\b|\bAMPD\b/i
 
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b|\bIan\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
     regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b|\bOil\b/i
     regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|\bTo\b|\bYes\b|\bRed\b|\bOne\b|\bSky\b/i
     regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b|\bGum Tree\b|\bYe Family\b/i
-    regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b/i
+    regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b|\bAir Liquide\b/i
     regex_for_titleize_7 = /\bVictoria\b|\bQueensland\b|\bTasmania\b/i
+    regex_for_titleize_8 = /\Air New Zealand\b|\bAir Pacific\b|\bAir Liquide\b|Singapore/i
 
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
@@ -197,10 +213,12 @@ class MapGroupNames
                    .gsub(regex_for_titleize_5) { |word| word.titleize }
                    .gsub(regex_for_titleize_6) { |word| word.titleize }
                    .gsub(regex_for_titleize_7) { |word| word.titleize }
+                   .gsub(regex_for_titleize_8) { |word| word.titleize }
                    .gsub(regex_for_downcase) { |word| word.downcase }
                    .gsub(/^the/) { |word| word.titleize }
                    .gsub(/australia/) { |word| word.titleize }
-                   .gsub(/Pty Limited|Pty\. Ltd\./, 'Pty Ltd')
+                   .gsub(/Pty Limited|Pty\. Ltd\.|Pty Ltd\./, 'Pty Ltd')
+                   .gsub(/PTE\. Ltd\./, 'Pte Ltd')
                    .gsub('(t/as Clubsnsw)', '(T/As ClubsNSW)')
   end
 end
