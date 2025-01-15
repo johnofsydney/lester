@@ -61,17 +61,19 @@ class MapGroupNames
     return 'AGL Energy Limited' if name == 'AGL'
     return 'AIA Australia' if name == 'AIA'
     return 'AMP Limited' if name == 'AMP'
-    return 'Abbott Medical Australia Pty Ltd' if name == 'Abbot'
-    return 'Abbvie Australia' if name == 'Abbvie'
+    return 'Abbott Medical Australia Pty Ltd' if name == 'Abbott'
+    return 'Abbvie Australia' if name.match?(/\bAbbvie\b/i)
     return 'Adecco Australia' if name.match?(/Adecco Australia/)
     return 'Afterpay Australia Pty Ltd' if name.match?(/Afterpay Pty Ltd/)
     return 'Agripower Australia Limited' if name.match?(/Agripower/)
     return 'Amazon Web Services Australia Pty Ltd' if name.match?(/Amazon Web Services Australia|Amazon AWS WEB Services Australia Pty Ltd/i)
     return 'Amazon Web Services Limited' if name.match?(/Amazon Web Services/i)
-    return 'Amgen Australia' if name.match?(/Amgen Australia/i)
+    return 'Amazon Australia' if name.match?(/\bAmazon\b/i)
+    return 'Amgen Australia Pty Ltd' if name.match?(/Amgen Australia/i)
     return 'Ampol Limited' if name.match?(/Ampol (Ltd|Limited)/i)
-    return 'Angus Knight Group' if name.match?(/Angus Knight (Group|Pty Ltd)/i)
-    return 'Arafura Rare Earths' if name.match?(/Arafura (Rare Earths|Resources)/i)
+    return 'Angus Knight Group' if name.match?(/Angus Knight (Group|Pty Ltd|Pty Limited)/i) #
+    return 'Arafura Rare Earths' if name.match?(/Arafura (Rare Earths|Resources)/i) #
+    return 'Ausbiotech' if name.match?(/\bAusbiotech\b/i) #
 
 
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers

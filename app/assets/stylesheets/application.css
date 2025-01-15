@@ -168,3 +168,7 @@ button {
 .vis-network {
   border: 1px solid #d6d6d6;
 }
+
+.highlight-row {
+  background-color: #6face8;
+}
