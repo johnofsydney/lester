@@ -74,6 +74,69 @@ class MapGroupNames
     return 'Angus Knight Group' if name.match?(/Angus Knight (Group|Pty Ltd|Pty Limited)/i) #
     return 'Arafura Rare Earths' if name.match?(/Arafura (Rare Earths|Resources)/i) #
     return 'Ausbiotech' if name.match?(/\bAusbiotech\b/i) #
+    return 'Australian Capital Equity Pty Ltd' if name.match?(/\bAustralian Capital Equity (Pty Ltd|P\/L)\b/i) #
+    return 'Australian Computer Society' if name.match?(/\bAustralian Computer Society Incorporated\b/i) #
+    return 'BP Australia Pty Ltd' if name.match?(/\bBP Australia Pty Ltd\b/i) || name == 'BP Australia' #
+    return 'Bayer Australia Ltd' if name.match?(/\bBayer Australia (Ltd|Limited)\b/i)
+    return 'Beach Energy Limited' if name.match?(/\bBeach Energy\b/i)
+    return 'Bowen Coking Coal' if name.match?(/\bBowen Coking Coal\b/i)
+    return 'Bus Association of Victoria' if name.match?(/\bBus Association of Victoria\b/i)
+    return 'CAE Australia Pty Ltd' if name.match?(/CAE Australia|^CAE$/i)
+    return 'CO2CRC' if name.match?(/CO2crc/i)
+    return 'Canberra Consulting' if name.match?(/Canberra Consulting/i)
+    return 'Careflight' if name.match?(/Careflight/i)
+    return 'Chevron Australia Pty Ltd' if name.match?(/Chevron/i)
+    return 'Citigroup' if name.match?(/\bCitigroup\b/i)
+    return 'Civmec Construction & Engineering Pty Ltd' if name.match?(/\bCivmec Construction.+Engineering\b/i)
+    return 'Conocophillips Australia Pty Ltd' if name.match?(/\bConocophillips\b/i)
+    return 'Consolidated Properties Group' if name.match?(/\bConsolidated Properties Group\b/i) || name == 'Consolidated Properties'
+    return 'Cooper Energy Ltd' if name.match?(/\bCooper Energy Ltd\b/i) || name == 'Cooper Energy'
+    return 'Delaware North' if name.match?(/\bDelaware North\b/i)
+    return 'Dell Australia Pty Ltd' if name.match?(/\bDell (Australia|Technologies)\b/i)
+    return 'Diageo Australia Limited' if name.match?(/\bDiageo Australia\b/i)
+    return 'Droneshield Limited' if name.match?(/\bDroneshield\b/i)
+    return 'Echostar Global Australia Pty Ltd' if name.match?(/\bEchostar\b/i)
+    return 'Edwards Lifesciences Pty Ltd' if name.match?(/\bEdwards Life(sciences)?\b/i)
+    return 'Elbit Systems of Australia P/L' if name.match?(/\bElbit Systems.+Australia/i)
+    return 'Electro Optic Systems Pty Ltd' if name.match?(/\bElectro Optic Systems/i)
+    return 'Eli Lilly Australia Pty Ltd' if name.match?(/\bEli Lilly Australia\b/i) || name == 'Eli Lilly'
+    return 'Environmental Defense Fund' if name.match?(/\bEnvironmental Defense Fund/i)
+    return 'Equinor Australia' if name.match?(/\bEquinor Australia\b/i) || name == 'Equinor'
+    return 'Ernst & Young' if name.match?(/\bErnst .+ Young\b/i)
+    return 'Eusa Pharma (Australia) Pty Ltd' if name.match?(/\bEusa Pharma \(Australia\) Pty Ltd\b/i) || name == 'Eusa Pharma'
+    return 'Expedia Australia Pty Ltd' if name.match?(/\bExpedia Australia Pty Ltd\b/i) || name == 'Expedia'
+    return 'Field and Game Australia' if name.match?(/\bField and Game Australia\b/i)
+    return 'Football Australia' if name.match?(/\bFootball Australia Limited\b/i) || name == 'Football Australia'
+    return 'Fortem Australia Limited' if name.match?(/\bFortem Australia Limited\b/i) || name == 'Fortem Australia'
+    return 'Free TV Australia Limited' if name.match?(/\b(Free TV|FreeTV) Australia\b/i)
+    return 'Frisk - Search Pty Ltd' if name.match?(/\bFrisk.*Search\b/i)
+    return 'From the Fields Pharmaceuticals Australia Pty Ltd' if name.match?(/\bFrom The Fields\b/i)
+    return 'Fugro Australia Pty Ltd' if name.match?(/\bFugro Australia\b/i) || name == 'Fugro'
+    return 'GB Energy Holdings Pty Ltd' if name.match?(/\bGB Energy Holdings\b/i) || name == 'GB Energy'
+    return 'Gascoyne Gateway Limited' if name.match?(/\bGascoyne Gateway (Limited|Ltd)\b/i) || name == 'GB Energy'
+    return 'Gedeon Richter Australia Pty Ltd' if name.match?(/\bGedeon Richter Australia\b/i)
+    return 'Gilmour Space Technologies Pty Ltd' if name.match?(/\bGilmour Space Technologies\b/i)
+    return 'Gippsland Critical Minerals' if name.match?(/\bGippsland Critical Minerals\b/i)
+    return 'Glengarry Advisory Pty Ltd' if name.match?(/\bGlengarry Advisory\b/i)
+    return 'Golf Australia Limited' if name.match?(/\bGolf Australia (Limited|Ltd)\b/i)
+    return 'Google Australia Pty Ltd' if name.match?(/\bGoogle Australia\b/i)
+    return 'Group of 100' if name.match?(/\bGroup of 100\b/i)
+    return 'Gulanga Group' if name.match?(/\bGulanga Group\b/i)
+    return 'Heartland Solutions Group' if name.match?(/\bHeartland Solutions Group\b/i)
+    return 'Holmes Institute' if name.match?(/\bHolmes Institute\b/i)
+    return 'Holmwood Highgate Pty Ltd' if name.match?(/\bHolmwood Highgate\b/i)
+    return 'Idemitsu Australia Pty Ltd' if name.match?(/\bIdemitsu Australia\b/i)
+    return 'Inghams Group Limited' if name.match?(/\bInghams Group (Limited|LTD)\b/i) || name == 'Inghams'
+    return 'Insurance Council of Australia' if name.match?(/\bInsurance Council of Australia\b/i)
+    return 'Intech Strategies P/L' if name.match?(/\bIntech Strategies\b/i)
+    return 'Ipsen Pty Ltd' if name.match?(/\bIpsen Pty Ltd\b/i) || name == 'Ipsen'
+    return 'Israel Aerospace Industries Limited' if name.match?(/\bIsrael Aerospace Industries (Limited|Ltd)\b/i) || name == 'Ipsen'
+    return 'JERA Australia Pty Ltd' if name.match?(/\bJERA Australia\b/i) || name == 'Jera'
+    return 'Jellinbah Group' if name.match?(/\bJellinbah Group\b/i)
+    return 'Johnson & Johnson Medical' if name.match?(/\bJohnson (&|And) Johnson Medical\b/i)
+    return 'Johnson & Johnson' if name.match?(/\bJohnson (&|And) Johnson\b/i)
+
+
 
 
     # https://en.wikipedia.org/wiki/Australian_Energy_Producers
@@ -190,7 +253,8 @@ class MapGroupNames
   def cleaned_up_name(name)
     regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
     regex_for_longer_acronyms_1 = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bACDC\b|\bCFMEU\b/i
-    regex_for_longer_acronyms_2 = /\bPESA\b|\bRISC\b|\bJERA\b|\bAMPD\b/i
+    regex_for_longer_acronyms_2 = /\bPESA\b|\bRISC\b|\bJERA\b|\bAMPD\b|\bAFTA\b|\bFTTH\b|\bGCFC\b|\bGIMC\b/i
+    regex_for_longer_acronyms_3 = /\bCPSU\b|\bSPSF\b|\bCRRC\b|\b\CSIROb|\bCTSI\b|\bERGT\b|\bGGBV\b|\bHSBC\b/i
 
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b|\bIan\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
@@ -200,6 +264,7 @@ class MapGroupNames
     regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b|\bAir Liquide\b/i
     regex_for_titleize_7 = /\bVictoria\b|\bQueensland\b|\bTasmania\b/i
     regex_for_titleize_8 = /\Air New Zealand\b|\bAir Pacific\b|\bAir Liquide\b|Singapore/i
+    regex_for_titleize_9 = /\Be Our Guest\b|\bBlack Dog\b/i
 
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
@@ -208,6 +273,7 @@ class MapGroupNames
                    .gsub(regex_for_two_and_three_chars) { |chars| chars.upcase }
                    .gsub(regex_for_longer_acronyms_1) { |chars| chars.upcase }
                    .gsub(regex_for_longer_acronyms_2) { |chars| chars.upcase }
+                   .gsub(regex_for_longer_acronyms_3) { |chars| chars.upcase }
                    .gsub(regex_for_titleize) { |word| word.titleize }
                    .gsub(regex_for_titleize_2) { |word| word.titleize }
                    .gsub(regex_for_titleize_3) { |word| word.titleize }
@@ -216,11 +282,12 @@ class MapGroupNames
                    .gsub(regex_for_titleize_6) { |word| word.titleize }
                    .gsub(regex_for_titleize_7) { |word| word.titleize }
                    .gsub(regex_for_titleize_8) { |word| word.titleize }
+                   .gsub(regex_for_titleize_9) { |word| word.titleize }
                    .gsub(regex_for_downcase) { |word| word.downcase }
                    .gsub(/^the/) { |word| word.titleize }
                    .gsub(/australia/) { |word| word.titleize }
                    .gsub(/Pty Limited|Pty\. Ltd\.|Pty Ltd\./, 'Pty Ltd')
-                   .gsub(/PTE\. Ltd\./, 'Pte Ltd')
+                   .gsub(/PTE\.? Ltd\.?/i, 'Pte Ltd')
                    .gsub('(t/as Clubsnsw)', '(T/As ClubsNSW)')
   end
 end
