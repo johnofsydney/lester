@@ -333,8 +333,8 @@ class FileIngestor
         member_group = RecordGroup.call(row['member_group'])
 
         next unless owning_group && member_group
-        owning_group.update(business_number: row['business_number']abn.gsub(/\D/, '')) if row['business_number'].present?
-        member_group.update(business_number: row['abn']abn.gsub(/\D/, '')) if row['abn'].present?
+        owning_group.update(business_number: row['business_number'].gsub(/\D/, '')) if row['business_number'].present?
+        member_group.update(business_number: row['abn'].gsub(/\D/, '')) if row['abn'].present?
 
         evidence = row['evidence'].strip if row['evidence'].present?
 
