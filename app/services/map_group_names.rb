@@ -135,7 +135,69 @@ class MapGroupNames
     return 'Jellinbah Group' if name.match?(/\bJellinbah Group\b/i)
     return 'Johnson & Johnson Medical' if name.match?(/\bJohnson (&|And) Johnson Medical\b/i)
     return 'Johnson & Johnson' if name.match?(/\bJohnson (&|And) Johnson\b/i)
+    return 'KPMG Australia' if name.match?(/\bKPMG Australia\b/i) || name == 'KPMG'
+    return 'Kimberly-Clark Australia Pty Ltd' if name.match?(/\bKimberly-*Clark Australia\b/i) || name.match?(/\bKimberlyClark\b/i)
+    return 'L3 Harris Technologies' if name.match?(/(L3 Harris|L3Harris) Technologies/i)
+    return 'Lendlease Australia Pty Ltd' if name.match?(/Lendlease.+Australia/i) || name.match?(/Lendlease Pty Ltd/i)
+    return 'Lion Pty Ltd' if name.downcase == 'lion'
+    return 'Lockheed Martin Australia Pty Ltd' if name.match?(/Lockheed Martin Australia/i)
+    return 'Matrix Composites & Engineering' if name.match?(/Matrix Composites.+Engineering/i)
+    return 'Merck Healthcare' if name.match?(/Merck Healthcare/i)
+    return 'Metallicum Minerals Corporation' if name.match?(/Metallicum Minerals Corporation/i)
+    return 'National Retail Association Limited' if name.match?(/National Retail Association/i)
+    return 'Nestle Australia' if name.match?(/(Nestle|Nestlé) Australia/i)
+    return 'Netapp Pty Ltd' if name.match?(/Netapp Pty Ltd/i) || name == 'Netapp'
+    return 'Novo Nordisk Pharmaceuticals Pty Ltd' if name.match?(/Novo Nordisk Pharmaceuticals/i)
+    return 'Orion Sovereign Group Pty Ltd' if name.match?(/Orion Sovereign Group Pty Ltd/i)
+    return 'PainAustralia Limited' if name.match?(/painaustralia/i)
+    return 'Paintback Limited' if name.match?(/paintback/i)
+    return 'Pathology Technology Australia' if name.match?(/Pathology Technology Australia/i)
+    return 'Pembroke Resources Pty Ltd' if name.match?(/Pembroke Resources( Pty Ltd)*/i)
 
+    return 'Penten Pty Ltd' if name.match?(/Penten Pty Ltd/i) || name == 'Penten'
+    return 'Playgroups Australia' if name.match?(/Playgroups Australia/i)
+    return 'Pratt Holdings Pty Ltd' if name.match?(/Pratt Holdings/i)
+    return 'RES Australia Pty Ltd' if name.match?(/RES Australia( Pty Ltd)*/i)
+    return 'RZ Resources Limited' if name.match?(/RZ Resources (Limited|Ltd)/i)
+    return 'Ramsay Health Care Limited' if name.match?(/Ramsay Health Care/i)
+    return 'Rare Cancers Australia' if name.match?(/Rare Cancers Australia/i)
+    return 'Ryman Healthcare (Australia) Pty Ltd' if name.match?(/Ryman Healthcare.+Australia/i) || name.downcase == 'ryman healthcare'
+    return 'SA Milgate and Associates Pty Ltd' if name.match?(/SA Milgate and Associates/i)
+    return 'ST John of GOD Healthcare' if name.match?(/ST John of GOD (Healthcare|Health Care)/i)
+    return 'Saab Australia Pty Ltd' if name.match?(/Saab Australia Pty Ltd/i) || name.downcase = 'saab'
+    return 'Settlement Services International' if name.match?(/Settlement Services International/i)
+    return "Shop Distributive & Allied Employees Association - National'" if name.match?(/Shop.+Distributive (&|and) Allied Employees.+Association.+(National|nat branch)/i)
+    return 'SMEC Australia Pty Ltd' if name.match?(/Smec Australia/i)
+    return 'Sovori Pty Ltd ATF the Sovori Trust' if name.match?(/Sovori Pty Ltd/i)
+    return 'Space Machines Company' if name.match?(/Space Machines Company/i)
+    return 'Speedcast Australia Pty Ltd' if name.match?(/Speedcast Australia Pty Ltd/i) || name == 'Speedcast'
+    return 'Spirits & Cocktails Australia' if name.match?(/Spirits (&|and) Cocktails Australia/i)
+    return 'Springfield City Group' if name.match?(/Springfield City Group/i)
+    return 'Standbyu Foundation' if name.match?(/Standbyu Foundation/i)
+    return 'Stryker Australia Pty Ltd' if name.match?(/Stryker Australia Pty Ltd/i) || name.downcase == 'stryker'
+    return 'Strzelecki Holdings Pty Ltd' if name.match?(/Strzelecki (Holdings|Holding) Pty Ltd/i)
+    return 'Sumitomo Corporation' if name.match?(/(Sumitomo|Sumitom) Corporation/i)
+    return 'Ted Noffs Foundation' if name.match?(/TED Noffs Foundation/i)
+    return 'Tellus Holdings Ltd' if name.match?(/Tellus Holdings/i)
+    return 'Telstra Corporation' if name.match?(/Telstra Corporation/i) || name.downcase == 'telstra'
+    return 'The Alannah & Madeline Foundation' if name.match?(/The Alannah (&|and) Madeline Foundation/i)
+    return 'The Premier Communications Group' if name.match?(/The Premier Communications Group/i)
+    return 'The Union Education Foundation' if name.match?(/The Union Education Foundation/i)
+    return 'Trademark Group of Companies' if name.match?(/Trademark Group of Companies/i)
+    return 'Trafigura' if name.match?(/Trafigura Pte Ltd/i) || name.downcase == 'trafigura'
+    return 'Tronox Limited' if name.match?(/Tronox (Limited|Ltd)/i)
+    return 'UCB Australia Pty Ltd' if name.match?(/UCB Australia (Pty Ltd|Proprietary Limited)/i)
+    return 'Uber Australia Pty Ltd' if name.match?(/Uber Australia Pty Ltd/i) || name.downcase == 'uber'
+    return 'Van Dairy Ltd' if name.match?(/Van Dairy Ltd/i) ||name.match?(/\bvanmilk\b/)
+    return 'Varley Rafael Australia' if name.match?(/Varley Rafael Australia/i) || name.downcase == 'varley rafael'
+    return 'Verbrec Ltd' if name.match?(/Verbrec (Ltd|Limited)/i) || name.downcase == 'verbrec'
+    return 'Verdant Minerals' if name.match?(/Verdant Minerals/i)
+    return 'Vertex Pharmaceuticals Australia Pty Ltd' if name.match?(/Vertex Pharmaceuticals.+Australia/i)
+    return 'Victorian Hydrogen and Ammonia Industries Limited' if name.match?(/Victorian Hydrogen (&|and) Ammonia Industries/i)
+    return 'Wesfarmers Limited' if name.match?(/Wesfarmers (Limited|Ltd)/i) || name.downcase == 'wesfarmers'
+    return 'Westpac Banking Corporation' if name.match?(/Westpac Banking Corporation/i) || name.downcase == 'westpac'
+    return 'Your Solutions Compounding Pharmacy' if name.match?(/Your Solutions Compounding Pharmacy/i)
+    return 'Yumbah Aquaculture' if name.match?(/Yumbah Aquaculture/i)
 
 
 
