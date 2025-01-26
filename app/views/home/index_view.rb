@@ -39,5 +39,8 @@ class Home::IndexView < ApplicationView
     p do
       a(href: 'https://bsky.app/profile/jointhedots.au') { 'jointhedots.au on Bluesky' }
     end
+    p do
+      a(href: 'mailto:jointhedots.au@protonmail.com') { 'jointhedots.au@protonmail.com' }
+    end
   end
 end
