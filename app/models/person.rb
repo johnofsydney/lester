@@ -3,6 +3,7 @@ class Person < ApplicationRecord
   multisearchable against: [:name]
 
   include TransferMethods
+  include NodeMethods
 
   has_many :memberships, as: :member, dependent: :destroy
   has_many :groups, through: :memberships

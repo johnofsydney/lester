@@ -36,12 +36,12 @@ class InertiaController < ApplicationController
 
   def ids_people_descendents
     nodes.filter{|n| n.klass == 'Person' }
-          .map{|n| n.id }
+         .map{|n| n.id }
   end
 
   def ids_group_descendents
     nodes.filter{|n| n.klass == 'Group' }
-          .map{|n| n.id }
+         .map{|n| n.id }
   end
 
   def edges
@@ -49,12 +49,15 @@ class InertiaController < ApplicationController
   end
 
   def nodes
-    entity = person || group
+    node = person || group
 
-    entity.consolidated_descendents(depth:)
+    # CACHE THIS
+    # node.consolidated_descendents(depth:)
+    node.consolidated_descendents_depth_4
   end
 
   def all_memberships_of_descendents
+    # There is a good index for this, and it is ONE query, so it's not very slow
     Membership.where(member_id: ids_people_descendents, member_type: 'Person')
               .or(Membership.where(member_id: ids_group_descendents, member_type: 'Group'))
               .or(Membership.where(group_id: ids_group_descendents))
@@ -71,6 +74,7 @@ class InertiaController < ApplicationController
   end
 
   def configure_node(node)
+    # arg node is a descendent
     id = "#{node.klass.downcase}_#{node.id}"
 
     {

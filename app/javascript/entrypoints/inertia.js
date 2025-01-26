@@ -35,6 +35,7 @@ createInertiaApp({
     if (el) {
       createRoot(el).render(createElement(App, props))
     } else {
+      // TODO - find/remove this console.error in production
       console.error(
         'Missing root element.\n\n' +
           'If you see this error, it probably means you load Inertia.js on non-Inertia pages.\n' +
