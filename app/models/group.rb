@@ -1,5 +1,6 @@
 class Group < ApplicationRecord
   include TransferMethods
+  include NodeMethods
   include PgSearch::Model
   multisearchable against: [:name]
 
