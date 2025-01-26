@@ -164,7 +164,7 @@ class MapGroupNames
     return 'Ryman Healthcare (Australia) Pty Ltd' if name.match?(/Ryman Healthcare.+Australia/i) || name.downcase == 'ryman healthcare'
     return 'SA Milgate and Associates Pty Ltd' if name.match?(/SA Milgate and Associates/i)
     return 'ST John of GOD Healthcare' if name.match?(/ST John of GOD (Healthcare|Health Care)/i)
-    return 'Saab Australia Pty Ltd' if name.match?(/Saab Australia Pty Ltd/i) || name.downcase = 'saab'
+    return 'Saab Australia Pty Ltd' if name.match?(/Saab Australia Pty Ltd/i) || name.downcase == 'saab'
     return 'Settlement Services International' if name.match?(/Settlement Services International/i)
     return "Shop Distributive & Allied Employees Association - National'" if name.match?(/Shop.+Distributive (&|and) Allied Employees.+Association.+(National|nat branch)/i)
     return 'SMEC Australia Pty Ltd' if name.match?(/Smec Australia/i)
@@ -196,7 +196,7 @@ class MapGroupNames
     return 'Victorian Hydrogen and Ammonia Industries Limited' if name.match?(/Victorian Hydrogen (&|and) Ammonia Industries/i)
     return 'Wesfarmers Limited' if name.match?(/Wesfarmers (Limited|Ltd)/i) || name.downcase == 'wesfarmers'
     return 'Westpac Banking Corporation' if name.match?(/Westpac Banking Corporation/i) || name.downcase == 'westpac'
-    return 'Your Solutions Compounding Pharmacy' if name.match?(/Your Solutions Compounding Pharmacy/i)
+    return 'Your (Solutions|Solution) Compounding Pharmacy' if name.match?(/Your Solutions Compounding Pharmacy/i)
     return 'Yumbah Aquaculture' if name.match?(/Yumbah Aquaculture/i)
 
 
