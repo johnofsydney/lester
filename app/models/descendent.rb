@@ -44,8 +44,6 @@ class Descendent
   def mass
     return 2 if klass == 'Person'
 
-    # return 50
-
     case parent_size
     when 0..3
       4
