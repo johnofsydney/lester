@@ -51,9 +51,7 @@ class InertiaController < ApplicationController
   def nodes
     node = person || group
 
-    # CACHE THIS
-    # node.consolidated_descendents(depth:)
-    node.consolidated_descendents_depth_4
+    node.consolidated_descendents_depth(depth)
   end
 
   def all_memberships_of_descendents
