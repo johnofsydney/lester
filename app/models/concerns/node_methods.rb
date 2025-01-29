@@ -7,8 +7,8 @@ module NodeMethods
     store_accessor :cached_data, [
       :nodes_count,
       :nodes_count_timestamp,
-      :consolidated_descendents_depth_4,
-      :consolidated_descendents_depth_4_timestamp
+      :consolidated_descendents,
+      :consolidated_descendents_timestamp
     ], prefix: :cached
 
 
@@ -24,21 +24,22 @@ module NodeMethods
       self.cached_nodes_count
     end
 
-    def consolidated_descendents_depth_4
-      # return an array of descendents. cached will be used if available
-
-      if refresh_consolidated_descendents_depth_4_cache?
-        result = self.consolidated_descendents(depth: 4).map{
+    def consolidated_descendents_depth(depth)
+      if refresh_consolidated_descendents_depth_cache?(depth)
+        result = self.consolidated_descendents(depth: depth).map{
           |descendent| configure_descendent(descendent)
         }
 
         self.update(
-          cached_consolidated_descendents_depth_4: result,
-          cached_consolidated_descendents_depth_4_timestamp:Time.now
+          cached_consolidated_descendents: result,
+          cached_consolidated_descendents_timestamp:Time.now
         )
       end
 
-      result = self.reload.cached_consolidated_descendents_depth_4.map{|d| d.symbolize_keys }
+      result = self.reload
+                   .cached_consolidated_descendents
+                   .map{|d| d.symbolize_keys }
+                   .filter{|d| d[:depth] <= depth}
 
       result.map{ |descendent| Descendent.new(
         id: descendent[:id],
@@ -76,6 +77,20 @@ module NodeMethods
       return true if cached_nodes_count_missing?
 
       Time.now - Time.parse(self.cached_nodes_count_timestamp) > 1.week
+    end
+
+    def refresh_consolidated_descendents_depth_cache?(depth)
+      # if the depth has been previouslt exhausted at this depth, return true TODO
+
+      return true if self.cached_consolidated_descendents.nil? || self.cached_consolidated_descendents.empty?
+
+      max_depth = self.cached_consolidated_descendents.map{|d| d['depth']}.max
+      return true if max_depth < depth
+
+
+      p "max_depth: #{max_depth}"
+      p "depth: #{depth}"
+      false
     end
 
     def refresh_consolidated_descendents_depth_4_cache?
