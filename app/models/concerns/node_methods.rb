@@ -92,21 +92,5 @@ module NodeMethods
       p "depth: #{depth}"
       false
     end
-
-    def refresh_consolidated_descendents_depth_4_cache?
-      return true if consolidated_descendents_depth_4_cache_expired?
-
-      cached_consolidated_descendents_depth_4_missing?
-    end
-
-    def cached_consolidated_descendents_depth_4_missing?
-      !cached_consolidated_descendents_depth_4.present?
-    end
-
-    def consolidated_descendents_depth_4_cache_expired?
-      return true if cached_consolidated_descendents_depth_4_missing?
-
-      Time.now - Time.parse(self.cached_consolidated_descendents_depth_4_timestamp) > CACHE_DURATION
-    end
   end
 end
