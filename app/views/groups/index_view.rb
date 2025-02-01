@@ -1,17 +1,19 @@
 class Groups::IndexView < ApplicationView
-	def initialize(groups:, page:)
+	def initialize(groups:, page:, pages:)
 		@groups = groups
     @page = page
+    @pages = pages
 	end
 
 	def template
     h2 { 'Groups' }
 
-    page_nav
+    render Common::PageNav.new(pages: @pages, page: @page, klass: 'group')
 
     @groups.each do |group|
-      div(class: 'class: list-group-item list-group-item-action flex-normal') do
-        a(href: "/groups/#{group.id}") { group.name }
+      class_list = group.id > 1640 ? 'class: list-group-item list-group-item-action flex-normal highlight-row' : 'class: list-group-item list-group-item-action flex-normal'
+      div(class: class_list) do
+        a(href: "/groups/#{group.id}") { "#{group.name} - #{group.business_number}" }
         if group.parent_groups.where(category: true).any?
             div do
               group.parent_groups.where(category: true).each do |parent_group|
@@ -26,30 +28,6 @@ class Groups::IndexView < ApplicationView
       end
     end
 
-    page_nav
+    render Common::PageNav.new(pages: @pages, page: @page, klass: 'group')
 	end
-
-  def page_nav
-    nav(aria: { label: "Page navigation example" }) do
-      ul(class: "pagination") do
-
-        previous_page = @page - 1 < 1 ? 1 : @page - 1
-        a(class: "page-link", href: "/groups/page=#{previous_page}") { "<<" }
-
-        Group.where(category: false).order(:name).each_slice(250).to_a.each_with_index do |groups, index|
-          li(class: "page-item") do
-            page_number = index + 1
-
-            a(class: "page-link", href: "/groups/page=#{page_number}") do
-              page_number
-            end
-          end
-        end
-
-        next_page = @groups.count < 250 ? @page : @page + 1
-        a(class: "page-link", href: "/groups/page=#{next_page}") { ">>" }
-
-      end
-    end
-  end
 end

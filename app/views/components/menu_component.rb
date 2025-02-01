@@ -28,9 +28,6 @@ class MenuComponent < ApplicationView
             li(class: 'nav-item') do
               a(class: 'nav-link', href: '/search/') { 'Search' }
             end
-            # li(class: 'nav-item') do
-            #   a(class: 'nav-link', href: '/linker/') { 'Linker' }
-            # end
             li(class: 'nav-item') do
               a(class: 'nav-link', href: '/groups/') { 'Groups' }
             end

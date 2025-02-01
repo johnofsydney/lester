@@ -96,6 +96,7 @@ files_to_clean.each do |filename|
   file = filename +  '.csv'
   csv = CSV.read(file, headers: true)
 
+  # creates an array called rows with the first row being the headers
   rows = [%w[name party electorate state start_date end_date]]
 
   csv.each do |row|

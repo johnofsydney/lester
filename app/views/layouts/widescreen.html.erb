@@ -38,12 +38,15 @@
   </head>
 
   <body class="wide-container">
-    <% if notice.present? %>
-      <p class="notice"><%= notice %></p>
+    <% if @notice.present? %>
+      <p class="notice"><%= @notice %></p>
     <% end %>
 
-    <% if alert.present? %>
-      <p class="alert"><%= alert %></p>
+    <% if @alert.present? %>
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong><%= @alert %></strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     <% end %>
 
     <%= render MenuComponent.new %>

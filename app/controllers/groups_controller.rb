@@ -8,12 +8,13 @@ class GroupsController < ApplicationController
   layout -> { ApplicationLayout }
 
   def index
-    @groups = Rails.cache.fetch("groups_index_#{params[:page]}", expires_in: 12.hours) do
-
-      Group.where.not(category: true).order(:name).limit(per_page).offset(paginate_offset).to_a
+    @groups = Rails.cache.fetch("groups_index_#{params[:page]}", expires_in: 12.seconds) do
+      Group.where.not(category: true).order(:name).limit(page_size).offset(paginate_offset).to_a
     end
 
-    render Groups::IndexView.new(groups: @groups, page: @page)
+    pages = (Group.where.not(category: true).count.to_f / page_size).ceil
+
+    render Groups::IndexView.new(groups: @groups, page: @page, pages: pages)
   end
 
   def show
@@ -72,6 +73,8 @@ class GroupsController < ApplicationController
   end
 
   def page_size
+    return 250
+
     @page_size ||= Constants::PAGE_LIMIT
   end
 end

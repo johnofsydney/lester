@@ -33,6 +33,7 @@ class Groups::PeopleTable < ApplicationView
   end
 
   def page_nav
+    # TODO: Adapt and use Common::PageNav
     return if pages < 2
 
     nav(aria: { label: "Page navigation example" }) do
