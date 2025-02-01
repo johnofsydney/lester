@@ -13,14 +13,13 @@ class Transfers::IndexView < ApplicationView
   def template
     h2 { 'Transfers' }
 
-    form(action: '/transfers', enctype: "multipart/form-data", method: 'get', class: "row g-3 align-items-center") do
-      div(class: "col-auto") do
-        label(for: "duration_start", class: "form-label") { "Earliest Financial Year (ending in)" }
+    form(action: '/transfers', enctype: "multipart/form-data", method: 'get', class: "row g-3") do
+      div(class: "col-12 col-md-auto") do
+        label(for: "duration_start", class: "form-label  label-row") { "Earliest Financial Year (ending in)" }
       end
-      div(class: "col-auto") do
+      div(class: "col-12 col-md-auto") do
         select(name: "duration_start", class: "form-select") do
           Transfer.financial_years.each do |year|
-            # needs to be done here as it is inside a block
             selected_year = if session[:duration_start].present?
               if session[:duration_start].is_a?(String)
                 Date.parse(session[:duration_start]).year
@@ -36,10 +35,10 @@ class Transfers::IndexView < ApplicationView
           end
         end
       end
-      div(class: "col-auto") do
-        label(for: "duration_end", class: "form-label") { "Last Financial Year (ending in)" }
+      div(class: "col-12 col-md-auto") do
+        label(for: "duration_end", class: "form-label  label-row") { "Last Financial Year (ending in)" }
       end
-      div(class: "col-auto") do
+      div(class: "col-12 col-md-auto") do
         select(name: "duration_end", class: "form-select") do
           Transfer.financial_years.each do |year|
             selected_year = if session[:duration_end].present?
@@ -57,7 +56,7 @@ class Transfers::IndexView < ApplicationView
           end
         end
       end
-      div(class: "col-auto") do
+      div(class: "col-12 col-md-auto") do
         button(class: "btn btn-primary", type: "submit") { "Go!" }
       end
     end
