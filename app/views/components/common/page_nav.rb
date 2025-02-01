@@ -1,6 +1,4 @@
 class Common::PageNav < ApplicationView
-  # TODO - use pagination range concept from Groups::PeopleTable
-
   attr_reader :pages
 
   def initialize(pages:, page:, klass:)
