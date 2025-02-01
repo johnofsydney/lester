@@ -325,12 +325,16 @@ class FileIngestor
     end
 
     def affiliations_upload(file)
+      client_category = Group.find_or_create_by(name: 'Client of Lobbyists', category: true)
+
       csv = CSV.read(file, headers: true)
       csv.each do |row|
         owning_group = RecordGroup.call(row['group'])
         member_group = RecordGroup.call(row['member_group'])
 
         next unless owning_group && member_group
+        owning_group.update(business_number: row['business_number'].gsub(/\D/, '')) if row['business_number'].present?
+        member_group.update(business_number: row['abn'].gsub(/\D/, '')) if row['abn'].present?
 
         evidence = row['evidence'].strip if row['evidence'].present?
 
@@ -343,6 +347,13 @@ class FileIngestor
         )
 
         membership.update(evidence:) if evidence
+
+        # ONE TIME ONLY - FOR LOBBYISTS AND CLIENTS
+        Membership.find_or_create_by(
+          member_type: "Group",
+          member_id: member_group.id,
+          group: client_category,
+        )
 
         print 'm'
       end

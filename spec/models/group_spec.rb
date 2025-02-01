@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Group, type: :model do
-  # let(:group) { Group.create }
+  let(:group) { Group.create }
   # let(:owning_group1) { Group.create }
   # let(:owning_group2) { Group.create }
   # let(:sub_group1) { Group.create }
@@ -20,6 +20,34 @@ RSpec.describe Group, type: :model do
   #   group.incoming_transfers << incoming_transfer
   #   group.outgoing_transfers << outgoing_transfer
   # end
+
+  describe 'validations' do
+    it { should validate_uniqueness_of(:name).case_insensitive }
+
+    it 'will not allow two groups with the same business number' do
+      group1 = Group.create(business_number: '123456789')
+      group2 = Group.new(business_number: '123456789')
+      expect(group2).to_not be_valid
+    end
+
+    it 'will not allow two groups with the same business number even if there are spaces' do
+      group1 = Group.create(business_number: '123 45 6789')
+      group2 = Group.new(business_number: '12 345 67 89')
+      expect(group2).to_not be_valid
+    end
+
+    it 'will not allow two groups with the same business number even if there are dashes' do
+      group1 = Group.create(business_number: '123-45-6789')
+      group2 = Group.new(business_number: '12-345-67-89')
+      expect(group2).to_not be_valid
+    end
+
+    it 'will allow two groups with nil business number' do
+      group1 = Group.create(name: 'foo')
+      group2 = Group.create(name: 'bar')
+      expect(group2).to be_valid
+    end
+  end
 
   describe '#affiliated_groups', :pending do
     it 'returns all owning groups and sub groups' do
@@ -47,6 +75,14 @@ RSpec.describe Group, type: :model do
 
     it 'returns all people and affiliated groups when include_looser_nodes is false' do
       expect(group.nodes(include_looser_nodes: false)).to contain_exactly(person, owning_group1, owning_group2, sub_group1, sub_group2)
+    end
+  end
+
+  describe '#business_number=' do
+    it 'strips non-numeric characters from the business number' do
+      group.business_number = '123 456 789'
+      group.save
+      expect(group.reload.business_number).to eq('123456789')
     end
   end
 end

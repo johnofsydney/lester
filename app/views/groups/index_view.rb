@@ -11,8 +11,9 @@ class Groups::IndexView < ApplicationView
     render Common::PageNav.new(pages: @pages, page: @page, klass: 'group')
 
     @groups.each do |group|
-      div(class: 'class: list-group-item list-group-item-action flex-normal') do
-        a(href: "/groups/#{group.id}") { group.name }
+      class_list = group.id > 1640 ? 'class: list-group-item list-group-item-action flex-normal highlight-row' : 'class: list-group-item list-group-item-action flex-normal'
+      div(class: class_list) do
+        a(href: "/groups/#{group.id}") { "#{group.name} - #{group.business_number}" }
         if group.parent_groups.where(category: true).any?
             div do
               group.parent_groups.where(category: true).each do |parent_group|

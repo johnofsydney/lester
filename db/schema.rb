@@ -46,6 +46,8 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_01_001841) do
     t.datetime "updated_at", null: false
     t.boolean "category", default: false
     t.json "cached_data", default: {}
+    t.string "business_number"
+    t.text "other_names", default: [], array: true
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -58,6 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_01_001841) do
     t.datetime "updated_at", null: false
     t.string "evidence"
     t.index ["group_id"], name: "index_memberships_on_group_id"
+    t.index ["id", "group_id", "member_id"], name: "index_memberships_on_id_and_group_id_and_member_id", unique: true
     t.index ["member_type", "member_id"], name: "index_memberships_on_member"
   end
 
@@ -66,6 +69,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_02_01_001841) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "cached_data", default: {}
+    t.text "other_names", default: [], array: true
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
