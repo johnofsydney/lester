@@ -1,25 +1,73 @@
 class Transfers::IndexView < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :transfers
+  attr_reader :transfers, :page, :session, :pages
 
-  def initialize(transfers:)
+  def initialize(transfers:, page:, pages:, session:)
     @transfers = transfers
+    @page = page
+    @pages = pages
+    @session = session
   end
 
   def template
-    h3 { "Transfers: (#{transfers.count} records)" }
-    table(class: 'table table-striped responsive-table') do
-      thead do
-        tr do
-          th { 'ID' }
-          th { 'Amount' }
-          th { 'EOFY Date' }
-          th { 'Transfer Type' }
-          th { 'Giver Name' }
-          th { 'Taker Name' }
+    h2 { 'Transfers' }
+
+    form(action: '/transfers', enctype: "multipart/form-data", method: 'get', class: "row g-3 align-items-center") do
+      div(class: "col-auto") do
+        label(for: "duration_start", class: "form-label") { "Earliest Financial Year (ending in)" }
+      end
+      div(class: "col-auto") do
+        select(name: "duration_start", class: "form-select") do
+          Transfer.financial_years.each do |year|
+            # needs to be done here as it is inside a block
+            selected_year = if session[:duration_start].present?
+              if session[:duration_start].is_a?(String)
+                Date.parse(session[:duration_start]).year
+              else
+                session[:duration_start].year
+              end
+            end
+
+            option(
+              value: year,
+              selected: year == selected_year ? true : false
+            ) { year.to_s }
+          end
         end
       end
+      div(class: "col-auto") do
+        label(for: "duration_end", class: "form-label") { "Last Financial Year (ending in)" }
+      end
+      div(class: "col-auto") do
+        select(name: "duration_end", class: "form-select") do
+          Transfer.financial_years.each do |year|
+            selected_year = if session[:duration_end].present?
+              if session[:duration_end].is_a?(String)
+                Date.parse(session[:duration_end]).year
+              else
+                session[:duration_end].year
+              end
+            end
+
+            option(
+              value: year,
+              selected: year == selected_year ? true : false
+            ) { year.to_s }
+          end
+        end
+      end
+      div(class: "col-auto") do
+        button(class: "btn btn-primary", type: "submit") { "Go!" }
+      end
+    end
+
+    render Common::PageNav.new(pages: @pages, page: @page, klass: 'transfer')
+
+    table(class: 'table table-striped responsive-table') do
+
+      table_heading
+
       tbody do
         transfers.each do |transfer|
           tr do
@@ -33,11 +81,44 @@ class Transfers::IndexView < ApplicationView
             td { number_to_currency(transfer.amount.to_s, precision: 0) }
             td { transfer.effective_date.strftime('%d/%m/%Y') }
             td { transfer.transfer_type.titleize }
-            td { transfer.giver.name if transfer.giver }
-            td { transfer.taker.name if transfer.taker }
+            td { transfer.giver_name }
+            td { transfer.taker_name }
           end
         end
       end
+    end
+  end
+
+  def table_heading
+    thead do
+      tr do
+        th { 'ID' }
+        th { 'Amount' }
+        th { 'EOFY Date' }
+        th { 'Transfer Type' }
+        th { 'Giver Name' }
+        th { 'Taker Name' }
+      end
+    end
+  end
+
+  def selected_start_year(year)
+    return false unless session[:duration_start].present?
+
+    if session[:duration_start].is_a?(String)
+      true
+    else
+      year == session[:duration_start].year ? true: false
+    end
+  end
+
+  def selected_end_year(year)
+    return false unless session[:duration_end].present?
+
+    if session[:duration_end].is_a?(String)
+      Date.parse(session[:duration_end]).year == year
+    else
+      year == session[:duration_end].year ? true: false
     end
   end
 end
