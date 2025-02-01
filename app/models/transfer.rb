@@ -14,9 +14,7 @@ class Transfer < ApplicationRecord
   }
 
   def self.financial_years
-    [
-      2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025,
-    ]
+    (Transfer.order(:effective_date).first.effective_date.year..Time.now.year).to_a
   end
 
   store_accessor :data, %i(donations giver_name taker_name), prefix: :cached
