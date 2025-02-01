@@ -81,8 +81,12 @@ class Transfers::IndexView < ApplicationView
             td { number_to_currency(transfer.amount.to_s, precision: 0) }
             td { transfer.effective_date.strftime('%d/%m/%Y') }
             td { transfer.transfer_type.titleize }
-            td { transfer.giver_name }
-            td { transfer.taker_name }
+            td do
+              a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { transfer.giver_name }
+            end
+            td do
+              a(href: "/#{transfer.taker_type.downcase.pluralize}/#{transfer.taker_id}") { transfer.taker_name }
+            end
           end
         end
       end
