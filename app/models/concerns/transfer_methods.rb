@@ -42,10 +42,11 @@ module TransferMethods
     end
 
     def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil, with_parents: [] )
+
       current_depth_memberships = []
       queue.each do |node|
         # next  if node.nodes.count > 4
-        return results  if node.nodes.count > 1500
+        return results  if node.nodes_count > 1500
 
         visited_nodes << node # store the current node as visited
         current_depth_memberships << node.memberships.to_a

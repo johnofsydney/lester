@@ -3,15 +3,16 @@
 # in the network graph, and as part of the tables created using consildated_descendents
 
 class Descendent
-  attr_accessor :entity, :id, :name, :depth, :klass, :parent
+  attr_accessor :entity, :id, :name, :depth, :klass, :parent, :parent_count
 
-  def initialize(node:, depth:, parent:)
+  def initialize(node: nil, id: nil, name: nil, klass: nil, depth:, parent: nil, parent_count: nil)
     @entity = node # this is the entity; Person or Group
-    @id = node.id
-    @name = node.name
+    @id = node&.id || id
+    @name = node&.name || name
     @depth = depth
-    @klass = node.class.to_s
+    @klass = node&.class&.to_s || klass
     @parent = parent
+    @parent_count = parent_count
   end
 
   def shape
@@ -71,14 +72,16 @@ class Descendent
   private
 
   def member_of_large_group?
-    return unless parent
+    return unless parent_count || parent
 
-    klass == 'Person' && parent.nodes.count > 15
+    count = parent_count || parent&.nodes_count || 0
+
+    klass == 'Person' && count > 15
   end
 
   def parent_size
-    return 0 unless parent
+    return 0 unless parent_count || parent
 
-    parent.nodes.count
+    count = parent_count || parent&.nodes_count || 0
   end
 end

@@ -172,3 +172,12 @@ button {
 .highlight-row {
   background-color: #6face8;
 }
+
+.pagination {
+  padding-top: 1rem;
+}
+
+@media (min-width: 768px) {
+  .label-row {
+  }
+}

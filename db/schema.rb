@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema[7.0].define(version: 2025_01_16_135230) do
+=======
+ActiveRecord::Schema[7.0].define(version: 2025_02_01_001841) do
+>>>>>>> main
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,8 +49,12 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_16_135230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "category", default: false
+<<<<<<< HEAD
     t.string "business_number"
     t.text "other_names", default: [], array: true
+=======
+    t.json "cached_data", default: {}
+>>>>>>> main
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -67,7 +75,11 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_16_135230) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+<<<<<<< HEAD
     t.text "other_names", default: [], array: true
+=======
+    t.json "cached_data", default: {}
+>>>>>>> main
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -112,6 +124,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_16_135230) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "data"
+    t.index ["effective_date"], name: "index_transfers_on_effective_date"
     t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
     t.index ["taker_type", "taker_id"], name: "index_transfers_on_taker"
   end
