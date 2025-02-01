@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   get 'groups/page=:page' => 'groups#index'
+  get 'transfers/page=:page' => 'transfers#index'
 
   get 'groups/group_people/:group_id/page=:page' => 'groups#group_people'
   get 'groups/affiliated_groups/:group_id/page=:page' => 'groups#affiliated_groups'

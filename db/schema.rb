@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_19_060640) do
+ActiveRecord::Schema[7.0].define(version: 2025_02_01_001841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -110,6 +110,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_19_060640) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "data"
+    t.index ["effective_date"], name: "index_transfers_on_effective_date"
     t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
     t.index ["taker_type", "taker_id"], name: "index_transfers_on_taker"
   end
