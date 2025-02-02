@@ -120,9 +120,9 @@ class InertiaController < ApplicationController
   end
 
   def network_too_big?
-    nodes_count = (@group || @person).nodes.count
+    nodes_count = (@group || @person).nodes_count
 
-    (depth > 1) && ((nodes_count * depth) > 1000)
+    (depth > 2) && ((nodes_count * depth) > 1000)
   end
 
   def reduce_network_depth
