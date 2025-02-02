@@ -6,7 +6,6 @@ class Group < ApplicationRecord
 
   MAJOR_POLITICAL_CATEGORIES = ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens']
 
-
   NAMES = OpenStruct.new(
             coalition: OpenStruct.new(
               federal: 'The Coalition (Federal)',
@@ -74,6 +73,16 @@ class Group < ApplicationRecord
   def parent_groups
     Group.joins(:memberships).where(memberships: { member: self, member_type: 'Group' }).where.not(id: self.id)
   end
+
+  validates :name, uniqueness: { case_sensitive: false }
+  validates :business_number, uniqueness: { case_sensitive: false }, allow_nil: true
+
+  def business_number=(value)
+    return unless value.present?
+
+    super(value.gsub(/\D/, ''))
+  end
+
 
   # these are a bit weird, hence the transfers method below
   has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
@@ -156,5 +165,11 @@ class Group < ApplicationRecord
     Transfer.where(taker: self).update_all(taker_id: replacement_group.id)
 
     self.destroy
+  end
+
+  def display_name
+    return "#{name} (#{business_number})" if business_number.present?
+
+    name
   end
 end

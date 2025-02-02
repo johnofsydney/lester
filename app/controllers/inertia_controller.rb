@@ -9,6 +9,8 @@ class InertiaController < ApplicationController
   def network_graph_person
     @person = Person.find(params[:id])
 
+    reduce_network_depth if network_too_big?
+
     @action = 'network_graph_person' # required in layout
     @toast_note ||= define_toast_note # required in layout
     session[:depth] = depth
@@ -22,6 +24,8 @@ class InertiaController < ApplicationController
 
   def network_graph_group
     @group = Group.find(params[:id])
+
+    reduce_network_depth if network_too_big?
 
     @action = 'network_graph_group'
     @toast_note ||= define_toast_note
@@ -113,5 +117,17 @@ class InertiaController < ApplicationController
 
   def depth_in_session?
     session[:depth].present? && session[:depth].to_i > 0
+  end
+
+  def network_too_big?
+    nodes_count = (@group || @person).nodes_count
+
+    (depth > 2) && ((nodes_count * depth) > 1000)
+  end
+
+  def reduce_network_depth
+    @toast_note = 'The network graph is too large to display. Depth re-adjusted to 1.'
+      @alert = 'The network graph is too large to display. Depth re-adjusted to 1.'
+      @depth = 1
   end
 end

@@ -220,6 +220,11 @@ RSpec.describe RecordGroup, type: :service do
       'Registered Clubs Association of NSW (t/as Clubsnsw)' => 'Registered Clubs Association of NSW (T/As ClubsNSW)',
       'Cmax Advisory' => 'CMAX Advisory',
       'CMAX Advisory' => 'CMAX Advisory',
+      'The Pharmacy Guild of Australia' => 'The Pharmacy Guild of Australia',
+      'Pharmacy Guild of Australia' => 'The Pharmacy Guild of Australia',
+      'The Pharmacy Guild' => 'The Pharmacy Guild of Australia',
+      'Arafura Rare Earths' => 'Arafura Rare Earths',
+      'Arafura Rare Earths' => 'Arafura Resources',
     }
   end
 
