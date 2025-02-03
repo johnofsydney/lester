@@ -1,4 +1,6 @@
 class Groups::IndexView < ApplicationView
+  HIGHLIGHT_THRESHOLD = 300
+
 	def initialize(groups:, page:, pages:)
 		@groups = groups
     @page = page
@@ -11,7 +13,8 @@ class Groups::IndexView < ApplicationView
     render Common::PageNav.new(pages: @pages, page: @page, klass: 'group')
 
     @groups.each do |group|
-      class_list = 'class: list-group-item list-group-item-action flex-normal'
+      highlight = group.id > HIGHLIGHT_THRESHOLD ? 'highlight-row' : ''
+      class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
       div(class: class_list) do
         a(href: "/groups/#{group.id}") { group.display_name }
         if group.parent_groups.where(category: true).any?

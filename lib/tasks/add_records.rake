@@ -36,6 +36,22 @@ namespace :lester do
     lobbyists.each do |file|
       # FileIngestor.lobbyists_upload(file)
     end
+
+    annual_donation_files = [
+    #     'csv_data/Annual_Donations_Made_2018.csv',
+    #     'csv_data/Annual_Donations_Made_2019.csv',
+    #     'csv_data/Annual_Donations_Made_2020.csv',
+    #     'csv_data/Annual_Donations_Made_2021.csv',
+    #     'csv_data/Annual_Donations_Made_2022.csv',
+    #     'csv_data/Annual_Donations_Made_2023.csv',
+      'csv_data/Annual_Donations_Made_2024.csv',
+    ]
+
+    # using data sourced from the AEC
+    annual_donation_files.each do |file|
+      FileIngestor.annual_donor_ingest(file)
+    end
+
   end
 
   # desc "Destroy all records and re-populate"
@@ -79,10 +95,10 @@ namespace :lester do
   #     'csv_data/ministries_turnbull.csv',
   #   ]
 
-  #   # using data sourced from the AEC
-  #   annual_donation_files.each do |file|
-  #     FileIngestor.annual_donor_ingest(file)
-  #   end
+    # # using data sourced from the AEC
+    # annual_donation_files.each do |file|
+    #   FileIngestor.annual_donor_ingest(file)
+    # end
 
   #   FileIngestor.referendum_donor_ingest('csv_data/Referendum_Donations_Made_2023.csv')
 
