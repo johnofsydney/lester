@@ -15,7 +15,7 @@ namespace :lester do
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-23.csv') - affiliations mostly for Australian Energy Producers
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-29.csv') # adding more categories
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-11-15.csv') # adding more categories
-    FileIngestor.affiliations_upload('csv_data/lobbyists_and_clients_cleaned_2025-01-02.csv') # clients of lobbyists from the AG register
+    # FileIngestor.affiliations_upload('csv_data/lobbyists_and_clients_cleaned_2025-01-02.csv') # clients of lobbyists from the AG register
 
 
     # This is a reminder, to add more info on ministries.
