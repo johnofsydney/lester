@@ -17,7 +17,10 @@ class Transfer < ApplicationRecord
     (Transfer.order(:effective_date).first.effective_date.year..Time.now.year).to_a
   end
 
-  store_accessor :data, %i(donations giver_name taker_name), prefix: :cached
+  # cached data can be deleted and re-created
+  store_accessor :data, %i(giver_name taker_name), prefix: :cached
+  # other data is immutable
+  store_accessor :data, %i(donations)
 
   def financial_year
     effective_date.year
