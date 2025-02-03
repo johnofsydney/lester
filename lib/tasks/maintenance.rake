@@ -51,7 +51,7 @@ namespace :lester do
     #   memberships.last.destroy
     #   p "Deleted duplicate membership for #{jannette_lobbying.name}"
     # end
-    idameno_123_abn = Group.find_by(nameL 'Idameneo (No 123) Pty Ltd')
+    idameno_123_abn = Group.find_by(name: 'Idameneo (No 123) Pty Ltd')
     idameno_123_dot = Group.find_by(name: 'Idameneo (No. 123) Pty Ltd')
     idameno_123_abn.other_names << 'The Artlu Unit Trust'
     idameno_123_abn.save
@@ -82,5 +82,12 @@ namespace :lester do
       membership = Membership.create(group: group, member: person, member_type: 'Person')
       Position.create(membership: membership, title: 'Sole Trader')
     end
+  end
+
+  desc 'CLear Cache for Network Graph and Count'
+  task clear_cache: :environment do
+    Group.all.update_all(cached_data: {})
+    Person.all.update_all(cached_data: {})
+
   end
 end
