@@ -55,7 +55,7 @@ namespace :lester do
   #   ActiveRecord::Base.connection.reset_pk_sequence!('groups')
   #   ActiveRecord::Base.connection.reset_pk_sequence!('people')
 
-  #   annual_donation_files = [
+    annual_donation_files = [
   #     'csv_data/Annual_Donations_Made_2018.csv',
   #     'csv_data/Annual_Donations_Made_2019.csv',
   #     'csv_data/Annual_Donations_Made_2020.csv',
@@ -63,7 +63,7 @@ namespace :lester do
   #     'csv_data/Annual_Donations_Made_2022.csv',
   #     'csv_data/Annual_Donations_Made_2023.csv',
       'csv_data/Annual_Donations_Made_2024.csv',
-  #   ]
+    ]
 
   #   federal_parliamentarians = [
   #     'csv_data/wiki_feds_current_mps_cleaned.csv',
