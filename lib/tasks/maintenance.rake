@@ -27,30 +27,45 @@ namespace :lester do
     # ernst_and_young = Group.find_by(name: 'Ernst & Young')
     # ey.merge_into(ernst_and_young)
 
-    # CMAX and Clubs NSW already fixed in map_group_names.rb
-    low_cmax = Group.find_by(name: 'Cmax Advisory')
-    caps_cmax = Group.find_by(name: 'CMAX Advisory')
-    p "Merging #{low_cmax.name} into #{caps_cmax.name}... "
-    low_cmax.merge_into(caps_cmax)
+    # # CMAX and Clubs NSW already fixed in map_group_names.rb
+    # low_cmax = Group.find_by(name: 'Cmax Advisory')
+    # caps_cmax = Group.find_by(name: 'CMAX Advisory')
+    # p "Merging #{low_cmax.name} into #{caps_cmax.name}... "
+    # low_cmax.merge_into(caps_cmax)
 
-    low_clubs = Group.find_by(name: 'Registered Clubs Association of NSW (t/as Clubsnsw)')
-    caps_clubs = Group.find_by(name: 'Registered Clubs Association of NSW (T/As ClubsNSW)')
-    p "Merging #{low_clubs.name} into #{caps_clubs.name}... "
-    low_clubs.merge_into(caps_clubs)
+    # low_clubs = Group.find_by(name: 'Registered Clubs Association of NSW (t/as Clubsnsw)')
+    # caps_clubs = Group.find_by(name: 'Registered Clubs Association of NSW (T/As ClubsNSW)')
+    # p "Merging #{low_clubs.name} into #{caps_clubs.name}... "
+    # low_clubs.merge_into(caps_clubs)
 
-    # was created as group with person name and with lobbying suffix
-    jannette_group = Group.find_by(name: 'Jannette Cotterell')
-    jannette_lobbying = Group.find_by(name: 'Jannette Cotterell Lobbying')
-    p "Merging #{jannette_group.name} into #{jannette_lobbying.name}... "
-    jannette_group.merge_into(jannette_lobbying)
+    # # was created as group with person name and with lobbying suffix
+    # jannette_group = Group.find_by(name: 'Jannette Cotterell')
+    # jannette_lobbying = Group.find_by(name: 'Jannette Cotterell Lobbying')
+    # p "Merging #{jannette_group.name} into #{jannette_lobbying.name}... "
+    # jannette_group.merge_into(jannette_lobbying)
 
-    # is duplicated in the lobbyists category. fixed memberhip to validate for duplicates
-    lobbyist_category = Group.find_by(name: 'Lobbyists')
-    memberships = Membership.where(group: lobbyist_category, member: jannette_lobbying)
-    if memberships.count > 1
-      memberships.last.destroy
-      p "Deleted duplicate membership for #{jannette_lobbying.name}"
-    end
+    # # is duplicated in the lobbyists category. fixed memberhip to validate for duplicates
+    # lobbyist_category = Group.find_by(name: 'Lobbyists')
+    # memberships = Membership.where(group: lobbyist_category, member: jannette_lobbying)
+    # if memberships.count > 1
+    #   memberships.last.destroy
+    #   p "Deleted duplicate membership for #{jannette_lobbying.name}"
+    # end
+    idameno_123_abn = Group.find_by(nameL 'Idameneo (No 123) Pty Ltd')
+    idameno_123_dot = Group.find_by(name: 'Idameneo (No. 123) Pty Ltd')
+    idameno_123_abn.other_names << 'The Artlu Unit Trust'
+    idameno_123_abn.save
+    idameno_123_dot.merge_into(idameno_123_abn)
+
+    smart_short = Group.find_by(name: 'Smart Energy Council')
+    smart_long = Group.find_by(name: 'Smart Energy Council (previously Australian Solar Council)')
+    smart_long.merge_into(smart_short)
+    smart_short.other_names << 'Australian Solar Council'
+    smart_short.save
+
+    union_short = Group.find_by(name: 'The Union Education Foundation')
+    union_long = Group.find_by(name: 'The Union Education Foundation Limited')
+    union_long.merge_into(union_short)
 
     p "done."
   end

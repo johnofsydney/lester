@@ -1,5 +1,5 @@
 class Groups::IndexView < ApplicationView
-  HIGHLIGHT_THRESHOLD = 300
+  HIGHLIGHT_THRESHOLD = 3706
 
 	def initialize(groups:, page:, pages:)
 		@groups = groups

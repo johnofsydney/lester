@@ -1,4 +1,5 @@
 class People::IndexView < ApplicationView
+  HIGHLIGHT_THRESHOLD = 1883
 	def initialize(people:)
 		@people = people
 	end
@@ -7,7 +8,9 @@ class People::IndexView < ApplicationView
     h1 { 'People' }
     ul do
       @people.each do |person|
-        li do
+        highlight = person.id > HIGHLIGHT_THRESHOLD ? 'highlight-row' : ''
+        class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
+        div(class: class_list) do
           a(href: "/people/#{person.id}") { person.name }
         end
       end

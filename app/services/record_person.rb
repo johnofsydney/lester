@@ -46,6 +46,7 @@ class RecordPerson
     return 'Kerryn Phelps' if name.match?(/Kerryn.+Phelps/i)
     return 'Mike Cannon Brookes' if name.match?(/(Mike|Michael) Cannon.+Brookes/i)
     return 'Fraser Anning' if name.match?(/Fraser.+Anning/i)
+    return 'Zoe Daniel' if name.match?(/Zoe Daniel/i)
 
     name.gsub(regex_for_removal_elected, '')
         .gsub(regex_for_removal_honours, '')
