@@ -62,6 +62,7 @@ namespace :lester do
   #     'csv_data/Annual_Donations_Made_2021.csv',
   #     'csv_data/Annual_Donations_Made_2022.csv',
   #     'csv_data/Annual_Donations_Made_2023.csv',
+      'csv_data/Annual_Donations_Made_2024.csv',
   #   ]
 
   #   federal_parliamentarians = [
