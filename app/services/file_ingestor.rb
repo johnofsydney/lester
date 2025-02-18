@@ -348,12 +348,12 @@ class FileIngestor
 
         membership.update(evidence:) if evidence
 
-        # ONE TIME ONLY - FOR LOBBYISTS AND CLIENTS
-        Membership.find_or_create_by(
-          member_type: "Group",
-          member_id: member_group.id,
-          group: client_category,
-        )
+        # # ONE TIME ONLY - FOR LOBBYISTS AND CLIENTS
+        # Membership.find_or_create_by(
+        #   member_type: "Group",
+        #   member_id: member_group.id,
+        #   group: client_category,
+        # )
 
         print 'm'
       end
