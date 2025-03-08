@@ -134,7 +134,7 @@ class MapGroupNames
     return 'JERA Australia Pty Ltd' if name.match?(/\bJERA Australia\b/i) || name == 'Jera'
     return 'Jellinbah Group' if name.match?(/\bJellinbah Group\b/i)
     return 'Johnson & Johnson Medical' if name.match?(/\bJohnson (&|And) Johnson Medical\b/i)
-    return 'Johnson & Johnson' if name.match?(/\bJohnson (&|And) Johnson\b/i)
+    return 'Johnson & Johnson Pty Ltd' if name.match?(/\bJohnson (&|And) Johnson\b/i)
     return 'KPMG Australia' if name.match?(/\bKPMG Australia\b/i) || name == 'KPMG'
     return 'Kimberly-Clark Australia Pty Ltd' if name.match?(/\bKimberly-*Clark Australia\b/i) || name.match?(/\bKimberlyClark\b/i)
     return 'L3 Harris Technologies' if name.match?(/(L3 Harris|L3Harris) Technologies/i)
@@ -198,6 +198,10 @@ class MapGroupNames
     return 'Westpac Banking Corporation' if name.match?(/Westpac Banking Corporation/i) || name.downcase == 'westpac'
     return 'Your (Solutions|Solution) Compounding Pharmacy' if name.match?(/Your Solutions Compounding Pharmacy/i)
     return 'Yumbah Aquaculture' if name.match?(/Yumbah Aquaculture/i)
+    return 'Clubs Australia' if name.match?(/ClubsAustralia Inc/i)
+    return 'Idameneo (No 123) Pty Ltd' if name.match?(/Idameneo.+123/i)
+    return 'Schaffer Corporation Limited' if name.match?(/Schaffer Corporation (Limited|Ltd)/i)
+    return 'The Union Education Foundation' if name.match?(/Union Education Foundation/i)
 
 
 
@@ -223,6 +227,7 @@ class MapGroupNames
     return group_names.liberals.federal if name.match(/Liberal Party.+Menzies Research Centre/i)
     return group_names.labor.federal if name.match(/The Australian Labour Party National Secretar/i)
     return group_names.labor.federal if name.match(/ALP National \(ALP-FED\)/i)
+    return group_names.labor.federal if name.match(/Australian Labour Party/i)
 
     # Liberal National Party (QLD) and Country Liberal Party (NT)
     return group_names.liberals.qld if name.match(/(Liberal National Party|LNP).+(QLD|Queensland)/i)
@@ -253,6 +258,7 @@ class MapGroupNames
     return group_names.liberals.nt if name.match(/Lib.+(Northern Territory|NT|N\.T\.)/i)
     return group_names.liberals.nt if name.match(/Clp-Nt/i)
     return group_names.liberals.wa if name.match(/Lib.+(Western Australia|Western Australia|WA|W\.A\.)/i)
+    return group_names.liberals.wa if name.match(/Liberal Party w\.A.+Division/i)
     return group_names.liberals.tas if name.match(/Lib.+TAS/i)
     return group_names.liberals.act if name.match(/Lib.+(ACT|Australian Capital Territory)/i)
     return group_names.liberals.federal if name.match(/Lib.+(Fed|FEC)/i)

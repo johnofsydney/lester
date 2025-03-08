@@ -166,4 +166,10 @@ class Group < ApplicationRecord
 
     self.destroy
   end
+
+  def display_name
+    return "#{name} (#{business_number})" if business_number.present?
+
+    name
+  end
 end

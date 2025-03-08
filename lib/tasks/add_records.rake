@@ -7,6 +7,7 @@ namespace :lester do
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-13.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-14.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-01-15.csv')
+    FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-02-18.csv')
 
 
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
@@ -15,7 +16,7 @@ namespace :lester do
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-23.csv') - affiliations mostly for Australian Energy Producers
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-29.csv') # adding more categories
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-11-15.csv') # adding more categories
-    FileIngestor.affiliations_upload('csv_data/lobbyists_and_clients_cleaned_2025-01-02.csv') # clients of lobbyists from the AG register
+    # FileIngestor.affiliations_upload('csv_data/lobbyists_and_clients_cleaned_2025-01-02.csv') # clients of lobbyists from the AG register
 
 
     # This is a reminder, to add more info on ministries.
@@ -36,6 +37,22 @@ namespace :lester do
     lobbyists.each do |file|
       # FileIngestor.lobbyists_upload(file)
     end
+
+    annual_donation_files = [
+    #     'csv_data/Annual_Donations_Made_2018.csv',
+    #     'csv_data/Annual_Donations_Made_2019.csv',
+    #     'csv_data/Annual_Donations_Made_2020.csv',
+    #     'csv_data/Annual_Donations_Made_2021.csv',
+    #     'csv_data/Annual_Donations_Made_2022.csv',
+    #     'csv_data/Annual_Donations_Made_2023.csv',
+    #     'csv_data/Annual_Donations_Made_2024.csv',
+    ]
+
+    # using data sourced from the AEC
+    annual_donation_files.each do |file|
+      # FileIngestor.annual_donor_ingest(file)
+    end
+
   end
 
   # desc "Destroy all records and re-populate"
@@ -55,14 +72,15 @@ namespace :lester do
   #   ActiveRecord::Base.connection.reset_pk_sequence!('groups')
   #   ActiveRecord::Base.connection.reset_pk_sequence!('people')
 
-  #   annual_donation_files = [
+    annual_donation_files = [
   #     'csv_data/Annual_Donations_Made_2018.csv',
   #     'csv_data/Annual_Donations_Made_2019.csv',
   #     'csv_data/Annual_Donations_Made_2020.csv',
   #     'csv_data/Annual_Donations_Made_2021.csv',
   #     'csv_data/Annual_Donations_Made_2022.csv',
   #     'csv_data/Annual_Donations_Made_2023.csv',
-  #   ]
+  #     'csv_data/Annual_Donations_Made_2024.csv',
+    ]
 
   #   federal_parliamentarians = [
   #     'csv_data/wiki_feds_current_mps_cleaned.csv',
@@ -78,10 +96,10 @@ namespace :lester do
   #     'csv_data/ministries_turnbull.csv',
   #   ]
 
-  #   # using data sourced from the AEC
-  #   annual_donation_files.each do |file|
-  #     FileIngestor.annual_donor_ingest(file)
-  #   end
+    # # using data sourced from the AEC
+    # annual_donation_files.each do |file|
+    #   FileIngestor.annual_donor_ingest(file)
+    # end
 
   #   FileIngestor.referendum_donor_ingest('csv_data/Referendum_Donations_Made_2023.csv')
 
