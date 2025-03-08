@@ -1,3 +1,5 @@
+# from https://t27duck.com/posts/17-a-bluesky-at-proto-api-example-in-ruby
+
 class BlueskyService
   BASE_URL = "https://bsky.social/xrpc"
   TOKEN_CACHE_KEY = :bluesky_token_data
@@ -12,6 +14,10 @@ class BlueskyService
     @password = Rails.application.credentials.dig(:bluesky, :password)
     token_data = Rails.cache.read(TOKEN_CACHE_KEY)
     process_tokens(token_data) if token_data.present?
+  end
+
+  def self.skeet(message)
+    new.skeet(message)
   end
 
   # Posts a new message (skeet) to the account and return the direct URL.
@@ -52,7 +58,10 @@ class BlueskyService
   def link_facets(message)
     [].tap do |facets|
       matches = []
-      message.scan(URI::RFC2396_PARSER.make_regexp(["http", "https"])) { matches << Regexp.last_match }
+      # message.scan(URI::RFC2396_PARSER.make_regexp(["http", "https"])) { matches << Regexp.last_match }
+      # raises exception, so using plain old regex instead to find each link
+      url_regex = /https?:\/\/[\w\-\.]+\.[a-z]{2,}(?:\/[^\s<>"']*)?/i
+      message.scan(url_regex) { matches << Regexp.last_match }
       matches.each do |match|
         start, stop = match.byteoffset(0)
         facets << {

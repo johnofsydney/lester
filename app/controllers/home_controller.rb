@@ -27,4 +27,11 @@ class HomeController < ApplicationController
   def suggestion_params
     @suggestion_params ||= params.permit(:headline, :description, :evidence, :suggested_by)
   end
+
+  def post_to_socials
+    message = Person.all.shuffle.last.summary
+    BlueskyService.skeet(message)
+
+    render json: { message: message }, status: :ok
+  end
 end
