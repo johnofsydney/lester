@@ -15,6 +15,9 @@ Rails.application.routes.draw do
   get 'search' => 'search#index'
   get '/home/suggestions' => 'home#suggestions'
 
+  get '/post_to_socials' => 'home#post_to_socials'              # Random
+  get '/people/:id/post_to_socials' => 'people#post_to_socials' # Person
+
   resources :transfers
   resources :groups
   resources :people
