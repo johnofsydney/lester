@@ -33,6 +33,11 @@ class Home::TodoView < ApplicationView
                 li { 'jQuery' }
                 li { 'Import Maps' }
                 li { 'Add $$ totals on group and person page, by year' }
+                li { 'More Data from the AEC. Referendum data' }
+
+                li { 'Import Phlex JS' }
+                li { 'Import People / Groups / Positions from CSV' }
+                li { 'Add Indexes' }
               end
             end
           end
@@ -49,10 +54,7 @@ class Home::TodoView < ApplicationView
                 li { 'Documentation / Content' }
                 li { 'Images for About' }
                 li { 'Write tests for Build Queue service and attend to TODOs' }
-                li { 'Node Linker - should consider memberships only? (Not affiliations)' }
-                li { 'Node Linker - should consider overlapping memberships only?' }
-                li { 'Node Linker - should consider several paths' }
-                li { 'Node Linker - use BuildQueue class' }
+
               end
             end
           end
@@ -63,7 +65,7 @@ class Home::TodoView < ApplicationView
               h5(class: 'card-title') { 'TODO' }
               ul do
                 li { 'Add evidence to each model, as an Array' }
-                li { 'More Data from the AEC. Referendum data' }
+
                 li { 'More Data from Fed Gov Expenditure: https://www.tenders.gov.au/senateorder/list' }
                 li { 'Move search alinker forms to Phlex' }
 
@@ -80,9 +82,6 @@ class Home::TodoView < ApplicationView
                 li { 'More tests for record transfer taker' }
 
 
-                li { 'Import Phlex JS' }
-                li { 'Import People / Groups / Positions from CSV' }
-                li { 'Add Indexes' }
                 li { 'Add Audit table' }
                 li { 'Ex Members of a group should appear last (or not at all eg Lidia Thorpe) (app/views/components/groups/people.rb:3)' }
               end
