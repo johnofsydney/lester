@@ -73,19 +73,18 @@ class Person < ApplicationRecord
   end
 
   def direct_transfers
-    transfers = OpenStruct.new(
-      in: incoming_transfers.sum(:amount),
-      out: outgoing_transfers.sum(:amount)
-    )
+    transfers_in = incoming_transfers.sum(:amount)
+    transfers_out = outgoing_transfers.sum(:amount)
 
-    return 'None' if transfers.in.zero? && transfers.out.zero?
-    return "Incoming: #{number_to_currency(transfers.in, precision: 0)}" if transfers.out.zero?
-    return "Outgoing: #{number_to_currency(transfers.out, precision: 0)}" if transfers.in.zero?
+    return 'None' if transfers_in.zero? && transfers_out.zero?
+    return "Incoming: #{number_to_currency(transfers_in, precision: 0)}" if transfers_out.zero?
+    return "Outgoing: #{number_to_currency(transfers_out, precision: 0)}" if transfers_in.zero?
 
-    "Incoming: #{number_to_currency(transfers.in, precision: 0)}, Outgoing: #{number_to_currency(transfers.out, precision: 0)}"
+    "Incoming: #{number_to_currency(transfers_in, precision: 0)}, Outgoing: #{number_to_currency(transfers_out, precision: 0)}"
   end
 
   def first_degree_transfers
+    # TODO: cache some of these database calls
     transfers = consolidated_transfers(depth: 1).filter { |transfer| transfer.depth == 1 }
     incoming_transfers = transfers.filter { |transfer| transfer.direction == 'incoming' }
     outgoing_transfers = transfers.filter { |transfer| transfer.direction == 'outgoing' }
