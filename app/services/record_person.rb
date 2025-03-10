@@ -20,8 +20,18 @@ class RecordPerson
   def cleaned_up_name(name)
     regex_for_removal_elected = /\bMP\b|\bSenator\b/i
     regex_for_removal_honours = /\bOAM\b|\bAO\b|\bAM\b|\bCSC\b|\bCBE\b/i
-    regex_for_removal_titles = /\bQC\b|\bKC\b|\bProf\b|\bDr\b|^Hon\b/i
-    regex_for_removal_normal_titles = /\bMr\b|\bMs\b|\bMs\b|\bMiss\b/i
+    regex_for_removal_titles = /\bQC\b|\bKC\b|\bProf\b|\bDr\b|^Hon\b|\bHon\.\b|\bSir\b/i
+    regex_for_removal_normal_titles = /\bMr\b|\bMrs\b|\bMs\b|\bMiss\b/i
+
+    name = name.gsub(regex_for_removal_elected, '')
+               .gsub(regex_for_removal_honours, '')
+               .gsub(regex_for_removal_titles, '')
+               .gsub(regex_for_removal_normal_titles, '')
+               .strip
+
+    if name.match?(/^[A-Z][a-z]+, [A-Z][a-z]+$/)
+      name = name.split(',').reverse.join(' ')
+    end
 
     name = CapitalizeNames.capitalize(name)
 
@@ -48,10 +58,6 @@ class RecordPerson
     return 'Fraser Anning' if name.match?(/Fraser.+Anning/i)
     return 'Zoe Daniel' if name.match?(/Zoe Daniel/i)
 
-    name.gsub(regex_for_removal_elected, '')
-        .gsub(regex_for_removal_honours, '')
-        .gsub(regex_for_removal_titles, '')
-        .gsub(regex_for_removal_normal_titles, '')
-        .strip
+    name
   end
 end
