@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+
 # Abort if there are uncommitted changes in the current Git repository
 if [[ -n $(git status --porcelain) ]]; then
     echo "Uncommitted changes detected. Please commit or stash your changes before running this script."
@@ -8,6 +10,7 @@ fi
 
 # Variables (update these with your own credentials and paths)
 REMOTE_USER="deploy" # "your_remote_user"
+REMOTE_USER=$LESTER_REMOTE_USER # "your_remote_user"
 REMOTE_HOST="3.27.57.193" # "your_remote_host"
 REMOTE_DB="db_923810d8c248" # "your_database_name"
 REMOTE_DB_USER="user_4bd889468a0a" # "your_database_user"
@@ -16,6 +19,9 @@ REMOTE_BACKUP_DIR="~/db_dumps"  # Use $HOME instead of ~
 BACKUP_FILE="database.bak"
 LOCAL_DB="sunshine_guardian_development"
 LOCAL_DB_USER="your_local_database_user"
+
+echo "REMOTE_USER: $REMOTE_USER"
+exit 1
 
 # Prompt the user to ask if they want to download the backup from the remote server
 read -p "Do you want to download the backup from the remote server? (y/n): " download_choice
