@@ -1,12 +1,16 @@
 class PeopleController < ApplicationController
   before_action :set_person, only: %i[ show edit update destroy post_to_socials]
   before_action :authenticate_user!, only: %i[ new edit update destroy ]
+  before_action :set_page, only: %i[ index ]
 
   layout -> { ApplicationLayout }
 
   def index
-    people = Person.order(:name)
-    render People::IndexView.new(people:)
+    people = Person.order(:name).limit(page_size).offset(paginate_offset).to_a
+
+    pages = (Person.count.to_f / page_size).ceil
+
+    render People::IndexView.new(people:, page: @page, pages:)
   end
 
   def show
@@ -29,5 +33,15 @@ class PeopleController < ApplicationController
   # Only allow a list of trusted parameters through. Including nested params for memberships
   def person_params
     params.require(:person).permit(:name, memberships_attributes: [:id, :title, :start_date, :end_date, :_destroy])
+  end
+
+  def page_size
+    return 250
+
+    @page_size ||= Constants::PAGE_LIMIT
+  end
+
+  def set_page
+    @page = (params[:page] || 0).to_i
   end
 end

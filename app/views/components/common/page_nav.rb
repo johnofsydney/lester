@@ -8,6 +8,8 @@ class Common::PageNav < ApplicationView
   end
 
   def template
+    return unless pages > 1
+
     nav(aria: { label: "Page navigation example" }) do
       ul(class: "pagination") do
 

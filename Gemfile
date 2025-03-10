@@ -90,6 +90,10 @@ gem "groupdate"
 gem 'vite_rails'
 gem 'inertia_rails'
 
+gem 'flipper'
+gem 'flipper-active_record'
+gem 'flipper-ui'
+
 # TODO:
 # add bootstrap gem?
 # https://dev.to/chmich/setup-bootstrap-on-rails-7-and-vite-g5a
