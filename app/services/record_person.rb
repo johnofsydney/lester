@@ -21,21 +21,25 @@ class RecordPerson
     regex_for_removal_elected = /\bMP\b|\bSenator\b/i
     regex_for_removal_honours = /\bOAM\b|\bAO\b|\bAM\b|\bCSC\b|\bCBE\b|\bNK\b/i
     regex_for_removal_titles = /\bQC\b|\bKC\b|\bProf\b|\bDr\b|\bSir\b/i
-    regex_for_removal_titles_2 = /^(The )?(Hon\.\b|Hon\b|Honourable)/i
+    regex_for_removal_titles_2 = /\bThe (Hon\.\b|Hon\b|Honourable)/i
+    regex_for_removal_titles_3 = /^Hon\b|^Hon\.\b/i
     regex_for_removal_normal_titles = /\bMr\b|\bMrs\b|\bMs\b|\bMiss\b/i
+
+    if name.include?(',')
+      name = name.split(',').reverse.join(' ')
+    end
 
     name = name.strip
                .gsub(regex_for_removal_elected, '')
                .gsub(regex_for_removal_honours, '')
                .gsub(regex_for_removal_titles, '')
                .gsub(regex_for_removal_titles_2, '')
+               .gsub(regex_for_removal_titles_3, '')
                .gsub(regex_for_removal_normal_titles, '')
                .gsub('.', '')
                .strip
 
-    if name.include?(',')
-      name = name.split(',').reverse.join(' ')
-    end
+
 
     name = CapitalizeNames.capitalize(name)
 

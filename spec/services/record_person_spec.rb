@@ -15,6 +15,8 @@ RSpec.describe RecordPerson, type: :service do
       "The Hon. Peter Francis Watkins" => "Peter Francis Watkins",
       "Hon Catherine King" => "Catherine King",
       "The Hon Robert Borbidge" => "Robert Borbidge",
+      "The Hon Leslie Gladys Williams" => "Leslie Gladys Williams",
+      "Grusovin, The Hon. Deirdre Mary" => "Deirdre Mary Grusovin",
     }
   end
 
