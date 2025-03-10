@@ -2,7 +2,10 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  mount Flipper::UI.app(Flipper) => '/flipper'
+
   get 'groups/page=:page' => 'groups#index'
+  get 'people/page=:page' => 'people#index'
   get 'transfers/page=:page' => 'transfers#index'
 
   get 'groups/group_people/:group_id/page=:page' => 'groups#group_people'
