@@ -135,14 +135,8 @@ class FileIngestor
           Position.create(membership: parliament_membership, title:)
         end
 
-        # this relies on the csv file being cleaned, so that independents have /indepedent/ in the party column
-        if row['party'].nil? || row['party'].match?(/independent/i)
-          independent = true
-        end
-
         # independents are not in a party, so we don't need to create a party membership for them
-        # we also don't need to create a branch / electorate membership for them, that's handled independently
-        next if independent
+        next if (row['party'].nil? || row['party'].match?(/independent/i))
 
         party = RecordGroup.call(row['party'])
         # major_party = party.name.match?(/ALP|Liberals|Greens|Nationals/)

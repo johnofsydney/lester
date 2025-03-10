@@ -12,6 +12,9 @@ RSpec.describe RecordPerson, type: :service do
       "Arthur Sinodinos AO" => "Arthur Sinodinos",
       "Hon Paul Smith" => "Paul Smith",
       "Jimmy Hon" => "Jimmy Hon",
+      "The Hon. Peter Francis Watkins" => "Peter Francis Watkins",
+      "Hon Catherine King" => "Catherine King",
+      "The Hon Robert Borbidge" => "Robert Borbidge",
     }
   end
 
