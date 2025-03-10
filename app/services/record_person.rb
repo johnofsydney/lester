@@ -29,7 +29,7 @@ class RecordPerson
                .gsub(regex_for_removal_normal_titles, '')
                .strip
 
-    if name.match?(/^.+,.+$/)
+    if name.include?(',')
       name = name.split(',').reverse.join(' ')
     end
 
@@ -58,6 +58,6 @@ class RecordPerson
     return 'Fraser Anning' if name.match?(/Fraser.+Anning/i)
     return 'Zoe Daniel' if name.match?(/Zoe Daniel/i)
 
-    name
+    name.strip
   end
 end
