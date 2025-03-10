@@ -9,18 +9,27 @@ if [[ -n $(git status --porcelain) ]]; then
 fi
 
 # Variables (update these with your own credentials and paths)
-REMOTE_USER="deploy" # "your_remote_user"
+
 REMOTE_USER=$LESTER_REMOTE_USER # "your_remote_user"
-REMOTE_HOST="3.27.57.193" # "your_remote_host"
-REMOTE_DB="db_923810d8c248" # "your_database_name"
-REMOTE_DB_USER="user_4bd889468a0a" # "your_database_user"
-LOCAL_BACKUP_DIR="$HOME/Desktop"  # Use $HOME instead of ~ ## FOR LOCAL ##
-REMOTE_BACKUP_DIR="~/db_dumps"  # Use $HOME instead of ~
-BACKUP_FILE="database.bak"
-LOCAL_DB="sunshine_guardian_development"
-LOCAL_DB_USER="your_local_database_user"
+REMOTE_HOST=$LESTER_REMOTE_HOST # "your_remote_host"
+REMOTE_DB=$LESTER_REMOTE_DB # "your_database_name"
+REMOTE_DB_USER=$LESTER_REMOTE_DB_USER # "your_database_user"
+LOCAL_BACKUP_DIR=$LESTER_LOCAL_BACKUP_DIR  # Use $HOME instead of ~ ## FOR LOCAL ##
+REMOTE_BACKUP_DIR=$LESTER_REMOTE_BACKUP_DIR  # Use $HOME instead of ~
+BACKUP_FILE=$LESTER_BACKUP_FILE
+LOCAL_DB=$LESTER_LOCAL_DB
+LOCAL_DB_USER=$LESTER_LOCAL_DB_USER
 
 echo "REMOTE_USER: $REMOTE_USER"
+echo "REMOTE_HOST: $REMOTE_HOST"
+echo "REMOTE_DB: $REMOTE_DB"
+echo "REMOTE_DB_USER: $REMOTE_DB_USER"
+echo "LOCAL_BACKUP_DIR: $LOCAL_BACKUP_DIR"
+echo "REMOTE_BACKUP_DIR: $REMOTE_BACKUP_DIR"
+echo "BACKUP_FILE: $BACKUP_FILE"
+echo "LOCAL_DB: $LOCAL_DB"
+echo "LOCAL_DB_USER: $LOCAL_DB_USER"
+
 exit 1
 
 # Prompt the user to ask if they want to download the backup from the remote server
