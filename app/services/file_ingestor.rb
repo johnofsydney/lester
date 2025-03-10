@@ -120,6 +120,42 @@ class FileIngestor
       end
     end
 
+    def nsw_parliamentarians_upload(file)
+      parliament = RecordGroup.call('NSW Parliament')
+
+      csv = CSV.read(file, headers: true)
+      csv.each do |row|
+        person = RecordPerson.call(row['name'])
+        print 'p'
+
+        if Membership.where(member: person, group: parliament).empty?
+          parliament_membership = Membership.find_or_create_by(member: person, group: parliament)
+          parliament_membership.save
+          title = row['ministry'].present? ? row['ministry'] : 'NSW MP / MLC'
+          Position.create(membership: parliament_membership, title:)
+        end
+
+        # this relies on the csv file being cleaned, so that independents have /indepedent/ in the party column
+        if row['party'].nil? || row['party'].match?(/independent/i)
+          independent = true
+        end
+
+        # independents are not in a party, so we don't need to create a party membership for them
+        # we also don't need to create a branch / electorate membership for them, that's handled independently
+        next if independent
+
+        party = RecordGroup.call(row['party'])
+        # major_party = party.name.match?(/ALP|Liberals|Greens|Nationals/)
+
+        # For MPs who belong to a party, create a membership and position.
+        if Membership.where(member: person, group: party).empty?
+          state_membership = Membership.find_or_create_by(member: person, group: party)
+          title = 'Party Member (NSW)'
+          Position.create(membership: state_membership, title:)
+        end
+      end
+    end
+
     def federal_parliamentarians_upload(file)
       parliament = RecordGroup.call('Australian Federal Parliament')
 
