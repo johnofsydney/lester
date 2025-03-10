@@ -30,8 +30,6 @@ echo "BACKUP_FILE: $BACKUP_FILE"
 echo "LOCAL_DB: $LOCAL_DB"
 echo "LOCAL_DB_USER: $LOCAL_DB_USER"
 
-exit 1
-
 # Prompt the user to ask if they want to download the backup from the remote server
 read -p "Do you want to download the backup from the remote server? (y/n): " download_choice
 
