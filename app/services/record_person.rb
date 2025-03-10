@@ -29,7 +29,7 @@ class RecordPerson
                .gsub(regex_for_removal_normal_titles, '')
                .strip
 
-    if name.match?(/^[A-Z][a-z]+, [A-Z][a-z]+$/)
+    if name.match?(/^.+,.+$/)
       name = name.split(',').reverse.join(' ')
     end
 
