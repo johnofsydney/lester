@@ -1,5 +1,6 @@
 class People::IndexView < ApplicationView
-  HIGHLIGHT_THRESHOLD = 1883
+  HIGHLIGHT_THRESHOLD = 1914
+
 	def initialize(people:, page:, pages:)
 		@people = people
     @page = page
@@ -34,6 +35,8 @@ class People::IndexView < ApplicationView
         end
       end
     end
+
+    render Common::PageNav.new(pages:, page:, klass: 'person')
 	end
 
   private
