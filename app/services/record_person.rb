@@ -65,6 +65,13 @@ class RecordPerson
     return 'Mike Cannon Brookes' if name.match?(/(Mike|Michael) Cannon.+Brookes/i)
     return 'Fraser Anning' if name.match?(/Fraser.+Anning/i)
     return 'Zoe Daniel' if name.match?(/Zoe Daniel/i)
+    return 'Catriona Faehrmann' if name.match?(/Catriona Faehrmann|Cate Faehrmann/i)
+    return 'Jamie Parker' if name.match?(/Jamie Parker|Jamie Thomas Parker/i)
+    return 'Kerry Chikarovski' if name.match?(/Kerry Chikarovski|Kerry Anne Chikarovski/i)
+    return 'Kevin Rudd' if name.match?(/Kevin Rudd|Kevin Michael Rudd/i)
+    return 'Kristina Keneally' if name.match?(/Kristina Keneally|Kristina Kerscher Keneally/i)
+    return 'Linda Burney' if name.match?(/Linda Burney|Linda Jean Burney/i)
+    return 'Peter Collins' if name.match?(/Peter Collins|Peter Edward James Collins/i)
 
     name.strip
   end

@@ -35,6 +35,8 @@ class People::IndexView < ApplicationView
         end
       end
     end
+
+    render Common::PageNav.new(pages:, page:, klass: 'person')
 	end
 
   private
