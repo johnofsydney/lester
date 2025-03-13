@@ -7,7 +7,8 @@ namespace :lester do
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-13.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-14.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-01-15.csv')
-    FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-02-18.csv')
+    # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-02-18.csv')
+    FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-03-14.csv')
 
 
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
@@ -17,6 +18,7 @@ namespace :lester do
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-10-29.csv') # adding more categories
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-11-15.csv') # adding more categories
     # FileIngestor.affiliations_upload('csv_data/lobbyists_and_clients_cleaned_2025-01-02.csv') # clients of lobbyists from the AG register
+    FileIngestor.affiliations_upload('csv_data/affiliations-2025-03-14.csv') # adding more categories
 
 
     # This is a reminder, to add more info on ministries.
