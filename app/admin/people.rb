@@ -14,6 +14,9 @@ ActiveAdmin.register Person do
   #   permitted << :other if params[:action] == 'create' && current_user.admin?
   #   permitted
   # end
+
+  permit_params :name
+
   filter :id
   filter :name
   filter :name, as: :string, filters: %i[cont eq start end not_eq]
@@ -22,5 +25,12 @@ ActiveAdmin.register Person do
     selectable_column
     id_column
     column(:name, sortable: 'person_id')
+  end
+
+  form do |f|
+    f.inputs 'Person' do
+      f.input :name
+    end
+    f.actions
   end
 end
