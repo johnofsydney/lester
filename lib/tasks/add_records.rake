@@ -14,10 +14,7 @@ namespace :lester do
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-14.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-01-15.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-02-18.csv')
-<<<<<<< HEAD
     FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-03-14.csv')
-=======
->>>>>>> main
 
 
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
