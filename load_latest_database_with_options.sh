@@ -1,7 +1,5 @@
 #!/bin/bash
 
-
-
 # Abort if there are uncommitted changes in the current Git repository
 if [[ -n $(git status --porcelain) ]]; then
     echo "Uncommitted changes detected. Please commit or stash your changes before running this script."
@@ -51,7 +49,7 @@ fi
 # Step 2: Copy the backup file from the remote server to the local machine
 echo "Copying backup file to local machine..."
 scp "$REMOTE_USER@$REMOTE_HOST:$REMOTE_BACKUP_DIR/$BACKUP_FILE" $LOCAL_BACKUP_DIR/$BACKUP_FILE
-# scp deploy@3.27.57.193:~/db_dumps/database.bak ~/Desktop/database.bak
+# scp user@host_ip:~/db_dumps/database.bak ~/Desktop/database.bak
 
 # Step 3: Delete the backup file from the remote server
 ssh "$REMOTE_USER@$REMOTE_HOST" << EOF
@@ -63,15 +61,12 @@ else
     echo "Skipping download from remote server."
 fi
 
-
-
 # # Step 4: Drop and recreate the local database
 echo "Dropping and recreating local database..."
 rails db:drop && rails db:create
 
 # # Step 5: Restore the backup data to the newly created local database
 # echo "Restoring backup data to local database..."
-# pg_restore -U $LOCAL_DB_USER -d $LOCAL_DB -F c "$LOCAL_BACKUP_DIR/$BACKUP_FILE"
 psql -d $LOCAL_DB < $LOCAL_BACKUP_DIR/$BACKUP_FILE
 
 # # Step 6: Migrate the database
@@ -89,7 +84,5 @@ if [[ "$delete_choice" == "y" || "$delete_choice" == "Y" ]]; then
 else
   echo "skipping delete local..."
 fi
-
-
 
 echo "Database backup and restore process completed successfully!"

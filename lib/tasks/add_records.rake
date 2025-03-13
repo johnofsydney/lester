@@ -1,6 +1,12 @@
 namespace :lester do
   desc "Augment"
   task augment: :environment do
+
+    # NSW Parliamentarians from a list downloaded from
+    # https://www.parliament.nsw.gov.au/members/downloadables/Pages/downloadable-lists.aspx
+    FileIngestor.nsw_parliamentarians_upload('csv_data/nsw_parliamentarians.csv')
+
+
     # From a file created and maintained by me, whenever noteworthy people or groups appear in the news
     # COMPLETE
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-09-13.csv')
@@ -8,7 +14,10 @@ namespace :lester do
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-11-14.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-01-15.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-02-18.csv')
+<<<<<<< HEAD
     FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-03-14.csv')
+=======
+>>>>>>> main
 
 
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
@@ -57,22 +66,6 @@ namespace :lester do
 
   end
 
-  # desc "Destroy all records and re-populate"
-  # task populate: :environment do
-
-  #   raise if Rails.env.production?
-
-  #   Transfer.destroy_all
-  #   Position.destroy_all
-  #   Membership.destroy_all
-  #   Group.destroy_all
-  #   Person.destroy_all
-
-  #   ActiveRecord::Base.connection.reset_pk_sequence!('transfers')
-  #   ActiveRecord::Base.connection.reset_pk_sequence!('positions')
-  #   ActiveRecord::Base.connection.reset_pk_sequence!('memberships')
-  #   ActiveRecord::Base.connection.reset_pk_sequence!('groups')
-  #   ActiveRecord::Base.connection.reset_pk_sequence!('people')
 
     annual_donation_files = [
   #     'csv_data/Annual_Donations_Made_2018.csv',

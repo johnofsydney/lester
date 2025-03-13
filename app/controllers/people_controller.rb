@@ -6,7 +6,11 @@ class PeopleController < ApplicationController
   layout -> { ApplicationLayout }
 
   def index
-    people = Person.order(:name).limit(page_size).offset(paginate_offset).to_a
+    people = Person.order(:name)
+                   .limit(page_size)
+                   .offset(paginate_offset)
+                   .includes([:groups])
+                   .to_a
 
     pages = (Person.count.to_f / page_size).ceil
 
