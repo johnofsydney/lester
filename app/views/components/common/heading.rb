@@ -6,7 +6,7 @@ class Common::Heading < ApplicationView
 	end
 
 	def template
-    div(class: 'heading') do
+    div(class: 'heading display-6 fw-bold') do
       entity.is_category? ? button_without_link : button_with_link
     end
   end
@@ -17,15 +17,15 @@ class Common::Heading < ApplicationView
     a(
       href:,
       class: 'btn w-100 btn-lg',
-      style: "#{color_styles(entity)}; font-size: 1.5em;",
+      style: "#{color_styles(entity)}; font-size: 1em;",
       target: :_blank
     ) { entity.name }
   end
 
   def button_without_link
     button(
-      class: 'btn w-100',
-      style: "#{color_styles(entity)}; font-size: 1.5em;",
+      class: 'btn w-100 btn-lg',
+      style: "#{color_styles(entity)}; font-size: 1em;",
       ) { entity.name }
   end
 end

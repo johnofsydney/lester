@@ -10,8 +10,36 @@ class Groups::ShowView < ApplicationView
   def template
     page_number = 0
 
-    render Common::Heading.new(entity: group)
-    a(href: "/groups/#{group.id}/network_graph") { 'Network Graph' }
+    div(class:"text-center mb-4") do
+      render Common::Heading.new(entity: group)
+
+      a(href: "/groups/#{group.id}/network_graph", class:"btn btn-primary btn-lg shadow") do
+        strong { 'Explore the Network Graph' }
+      end
+    end
+
+    comment { "Stats Section" }
+    div(class: "row text-center mb-4") do
+      div(class: "col-md-4") do
+        div(class: "p-3 bg-light rounded shadow-sm") do
+          p(class: "h5 fw-bold mb-0") { "#{group.money_out } out" } if group.money_out.present?
+          p(class: "h5 fw-bold mb-0") { "#{group.money_in } in" } if group.money_in.present?
+          p(class: "text-muted small") { "Transfers" }
+        end
+      end
+      div(class: "col-md-4") do
+        div(class: "p-3 bg-light rounded shadow-sm") do
+          p(class: "h5 fw-bold mb-0") { group.people.count }
+          p(class: "text-muted small") { "People in Group" }
+        end
+      end
+      div(class: "col-md-4") do
+        div(class: "p-3 bg-light rounded shadow-sm") do
+          p(class: "h5 fw-bold mb-0") { group.affiliated_groups.count }
+          p(class: "text-muted small") { "Connected Groups" }
+        end
+      end
+    end
 
     render Common::MoneySummary.new(entity: group)
 

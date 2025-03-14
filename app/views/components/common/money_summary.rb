@@ -12,22 +12,22 @@ class Common::MoneySummary < ApplicationView
       if money_in.present? || money_out.present?
         div(class: 'margin-above ') do
 
-          div(id: 'summary', class: 'graph rounded bg-light mt-3') do
-            h4 do
-              span {title}
-              span { ' ' }
-              span {
-                a(href: "/about", class: 'gentle-link') { '...' }
-              }
-            end
-            if money_in.present? && money_out.present?
-              div(id: 'in-out-totals') do
-                h6 { "To #{entity.name}: #{money_in}" } if money_in
-                h6 { "From #{entity.name}: #{money_out}" } if money_out
-              end
-            end
+          # div(id: 'summary', class: 'graph rounded bg-light mt-3') do
+          #   h4 do
+          #     span {title}
+          #     span { ' ' }
+          #     span {
+          #       a(href: "/about", class: 'gentle-link') { '...' }
+          #     }
+          #   end
+          #   if money_in.present? && money_out.present?
+          #     div(id: 'in-out-totals') do
+          #       h6 { "To #{entity.name}: #{money_in}" } if money_in
+          #       h6 { "From #{entity.name}: #{money_out}" } if money_out
+          #     end
+          #   end
 
-          end
+          # end
 
           if money_in.present?
             div(class: 'col') do
@@ -71,26 +71,28 @@ class Common::MoneySummary < ApplicationView
   end
 
   def money_in
-    if is_category?
-      amount = entity.category_incoming_transfers.sum(:amount)
-    else
-      amount = entity.incoming_transfers.sum(:amount)
-    end
+    # if is_category?
+    #   amount = entity.category_incoming_transfers.sum(:amount)
+    # else
+    #   amount = entity.incoming_transfers.sum(:amount)
+    # end
 
-    return unless amount.positive?
+    # return unless amount.positive?
 
-    number_to_currency amount, precision: 0
+    # number_to_currency amount, precision: 0
+    entity.money_in
   end
 
   def money_out
-    if is_category?
-      amount = entity.category_outgoing_transfers.sum(:amount)
-    else
-      amount = entity.outgoing_transfers.sum(:amount)
-    end
-    return unless amount.positive?
+    # if is_category?
+    #   amount = entity.category_outgoing_transfers.sum(:amount)
+    # else
+    #   amount = entity.outgoing_transfers.sum(:amount)
+    # end
+    # return unless amount.positive?
 
-    number_to_currency amount, precision: 0
+    # number_to_currency amount, precision: 0
+    entity.money_out
   end
 
   def is_category?
