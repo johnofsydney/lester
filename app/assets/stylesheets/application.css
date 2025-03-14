@@ -181,3 +181,32 @@ button {
   .label-row {
   }
 }
+
+.equal-height {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+}
+
+.bottom-text {
+  margin-top: auto;
+}
+
+.vertical-centre-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.no-border-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.no-border-table td {
+  border: none;
+  padding: 5px;
+}

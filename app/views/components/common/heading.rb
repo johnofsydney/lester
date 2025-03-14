@@ -6,7 +6,7 @@ class Common::Heading < ApplicationView
 	end
 
 	def template
-    div(class: 'heading display-6 fw-bold') do
+    div(class: 'heading display-6 fw-bold shadow-sm') do
       entity.is_category? ? button_without_link : button_with_link
     end
   end
