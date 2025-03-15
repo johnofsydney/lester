@@ -18,48 +18,10 @@ class Groups::ShowView < ApplicationView
       end
     end
 
-    comment { "Stats Section" }
-    div(class: "row text-center mb-4") do
-      div(class: "col-md-4") do
-        div(class: "p-3 bg-light rounded shadow-sm equal-height") do
-          div(class: 'vertical-centre-value') do
-            table_style = (group.money_in.present? && group.money_out.present?) ? "margin-bottom: 1rem;" : "margin-bottom: 0;"
-            table(class: "table table-sm  no-border-table", style: table_style) do
-              tbody do
-                tr do
-                  td { "in" }
-                  td(class: "h5 fw-bold mb-0") { group.money_in }
-                end if group.money_in.present?
-                tr do
 
-                  td(class: "h5 fw-bold mb-0") { group.money_out }
-                  td { "out" }
-                end if group.money_out.present?
-              end
-            end
-          end if group.money_in.present? || group.money_out.present?
-          p(class: "text-muted small bottom-text") { "Transfers" }
-        end
-      end
-      div(class: "col-md-4") do
-        div(class: "p-3 bg-light rounded shadow-sm equal-height") do
-          div(class: 'vertical-centre-value') do
-            p(class: "h5 fw-bold mb-0") { group.people.count }
-          end
-          p(class: "text-muted small bottom-text") { "People in Group" }
-        end
-      end
-      div(class: "col-md-4") do
-        div(class: "p-3 bg-light rounded shadow-sm equal-height") do
-          div(class: 'vertical-centre-value') do
-            p(class: "h5 fw-bold mb-0") { group.affiliated_groups.count }
-          end
-          p(class: "text-muted small bottom-text") { "Connected Groups" }
-        end
-      end
-    end
 
-    render Common::MoneySummary.new(entity: group)
+    render Common::StatsSummary.new(entity: group)
+    render Common::GraphSummary.new(entity: group)
 
     turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}/page=#{page_number}", loading: :lazy) do
       p(class: 'grey') { 'Fetching People...'  }
