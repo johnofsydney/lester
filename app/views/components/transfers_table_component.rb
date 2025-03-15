@@ -15,8 +15,6 @@ class TransfersTableComponent < ApplicationView
   def template
     return nil if transfers.empty?
 
-    hr
-
     return make_table(transfers) if (summarise_for.nil? && exclude.nil?)
 
     # TODO: also deal with summarise outbound?
@@ -48,39 +46,41 @@ class TransfersTableComponent < ApplicationView
   end
 
   def make_table(transfers)
-    h4 { 'Transfers' }
-    p { "#{heading} (#{transfers.count} records)" }
-    table(class: 'table responsive-table') do
-      tr do
-        th { 'ID' }
-        th { 'Amount' }
-        th { 'Year' }
-        th { 'Giver' }
-        th { 'Taker' }
-        th(class: 'mobile-display-none') { 'Depth' }
-        th(class: 'mobile-display-none') { 'Direction' }
-      end
-
-      transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
+    div(class: 'row mt-3') do
+      h4(class: 'font-italic') { 'Transfers' }
+      p { "#{heading} (#{transfers.count} records)" }
+      table(class: 'table responsive-table') do
         tr do
-          td(style: row_style(transfer)) do
-            if transfer.id
-              link_for(entity: transfer, link_text: transfer.id, klass: 'Transfer')
-            else
-              ''
-            end
-          end
-          td(style: row_style(transfer)) { number_to_currency(transfer.amount.to_s, precision: 0) }
-          td(style: row_style(transfer)) { transfer.effective_date.year.to_s }
-          if transfer.giver.id
-            td(style: row_style(transfer)) { link_for(entity: transfer.giver) if transfer.giver}
-          elsif transfer.giver
-            td(style: row_style(transfer)) { transfer.giver.name } # only for summary rows
-          end
+          th { 'ID' }
+          th { 'Amount' }
+          th { 'Year' }
+          th { 'Giver' }
+          th { 'Taker' }
+          th(class: 'mobile-display-none') { 'Depth' }
+          th(class: 'mobile-display-none') { 'Direction' }
+        end
 
-          td(style: row_style(transfer)) { link_for(entity: transfer.taker) if transfer.taker}
-          td(style: row_style(transfer), class: 'mobile-display-none') { transfer.depth }
-          td(style: row_style(transfer), class: 'mobile-display-none') { transfer.direction }
+        transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
+          tr do
+            td(style: row_style(transfer)) do
+              if transfer.id
+                link_for(entity: transfer, link_text: transfer.id, klass: 'Transfer')
+              else
+                ''
+              end
+            end
+            td(style: row_style(transfer)) { number_to_currency(transfer.amount.to_s, precision: 0) }
+            td(style: row_style(transfer)) { transfer.effective_date.year.to_s }
+            if transfer.giver.id
+              td(style: row_style(transfer)) { link_for(entity: transfer.giver) if transfer.giver}
+            elsif transfer.giver
+              td(style: row_style(transfer)) { transfer.giver.name } # only for summary rows
+            end
+
+            td(style: row_style(transfer)) { link_for(entity: transfer.taker) if transfer.taker}
+            td(style: row_style(transfer), class: 'mobile-display-none') { transfer.depth }
+            td(style: row_style(transfer), class: 'mobile-display-none') { transfer.direction }
+          end
         end
       end
     end

@@ -16,12 +16,10 @@ class Groups::ShowView < ApplicationView
 
     turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}/page=#{page_number}", loading: :lazy) do
       p(class: 'grey') { 'Fetching People...'  }
-      hr
     end
 
     turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}/page=#{page_number}", loading: :lazy) do
       p(class: 'grey') { 'Fetching Affiliated Groups...'  }
-      hr
     end
 
     render TransfersTableComponent.new(
@@ -33,7 +31,6 @@ class Groups::ShowView < ApplicationView
 
     turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do  # <== This is lazy loading a turbo frame for indirect transfers as well
       p(class: 'grey') { 'Fetching More Transfer Records...'}
-      hr
     end
   end
 end
