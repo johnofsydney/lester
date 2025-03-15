@@ -1,4 +1,4 @@
-class People::Groups < ApplicationView
+class People::GroupsTable < ApplicationView
 	def initialize(groups:, person:)
 		@groups = groups.sort_by { |group| group.memberships.count }.reverse
     @person = person
@@ -8,18 +8,17 @@ class People::Groups < ApplicationView
 
 	def template
     if person.groups.present?
-    hr
-      div(class: 'row') do
-        h2 { 'Groups' }
+      div(class: 'row mt-3') do
+        h4(class: 'font-italic') { 'Groups' }
 
-        table(class: 'table') do
+        table(class: 'table table-striped responsive-table') do
           tr do
             th { 'Group' }
             th { '(Last) Position' }
             th { 'Other Members' }
           end
           groups.each do |group|
-            render People::Group.new(group: group, exclude_person: person)
+            render People::GroupTableRow.new(group: group, exclude_person: person)
           end
         end
 

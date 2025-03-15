@@ -13,19 +13,20 @@ class Groups::PeopleTable < ApplicationView
   def template
     turbo_frame(id: 'people') do
       if people.present?
-        hr
-        h4 { 'People' }
+        div(class: 'row mt-3') do
+          h4(class: 'font-italic') { 'People' }
 
-        page_nav
+          page_nav
 
-        table(class: 'table table-striped responsive-table') do
-          tr do
-            th { 'Person' }
-            th { '(Last) Position' }
-            th { 'Other Groups' }
-          end
-          people.each do |person|
-            render Groups::Person.new(person:, exclude_group:)
+          table(class: 'table table-striped responsive-table') do
+            tr do
+              th { 'Person' }
+              th { '(Last) Position' }
+              th { 'Other Groups' }
+            end
+            people.each do |person|
+              render Groups::PersonTableRow.new(person:, exclude_group:)
+            end
           end
         end
       end

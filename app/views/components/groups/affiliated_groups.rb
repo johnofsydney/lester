@@ -12,7 +12,6 @@ class Groups::AffiliatedGroups < ApplicationView
       parent_categories = group.affiliated_groups.select{|group| group.category? }
 
       if parent_categories.present?
-        hr
         render Groups::IndexView.new(
           groups: parent_categories,
           page: 0,
@@ -22,7 +21,6 @@ class Groups::AffiliatedGroups < ApplicationView
       end
 
       if affiliated_groups.present?
-        hr
         render Groups::IndexView.new(
           groups: affiliated_groups,
           page: 0,

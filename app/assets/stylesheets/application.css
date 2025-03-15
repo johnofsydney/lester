@@ -209,3 +209,7 @@ button {
   border: none;
   padding: 5px;
 }
+
+.font-italic {
+  font-style: italic;
+}
