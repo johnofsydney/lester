@@ -12,7 +12,7 @@ class MenuComponent < ApplicationView
   def template
     nav(class: 'navbar navbar-expand-lg navbar-light bg-light') do
       div(class: 'container-fluid') do
-        a(class: 'navbar-brand brand-text', href: '/') { 'Join The Dots' }
+        a(class: 'navbar-brand brand-text', href: '/') { 'Join The Dots...' }
         button(
           class: 'navbar-toggler',
           type: 'button',
