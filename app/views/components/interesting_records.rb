@@ -9,53 +9,31 @@ class InterestingRecords < ApplicationView
 
   def template
     list_group_options = "list-group mb-4"
-    div(class: 'suggestions-container') do
-      h3(class: 'text-secondary') { 'Suggestions' }
-      div(class: 'row mt-4') do
-        Group.major_political_categories.find_each do |group|
-          div(class: 'col') do
-            a(
-              href: "/groups/#{group.id}",
-              class: 'btn w-100',
-              style: "#{color_styles(group)}; height: 100%",
-              target: :_blank
-            ) { group.name }
-          end
-        end
-      end
-      div(class: 'row mt-4') do
-        div(class: 'col-md-4') do
-          h6(class: 'column-heading text-primary mb-3') { 'Categories' }
-          div(class: list_group_options) do
-            Group.other_categories.find_each do |group|
-              div(class: 'class: list-group-item list-group-item-action') do
-                a(href: "/groups/#{group.id}") { group.name }
-              end
-            end
-          end
-        end
-        div(class: 'col-md-4') do
-          h6(class: 'column-heading text-primary mb-3') { 'People' }
-          div(class: list_group_options) do
+    div(class: 'suggestions-container mt-3 mb-3') do
+      # h3(class: 'text-secondary') { 'Suggestions' }
+      div(class: "row g-3") do
 
-            @records.people.each do |record|
-              div(class: 'class: list-group-item list-group-item-action') do
-                a(href: "/people/#{record.id}") { record.name }
+        (Group.major_political_categories + Group.other_categories).shuffle.each do |group|
+          div(class: "col-md-4") do
+            div(class: "card shadow", style: "#{color_styles(group)}; height: 100%") do
+              div(class: "card-body text-center") do
+                h5(class: "card-title") do
+                  group.name
+
+                  a(
+                    href: "/groups/#{group.id}",
+                    class: 'btn w-100',
+                    style: "#{color_styles(group)}; height: 100%",
+                  ) { group.name }
+                end
               end
             end
           end
         end
-        div(class: 'col-md-4') do
-          h6(class: 'column-heading text-primary mb-3') { 'Groups' }
-          div(class: list_group_options) do
-            @records.groups.each do |record|
-              div(class: 'class: list-group-item list-group-item-action') do
-                a(href: "/groups/#{record.id}") { text_for_group(record) }
-              end
-            end
-          end
-        end
+
       end
+
+
     end
   end
 
