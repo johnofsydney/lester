@@ -6,8 +6,14 @@ class Common::Heading < ApplicationView
 	end
 
 	def template
-    div(class: 'heading display-6 fw-bold shadow-sm') do
-      entity.is_category? ? button_without_link : button_with_link
+    div(class:"text-center mb-4") do
+      div(class: 'heading display-6 fw-bold shadow') do
+        entity.is_category? ? button_without_link : button_with_link
+      end
+
+      a(href: network_graph_link, class:"btn btn-primary btn-lg shadow-sm") do
+        strong { 'Explore the Network Graph' }
+      end
     end
   end
 
@@ -27,5 +33,9 @@ class Common::Heading < ApplicationView
       class: 'btn w-100 btn-lg',
       style: "#{color_styles(entity)}; font-size: 1em;",
       ) { entity.name }
+  end
+
+  def network_graph_link
+    entity.is_a?(Group) ? "/groups/#{entity.id}/network_graph" : "/people/#{entity.id}/network_graph"
   end
 end

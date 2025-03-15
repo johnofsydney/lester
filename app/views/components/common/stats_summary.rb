@@ -42,17 +42,19 @@ class Common::StatsSummary < ApplicationView
       div(class: column_class) do
         div(class: "p-3 bg-light rounded shadow-sm equal-height") do
           div(class: 'vertical-centre-value') do
-            p(class: "h5 fw-bold mb-0") do
-              entity.is_a?(Group) ? entity.affiliated_groups.count : entity.groups.count
-            end
+            p(class: "h5 fw-bold mb-0") { groups_count }
           end
-          p(class: "text-muted small bottom-text") { "Connected Groups" }
+            p(class: "text-muted small bottom-text") { "#{groups_count} Connected #{'Group'.pluralize(groups_count)}" }
         end
       end
     end
   end
 
   def column_class
-    "col-md-4"
+    entity.is_a?(Group) ? "col-md-4" : 'col-md-6'
+  end
+
+  def groups_count
+    entity.is_a?(Group) ? entity.affiliated_groups.count : entity.groups.count
   end
 end

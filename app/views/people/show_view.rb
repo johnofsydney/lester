@@ -9,9 +9,10 @@ class People::ShowView < ApplicationView
 
 	def template
     render Common::Heading.new(entity: person)
-    a(href: "/people/#{person.id}/network_graph") { 'Network Graph' }
 
-    render Common::MoneySummary.new(entity: person)
+
+    render Common::StatsSummary.new(entity: person)
+    render Common::GraphSummary.new(entity: person)
     render People::Groups.new(groups: person.groups, person: person)
 
     depth = 6

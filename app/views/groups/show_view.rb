@@ -10,14 +10,7 @@ class Groups::ShowView < ApplicationView
   def template
     page_number = 0
 
-    div(class:"text-center mb-4") do
-      render Common::Heading.new(entity: group)
-
-      a(href: "/groups/#{group.id}/network_graph", class:"btn btn-primary btn-lg shadow") do
-        strong { 'Explore the Network Graph' }
-      end
-    end
-
+    render Common::Heading.new(entity: group)
 
 
     render Common::StatsSummary.new(entity: group)
