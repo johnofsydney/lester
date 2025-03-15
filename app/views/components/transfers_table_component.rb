@@ -46,7 +46,7 @@ class TransfersTableComponent < ApplicationView
   end
 
   def make_table(transfers)
-    div(class: 'row mt-3') do
+    div(class: 'row mt-3 mb-3') do
       h4(class: 'font-italic') { 'Transfers' }
       p { "#{heading} (#{transfers.count} records)" }
       table(class: 'table responsive-table') do

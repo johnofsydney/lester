@@ -13,7 +13,7 @@ class Groups::PeopleTable < ApplicationView
   def template
     turbo_frame(id: 'people') do
       if people.present?
-        div(class: 'row mt-3') do
+        div(class: 'row mt-3 mb-3') do
           h4(class: 'font-italic') { 'People' }
 
           page_nav

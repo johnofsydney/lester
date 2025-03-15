@@ -9,7 +9,7 @@ class Groups::IndexView < ApplicationView
   end
 
   def template
-    div(class: 'mt-3 mb-2') do
+    div(class: 'mt-3 mb-3') do
       if subheading
         h4(class: 'font-italic') { subheading }
       else

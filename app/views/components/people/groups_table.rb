@@ -8,7 +8,7 @@ class People::GroupsTable < ApplicationView
 
 	def template
     if person.groups.present?
-      div(class: 'row mt-3') do
+      div(class: 'row mt-3 mb-3') do
         h4(class: 'font-italic') { 'Groups' }
 
         table(class: 'table table-striped responsive-table') do
