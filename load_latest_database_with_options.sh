@@ -40,6 +40,12 @@ ssh "$REMOTE_USER@$REMOTE_HOST" << EOF
     pg_dump  $REMOTE_DB -U $REMOTE_DB_USER -h localhost > $REMOTE_BACKUP_DIR/$BACKUP_FILE
 EOF
 
+# Check if SSH failed due to permission issues
+if [[ $? -ne 0 ]]; then
+    echo "Error: Permission denied or SSH failure. Aborting script."
+    exit 1
+fi
+
 # Step 2: Copy the backup file from the remote server to the local machine
 echo "Copying backup file to local machine..."
 scp "$REMOTE_USER@$REMOTE_HOST:$REMOTE_BACKUP_DIR/$BACKUP_FILE" $LOCAL_BACKUP_DIR/$BACKUP_FILE
