@@ -19,17 +19,19 @@ class People::IndexView < ApplicationView
         ''
       end
 
-      class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
-      div(class: class_list) do
-        a(href: "/people/#{person.id}") { person.name }
-        if person.groups.any?
-          div do
-            person.groups.each do |group|
-              a(
-                href: "/groups/#{group.id}",
-                class: 'btn btn-sm',
-                style: "#{color_styles(group)}; margin-left: 5px;",
-              ) { group.name }
+      div(class: 'list-group') do
+        class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
+        div(class: class_list) do
+          a(href: "/people/#{person.id}") { person.name }
+          if person.groups.any?
+            div do
+              person.groups.each do |group|
+                a(
+                  href: "/groups/#{group.id}",
+                  class: 'btn btn-sm',
+                  style: "#{color_styles(group)}; margin-left: 5px;",
+                ) { group.name }
+              end
             end
           end
         end

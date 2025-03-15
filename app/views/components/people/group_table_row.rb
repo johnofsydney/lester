@@ -1,4 +1,4 @@
-class People::Group < ApplicationView
+class People::GroupTableRow < ApplicationView
 	def initialize(group:, exclude_person: nil)
 		@group = group
     @exclude_person = exclude_person
@@ -13,7 +13,7 @@ class People::Group < ApplicationView
         a(href: "/groups/#{group.id}") { group.name }
         if membership.evidence.present?
           span { '   ' }
-          span { a(href: membership.evidence, target: '_blank') { '...' } }
+          span { a(href: membership.evidence, class: 'gentle-link', target: '_blank') { '...' } }
         end
       end
       td do
@@ -21,7 +21,7 @@ class People::Group < ApplicationView
 
         if last_position&.evidence.present?
           span { '   ' }
-          span { a(href: last_position.evidence, target: '_blank') { '...' } }
+          span { a(href: last_position.evidence, class: 'gentle-link', target: '_blank') { '...' } }
         end
       end
       td do

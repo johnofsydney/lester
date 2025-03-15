@@ -1,4 +1,4 @@
-class Groups::Person < ApplicationView
+class Groups::PersonTableRow < ApplicationView
 	def initialize(person:, exclude_group: nil)
 		@person = person
     @exclude_group = exclude_group
