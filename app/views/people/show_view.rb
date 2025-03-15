@@ -9,13 +9,9 @@ class People::ShowView < ApplicationView
 
 	def template
     render Common::Heading.new(entity: person)
-
-
     render Common::StatsSummary.new(entity: person)
     render Common::GraphSummary.new(entity: person)
     render People::Groups.new(groups: person.groups, person: person)
-
-    depth = 6
 
     render TransfersTableComponent.new(
       entity: person,

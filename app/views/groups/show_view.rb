@@ -11,8 +11,6 @@ class Groups::ShowView < ApplicationView
     page_number = 0
 
     render Common::Heading.new(entity: group)
-
-
     render Common::StatsSummary.new(entity: group)
     render Common::GraphSummary.new(entity: group)
 
@@ -33,7 +31,7 @@ class Groups::ShowView < ApplicationView
     summarise_for: Group.summarise_for(group),
     )
 
-    turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do  # <== This is lazy loading a turbo frame
+    turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do  # <== This is lazy loading a turbo frame for indirect transfers as well
       p(class: 'grey') { 'Fetching More Transfer Records...'}
       hr
     end
