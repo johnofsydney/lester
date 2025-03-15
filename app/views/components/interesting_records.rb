@@ -17,15 +17,11 @@ class InterestingRecords < ApplicationView
           div(class: "col-md-4") do
             div(class: "card shadow", style: "#{color_styles(group)}; height: 100%") do
               div(class: "card-body text-center") do
-                h5(class: "card-title") do
-                  group.name
-
-                  a(
-                    href: "/groups/#{group.id}",
-                    class: 'btn w-100',
-                    style: "#{color_styles(group)}; height: 100%",
-                  ) { group.name }
-                end
+                a(
+                  href: "/groups/#{group.id}",
+                  class: 'btn w-100',
+                  style: "#{color_styles(group)}; height: 100%",
+                ) { group.name }
               end
             end
           end
