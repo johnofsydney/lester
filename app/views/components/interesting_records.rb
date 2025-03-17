@@ -15,7 +15,7 @@ class InterestingRecords < ApplicationView
 
         (Group.major_political_categories + Group.other_categories).shuffle.each do |group|
           div(class: "col-md-4") do
-            div(class: "card shadow", style: "#{color_styles(group)}; height: 100%") do
+            div(class: "card shadow-sm", style: "#{color_styles(group)}; height: 100%") do
               div(class: "card-body text-center") do
                 a(
                   href: "/groups/#{group.id}",

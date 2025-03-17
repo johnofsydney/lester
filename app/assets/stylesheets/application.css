@@ -17,8 +17,7 @@
 * {
   /* border: 1px red solid; */
 }
-
-button {
+button, .badge {
   text-decoration: none;
 }
 
@@ -142,6 +141,22 @@ button {
   }
 
   .mobile-display-none {
+    display: none;
+  }
+}
+
+@media (min-width: 1000px) {
+  .mobile-only {
+    /* Add your mobile-specific styles here */
+    background-color: #f8f9fa;
+    /* Example: Light background color */
+    padding: 10px;
+    /* Example: Padding */
+    font-size: 14px;
+    /* Example: Smaller font size */
+  }
+
+  .desktop-display-none {
     display: none;
   }
 }

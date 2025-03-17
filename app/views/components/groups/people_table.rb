@@ -22,7 +22,7 @@ class Groups::PeopleTable < ApplicationView
             tr do
               th { 'Person' }
               th { '(Last) Position' }
-              th { 'Other Groups' }
+              th(style: 'text-align: right;') { 'Other Groups' }
             end
             people.each do |person|
               render Groups::PersonTableRow.new(person:, exclude_group:)
