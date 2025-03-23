@@ -29,13 +29,14 @@ class Groups::IndexView < ApplicationView
           class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
           div(class: class_list) do
             a(href: "/groups/#{group.id}", data_turbo: "false") { group.display_name }
-            if group.parent_groups.where(category: true).any?
-              div do
-                group.parent_groups.where(category: true).each do |parent_group|
-                  parent_group_button(parent_group)
-                end
-              end
-            end
+
+
+            render Common::CollapsibleButtonCollection.new(
+              groups: group.parent_groups.where(category: true),
+              entity: group,
+              render_inside: 'div'
+            )
+
           end
         end
       end

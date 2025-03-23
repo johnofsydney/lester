@@ -228,3 +228,7 @@ button, .badge {
 .font-italic {
   font-style: italic;
 }
+
+.btn-collection {
+  margin-bottom: 0.5rem;
+}

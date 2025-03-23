@@ -24,7 +24,11 @@ class Groups::PersonTableRow < ApplicationView
         end
       end
 
-      render Common::CollapsibleButtonCollection.new(entity: person, exclude_group: exclude_group)
+      render Common::CollapsibleButtonCollection.new(
+        entity: person,
+        groups: person.groups.where.not(id: exclude_group.id),
+        render_inside: 'td'
+      )
     end
   end
 
