@@ -14,6 +14,7 @@ class Common::Heading < ApplicationView
       a(href: network_graph_link, class:"btn btn-primary btn-lg shadow-sm") do
         strong { 'Explore the Network Graph' }
       end
+      p(class: 'font-italic mt-1') { "...a visualisation of connections to #{entity.name}..." }
     end
   end
 

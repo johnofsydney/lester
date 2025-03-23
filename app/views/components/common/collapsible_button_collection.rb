@@ -1,28 +1,24 @@
 class Common::CollapsibleButtonCollection < ApplicationView
-  attr_reader :entity, :groups, :render_inside
+  attr_reader :entity, :collection, :render_inside
 
-	def initialize(entity:, groups:, render_inside:)
+	def initialize(entity:, collection:, render_inside:)
 		@entity = entity
-    @groups = groups
+    @collection = collection
     @render_inside = render_inside
 	end
 
 	def template
     render_inside_td if render_inside == 'td'
     render_inside_div if render_inside == 'div'
-
-  rescue => e
-    p "*********************"
-    puts e.message
-    puts e.backtrace
-    p "*********************"
   end
 
   def render_inside_td
-    td(class: 'mobile-display-none', style: 'text-align: right;') do
+    return td { ' ' } if collection.count < 1
+
+    td(class: 'desktop-only', style: 'text-align: right;') do
 
       div do
-        if groups.count < 8
+        if collection.count < 8
           several_buttons
         else
           single_button
@@ -30,34 +26,36 @@ class Common::CollapsibleButtonCollection < ApplicationView
       end
     end
 
-    td(class: 'desktop-display-none', style: 'text-align: right;') do
+    td(class: 'mobile-only', style: 'text-align: right;') do
 
       single_button
     end
   end
 
   def render_inside_div
-    div(class: 'mobile-display-none', style: 'text-align: right;') do
+    return div { ' ' } if collection.count < 1
 
-      if groups.count < 8
+    div(class: 'desktop-only', style: 'text-align: right;') do
+
+      if collection.count < 8
         several_buttons
       else
         single_button
       end
     end
-    div(class: 'desktop-display-none', style: 'text-align: right;') do
+    div(class: 'mobile-only', style: 'text-align: right;') do
 
       single_button
     end
   end
 
   def several_buttons
-    groups.each do |group|
+    collection.each do |group_or_person|
       link_for(
-        entity: group,
+        entity: group_or_person,
         class: 'btn btn-sm btn-collection',
-        style: "#{color_styles(group)}; margin-left: 5px;",
-        link_text: group.name
+        style: "#{color_styles(group_or_person)}; margin-left: 5px;",
+        link_text: group_or_person.name
       )
     end
   end
@@ -67,7 +65,11 @@ class Common::CollapsibleButtonCollection < ApplicationView
       entity: entity,
       class: 'btn btn-sm',
       style: "#{color_styles(entity)}; margin-left: 5px;",
-      link_text: "#{groups.count} other #{'Group'.pluralize(groups.count)}"
+      link_text: link_text
     )
+  end
+
+  def link_text
+    "Member of #{collection.count} #{'Group'.pluralize(collection.count)}"
   end
 end

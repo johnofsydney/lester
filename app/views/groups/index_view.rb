@@ -28,11 +28,21 @@ class Groups::IndexView < ApplicationView
 
           class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
           div(class: class_list) do
-            a(href: "/groups/#{group.id}", data_turbo: "false") { group.display_name }
-
+            link_for(
+              entity: group,
+              class: 'btn btn-sm desktop-only',
+              style: "#{color_styles(group)}; margin-left: 5px;",
+              link_text: group.name.truncate(100)
+            )
+            link_for(
+              entity: group,
+              class: 'btn btn-sm mobile-only',
+              style: "#{color_styles(group)}; margin-left: 5px;",
+              link_text: group.name.truncate(50)
+            )
 
             render Common::CollapsibleButtonCollection.new(
-              groups: group.parent_groups.where(category: true),
+              collection: group.parent_groups.where(category: true),
               entity: group,
               render_inside: 'div'
             )

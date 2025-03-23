@@ -130,33 +130,13 @@ button, .badge {
 }
 
 @media (max-width: 1000px) {
-  .mobile-only {
-    /* Add your mobile-specific styles here */
-    background-color: #f8f9fa;
-    /* Example: Light background color */
-    padding: 10px;
-    /* Example: Padding */
-    font-size: 14px;
-    /* Example: Smaller font size */
-  }
-
-  .mobile-display-none {
+  .desktop-only {
     display: none;
   }
 }
 
 @media (min-width: 1000px) {
   .mobile-only {
-    /* Add your mobile-specific styles here */
-    background-color: #f8f9fa;
-    /* Example: Light background color */
-    padding: 10px;
-    /* Example: Padding */
-    font-size: 14px;
-    /* Example: Smaller font size */
-  }
-
-  .desktop-display-none {
     display: none;
   }
 }
@@ -230,5 +210,6 @@ button, .badge {
 }
 
 .btn-collection {
-  margin-bottom: 0.5rem;
+  margin-top: 0.15rem;
+  margin-bottom: 0.15rem;
 }

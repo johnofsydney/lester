@@ -56,8 +56,8 @@ class TransfersTableComponent < ApplicationView
           th { 'Year' }
           th { 'Giver' }
           th { 'Taker' }
-          th(class: 'mobile-display-none') { 'Depth' }
-          th(class: 'mobile-display-none') { 'Direction' }
+          th(class: 'desktop-only') { 'Depth' }
+          th(class: 'desktop-only') { 'Direction' }
         end
 
         transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
@@ -78,8 +78,8 @@ class TransfersTableComponent < ApplicationView
             end
 
             td(style: row_style(transfer)) { link_for(entity: transfer.taker) if transfer.taker}
-            td(style: row_style(transfer), class: 'mobile-display-none') { transfer.depth }
-            td(style: row_style(transfer), class: 'mobile-display-none') { transfer.direction }
+            td(style: row_style(transfer), class: 'desktop-only') { transfer.depth }
+            td(style: row_style(transfer), class: 'desktop-only') { transfer.direction }
           end
         end
       end

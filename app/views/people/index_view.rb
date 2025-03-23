@@ -22,23 +22,14 @@ class People::IndexView < ApplicationView
       div(class: 'list-group') do
         class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
         div(class: class_list) do
-          div(class: 'foobar') do
-            a(href: "/people/#{person.id}") { person.name }
-          end
-          if person.groups.any?
-            div(class: 'button-collection mobile-display-none') do
-              person.groups.each do |group|
-                a(
-                  href: "/groups/#{group.id}",
-                  class: 'btn btn-sm',
-                  style: "#{color_styles(group)}; margin-left: 5px;",
-                ) { group.name }
-              end
-            end
-            div(class: 'desktop-display-none') do
-              p { "#{person.groups.count} other #{'Group'.pluralize(person.groups.count)}" }
-            end
-          end
+          a(href: "/people/#{person.id}") { person.name }
+
+          render Common::CollapsibleButtonCollection.new(
+            collection: person.groups,
+            entity: person,
+            render_inside: 'div'
+          )
+
         end
       end
     end

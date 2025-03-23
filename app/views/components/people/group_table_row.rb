@@ -24,23 +24,13 @@ class People::GroupTableRow < ApplicationView
           span { a(href: last_position.evidence, class: 'gentle-link', target: '_blank') { '...' } }
         end
       end
-      td do
-        if group.memberships.count == 1
-          ''
-        elsif group.memberships.count < 8
-          memberships = group.memberships - Membership.where(member: exclude_person, group: group)
 
-          ul(class: 'list-group list-group-horizontal') do
-          memberships.each do |membership|
-              li(class: 'list-group-item') do
-                a(href: "/#{membership.member_type.downcase.pluralize}/#{membership.member.id}") { membership.member.name }
-              end
-            end
-          end
-        else
-          "#{group.memberships.count} members"
-        end
-      end
+      render Common::CollapsibleButtonCollection.new(
+        collection: group.people,
+        entity: group,
+        render_inside: 'td'
+      )
+
     end
   end
 
