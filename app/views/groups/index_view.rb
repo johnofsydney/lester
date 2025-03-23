@@ -48,14 +48,12 @@ class Groups::IndexView < ApplicationView
   def group_name_link(group)
     link_for(
       entity: group,
-      class: subheading.present? ? 'btn btn-sm desktop-only' : 'desktop-only',
-      style: subheading.present? ? "#{color_styles(group)}; margin-left: 5px;" : '',
+      class: 'desktop-only',
       link_text: group.name.truncate(100)
     )
     link_for(
       entity: group,
-      class: subheading.present? ? 'btn btn-sm mobile-only' : 'mobile-only',
-      style: subheading.present? ? "#{color_styles(group)}; margin-left: 5px;" : '',
+      class: 'mobile-only',
       link_text: group.name.truncate(50)
     )
   end
