@@ -28,25 +28,13 @@ class Groups::IndexView < ApplicationView
 
           class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
           div(class: class_list) do
-            link_for(
-              entity: group,
-              class: 'btn btn-sm desktop-only',
-              style: "#{color_styles(group)}; margin-left: 5px;",
-              link_text: group.name.truncate(100)
-            )
-            link_for(
-              entity: group,
-              class: 'btn btn-sm mobile-only',
-              style: "#{color_styles(group)}; margin-left: 5px;",
-              link_text: group.name.truncate(50)
-            )
+            group_name_link(group)
 
             render Common::CollapsibleButtonCollection.new(
               collection: group.parent_groups.where(category: true),
               entity: group,
               render_inside: 'div'
             )
-
           end
         end
       end
@@ -57,14 +45,20 @@ class Groups::IndexView < ApplicationView
 
   private
 
-  attr_reader :groups, :page, :pages, :subheading
-
-  def parent_group_button(parent_group)
-    a(
-      href: "/groups/#{parent_group.id}",
-      class: 'btn btn-sm',
-      style: "#{color_styles(parent_group)}; margin-left: 5px;",
-      data_turbo: "false"
-    ) { parent_group.name }
+  def group_name_link(group)
+    link_for(
+      entity: group,
+      class: subheading.present? ? 'btn btn-sm desktop-only' : 'desktop-only',
+      style: subheading.present? ? "#{color_styles(group)}; margin-left: 5px;" : '',
+      link_text: group.name.truncate(100)
+    )
+    link_for(
+      entity: group,
+      class: subheading.present? ? 'btn btn-sm mobile-only' : 'mobile-only',
+      style: subheading.present? ? "#{color_styles(group)}; margin-left: 5px;" : '',
+      link_text: group.name.truncate(50)
+    )
   end
+
+  attr_reader :groups, :page, :pages, :subheading
 end

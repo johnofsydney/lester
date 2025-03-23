@@ -8,36 +8,51 @@ class People::IndexView < ApplicationView
 	end
 
 	def template
-    h2 { 'People' }
+    div(class: 'mt-3 mb-3') do
+      h2 { 'People' }
 
-    render Common::PageNav.new(pages:, page:, klass: 'person')
-
-    people.each do |person|
-      highlight = if Flipper.enabled?(:dev_highlighting)
-        person.id > HIGHLIGHT_THRESHOLD ? 'highlight-row' : ''
-      else
-        ''
-      end
+      render Common::PageNav.new(pages:, page:, klass: 'person')
 
       div(class: 'list-group') do
-        class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
-        div(class: class_list) do
-          a(href: "/people/#{person.id}") { person.name }
+        people.each do |person|
+          highlight = if Flipper.enabled?(:dev_highlighting)
+            person.id > HIGHLIGHT_THRESHOLD ? 'highlight-row' : ''
+          else
+            ''
+          end
 
-          render Common::CollapsibleButtonCollection.new(
-            collection: person.groups,
-            entity: person,
-            render_inside: 'div'
-          )
+          class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
+          div(class: class_list) do
+            person_name_link(person)
 
+            render Common::CollapsibleButtonCollection.new(
+              collection: person.groups,
+              entity: person,
+              render_inside: 'div'
+            )
+          end
         end
       end
-    end
 
-    render Common::PageNav.new(pages:, page:, klass: 'person')
+      render Common::PageNav.new(pages:, page:, klass: 'person')
+    end
 	end
 
   private
 
   attr_reader :people, :page, :pages
+
+  def person_name_link(person)
+    link_for(
+      entity: person,
+      class: 'desktop-only',
+      link_text: person.name.truncate(100)
+    )
+
+    link_for(
+      entity: person,
+      class: 'mobile-only',
+      link_text: person.name.truncate(50)
+    )
+  end
 end
