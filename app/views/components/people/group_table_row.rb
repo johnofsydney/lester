@@ -1,9 +1,9 @@
 class People::GroupTableRow < ApplicationView
-	def initialize(group:, exclude_person: nil)
-		@group = group
+  def initialize(group:, exclude_person: nil)
+    @group = group
     @exclude_person = exclude_person
     @membership = Membership.find_by(group: group, member: exclude_person)
-	end
+  end
 
   attr_reader :group, :exclude_person, :membership
 
