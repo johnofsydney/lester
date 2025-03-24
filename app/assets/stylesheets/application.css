@@ -129,15 +129,25 @@ button, .badge {
   padding-bottom: 5px;
 }
 
+/* mobile only */
 @media (max-width: 1000px) {
   .desktop-only {
     display: none;
   }
+
+  .btn-single {
+    width: 100%;
+  }
 }
 
+/* desktop only */
 @media (min-width: 1000px) {
   .mobile-only {
     display: none;
+  }
+
+  .btn-single {
+    width: 125px;
   }
 }
 
@@ -171,10 +181,7 @@ button, .badge {
   padding-top: 1rem;
 }
 
-@media (min-width: 768px) {
-  .label-row {
-  }
-}
+
 
 .equal-height {
   display: flex;

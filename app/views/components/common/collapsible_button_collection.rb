@@ -1,10 +1,11 @@
 class Common::CollapsibleButtonCollection < ApplicationView
-  attr_reader :entity, :collection, :render_inside
+  attr_reader :entity, :collection, :render_inside, :contains_only
 
-	def initialize(entity:, collection:, render_inside:)
+	def initialize(entity:, collection:, render_inside:, contains_only: nil)
 		@entity = entity
     @collection = collection
     @render_inside = render_inside
+    @contains_only = contains_only
 	end
 
 	def template
@@ -63,13 +64,15 @@ class Common::CollapsibleButtonCollection < ApplicationView
   def single_button
     link_for(
       entity: entity,
-      class: 'btn btn-sm',
+      class: 'btn btn-sm btn-single',
       style: "#{color_styles(entity)}; margin-left: 5px;",
       link_text: link_text
     )
   end
 
   def link_text
-    "Member of #{collection.count} #{'Group'.pluralize(collection.count)}"
+    return "#{collection.count} members" if contains_only == 'people'
+
+    "Member of #{collection.count} other #{'Group'.pluralize(collection.count)}"
   end
 end
