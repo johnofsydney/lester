@@ -1,9 +1,9 @@
-class People::Group < ApplicationView
-	def initialize(group:, exclude_person: nil)
-		@group = group
+class People::GroupTableRow < ApplicationView
+  def initialize(group:, exclude_person: nil)
+    @group = group
     @exclude_person = exclude_person
     @membership = Membership.find_by(group: group, member: exclude_person)
-	end
+  end
 
   attr_reader :group, :exclude_person, :membership
 
@@ -13,7 +13,7 @@ class People::Group < ApplicationView
         a(href: "/groups/#{group.id}") { group.name }
         if membership.evidence.present?
           span { '   ' }
-          span { a(href: membership.evidence, target: '_blank') { '...' } }
+          span { a(href: membership.evidence, class: 'gentle-link', target: '_blank') { '...' } }
         end
       end
       td do
@@ -21,26 +21,17 @@ class People::Group < ApplicationView
 
         if last_position&.evidence.present?
           span { '   ' }
-          span { a(href: last_position.evidence, target: '_blank') { '...' } }
+          span { a(href: last_position.evidence, class: 'gentle-link', target: '_blank') { '...' } }
         end
       end
-      td do
-        if group.memberships.count == 1
-          ''
-        elsif group.memberships.count < 8
-          memberships = group.memberships - Membership.where(member: exclude_person, group: group)
 
-          ul(class: 'list-group list-group-horizontal') do
-          memberships.each do |membership|
-              li(class: 'list-group-item') do
-                a(href: "/#{membership.member_type.downcase.pluralize}/#{membership.member.id}") { membership.member.name }
-              end
-            end
-          end
-        else
-          "#{group.memberships.count} members"
-        end
-      end
+      render Common::CollapsibleButtonCollection.new(
+        collection: group.people,
+        entity: group,
+        render_inside: 'td',
+        contains_only: 'people'
+      )
+
     end
   end
 

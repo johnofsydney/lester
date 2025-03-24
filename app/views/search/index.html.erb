@@ -1,19 +1,27 @@
 <%= render MenuComponent.new %>
 
-<div id="searchbox-container">
-  <p>Search for People, Parties, Companies or other Groups. <i>Whole words or the beginning of a word, eg "Anthony" or "Antho"</i></p>
+<div id="searchbox-container" class="container mt-6">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-6">
+      <header class="hero-section mt-6 mb-1 text-center">
+        <p class="lead">Explore links between people and groups, money and decision-makers.</p>
 
-  <%= form_with url: {controller: "search", action: "index"}, method: :get do %>
-    <%= text_field_tag :query, '', autofocus: true %>
-    <%= submit_tag 'Search' %>
+        <!-- Search Box -->
+        <%= form_with url: {controller: "search", action: "index"}, method: :get, html: {class: "search-box"} do %>
+          <div class="input-group">
+            <%= text_field_tag :query, '', class: "form-control", placeholder: "Search for people or groups..." %>
+            <%= submit_tag 'Search', class: "btn btn-primary" %>
+          </div>
+        <% end %>
+      </header>
+    </div>
+  </div>
+
+  <% if @results.present? %>
+    <%= render(SearchResults.new(results: @results)) %>
+  <% end %>
+
+  <% if @results.empty? && @records.present? %>
+    <%= render(InterestingRecords.new(records: @records)) %>
   <% end %>
 </div>
-
-<% if @results.present? %>
-  <%= render(SearchResults.new(results: @results)) %>
-<% end %>
-
-<% if @results.empty? && @records.present? %>
-  <%= render(InterestingRecords.new(records: @records)) %>
-<% end %>
-

@@ -1,5 +1,6 @@
 module NodeMethods
   extend ActiveSupport::Concern
+  include ActionView::Helpers::NumberHelper
 
   included do
     CACHE_DURATION = 10.seconds
@@ -12,6 +13,7 @@ module NodeMethods
     ], prefix: :cached
 
 
+    # STUFF TO DO WITH CACHING
     def nodes_count
       # TODO jobs
       if refresh_nodes_count_cache?
@@ -48,6 +50,35 @@ module NodeMethods
         depth: descendent[:depth],
         parent_count: descendent[:descendent_parent_count],
       ) }
+    end
+
+
+    # STUFF TO DO WITH MONEY SUMMARY
+    def money_in
+      if is_category?
+        amount = category_incoming_transfers.sum(:amount)
+      else
+        amount = incoming_transfers.sum(:amount)
+      end
+
+      return unless amount.positive?
+
+      number_to_currency amount, precision: 0
+    end
+
+    def money_out
+      if is_category?
+        amount = category_outgoing_transfers.sum(:amount)
+      else
+        amount = outgoing_transfers.sum(:amount)
+      end
+      return unless amount.positive?
+
+      number_to_currency amount, precision: 0
+    end
+
+    def is_category?
+      is_category?
     end
 
     private

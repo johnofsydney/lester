@@ -1,4 +1,4 @@
-class Groups::Person < ApplicationView
+class Groups::PersonTableRow < ApplicationView
 	def initialize(person:, exclude_group: nil)
 		@person = person
     @exclude_group = exclude_group
@@ -23,26 +23,12 @@ class Groups::Person < ApplicationView
           span { a(href: last_position.evidence, class: 'gentle-link', target: '_blank') { '...' } }
         end
       end
-      td do
-        if person.memberships.length == 1 # it me
-          ''
-        elsif person.memberships.length < 8
-          memberships = person.memberships - Membership.where(member: person, group: exclude_group)
 
-          if memberships.length < 300
-            ul(class: 'list-group') do
-              memberships.each do |membership|
-                li(class: 'list-group-item') do
-                  link_for(entity: membership.group)
-                  # TODO FIX THIS FOR GROUPS AS MEMBERS
-                end
-              end
-            end
-          end
-        else
-          "#{person.memberships.length} other groups"
-        end
-      end
+      render Common::CollapsibleButtonCollection.new(
+        entity: person,
+        collection: person.groups.where.not(id: exclude_group.id),
+        render_inside: 'td'
+      )
     end
   end
 

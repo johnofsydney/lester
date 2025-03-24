@@ -9,12 +9,9 @@ class People::ShowView < ApplicationView
 
 	def template
     render Common::Heading.new(entity: person)
-    a(href: "/people/#{person.id}/network_graph") { 'Network Graph' }
-
-    render Common::MoneySummary.new(entity: person)
-    render People::Groups.new(groups: person.groups, person: person)
-
-    depth = 6
+    render Common::StatsSummary.new(entity: person)
+    render Common::GraphSummary.new(entity: person)
+    render People::GroupsTable.new(groups: person.groups, person: person)
 
     render TransfersTableComponent.new(
       entity: person,
@@ -25,7 +22,6 @@ class People::ShowView < ApplicationView
 
     turbo_frame(id: 'feed', src: lazy_load_person_path, loading: :lazy) do
       p(class: 'grey') { 'Fetching More Transfer Records...'  }
-      hr
     end
 	end
 end
