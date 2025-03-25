@@ -31,4 +31,21 @@ ActiveAdmin.register Group do
       number_to_currency group.incoming_transfers.sum(:amount), precision: 0
     end
   end
+
+  batch_action :add_to_category, form: -> {
+    {
+      category_id: Group.other_categories.map { |c| [c.name, c.id] }
+    }
+  } do |ids, inputs|
+    category = Group.find(inputs[:category_id])
+    Group.where(id: ids).each do |group|
+      Membership.create(
+        group: category,
+        member: group,
+        member_type: 'Group'
+      )
+    end
+
+    redirect_to collection_path, alert: "Groups added to #{category.name}."
+  end
 end
