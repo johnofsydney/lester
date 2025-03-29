@@ -333,6 +333,7 @@ class MapGroupNames
     regex_for_titleize_7 = /\bVictoria\b|\bQueensland\b|\bTasmania\b/i
     regex_for_titleize_8 = /\Air New Zealand\b|\bAir Pacific\b|\bAir Liquide\b|Singapore/i
     regex_for_titleize_9 = /\Be Our Guest\b|\bBlack Dog\b/i
+    regex_for_titleize_10 = /\bJoe\b/i
 
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
@@ -351,6 +352,7 @@ class MapGroupNames
                    .gsub(regex_for_titleize_7) { |word| word.titleize }
                    .gsub(regex_for_titleize_8) { |word| word.titleize }
                    .gsub(regex_for_titleize_9) { |word| word.titleize }
+                   .gsub(regex_for_titleize_10) { |word| word.titleize }
                    .gsub(regex_for_downcase) { |word| word.downcase }
                    .gsub(/^the/) { |word| word.titleize }
                    .gsub(/australia/) { |word| word.titleize }

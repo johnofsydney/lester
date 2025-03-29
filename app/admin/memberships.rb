@@ -9,7 +9,7 @@ ActiveAdmin.register Membership do
         csv = CSV.parse(params[:bulk_text], headers: true)
         FileIngestor.general_upload(csv)
 
-        flash[:notice] = "You submitted: #{params[:bulk_text]}"
+        flash[:notice] = "Success!"
         redirect_to admin_memberships_path
       else
         flash[:alert] = "Input cannot be blank."
