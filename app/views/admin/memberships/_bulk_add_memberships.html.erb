@@ -1,0 +1,9 @@
+<%= form_with url: '/admin/memberships/custom_action', method: :post, local: true do |form| %>
+  <div>
+    <%= form.label :bulk_text, "Enter text:" %><br>
+    <%= form.text_area :bulk_text, rows: 10, cols: 50 %>
+  </div>
+  <div>
+    <%= form.submit "Submit" %>
+  </div>
+<% end %>

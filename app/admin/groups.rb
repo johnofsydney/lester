@@ -24,7 +24,7 @@ ActiveAdmin.register Group do
     selectable_column
     id_column
     column(:name, sortable: 'name')
-    column(:memberships) do |group|
+    column('Memberships (as owning group)') do |group|
       group.memberships.count
     end
     column('Transfers In') do |group|
