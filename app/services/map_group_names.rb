@@ -228,6 +228,7 @@ class MapGroupNames
     return group_names.labor.federal if name.match(/The Australian Labour Party National Secretar/i)
     return group_names.labor.federal if name.match(/ALP National \(ALP-FED\)/i)
     return group_names.labor.federal if name.match(/Australian Labour Party/i)
+    return group_names.labor.federal if name.match(/Australian Federal Labor Party/i)
 
     # Liberal National Party (QLD) and Country Liberal Party (NT)
     return group_names.liberals.qld if name.match(/(Liberal National Party|LNP).+(QLD|Queensland)/i)
@@ -265,6 +266,8 @@ class MapGroupNames
     return group_names.liberals.federal if name.match(/Lib.+Australia/i)
     return group_names.liberals.nsw if name.match(/Liberal Party Avalon/i)
     return group_names.liberals.federal if name.match(/Liberal Party Of Aus/i)
+    return group_names.liberals.federal if name.match(/Australian Federal Liberal Party/i)
+
 
     # Greens
     return group_names.greens.nsw if name.match(/((Greens|GRN).+(New South Wales|NSW|N\.S\.W)|(New South Wales|New South Wales|NSW|N\.S\.W\.).+(Greens|GRN))/i)
@@ -333,6 +336,7 @@ class MapGroupNames
     regex_for_titleize_7 = /\bVictoria\b|\bQueensland\b|\bTasmania\b/i
     regex_for_titleize_8 = /\Air New Zealand\b|\bAir Pacific\b|\bAir Liquide\b|Singapore/i
     regex_for_titleize_9 = /\Be Our Guest\b|\bBlack Dog\b/i
+    regex_for_titleize_10 = /\bJoe\b/i
 
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
@@ -351,6 +355,7 @@ class MapGroupNames
                    .gsub(regex_for_titleize_7) { |word| word.titleize }
                    .gsub(regex_for_titleize_8) { |word| word.titleize }
                    .gsub(regex_for_titleize_9) { |word| word.titleize }
+                   .gsub(regex_for_titleize_10) { |word| word.titleize }
                    .gsub(regex_for_downcase) { |word| word.downcase }
                    .gsub(/^the/) { |word| word.titleize }
                    .gsub(/australia/) { |word| word.titleize }

@@ -9,7 +9,7 @@
         <!-- Search Box -->
         <%= form_with url: {controller: "search", action: "index"}, method: :get, html: {class: "search-box"} do %>
           <div class="input-group">
-            <%= text_field_tag :query, '', class: "form-control", placeholder: "Search for people or groups..." %>
+            <%= text_field_tag :query, '', class: "form-control", placeholder: "Search for people or groups...", autofocus: true %>
             <%= submit_tag 'Search', class: "btn btn-primary" %>
           </div>
         <% end %>

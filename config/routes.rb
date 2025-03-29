@@ -39,4 +39,8 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   root "search#index"
+
+
+  # # Add a custom POST route for Memberships
+  post '/admin/memberships/custom_action', to: 'admin/memberships#custom_action', as: :custom_admin_memberships
 end
