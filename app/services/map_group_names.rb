@@ -228,6 +228,7 @@ class MapGroupNames
     return group_names.labor.federal if name.match(/The Australian Labour Party National Secretar/i)
     return group_names.labor.federal if name.match(/ALP National \(ALP-FED\)/i)
     return group_names.labor.federal if name.match(/Australian Labour Party/i)
+    return group_names.labor.federal if name.match(/Australian Federal Labor Party/i)
 
     # Liberal National Party (QLD) and Country Liberal Party (NT)
     return group_names.liberals.qld if name.match(/(Liberal National Party|LNP).+(QLD|Queensland)/i)
@@ -265,6 +266,8 @@ class MapGroupNames
     return group_names.liberals.federal if name.match(/Lib.+Australia/i)
     return group_names.liberals.nsw if name.match(/Liberal Party Avalon/i)
     return group_names.liberals.federal if name.match(/Liberal Party Of Aus/i)
+    return group_names.liberals.federal if name.match(/Australian Federal Liberal Party/i)
+
 
     # Greens
     return group_names.greens.nsw if name.match(/((Greens|GRN).+(New South Wales|NSW|N\.S\.W)|(New South Wales|New South Wales|NSW|N\.S\.W\.).+(Greens|GRN))/i)
