@@ -172,4 +172,10 @@ class Group < ApplicationRecord
 
     name
   end
+
+  def self.all_named_parties
+    NAMES.to_h.keys.map do |key|
+      NAMES.send(key).to_h.values
+    end.flatten.uniq
+  end
 end

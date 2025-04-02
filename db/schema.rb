@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_03_10_053615) do
+ActiveRecord::Schema[7.0].define(version: 2025_04_02_110749) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -86,6 +86,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_03_10_053615) do
     t.datetime "updated_at", null: false
     t.json "cached_data", default: {}
     t.text "other_names", default: [], array: true
+    t.string "linkedin_url"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|

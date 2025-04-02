@@ -26,7 +26,7 @@ class People::GroupTableRow < ApplicationView
       end
 
       render Common::CollapsibleButtonCollection.new(
-        collection: group.people,
+        collection: group.people - [exclude_person],
         entity: group,
         render_inside: 'td',
         contains_only: 'people'

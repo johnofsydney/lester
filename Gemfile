@@ -67,3 +67,6 @@ gem 'flipper-ui'
 # TODO:
 # add bootstrap gem?
 # https://dev.to/chmich/setup-bootstrap-on-rails-7-and-vite-g5a
+
+# gem 'nokogiri', '~> 1.18', '>= 1.18.6'
+gem 'faraday'

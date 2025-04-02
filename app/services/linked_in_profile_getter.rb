@@ -1,0 +1,262 @@
+require 'nokogiri'
+require 'open-uri'
+
+class LinkedInProfileGetter
+  attr_reader :person
+  def initialize(person)
+    @person = person
+  end
+
+  def perform
+
+    conn = Faraday.new(
+      url: 'https://nubela.co',
+      headers: {
+        'Content-Type' => 'application/json',
+        'Authorization' => "Bearer #{Rails.application.credentials.dig(:proxycurl, :api_key)}"
+      }
+    )
+
+    response = conn.get('/proxycurl/api/v2/linkedin') do |req|
+      req.params['linkedin_profile_url'] = person.linkedin_url
+    end
+
+    binding.pry
+    return unless response.success?
+
+    previous_last_position = Position.order(id: :desc).last
+
+    experiences = JSON.parse(response.body)['experiences']
+    experiences.each do |experience|
+      handle_experience(experience)
+    end
+
+    return unless previous_last_position
+
+    new_positions = Position.where(id: (previous_last_position.id + 1)...)
+    new_positions.each do |position|
+      handle_membership_dates(position)
+    end
+  end
+
+  def handle_membership_dates(position)
+    membership = position.membership
+    return unless membership
+    return if Group.all_named_parties.include?(membership.group.name)
+
+    membership.start_date = position.start_date if use_position_start_date?(position)
+    membership.end_date = position.end_date if use_position_end_date?(position)
+    membership.save!
+  end
+
+  def use_position_start_date?(position)
+    membership = position.membership
+
+    return false unless position.start_date.present?
+    return true if membership.start_date.nil?
+
+    membership.start_date > position.start_date
+  end
+
+  def use_position_end_date?(position)
+    membership = position.membership
+
+    return false unless position.end_date.present?
+    return true if membership.end_date.nil?
+
+    membership.end_date < position.end_date
+  end
+
+  def handle_experience(experience)
+    # Process each experience item here
+    puts "Company: #{experience['company']}"
+    puts "Title: #{experience['title']}"
+    puts "Location: #{experience['location']}"
+    puts "Description: #{experience['description']}"
+    puts "Logo URL: #{experience['logo_url']}"
+    puts "-" * 40
+
+    group = RecordGroup.call(experience['company'])
+    # person
+    title = if experience['title'].present?
+      CapitalizeNames.capitalize(experience['title'].strip)
+                     .gsub(/\bCEO\b/i) { |word| word.upcase }
+    end
+
+    evidence = person.linkedin_url
+    start_date = parse_date(experience['starts_at']) if experience['starts_at'].present?
+    end_date = parse_date(experience['ends_at']) if experience['ends_at'].present?
+
+    # the membership may not exist, if so, we need to create it
+    # There is no start date or end date added to the membership at this point
+    membership = Membership.find_or_create_by(
+      member_type: "Person",
+      member_id: person.id,
+      group: group
+    )
+    # create position for each row, with unique dates and title
+    if (title || start_date || end_date)
+      position = Position.find_or_create_by(membership:, title:, start_date:, end_date:)
+    end
+
+    membership.update!(evidence:) if evidence
+    position.update!(evidence:) if evidence && position
+  end
+
+  def parse_date(date_hash)
+    return nil unless date_hash.present?
+
+    begin
+      Date.new(date_hash['year'], date_hash['month'], date_hash['day'])
+    rescue => exception
+      nil
+    end
+  end
+end
+
+
+
+# Example usage:
+# parser = LinkedInProfileParser.new("https://www.linkedin.com/in/example-profile/")
+# puts parser.parse
+
+
+# class PostService
+#   attr_reader :url, :endpoint, :payload
+
+#   def initialize(url, endpoint, payload)
+#     @url = url
+#     @endpoint = endpoint
+#     @payload = payload
+#   end
+
+#   def call
+#     # post payload to the customer endpoint
+#     conn = Faraday.new(
+#       url: url,
+#       headers: {'Content-Type' => 'application/json'}
+#     )
+
+#     begin
+#       response = conn.post(endpoint) do |req|
+#         req.body = payload.to_json
+#       end
+#     rescue Faraday::ConnectionFailed => e
+#       response = OpenStruct.new(body: e.inspect, status: 500)
+#     end
+#   end
+# end
+
+
+# curl \
+#     -G \
+#     -H "Authorization: Bearer ${YOUR_API_KEY}" \
+#     'https://nubela.co/proxycurl/api/v2/linkedin' \
+#     --data-urlencode 'twitter_profile_url=https://x.com/johnrmarty/' \
+#     --data-urlencode 'facebook_profile_url=https://facebook.com/johnrmarty/' \
+#     --data-urlencode 'linkedin_profile_url=https://linkedin.com/in/johnrmarty/' \
+#     --data-urlencode 'extra=include' \
+#     --data-urlencode 'github_profile_id=include' \
+#     --data-urlencode 'facebook_profile_id=include' \
+#     --data-urlencode 'twitter_profile_id=include' \
+#     --data-urlencode 'personal_contact_number=include' \
+#     --data-urlencode 'personal_email=include' \
+#     --data-urlencode 'inferred_salary=include' \
+#     --data-urlencode 'skills=include' \
+#     --data-urlencode 'use_cache=if-present' \
+#     --data-urlencode 'fallback_to_cache=on-error'
+
+
+# 2] pry(#<LinkedInProfileParser>)> response.body
+# => "{\"public_identifier\": \"mrjohncoote\", \"profile_pic_url\": \"https://s3.us-west-000.backblazeb2.com/proxycurl/person/mrjohncoote/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=3600&X-Amz-SignedHeaders=host&X-Amz-Signature=879ae25c2c05997dada8a319f71ddd7104f13a6e7e24b3e1ea996d910257a0e4\", \"background_cover_image_url\": null, \"first_name\": \"John\", \"last_name\": \"Coote\", \"full_name\": \"John Coote\", \"follower_count\": null, \"occupation\": \"Senior Software Engineer at Sherpa Delivery\", \"headline\": \"Senior Software Engineer at Sherpa\", \"summary\": \"Software Engineer specialising in Ruby on Rails.\\nIndustry experience in courier deliveries, healthcare and fintech.\\nRuby; Mostly on Rails, but also on Sinatra and AWS Lambda\\nDatabase; Mostly Postgresql with some Dynamo DB\\nTesting; RSpec\\nBug Tracking; Rollbar, Bugsnag\\nCI/CD; Buildkite, Github & Bitbucket\\n\\nAs well as writing code that is clean, performant and well tested I enjoy the top level decision making process of how a problem will be solved. I really enjoy mentoring junior engineers to grow their skills and confidence.\\n\\nBefore re-training as a Software Engineer I worked as an Electrical Engineer in the Electronics industry, principally designing and manufacturing equipment for Telecommunications\", \"country\": \"AU\", \"country_full_name\": \"Australia\", \"city\": \"Sydney\", \"state\": \"New South Wales\", \"experiences\": [{\"starts_at\": {\"day\": 1, \"month\": 7, \"year\": 2022}, \"ends_at\": null, \"company\": \"Sherpa Delivery\", \"company_linkedin_profile_url\": \"https://www.linkedin.com/company/sherpa-pty-ltd/\", \"company_facebook_profile_url\": null, \"title\": \"Senior Software Engineer\", \"description\": null, \"location\": \"Sydney, New South Wales, Australia\", \"logo_url\": \"https://s3.us-west-000.backblazeb2.com/proxycurl/company/sherpa-pty-ltd/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=b8e5d8b8afd2c6abf68557a2c75fd826ba9dce1af25a0159d1afa495c83011e6\"}, {\"starts_at\": {\"day\": 1, \"month\": 8, \"year\": 2021}, \"ends_at\": {\"day\": 1, \"month\": 7, \"year\": 2022}, \"company\": \"Mable\", \"company_linkedin_profile_url\": \"https://www.linkedin.com/company/mableaustralia/\", \"company_facebook_profile_url\": null, \"title\": \"Software Engineer\", \"description\": \"Ruby on Rails Engineer\", \"location\": \"Sydney, New South Wales, Australia\", \"logo_url\": \"https://s3.us-west-000.backblazeb2.com/proxycurl/company/mableaustralia/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=4202d231954d2be2750d1976b5a32eadb3744a382f535ba7c061feb286d0c583\"}, {\"starts_at\": {\"day\": 1, \"month\": 12, \"year\": 2018}, \"ends_at\": {\"day\": 1, \"month\": 7, \"year\": 2021}, \"company\": \"Fat Zebra\", \"company_linkedin_profile_url\": \"https://www.linkedin.com/company/fat-zebra/\", \"company_facebook_profile_url\": null, \"title\": \"Software Developer\", \"description\": \"- Ruby, Rails, RSpec, TDD\\n- Postgresql, SQL\\n- Sidekiq, Redis\\n- AWS - Dynamo DB, Lambdas, SQS, S3\\n- CI/CD (Buildkite)\\n- Git, bash / zsh\", \"location\": \"Sydney, Australia\", \"logo_url\": \"https://s3.us-west-000.backblazeb2.com/proxycurl/company/fat-zebra/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=117cf005aac0b13e7a0cab60cdf050211cb33b58d4e074e43606315220104b7f\"}, {\"starts_at\": {\"day\": 1, \"month\": 9, \"year\": 2018}, \"ends_at\": {\"day\": 1, \"month\": 11, \"year\": 2018}, \"company\": \"SBS\", \"company_linkedin_profile_url\": \"https://www.linkedin.com/company/sbs/\", \"company_facebook_profile_url\": null, \"title\": \"Software Developer\", \"description\": null, \"location\": \"Sydney, Australia\", \"logo_url\": \"https://s3.us-west-000.backblazeb2.com/proxycurl/company/sbs/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=6332de9be9a0a59976765541539cf0ae405d836130c21da532228563df122205\"}, {\"starts_at\": {\"day\": 1, \"month\": 2, \"year\": 2018}, \"ends_at\": {\"day\": 1, \"month\": 9, \"year\": 2018}, \"company\": \"General Assembly\", \"company_linkedin_profile_url\": \"https://www.linkedin.com/school/generalassembly/\", \"company_facebook_profile_url\": null, \"title\": \"Teaching Assistant\", \"description\": \"Teaching Assistant for full-stack Web Development Immersive course at GA. Covering HTML, CSS, Javascript, Ruby on Rails and more...\", \"location\": \"Sydney, Australia\", \"logo_url\": \"https://media.licdn.com/dms/image/C4E0BAQEwAxD22k-HBw/company-logo_400_400/0/1629948625988?e=1694044800&v=beta&t=VLhN5SmVSV8aosdXlYtMdHhkgWePBqBR2YbzXc-IK8c\"}, {\"starts_at\": {\"day\": 1, \"month\": 10, \"year\": 2017}, \"ends_at\": {\"day\": 1, \"month\": 1, \"year\": 2018}, \"company\": \"General Assembly\", \"company_linkedin_profile_url\": \"https://www.linkedin.com/school/generalassembly/\", \"company_facebook_profile_url\": null, \"title\": \"Web Development Immersive Student\", \"description\": \"A 12 week full time course covering;\\n* HTML\\n* CSS, including libraries such as Bootstrap, Animations etc\\n* Javascript, including libraries such  as JQuery, underscore and Three.JS\\n* Use of APIs, such as google geoCharts etc\\n* Ruby on Rails, with Sinatra and Postgresql databases\\n* Ruby gems such as Cloudinary and Nokogiri\\n* React\\n* git / GitHub / collaborating on a project using git\\n* deployment to GitHub pages and Heroku\\n\\n\\nMy Projects at GA can be seen in more detail at https://johnofsydney.github.io/ and included:\\n\\nElemental\\n\\nThe website stores and displays data of elements in the periodic table, the scientists that discovered or described these elements, and the countries where the major deposits may be found\\n\\n* Built in Ruby on Rails\\n* Models, Views, Controllers (MVC) application.\\n* Image upload using Cloudinary\\n* Webscraping using NokoGiri\\n* Javascript libraries: Three.JS, underscore, particle.js and jQuery\\n* Google geoCharts and bar charts\\n* Bootstrap CSS, CSS Grid\\n* Maths to animate the spinning Three.JS electrons\\n\\n\\n\\nFM_Booker\\n\\nThe application concept is an uber for facilities management companies and service technicians. A booker will create a job, and a technician can select the jobs they want to undertake.\\n\\n* Built in Ruby on Rails\\n* Models, Views, Controllers (MVC) application.\\n* User Login function\\n* Search using pgSearch\\n* Image upload using Cloudinary\\n* Google Maps\\n* Bootstrap CSS\\n\\n\\nTic Tac Toe / Connect 4 / Othello\\n\\nOur first solo project, everyone has to make Tic Tac Toe. Instead of working on a one player vs the computer game I concentrated on building in more games and doing my best to re-use as much common game logic as I could.\\n\\nMy site allows you to play Tic Tac Toe or Connect 4 or Othello / Reversi, the actual game is selected according to the size of the game board chosen by the user.\\n\\n* HTML\\n* CSS\\n* Javascript, JQuery\", \"location\": \"Sydney, Australia\", \"logo_url\": \"https://media.licdn.com/dms/image/C4E0BAQEwAxD22k-HBw/company-logo_400_400/0/1629948625988?e=1694044800&v=beta&t=VLhN5SmVSV8aosdXlYtMdHhkgWePBqBR2YbzXc-IK8c\"}, {\"starts_at\": {\"day\": 1, \"month\": 9, \"year\": 2006}, \"ends_at\": {\"day\": 1, \"month\": 9, \"year\": 2017}, \"company\": \"DataHouseSoftware\", \"company_linkedin_profile_url\": null, \"company_facebook_profile_url\": null, \"title\": \"Software Development\", \"description\": \"\\\"Pipeline\\\" was the MS Access application I developed to run my own recruitment business, and also licensed to several other small recruitment consultancies.\\n- tracking of candidates and sales contacts\\n- integration with MS Outlook for email and calendar functions\\n- integration with 3rd party applications for SMS and VOIP calling\\n- Forms, Queries, Reports, Tables, VBA - all the MS Access components\\n- connection to local mdb file or SQL Server database\\n- website design\\n- create features from customer's enquiries\\n\\nSome testimonials:\\n\\\"Pipeline is the most user friendly, intuitive system I have found in the 12 years I have been in recruitment.\\\"\\n\\\"The back end service we have received from DataHouseSoftware has been exceptional.\\\"\\n\\\"We evaluated 21 different software packages to keep our business running efficiently, Datahouse beat them all.\\\"\\n\\\"I have found Pipeline to be excellent, it is totally practical, user friendly and is a no-nonsense database, which allows me to do my job more efficiently\\\"\", \"location\": null, \"logo_url\": null}, {\"starts_at\": {\"day\": 1, \"month\": 9, \"year\": 2006}, \"ends_at\": {\"day\": 1, \"month\": 3, \"year\": 2014}, \"company\": \"Stafford Island\", \"company_linkedin_profile_url\": null, \"company_facebook_profile_url\": null, \"title\": \"Recruitment Consultant\", \"description\": \"Recruitment of Engineers and related technical people for companies in Sydney, NSW and throughout Australia.\", \"location\": null, \"logo_url\": null}, {\"starts_at\": {\"day\": 1, \"month\": 3, \"year\": 2000}, \"ends_at\": {\"day\": 1, \"month\": 9, \"year\": 2017}, \"company\": \"Hawker Batteries, Com10 International, Emerson Network Power\", \"company_linkedin_profile_url\": null, \"company_facebook_profile_url\": null, \"title\": \"Electrical Design Engineer\", \"description\": \"Electrical Engineer for various companies, principally the manufacturing of Electronic Power Conversion equipment for the Telecommunications Industry.\\n\\nCAD Design, Project Management, Engineering Calculations\", \"location\": \"Sydney, Australia\", \"logo_url\": null}], \"education\": [{\"starts_at\": {\"day\": 1, \"month\": 1, \"year\": 2017}, \"ends_at\": {\"day\": 1, \"month\": 1, \"year\": 2018}, \"field_of_study\": \"Web Development\", \"degree_name\": null, \"school\": \"General Assembly Australia\", \"school_linkedin_profile_url\": null, \"school_facebook_profile_url\": null, \"description\": null, \"logo_url\": \"https://media.licdn.com/dms/image/C560BAQHYGu_S3wkLRg/company-logo_400_400/0/1591145018898?e=1694044800&v=beta&t=DopgLmO6iF5KirFRr80iDu20uRzJqSQ3UlRDwXZb_E4\", \"grade\": null, \"activities_and_societies\": null}, {\"starts_at\": null, \"ends_at\": null, \"field_of_study\": \"Electrical Engineering\", \"degree_name\": \"BE\", \"school\": \"University of Sydney\", \"school_linkedin_profile_url\": null, \"school_facebook_profile_url\": null, \"description\": null, \"logo_url\": \"https://media.licdn.com/dms/image/C560BAQHbPUZaDAMT6g/company-logo_400_400/0/1646696237089?e=1694044800&v=beta&t=NUt_Zmuix-5XhGTTbygYXnu7jQrNrZYqxu3LdZlvx6Y\", \"grade\": null, \"activities_and_societies\": null}], \"languages\": [], \"languages_and_proficiencies\": [], \"accomplishment_organisations\": [], \"accomplishment_publications\": [], \"accomplishment_honors_awards\": [], \"accomplishment_patents\": [], \"accomplishment_courses\": [], \"accomplishment_projects\": [], \"accomplishment_test_scores\": [], \"volunteer_work\": [], \"certifications\": [], \"connections\": null, \"people_also_viewed\": [{\"link\": \"https://au.linkedin.com/in/sameeragayanprofile\", \"name\": \"Sameera Gayan\", \"summary\": \"Engineering Manager at Mable\", \"location\": \"Greater Sydney Area\"}, {\"link\": \"https://au.linkedin.com/in/hardik-m-thakkar\", \"name\": \"Hardikkumar Thakkar\", \"summary\": \"Product Engineer at Mable\", \"location\": \"Greater Sydney Area\"}, {\"link\": \"https://au.linkedin.com/in/antodoms\", \"name\": \"Anto Dominic\", \"summary\": \"Senior software Engineer (Ruby) at Mable Technologies Pty Ltd\", \"location\": \"Melbourne, VI\"}, {\"link\": \"https://au.linkedin.com/in/peter-scutt-1964285\", \"name\": \"Peter Scutt\", \"summary\": \"Founder and Chief Executive Officer at Mable\", \"location\": \"Greater Sydney Area\"}, {\"link\": \"https://au.linkedin.com/in/will-childs-3b15751aa\", \"name\": \"Will Childs\", \"summary\": \"Data Scientist/Engineer at Mable\", \"location\": \"Sydney, NS\"}, {\"link\": \"https://au.linkedin.com/in/matt-cramp-168282a\", \"name\": \"Matt Cramp\", \"summary\": \"Full-Stack Developer\", \"location\": \"Sydney, NS\"}, {\"link\": \"https://au.linkedin.com/in/ericbae\", \"name\": \"Eric Bae\", \"summary\": \"PhD - Computer Science, Data Mining, Machine Learning\", \"location\": \"Greater Sydney Area\"}, {\"link\": \"https://au.linkedin.com/in/hadi-ayoub-au\", \"name\": \"Hadi A.\", \"summary\": \"Software Engineer\", \"location\": \"Sydney, NS\"}, {\"link\": \"https://au.linkedin.com/in/pooja-beniwal-701b61156\", \"name\": \"Pooja Beniwal\", \"summary\": \"Data Analyst at Mable\", \"location\": \"Greater Sydney Area\"}, {\"link\": \"https://au.linkedin.com/in/anandjacob\", \"name\": \"Anand Jacob\", \"summary\": \"Senior Software Engineer | Back-End | Ruby on Rails | MySQL | AWS | Docker | Ansible | Nginx\", \"location\": \"Sydney, NS\"}, {\"link\": \"https://au.linkedin.com/in/benjamin-s-thomas\", \"name\": \"Ben Thomas\", \"summary\": \"Chief Analytics Officer at Mable\", \"location\": \"Greater Sydney Area\"}, {\"link\": \"https://au.linkedin.com/in/pauline-condon-b0446553\", \"name\": \"Pauline Condon\", \"summary\": \"Teacher at NSW Department of Education and Communities\", \"location\": \"Greater Sydney Area\"}, {\"link\": \"https://ie.linkedin.com/in/bigtopmultimedia\", \"name\": \"Ian Smith\", \"summary\": \"Co-founder and Director at Big Top Multimedia\", \"location\": \"Ireland\"}, {\"link\": \"https://au.linkedin.com/in/bertrand-chapman-35a405136\", \"name\": \"Bertrand Chapman\", \"summary\": \"Software Developer at Guide Dogs Queensland\", \"location\": \"Greater Brisbane Area\"}, {\"link\": \"https://my.linkedin.com/in/sandy-ng-a57055179\", \"name\": \"Sandy Ng\", \"summary\": \"Insurance Agent at HLA\", \"location\": \"Kuala Lumpur\"}, {\"link\": \"https://au.linkedin.com/in/ryan-lee-785546179\", \"name\": \"Ryan Lee\", \"summary\": \"Software Developer at Educator Impact\", \"location\": \"Greater Perth Area\"}, {\"link\": \"https://my.linkedin.com/in/yanling-chen-29a43290\", \"name\": \"yanling chen\", \"summary\": \"Director at Essmart System Sdn Bhd\", \"location\": \"Kuala Lumpur\"}, {\"link\": \"https://my.linkedin.com/in/hui-jiew-teo-16872452\", \"name\": \"hui jiew Teo\", \"summary\": \"Commercial Banking Specialist at Public Bank\", \"location\": \"Kuala Lumpur\"}, {\"link\": \"https://my.linkedin.com/in/ching-yan-128a4593\", \"name\": \"Ching Yan\", \"summary\": \"Exploring\", \"location\": \"Petaling Jaya\"}, {\"link\": \"https://au.linkedin.com/in/andrew-lee-5bb76634\", \"name\": \"Andrew Lee\", \"summary\": \"Software Developer at Stan.\", \"location\": \"Greater Sydney Area\"}], \"recommendations\": [], \"activities\": [], \"similarly_named_profiles\": [{\"name\": \"John Coote\", \"link\": \"https://ie.linkedin.com/in/john-coote-b32779b9\", \"summary\": \"Owner at JCiT Services\", \"location\": \"Ireland\"}, {\"name\": \"John Coote\", \"link\": \"https://au.linkedin.com/in/john-coote-41632741\", \"summary\": \"Owner at Jubilee Capital Limited\", \"location\": \"Greater Brisbane Area\"}, {\"name\": \"John Coote\", \"link\": \"https://uk.linkedin.com/in/john-coote-b4990046\", \"summary\": \"Managing Director at J.Coote & Son Ltd\", \"location\": \"United Kingdom\"}, {\"name\": \"John Coote\", \"link\": \"https://uk.linkedin.com/in/john-coote-01602386\", \"summary\": \"Director\", \"location\": \"Peterborough\"}, {\"name\": \"John Coote\", \"link\": \"https://au.linkedin.com/in/john-coote-71a378b6\", \"summary\": \"--\", \"location\": \"Australia\"}], \"articles\": [], \"groups\": [], \"skills\": [], \"inferred_salary\": null, \"gender\": null, \"birth_date\": null, \"industry\": null, \"extra\": null, \"interests\": [], \"personal_emails\": [], \"personal_numbers\": []}"
+
+# body = JSON.parse(response.body)
+# [11] pry(#<LinkedInProfileParser>)> body['experiences']
+# => [{"starts_at"=>{"day"=>1, "month"=>7, "year"=>2022},
+#   "ends_at"=>nil,
+#   "company"=>"Sherpa Delivery",
+#   "company_linkedin_profile_url"=>"https://www.linkedin.com/company/sherpa-pty-ltd/",
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Senior Software Engineer",
+#   "description"=>nil,
+#   "location"=>"Sydney, New South Wales, Australia",
+#   "logo_url"=>
+#    "https://s3.us-west-000.backblazeb2.com/proxycurl/company/sherpa-pty-ltd/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=b8e5d8b8afd2c6abf68557a2c75fd826ba9dce1af25a0159d1afa495c83011e6"},
+#  {"starts_at"=>{"day"=>1, "month"=>8, "year"=>2021},
+#   "ends_at"=>{"day"=>1, "month"=>7, "year"=>2022},
+#   "company"=>"Mable",
+#   "company_linkedin_profile_url"=>"https://www.linkedin.com/company/mableaustralia/",
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Software Engineer",
+#   "description"=>"Ruby on Rails Engineer",
+#   "location"=>"Sydney, New South Wales, Australia",
+#   "logo_url"=>
+#    "https://s3.us-west-000.backblazeb2.com/proxycurl/company/mableaustralia/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=4202d231954d2be2750d1976b5a32eadb3744a382f535ba7c061feb286d0c583"},
+#  {"starts_at"=>{"day"=>1, "month"=>12, "year"=>2018},
+#   "ends_at"=>{"day"=>1, "month"=>7, "year"=>2021},
+#   "company"=>"Fat Zebra",
+#   "company_linkedin_profile_url"=>"https://www.linkedin.com/company/fat-zebra/",
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Software Developer",
+#   "description"=>"- Ruby, Rails, RSpec, TDD\n- Postgresql, SQL\n- Sidekiq, Redis\n- AWS - Dynamo DB, Lambdas, SQS, S3\n- CI/CD (Buildkite)\n- Git, bash / zsh",
+#   "location"=>"Sydney, Australia",
+#   "logo_url"=>
+#    "https://s3.us-west-000.backblazeb2.com/proxycurl/company/fat-zebra/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=117cf005aac0b13e7a0cab60cdf050211cb33b58d4e074e43606315220104b7f"},
+#  {"starts_at"=>{"day"=>1, "month"=>9, "year"=>2018},
+#   "ends_at"=>{"day"=>1, "month"=>11, "year"=>2018},
+#   "company"=>"SBS",
+#   "company_linkedin_profile_url"=>"https://www.linkedin.com/company/sbs/",
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Software Developer",
+#   "description"=>nil,
+#   "location"=>"Sydney, Australia",
+#   "logo_url"=>
+#    "https://s3.us-west-000.backblazeb2.com/proxycurl/company/sbs/profile?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=0004d7f56a0400b0000000001%2F20250402%2Fus-west-000%2Fs3%2Faws4_request&X-Amz-Date=20250402T043528Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=6332de9be9a0a59976765541539cf0ae405d836130c21da532228563df122205"},
+#  {"starts_at"=>{"day"=>1, "month"=>2, "year"=>2018},
+#   "ends_at"=>{"day"=>1, "month"=>9, "year"=>2018},
+#   "company"=>"General Assembly",
+#   "company_linkedin_profile_url"=>"https://www.linkedin.com/school/generalassembly/",
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Teaching Assistant",
+#   "description"=>"Teaching Assistant for full-stack Web Development Immersive course at GA. Covering HTML, CSS, Javascript, Ruby on Rails and more...",
+#   "location"=>"Sydney, Australia",
+#   "logo_url"=>"https://media.licdn.com/dms/image/C4E0BAQEwAxD22k-HBw/company-logo_400_400/0/1629948625988?e=1694044800&v=beta&t=VLhN5SmVSV8aosdXlYtMdHhkgWePBqBR2YbzXc-IK8c"},
+#  {"starts_at"=>{"day"=>1, "month"=>10, "year"=>2017},
+#   "ends_at"=>{"day"=>1, "month"=>1, "year"=>2018},
+#   "company"=>"General Assembly",
+#   "company_linkedin_profile_url"=>"https://www.linkedin.com/school/generalassembly/",
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Web Development Immersive Student",
+#   "description"=>
+#    "A 12 week full time course covering;\n* HTML\n* CSS, including libraries such as Bootstrap, Animations etc\n* Javascript, including libraries such  as JQuery, underscore and Three.JS\n* Use of APIs, such as google geoCharts etc\n* Ruby on Rails, with Sinatra and Postgresql databases\n* Ruby gems such as Cloudinary and Nokogiri\n* React\n* git / GitHub / collaborating on a project using git\n* deployment to GitHub pages and Heroku\n\n\nMy Projects at GA can be seen in more detail at https://johnofsydney.github.io/ and included:\n\nElemental\n\nThe website stores and displays data of elements in the periodic table, the scientists that discovered or described these elements, and the countries where the major deposits may be found\n\n* Built in Ruby on Rails\n* Models, Views, Controllers (MVC) application.\n* Image upload using Cloudinary\n* Webscraping using NokoGiri\n* Javascript libraries: Three.JS, underscore, particle.js and jQuery\n* Google geoCharts and bar charts\n* Bootstrap CSS, CSS Grid\n* Maths to animate the spinning Three.JS electrons\n\n\n\nFM_Booker\n\nThe application concept is an uber for facilities management companies and service technicians. A booker will create a job, and a technician can select the jobs they want to undertake.\n\n* Built in Ruby on Rails\n* Models, Views, Controllers (MVC) application.\n* User Login function\n* Search using pgSearch\n* Image upload using Cloudinary\n* Google Maps\n* Bootstrap CSS\n\n\nTic Tac Toe / Connect 4 / Othello\n\nOur first solo project, everyone has to make Tic Tac Toe. Instead of working on a one player vs the computer game I concentrated on building in more games and doing my best to re-use as much common game logic as I could.\n\nMy site allows you to play Tic Tac Toe or Connect 4 or Othello / Reversi, the actual game is selected according to the size of the game board chosen by the user.\n\n* HTML\n* CSS\n* Javascript, JQuery",
+#   "location"=>"Sydney, Australia",
+#   "logo_url"=>"https://media.licdn.com/dms/image/C4E0BAQEwAxD22k-HBw/company-logo_400_400/0/1629948625988?e=1694044800&v=beta&t=VLhN5SmVSV8aosdXlYtMdHhkgWePBqBR2YbzXc-IK8c"},
+#  {"starts_at"=>{"day"=>1, "month"=>9, "year"=>2006},
+#   "ends_at"=>{"day"=>1, "month"=>9, "year"=>2017},
+#   "company"=>"DataHouseSoftware",
+#   "company_linkedin_profile_url"=>nil,
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Software Development",
+#   "description"=>
+#    "\"Pipeline\" was the MS Access application I developed to run my own recruitment business, and also licensed to several other small recruitment consultancies.\n- tracking of candidates and sales contacts\n- integration with MS Outlook for email and calendar functions\n- integration with 3rd party applications for SMS and VOIP calling\n- Forms, Queries, Reports, Tables, VBA - all the MS Access components\n- connection to local mdb file or SQL Server database\n- website design\n- create features from customer's enquiries\n\nSome testimonials:\n\"Pipeline is the most user friendly, intuitive system I have found in the 12 years I have been in recruitment.\"\n\"The back end service we have received from DataHouseSoftware has been exceptional.\"\n\"We evaluated 21 different software packages to keep our business running efficiently, Datahouse beat them all.\"\n\"I have found Pipeline to be excellent, it is totally practical, user friendly and is a no-nonsense database, which allows me to do my job more efficiently\"",
+#   "location"=>nil,
+#   "logo_url"=>nil},
+#  {"starts_at"=>{"day"=>1, "month"=>9, "year"=>2006},
+#   "ends_at"=>{"day"=>1, "month"=>3, "year"=>2014},
+#   "company"=>"Stafford Island",
+#   "company_linkedin_profile_url"=>nil,
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Recruitment Consultant",
+#   "description"=>"Recruitment of Engineers and related technical people for companies in Sydney, NSW and throughout Australia.",
+#   "location"=>nil,
+#   "logo_url"=>nil},
+#  {"starts_at"=>{"day"=>1, "month"=>3, "year"=>2000},
+#   "ends_at"=>{"day"=>1, "month"=>9, "year"=>2017},
+#   "company"=>"Hawker Batteries, Com10 International, Emerson Network Power",
+#   "company_linkedin_profile_url"=>nil,
+#   "company_facebook_profile_url"=>nil,
+#   "title"=>"Electrical Design Engineer",
+#   "description"=>
+#    "Electrical Engineer for various companies, principally the manufacturing of Electronic Power Conversion equipment for the Telecommunications Industry.\n\nCAD Design, Project Management, Engineering Calculations",
+#   "location"=>"Sydney, Australia",
+#   "logo_url"=>nil}]
