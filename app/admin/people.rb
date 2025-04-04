@@ -30,6 +30,7 @@ ActiveAdmin.register Person do
   form do |f|
     f.inputs 'Person' do
       f.input :name
+      f.input :linkedin_url
     end
     f.actions
   end

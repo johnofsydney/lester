@@ -202,6 +202,7 @@ class MapGroupNames
     return 'Idameneo (No 123) Pty Ltd' if name.match?(/Idameneo.+123/i)
     return 'Schaffer Corporation Limited' if name.match?(/Schaffer Corporation (Limited|Ltd)/i)
     return 'The Union Education Foundation' if name.match?(/Union Education Foundation/i)
+    return 'Tamboran Resources Limited' if name.match?(/Tamboran Resources/i)
 
 
 
