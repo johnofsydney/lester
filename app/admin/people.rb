@@ -20,11 +20,15 @@ ActiveAdmin.register Person do
   filter :id
   filter :name
   filter :name, as: :string, filters: %i[cont eq start end not_eq]
+  filter :linkedin_url
+  filter :linkedin_ingested, as: :date_range
 
   index do
     selectable_column
     id_column
     column(:name, sortable: 'person_id')
+    column :linkedin_url
+    column :linkedin_ingested
   end
 
   form do |f|
@@ -33,5 +37,16 @@ ActiveAdmin.register Person do
       f.input :linkedin_url
     end
     f.actions
+  end
+
+  batch_action :ingest_linkedin, confirm: 'Are you sure you want to ingest LinkedIn data for these people?' do |ids|
+    ids.each do |id|
+      person = Person.find(id)
+      # Assuming you have a method to ingest LinkedIn data
+      # person.ingest_linkedin_data
+      LinkedInProfileGetter.new(person).perform
+    end
+
+    redirect_to collection_path, alert: 'LinkedIn data ingested successfully.'
   end
 end

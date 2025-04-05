@@ -18,3 +18,21 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+.active_admin {
+	* {
+		// border: red solid 1px;
+	}
+
+	#wrapper #title_bar {
+		max-width: 90%;
+	}
+	// Your custom styles here
+	// For example, to change the default status-tag color:
+	// .status_tag { background: #6090DB; }
+
+	.filter_date_range {
+		width: 85px;
+	}
+}
+
