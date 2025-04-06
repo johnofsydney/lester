@@ -1,3 +1,4 @@
+
 class People::GroupTableRow < ApplicationView
   def initialize(group:, exclude_person: nil)
     @group = group
@@ -49,11 +50,11 @@ private
     return '' unless result
 
     if position.end_date.present? && position.start_date.present?
-      result += " (#{position.formatted_start_date} - #{position.formatted_end_date})"
+      result += " (#{position.formatted_start_month_year} - #{position.formatted_end_month_year})"
     elsif position.start_date.present?
-      result += " (since #{position.formatted_start_date})"
+      result += " (since #{position.formatted_start_month_year})"
     elsif position.end_date.present?
-      result += " (until #{position.formatted_end_date})"
+      result += " (until #{position.formatted_end_month_year})"
     end
 
     result

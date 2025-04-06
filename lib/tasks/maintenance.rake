@@ -51,21 +51,28 @@ namespace :lester do
     #   memberships.last.destroy
     #   p "Deleted duplicate membership for #{jannette_lobbying.name}"
     # end
-    idameno_123_abn = Group.find_by(name: 'Idameneo (No 123) Pty Ltd')
-    idameno_123_dot = Group.find_by(name: 'Idameneo (No. 123) Pty Ltd')
-    idameno_123_abn.other_names << 'The Artlu Unit Trust'
-    idameno_123_abn.save
-    idameno_123_dot.merge_into(idameno_123_abn)
+    # idameno_123_abn = Group.find_by(name: 'Idameneo (No 123) Pty Ltd')
+    # idameno_123_dot = Group.find_by(name: 'Idameneo (No. 123) Pty Ltd')
+    # idameno_123_abn.other_names << 'The Artlu Unit Trust'
+    # idameno_123_abn.save
+    # idameno_123_dot.merge_into(idameno_123_abn)
 
-    smart_short = Group.find_by(name: 'Smart Energy Council')
-    smart_long = Group.find_by(name: 'Smart Energy Council (previously Australian Solar Council)')
-    smart_long.merge_into(smart_short)
-    smart_short.other_names << 'Australian Solar Council'
-    smart_short.save
+    # smart_short = Group.find_by(name: 'Smart Energy Council')
+    # smart_long = Group.find_by(name: 'Smart Energy Council (previously Australian Solar Council)')
+    # smart_long.merge_into(smart_short)
+    # smart_short.other_names << 'Australian Solar Council'
+    # smart_short.save
 
-    union_short = Group.find_by(name: 'The Union Education Foundation')
-    union_long = Group.find_by(name: 'The Union Education Foundation Limited')
-    union_long.merge_into(union_short)
+    # union_short = Group.find_by(name: 'The Union Education Foundation')
+    # union_long = Group.find_by(name: 'The Union Education Foundation Limited')
+    # union_long.merge_into(union_short)
+
+    tamboran_short = Group.find_by(name: 'Tamboran Resources')
+    tamboran_long = Group.find_by(name: 'Tamboran Resources Limited')
+
+    tamboran_long.merge_into(tamboran_short)
+    tamboran_short.other_names << 'Tamboran Resources Limited'
+    tamboran_short.save
 
     p "done."
   end

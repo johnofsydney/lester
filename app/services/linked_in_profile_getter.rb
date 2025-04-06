@@ -29,12 +29,15 @@ class LinkedInProfileGetter
       handle_experience(experience)
     end
 
-    return unless previous_last_position
+    person.update!(linkedin_ingested: Date.today)
+    return true unless previous_last_position
 
     new_positions = Position.where(id: (previous_last_position.id + 1)...)
     new_positions.each do |position|
       handle_membership_dates(position)
     end
+
+    true
   end
 
   def handle_membership_dates(position)
