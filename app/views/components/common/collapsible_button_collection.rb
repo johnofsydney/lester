@@ -1,14 +1,14 @@
 class Common::CollapsibleButtonCollection < ApplicationView
   attr_reader :entity, :collection, :render_inside, :contains_only
 
-	def initialize(entity:, collection:, render_inside:, contains_only: nil)
-		@entity = entity
+  def initialize(entity:, collection:, render_inside:, contains_only: nil)
+    @entity = entity
     @collection = collection
     @render_inside = render_inside
     @contains_only = contains_only
-	end
+  end
 
-	def template
+  def template
     render_inside_td if render_inside == 'td'
     render_inside_div if render_inside == 'div'
   end

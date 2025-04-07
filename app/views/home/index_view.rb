@@ -30,6 +30,9 @@ class Home::IndexView < ApplicationView
         li { a(href: 'https://transparency.aec.gov.au/ReferendumDonor') { 'AEC 2023 Referendum Donor Returns' } }
         li { a(href: 'https://transparency.aec.gov.au/Donor') { 'AEC Election Donor Returns since 2007' } }
         li { a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term') { 'Federal MPs and Senators since 2016' } }
+        li { a(href: 'https://www.parliament.nsw.gov.au/members/pages/all-members.aspx') { 'Current Members of the NSW Parliament (2025)' } }
+        li { a(href: 'https://www.parliament.nsw.gov.au/members/formermembers/Pages/former-members.aspx') { 'Former Members of the NSW Parliament (except deceased members)' } }
+        li { a(href: 'https://lobbyists.ag.gov.au/register') { 'Lobbyists and the Clients Of Lobbyists' } }
       end
 
       p { "For groups where the owners, major shareholders, or key personnel can be identified through public records, we add these individuals to the group in our database. This enhances the depth and accuracy of our data, providing a more comprehensive view of the connections of the individual." }
@@ -37,7 +40,7 @@ class Home::IndexView < ApplicationView
       p { "It's important to note that everything on our website is backed by publicly available information. We do not conduct any original research; rather, we aggregate, format, and arrange the data to reveal underlying patterns and connections. Join The Dots is committed to transparency, accountability and ensuring access to information." }
     end
     p do
-      a(href: 'https://bsky.app/profile/jointhedots.au') { 'jointhedots.au on Bluesky' }
+      a(href: 'https://bsky.app/profile/join-the-dots.info') { 'join-the-dots.info on Bluesky' }
     end
     p do
       a(href: 'mailto:jointhedots.au@protonmail.com') { 'jointhedots.au@protonmail.com' }
