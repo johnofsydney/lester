@@ -43,4 +43,5 @@ Rails.application.routes.draw do
 
   # # Add a custom POST route for Memberships
   post '/admin/memberships/custom_action', to: 'admin/memberships#custom_action', as: :custom_admin_memberships
+  post '/admin/groups/perform_merge', to: 'admin/groups#perform_merge'
 end
