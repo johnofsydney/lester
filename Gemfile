@@ -50,7 +50,7 @@ gem 'pg_search'
 gem 'devise'
 
 gem "sassc-rails"
-gem 'activeadmin'
+gem 'activeadmin', "~> 3.3.0"
 
 gem 'money-rails', '~> 1.12'
 gem 'capitalize-names'
