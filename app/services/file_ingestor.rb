@@ -239,8 +239,10 @@ class FileIngestor
       end
     end
 
-    def ministries_upload(file)
-      csv = CSV.read(file, headers: true)
+    def ministries_upload(csv = nil, file = nil)
+      raise unless csv || file
+
+      csv ||= CSV.read(file, headers: true)
       csv.each do |row|
         ministry_group = RecordGroup.call(row['group'])
 
@@ -248,15 +250,29 @@ class FileIngestor
         title = row['title'].strip if row['title']
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])
+        evidence = row['evidence'].strip if row['evidence'].present?
 
-        # the party membership may not exist, if so, we need to create it
+        # the ministry membership may not exist, if so, we need to create it
         membership = Membership.find_or_create_by(
           member_type: "Person",
           member_id: person.id,
           group: ministry_group
         )
+
+        if membership.start_date.nil?
+          membership.update!(start_date:)
+        end
+        if membership.end_date.nil?
+          membership.update!(end_date:)
+        end
+
         # create position for each row, with unique dates and title
-        Position.find_or_create_by(membership:, title:, start_date:, end_date:)
+        position = Position.find_or_create_by(membership:, title:, start_date:, end_date:)
+
+        membership.update!(evidence:) if evidence
+        position.update!(evidence:) if evidence && position
+
+
         rescue => e
 
         p "Error: #{e} | row#{row.inspect}"
@@ -420,6 +436,7 @@ class FileIngestor
       begin
         Date.parse(date)
       rescue => exception
+        puts "Error parsing date: #{date} | Error: #{exception.message}"
         nil
       end
     end

@@ -203,6 +203,9 @@ class MapGroupNames
     return 'Schaffer Corporation Limited' if name.match?(/Schaffer Corporation (Limited|Ltd)/i)
     return 'The Union Education Foundation' if name.match?(/Union Education Foundation/i)
     return 'Tamboran Resources Limited' if name.match?(/Tamboran Resources/i)
+    return 'Tamboran Resources Limited' if name.match?(/Tamboran Resources/i)
+    return 'Paladin Group' if name.match?(/Paladin Group/i)
+    return 'Qube Ports' if name.match?(/Qube Ports/i)
 
 
 

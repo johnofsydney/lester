@@ -15,7 +15,7 @@ ActiveAdmin.register Person do
   #   permitted
   # end
 
-  permit_params :name
+  permit_params :name, :linkedin_url
 
   filter :id
   filter :name
@@ -39,14 +39,29 @@ ActiveAdmin.register Person do
     f.actions
   end
 
-  batch_action :ingest_linkedin, confirm: 'Are you sure you want to ingest LinkedIn data for these people?' do |ids|
+  action_item :view_person, only: :show do
+    link_to 'View Person', person_path(resource), method: :get
+  end
+
+  batch_action :ingest_linkedin_batch, confirm: 'Are you sure you want to ingest LinkedIn data for these people?' do |ids|
     ids.each do |id|
       person = Person.find(id)
-      # Assuming you have a method to ingest LinkedIn data
-      # person.ingest_linkedin_data
+
       LinkedInProfileGetter.new(person).perform
     end
 
     redirect_to collection_path, alert: 'LinkedIn data ingested successfully.'
+  end
+
+  # Add a "Get Linked In" button on the show page
+  action_item :ingest_linkedin, only: :show do
+    link_to 'Ingest Linked In', ingest_linkedin_admin_person_path(resource), method: :post
+  end
+
+  # Handle the ingestion logic
+  member_action :ingest_linkedin, method: :post do
+    person = resource
+
+    LinkedInProfileGetter.new(person).perform
   end
 end
