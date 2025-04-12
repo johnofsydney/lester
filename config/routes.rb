@@ -42,7 +42,8 @@ Rails.application.routes.draw do
 
 
   # # Add a custom POST route for Memberships
-  post '/admin/memberships/custom_action', to: 'admin/memberships#custom_action', as: :custom_admin_memberships
+  post '/admin/memberships/general_upload_action', to: 'admin/memberships#general_upload_action', as: :general_upload_action_admin_memberships
+  post '/admin/memberships/ministries_upload_action', to: 'admin/memberships#ministries_upload_action', as: :ministries_upload_action_admin_memberships
   post '/admin/groups/perform_merge', to: 'admin/groups#perform_merge'
   post '/admin/people/ingest_linkedin', to: 'admin/people#ingest_linkedin'
 end
