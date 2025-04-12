@@ -239,8 +239,10 @@ class FileIngestor
       end
     end
 
-    def ministries_upload(file)
-      csv = CSV.read(file, headers: true)
+    def ministries_upload(csv = nil, file = nil)
+      raise unless csv || file
+
+      csv ||= CSV.read(file, headers: true)
       csv.each do |row|
         ministry_group = RecordGroup.call(row['group'])
 
