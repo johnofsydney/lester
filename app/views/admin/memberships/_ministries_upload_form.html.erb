@@ -1,4 +1,5 @@
-<%= form_with url: '/admin/memberships/custom_action', method: :post, local: true do |form| %>
+<h2>Ministries Upload</h2>
+<%= form_with url: '/admin/memberships/ministries_upload_action', method: :post, local: true do |form| %>
   <div>
     <%= form.label :bulk_text, "Enter text:" %><br>
     <%= form.text_area :bulk_text, rows: 50, cols: 150, value: "group,person,title,evidence,start_date,end_date\n" %>
