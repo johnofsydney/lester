@@ -107,3 +107,13 @@ end
 
 # https://www.parliament.act.gov.au/function/tru/act-register-of-lobbyists/act-register-of-lobbyists4/CMAX-Communications
 # need an AKA for CMAX Communications / Advisory
+
+# State based donations:
+# https://efadisclosures.elections.nsw.gov.au/
+# https://disclosures.vec.vic.gov.au/public-donations/
+# https://helpcentre.disclosures.ecq.qld.gov.au/hc/en-us
+# https://www.ecsa.sa.gov.au/parties-and-candidates/funding-and-disclosure-state-elections/public-inspection
+# https://disclosures.elections.wa.gov.au/public-dashboard/
+# https://ntec.nt.gov.au/financial-disclosure/published-annual-returns/2023-2024-annual-returns
+
+# have emailed NSW and NT asking for better tabular data on 2025-4-14

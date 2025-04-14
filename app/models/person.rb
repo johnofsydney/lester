@@ -51,7 +51,7 @@ class Person < ApplicationRecord
     SUMMARY
 
 
-    call_to_action = "\n\n" + "See more: https://jointhedots.au/people/#{id}"
+    call_to_action = "\n\n" + "See more: https://join-the-dots.info/people/#{id}"
     body += call_to_action if (body.length + call_to_action.length) < 300
     aus_pol_tag = "\n\n" + "#AusPol"
     body += aus_pol_tag if (body.length + aus_pol_tag.length) < 300
