@@ -3,8 +3,6 @@ module NodeMethods
   include ActionView::Helpers::NumberHelper
 
   included do
-    CACHE_DURATION = 10.seconds
-
     store_accessor :cached_data, [
       :nodes_count,
       :nodes_count_timestamp,
