@@ -164,6 +164,7 @@ class Group < ApplicationRecord
     Transfer.where(giver: self).update_all(giver_id: replacement_group.id)
     Transfer.where(taker: self).update_all(taker_id: replacement_group.id)
 
+    replacement_group.update(cached_data: {})
     self.destroy
   end
 
