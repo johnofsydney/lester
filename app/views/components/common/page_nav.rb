@@ -13,7 +13,7 @@ class Common::PageNav < ApplicationView
     nav(aria: { label: "Page navigation example" }) do
       ul(class: "pagination") do
 
-        previous_page = @page - 1 < 1 ? 1 : @page - 1
+        previous_page = [@page - 1, 1].max
         item_class = @page == 0 ? "page-item disabled" : "page-item"
         li(class: item_class) do
           a(class: "page-link", href: "/#{@klass.pluralize}/page=#{previous_page}") { "Previous" }

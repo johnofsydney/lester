@@ -29,7 +29,7 @@ class LinkedInProfileGetter
       handle_experience(experience)
     end
 
-    person.update!(linkedin_ingested: Date.today)
+    person.update!(linkedin_ingested: Time.zone.today)
     return true unless previous_last_position
 
     new_positions = Position.where(id: (previous_last_position.id + 1)...)
@@ -53,7 +53,7 @@ class LinkedInProfileGetter
   def use_position_start_date?(position)
     membership = position.membership
 
-    return false unless position.start_date.present?
+    return false if position.start_date.blank?
     return true if membership.start_date.nil?
 
     membership.start_date > position.start_date
@@ -62,7 +62,7 @@ class LinkedInProfileGetter
   def use_position_end_date?(position)
     membership = position.membership
 
-    return false unless position.end_date.present?
+    return false if position.end_date.blank?
     return true if membership.end_date.nil?
 
     membership.end_date < position.end_date
@@ -70,12 +70,12 @@ class LinkedInProfileGetter
 
   def handle_experience(experience)
     # Process each experience item here
-    puts "Company: #{experience['company']}"
-    puts "Title: #{experience['title']}"
-    puts "Location: #{experience['location']}"
-    puts "Description: #{experience['description']}"
-    puts "Logo URL: #{experience['logo_url']}"
-    puts "-" * 40
+    Rails.logger.debug { "Company: #{experience['company']}" }
+    Rails.logger.debug { "Title: #{experience['title']}" }
+    Rails.logger.debug { "Location: #{experience['location']}" }
+    Rails.logger.debug { "Description: #{experience['description']}" }
+    Rails.logger.debug { "Logo URL: #{experience['logo_url']}" }
+    Rails.logger.debug "-" * 40
 
     group = RecordGroup.call(experience['company'])
     # person
@@ -105,7 +105,7 @@ class LinkedInProfileGetter
   end
 
   def parse_date(date_hash)
-    return nil unless date_hash.present?
+    return nil if date_hash.blank?
 
     begin
       Date.new(date_hash['year'], date_hash['month'], date_hash['day'])
@@ -115,7 +115,7 @@ class LinkedInProfileGetter
   end
 end
 
-
+# rubocop:disable Layout/LineLength
 # body = JSON.parse(response.body)
 # [11] pry(#<LinkedInProfileParser>)> body['experiences']
 # => [{"starts_at"=>{"day"=>1, "month"=>7, "year"=>2022},
@@ -206,3 +206,4 @@ end
 #    "Electrical Engineer for various companies, principally the manufacturing of Electronic Power Conversion equipment for the Telecommunications Industry.\n\nCAD Design, Project Management, Engineering Calculations",
 #   "location"=>"Sydney, Australia",
 #   "logo_url"=>nil}]
+# rubocop:enable Layout/LineLength

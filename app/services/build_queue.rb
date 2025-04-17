@@ -47,7 +47,7 @@ class BuildQueue
 
       membership = Membership.find_by(member: next_node, group: node) || Membership.find_by(member: node, group: next_node)
 
-      p "membership: #{membership.inspect}"
+      Rails.logger.debug { "membership: #{membership.inspect}" }
 
       # permament memberships (have no start or end date) are always overlapping
       return true if membership.start_date.nil? && membership.end_date.nil?

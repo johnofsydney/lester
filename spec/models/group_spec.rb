@@ -1,7 +1,7 @@
 require 'rails_helper'
 
-RSpec.describe Group, type: :model do
-  let(:group) { Group.create }
+RSpec.describe Group do
+  let(:group) { described_class.create }
   # let(:owning_group1) { Group.create }
   # let(:owning_group2) { Group.create }
   # let(:sub_group1) { Group.create }
@@ -22,29 +22,29 @@ RSpec.describe Group, type: :model do
   # end
 
   describe 'validations' do
-    it { should validate_uniqueness_of(:name).case_insensitive }
+    it { is_expected.to validate_uniqueness_of(:name).case_insensitive }
 
-    it 'will not allow two groups with the same business number' do
-      group1 = Group.create(business_number: '123456789')
-      group2 = Group.new(business_number: '123456789')
-      expect(group2).to_not be_valid
+    it 'does not allow two groups with the same business number' do
+      group1 = described_class.create(business_number: '123456789')
+      group2 = described_class.new(business_number: '123456789')
+      expect(group2).not_to be_valid
     end
 
-    it 'will not allow two groups with the same business number even if there are spaces' do
-      group1 = Group.create(business_number: '123 45 6789')
-      group2 = Group.new(business_number: '12 345 67 89')
-      expect(group2).to_not be_valid
+    it 'does not allow two groups with the same business number even if there are spaces' do
+      group1 = described_class.create(business_number: '123 45 6789')
+      group2 = described_class.new(business_number: '12 345 67 89')
+      expect(group2).not_to be_valid
     end
 
-    it 'will not allow two groups with the same business number even if there are dashes' do
-      group1 = Group.create(business_number: '123-45-6789')
-      group2 = Group.new(business_number: '12-345-67-89')
-      expect(group2).to_not be_valid
+    it 'does not allow two groups with the same business number even if there are dashes' do
+      group1 = described_class.create(business_number: '123-45-6789')
+      group2 = described_class.new(business_number: '12-345-67-89')
+      expect(group2).not_to be_valid
     end
 
-    it 'will allow two groups with nil business number' do
-      group1 = Group.create(name: 'foo')
-      group2 = Group.create(name: 'bar')
+    it 'allows two groups with nil business number' do
+      group1 = described_class.create(name: 'foo')
+      group2 = described_class.create(name: 'bar')
       expect(group2).to be_valid
     end
   end

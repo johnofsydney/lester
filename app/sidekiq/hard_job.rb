@@ -2,8 +2,8 @@ class HardJob
   include Sidekiq::Job
 
   def perform(*args)
-    p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-    p args
-    p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    Rails.logger.debug '%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+    Rails.logger.debug args
+    Rails.logger.debug '%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
   end
 end

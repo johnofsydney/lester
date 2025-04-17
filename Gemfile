@@ -27,12 +27,19 @@ group :development, :test do
   # gem "bullet"
   gem 'rspec-rails', '~> 6.1.0'
   gem 'shoulda-matchers', '~> 5.0'
+  gem 'brakeman', require: false
+  gem 'rubocop', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
+  gem 'rubocop-rspec_rails', require: false
+  gem 'rubocop-performance', require: false
+  gem 'bundler-audit', require: false
 end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-  gem 'brakeman', require: false
+
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"

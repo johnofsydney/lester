@@ -23,7 +23,7 @@ class Groups::EditView < ApplicationView
 
       select(class: 'form-control', name: 'group[people_ids][]', multiple: true) do
         option(value: '') { ' ' }
-        People.all.each do |person|
+        People.find_each do |person|
           option(value: person.id, selected: @group.person_ids.include?(person.id)) { person.name }
         end
       end

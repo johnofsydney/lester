@@ -10,8 +10,8 @@ class Person < ApplicationRecord
   has_many :groups, through: :memberships
   has_many :positions, through: :memberships
 
-  has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
-  has_many :incoming_transfers, class_name: 'Transfer', foreign_key: 'taker_id', as: :taker
+  has_many :outgoing_transfers, class_name: 'Transfer', as: :giver
+  has_many :incoming_transfers, class_name: 'Transfer', as: :taker
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
@@ -55,7 +55,7 @@ class Person < ApplicationRecord
     body += call_to_action if (body.length + call_to_action.length) < 300
     aus_pol_tag = "\n\n" + "#AusPol"
     body += aus_pol_tag if (body.length + aus_pol_tag.length) < 300
-    name_to_tag = ' #' + name.downcase.gsub(' ', '_')
+    name_to_tag = ' #' + name.downcase.tr(' ', '_')
     body += name_to_tag if (body.length + name_to_tag.length) < 300
     final_sign_off = ' #follow_the_money'
     body += final_sign_off if (body.length + final_sign_off.length) < 300

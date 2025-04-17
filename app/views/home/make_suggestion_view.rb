@@ -1,7 +1,4 @@
 class Home::MakeSuggestionView < ApplicationView
-  def initialize
-  end
-
   def template
     div(id: 'suggestions') do
       p { 'Send us a suggestion...' }

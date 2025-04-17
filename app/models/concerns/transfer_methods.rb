@@ -52,7 +52,7 @@ module TransferMethods
         current_depth_memberships << node.memberships.to_a
 
         unless with_parents.empty?
-          parent = with_parents.filter{ |element| element[:child] == node }.last[:parent]
+          parent = with_parents.reverse.find{ |element| element[:child] == node }[:parent]
         end
 
         results << Descendent.new(node: node, depth: counter, parent:)

@@ -78,15 +78,15 @@ class Group < ApplicationRecord
   validates :business_number, uniqueness: { case_sensitive: false }, allow_nil: true
 
   def business_number=(value)
-    return unless value.present?
+    return if value.blank?
 
     super(value.gsub(/\D/, ''))
   end
 
 
   # these are a bit weird, hence the transfers method below
-  has_many :outgoing_transfers, class_name: 'Transfer', foreign_key: 'giver_id', as: :giver
-  has_many :incoming_transfers, class_name: 'Transfer', foreign_key: 'taker_id', as: :taker
+  has_many :outgoing_transfers, class_name: 'Transfer', as: :giver
+  has_many :incoming_transfers, class_name: 'Transfer', as: :taker
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
@@ -130,8 +130,8 @@ class Group < ApplicationRecord
   def less_level
     # only called from a disused section in FileIngestor
     name.gsub(/(Federal|NSW|VIC|SA|WA|TAS|ACT|NT)/, '')
-        .gsub('(', '')
-        .gsub(')', '')
+        .delete('(')
+        .delete(')')
         .strip
   end
 
@@ -164,6 +164,7 @@ class Group < ApplicationRecord
     Transfer.where(giver: self).update_all(giver_id: replacement_group.id)
     Transfer.where(taker: self).update_all(taker_id: replacement_group.id)
 
+    replacement_group.update(cached_data: {})
     self.destroy
   end
 

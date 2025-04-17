@@ -72,7 +72,7 @@ class Descendent
   private
 
   def member_of_large_group?
-    return unless parent_count || parent
+    return false unless parent_count || parent
 
     count = parent_count || parent&.nodes_count || 0
 

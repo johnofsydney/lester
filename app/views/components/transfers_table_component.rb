@@ -26,7 +26,7 @@ class TransfersTableComponent < ApplicationView
         OpenStruct.new(
           giver: OpenStruct.new(name: "#{transfers.count} individual records, from various donors"),
           taker: OpenStruct.new(name: combo.first, id: combo[4], report_as: 'group'),
-          amount: transfers.map(&:amount).sum,
+          amount: transfers.sum(&:amount),
           effective_date: transfers.map(&:effective_date).max,
           depth: combo[2],
           direction: combo[3],
@@ -36,7 +36,7 @@ class TransfersTableComponent < ApplicationView
       make_table(transfers - transfers_to_summarise.values.flatten + summary_rows)
     elsif exclude.present?
       transfers_grouped_by_name = transfers.group_by { |t| t.taker.name }
-      transfers_grouped_by_each_exclude_name = transfers_grouped_by_name.select { |name, _| exclude.include?(name) }
+      transfers_grouped_by_each_exclude_name = transfers_grouped_by_name.slice(*exclude)
       make_table(transfers - transfers_grouped_by_each_exclude_name.values.flatten)
     else
       return make_table(transfers)

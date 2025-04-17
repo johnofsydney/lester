@@ -50,7 +50,7 @@ class Parser
 
   def self.parse_start_date(date)
 
-    start_year = date.gsub('–', '-').gsub('—', '-')
+    start_year = date.tr('–', '-').tr('—', '-')
                      .split('-').first
                      .strip.to_s
 
@@ -58,10 +58,10 @@ class Parser
   end
 
   def self.parse_end_date(date)
-    return '' if date.match?(/current/)
-    return '' if date.match?(/present/)
+    return '' if date.include?('current')
+    return '' if date.include?('present')
 
-    end_year = date.gsub('–', '-').gsub('—', '-')
+    end_year = date.tr('–', '-').tr('—', '-')
                      .split('-').last
                      .strip.to_s
 

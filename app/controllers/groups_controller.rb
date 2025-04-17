@@ -62,7 +62,7 @@ class GroupsController < ApplicationController
   end
 
   def update_group(group)
-    people_ids = group_params['people_ids'].select(&:present?).map(&:to_i)
+    people_ids = group_params['people_ids'].compact_blank.map(&:to_i)
 
     people_ids.each do |id|
       person = Person.find(id)

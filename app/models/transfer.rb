@@ -6,15 +6,13 @@ class Transfer < ApplicationRecord
 
   validates :amount, presence: true
   validates :effective_date, presence: true
-  validates :giver_id, presence: true
-  validates :taker_id, presence: true
   validates :giver_type, uniqueness: {
     scope: [:giver_id, :taker_id, :amount, :effective_date],
     message: "should have unique combination of giver_type, giver_id, taker_id, amount, and effective_date"
   }
 
   def self.financial_years
-    (Transfer.order(:effective_date).first.effective_date.year..Time.now.year).to_a
+    (Transfer.order(:effective_date).first.effective_date.year..Time.zone.now.year).to_a
   end
 
   # cached data can be deleted and re-created
@@ -27,7 +25,7 @@ class Transfer < ApplicationRecord
   end
 
   def giver_name
-    unless cached_giver_name.present?
+    if cached_giver_name.blank?
       self.update(cached_giver_name: giver.name)
     end
 
@@ -35,7 +33,7 @@ class Transfer < ApplicationRecord
   end
 
   def taker_name
-    self.update(cached_taker_name: taker.name) unless cached_taker_name.present?
+    self.update(cached_taker_name: taker.name) if cached_taker_name.blank?
 
     cached_taker_name
   end

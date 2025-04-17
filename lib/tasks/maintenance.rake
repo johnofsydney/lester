@@ -93,8 +93,8 @@ namespace :lester do
 
   desc 'CLear Cache for Network Graph and Count'
   task clear_cache: :environment do
-    Group.all.update_all(cached_data: {})
-    Person.all.update_all(cached_data: {})
+    Group.update_all(cached_data: {})
+    Person.update_all(cached_data: {})
 
   end
 end
