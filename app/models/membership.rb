@@ -3,8 +3,7 @@ class Membership < ApplicationRecord
   belongs_to :group
   has_many :positions, dependent: :destroy
 
-  validates :member_type, :member_id, :presence => true
-  validates :group_id, :presence => true
+  validates :member_type, :presence => true
   validates :group_id, :uniqueness => { :scope => [:member_type, :member_id] }
 
   # validates :person_id, uniqueness: { scope: :group_id, message: "should have one membership per group" }

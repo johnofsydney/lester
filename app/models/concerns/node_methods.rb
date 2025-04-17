@@ -17,7 +17,7 @@ module NodeMethods
       if refresh_nodes_count_cache?
         self.update(
           cached_nodes_count:nodes.count,
-          cached_nodes_count_timestamp:Time.now
+          cached_nodes_count_timestamp:Time.zone.now
         )
       end
 
@@ -32,7 +32,7 @@ module NodeMethods
 
         self.update(
           cached_consolidated_descendents: result,
-          cached_consolidated_descendents_timestamp:Time.now
+          cached_consolidated_descendents_timestamp:Time.zone.now
         )
       end
 
@@ -99,26 +99,26 @@ module NodeMethods
     end
 
     def cached_nodes_count_missing?
-      !cached_nodes_count.present?
+      cached_nodes_count.blank?
     end
 
     def nodes_count_cache_expired?
       return true if cached_nodes_count_missing?
 
-      Time.now - Time.parse(self.cached_nodes_count_timestamp) > 1.week
+      Time.zone.now - Time.zone.parse(self.cached_nodes_count_timestamp) > 1.week
     end
 
     def refresh_consolidated_descendents_depth_cache?(depth)
       # if the depth has been previouslt exhausted at this depth, return true TODO
 
-      return true if self.cached_consolidated_descendents.nil? || self.cached_consolidated_descendents.empty?
+      return true if self.cached_consolidated_descendents.blank?
 
       max_depth = self.cached_consolidated_descendents.map{|d| d['depth']}.max
       return true if max_depth < depth
 
 
-      p "max_depth: #{max_depth}"
-      p "depth: #{depth}"
+      Rails.logger.debug { "max_depth: #{max_depth}" }
+      Rails.logger.debug { "depth: #{depth}" }
       false
     end
   end

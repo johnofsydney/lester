@@ -29,9 +29,13 @@ RSpec.describe RecordPerson, type: :service do
 
   # TODO: Make the other similar tests use this format which reports the failing name
   describe '.call' do
+    before do
+      allow(Person).to receive(:find_or_create_by).and_call_original
+    end
+
     it 'creates or finds a group with the given name' do
-      expect(Person).to receive(:find_or_create_by).with(name: 'Test Name')
       described_class.call('Test Name')
+      expect(Person).to have_received(:find_or_create_by).with(name: 'Test Name')
     end
 
     it 'uses the names from the hash', :aggregate_failures do

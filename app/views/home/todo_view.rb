@@ -1,7 +1,4 @@
 class Home::TodoView < ApplicationView
-  def initialize
-  end
-
   def template
     div(class: 'container') do
       div(class: 'row', id: 'todo') do

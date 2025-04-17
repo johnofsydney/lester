@@ -36,7 +36,7 @@ class RecordPerson
                .gsub(regex_for_removal_titles_2, '')
                .gsub(regex_for_removal_titles_3, '')
                .gsub(regex_for_removal_normal_titles, '')
-               .gsub('.', '')
+               .delete('.')
                .strip
 
 
