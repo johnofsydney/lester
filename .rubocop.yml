@@ -13,6 +13,8 @@ AllCops:
   NewCops: enable
   SuggestExtensions: false
   Exclude:
+    - vendor/*/**
+    - vendor/**/*
     - 'db/schema.rb'
     - 'config/initializers/*.rb' # created by installers - leave them be
 
