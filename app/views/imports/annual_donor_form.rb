@@ -1,7 +1,4 @@
 class Imports::AnnualDonorForm < Phlex::HTML
-	def initialize
-	end
-
 	def template
 		h1 { 'Imports' }
 

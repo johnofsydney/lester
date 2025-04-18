@@ -35,13 +35,6 @@ RSpec.describe RecordPersonOrGroup, type: :service do
       ]
     end
 
-    it 'expect all people to be reported as person' do
-      people_names.each do |name|
-        expect(RecordPersonOrGroup.new(name).person_or_group).to eq('person')
-      end
-    end
-
-
     let(:group_names) do
       [
         'INPEX',
@@ -125,9 +118,17 @@ RSpec.describe RecordPersonOrGroup, type: :service do
       ]
     end
 
+    it 'expect all people to be reported as person' do
+      people_names.each do |name|
+        expect(described_class.new(name).person_or_group).to eq('person')
+      end
+    end
+
+
+
     it 'expect all groups to be reported as group', :aggregate_failures do
       group_names.each do |name|
-        expect(RecordPersonOrGroup.new(name).person_or_group).to eq('group')
+        expect(described_class.new(name).person_or_group).to eq('group')
       end
     end
   end

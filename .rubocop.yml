@@ -1,0 +1,21 @@
+inherit_from: .rubocop_todo.yml
+
+require:
+  - rubocop-rspec_rails
+
+plugins:
+  - rubocop-rails
+  - rubocop-rspec
+  - rubocop-performance
+
+AllCops:
+  TargetRubyVersion: 3.3
+  NewCops: enable
+  SuggestExtensions: false
+  Exclude:
+    - vendor/**/*
+    - 'db/schema.rb'
+    - 'config/initializers/*.rb' # created by installers - leave them be
+
+Layout/LineLength:
+  Max: 400

@@ -35,7 +35,7 @@ class FileIngestor
 
         transfer.amount += row['Amount'].to_i
 
-        print 'd'
+        Rails.logger.debug 'd'
         transfer.save
       end
     end
@@ -74,7 +74,7 @@ class FileIngestor
 
         transfer.amount += row['Amount'].to_i
 
-        print 'd'
+        Rails.logger.debug 'd'
         transfer.save
       end
     end
@@ -115,7 +115,7 @@ class FileIngestor
 
         transfer.amount += row['Value'].to_i
 
-        print 'd'
+        Rails.logger.debug 'd'
         transfer.save
       end
     end
@@ -126,12 +126,12 @@ class FileIngestor
       csv = CSV.read(file, headers: true)
       csv.each do |row|
         person = RecordPerson.call(row['name'])
-        print 'p'
+        Rails.logger.debug 'p'
 
         if Membership.where(member: person, group: parliament).empty?
           parliament_membership = Membership.find_or_create_by(member: person, group: parliament)
           parliament_membership.save
-          title = row['ministry'].present? ? row['ministry'] : 'NSW MP / MLC'
+          title = (row['ministry'].presence || 'NSW MP / MLC')
           Position.create(membership: parliament_membership, title:)
         end
 
@@ -156,9 +156,9 @@ class FileIngestor
       csv = CSV.read(file, headers: true)
       csv.each do |row|
         person = RecordPerson.call(row['name'])
-        print 'p'
+        Rails.logger.debug 'p'
 
-        senator = file.match?(/senator/i) ? true : false
+        senator = file.match?(/senator/i)
         title = senator ? 'Senator' : 'MP'
 
         # Start and End Dates for Person in Parliament
@@ -172,7 +172,7 @@ class FileIngestor
         end
 
         # this relies on the csv file being cleaned, so that independents have /indepedent/ in the party column
-        independent = row['party'].match?(/Independent/)
+        independent = row['party'].include?('Independent')
 
         # independents are not in a party, so we don't need to create a party membership for them
         # we also don't need to create a branch / electorate membership for them, that's handled independently
@@ -275,7 +275,7 @@ class FileIngestor
 
         rescue => e
 
-        p "Error: #{e} | row#{row.inspect}"
+        Rails.logger.debug { "Error: #{e} | row#{row.inspect}" }
       end
     end
 
@@ -286,7 +286,7 @@ class FileIngestor
       csv.each do |row|
         group = RecordGroup.call(row['group'])
 
-        next unless row['person'].present?
+        next if row['person'].blank?
 
         person = RecordPerson.call(row['person'])
 
@@ -315,7 +315,7 @@ class FileIngestor
         position.update!(evidence:) if evidence && position
 
         rescue => e
-        p "General Upload | Error: #{e} | row#{row.inspect}"
+        Rails.logger.debug { "General Upload | Error: #{e} | row#{row.inspect}" }
       end
     end
 
@@ -356,7 +356,7 @@ class FileIngestor
         membership.update!(evidence:)
         position.update!(evidence:)
 
-        print "m"
+        Rails.logger.debug "m"
 
 
         membership = Membership.find_or_create_by(
@@ -365,10 +365,10 @@ class FileIngestor
           evidence: evidence
         )
 
-        print "l"
+        Rails.logger.debug "l"
 
         rescue => e
-        p "Lobbyist Upload | Error: #{e} | row#{row.inspect}"
+        Rails.logger.debug { "Lobbyist Upload | Error: #{e} | row#{row.inspect}" }
       end
     end
 
@@ -403,7 +403,7 @@ class FileIngestor
         #   group: client_category,
         # )
 
-        print 'm'
+        Rails.logger.debug 'm'
       end
     end
 
@@ -422,7 +422,7 @@ class FileIngestor
           evidence: row['evidence']
         )
 
-        print 't'
+        Rails.logger.debug 't'
       end
     end
 
@@ -431,12 +431,12 @@ class FileIngestor
     end
 
     def parse_date(date)
-      return nil unless date.present?
+      return nil if date.blank?
 
       begin
         Date.parse(date)
       rescue => exception
-        puts "Error parsing date: #{date} | Error: #{exception.message}"
+        Rails.logger.debug { "Error parsing date: #{date} | Error: #{exception.message}" }
         nil
       end
     end

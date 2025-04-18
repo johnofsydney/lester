@@ -78,7 +78,7 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def top_six
-    sum_others = others.map{|a| a.last}.sum
+    sum_others = others.sum{|a| a.last}
 
     if sum_others.zero?
       top_five.to_h
@@ -88,7 +88,7 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def group_by_name(giver: false)
-    sum_others = others.map{|a| a.last}.sum
+    sum_others = others.sum{|a| a.last}
 
     if sum_others.zero?
       top_five.to_h

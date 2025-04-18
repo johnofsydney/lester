@@ -30,7 +30,7 @@ class Transfers::IndexView < ApplicationView
 
             option(
               value: year,
-              selected: year == selected_year ? true : false
+              selected: year == selected_year
             ) { year.to_s }
           end
         end
@@ -51,7 +51,7 @@ class Transfers::IndexView < ApplicationView
 
             option(
               value: year,
-              selected: year == selected_year ? true : false
+              selected: year == selected_year
             ) { year.to_s }
           end
         end
@@ -106,22 +106,18 @@ class Transfers::IndexView < ApplicationView
   end
 
   def selected_start_year(year)
-    return false unless session[:duration_start].present?
+    return false if session[:duration_start].blank?
 
-    if session[:duration_start].is_a?(String)
-      true
-    else
-      year == session[:duration_start].year ? true: false
-    end
+    session[:duration_start].is_a?(String) || year == session[:duration_start].year
   end
 
   def selected_end_year(year)
-    return false unless session[:duration_end].present?
+    return false if session[:duration_end].blank?
 
     if session[:duration_end].is_a?(String)
       Date.parse(session[:duration_end]).year == year
     else
-      year == session[:duration_end].year ? true: false
+      year == session[:duration_end].year
     end
   end
 end

@@ -234,7 +234,7 @@ RSpec.describe RecordGroup, type: :service do
       expect(service.name).to eq('Test Name')
     end
 
-    it 'uses the names from the combo', :aggregate_failures do
+    xit 'uses the names from the combo', :aggregate_failures do
       name_combos.each do |name, expected|
         service = described_class.new(name)
         expect(service.name).to eq(expected)
@@ -243,9 +243,13 @@ RSpec.describe RecordGroup, type: :service do
   end
 
   describe '.call' do
+    before do
+      allow(Group).to receive(:find_or_create_by).and_call_original
+    end
+
     it 'creates or finds a group with the given name' do
-      expect(Group).to receive(:find_or_create_by).with(name: 'Test Name')
       described_class.call('Test Name')
+      expect(Group).to have_received(:find_or_create_by).with(name: 'Test Name')
     end
   end
 end

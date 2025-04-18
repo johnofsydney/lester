@@ -63,7 +63,7 @@ ActiveAdmin.register Group do
     }
   } do |ids, inputs|
     category = Group.find(inputs[:category_id])
-    Group.where(id: ids).each do |group|
+    Group.where(id: ids).find_each do |group|
       Membership.create(
         group: category,
         member: group,

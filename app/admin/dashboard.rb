@@ -39,7 +39,7 @@ ActiveAdmin.register_page "Dashboard" do
       column do
         panel "Info" do
           para "Welcome to ActiveAdmin."
-          link_to 'Button Name', 'http://example.com', target: '_blank'
+          link_to 'Button Name', 'http://example.com', target: '_blank', rel: 'noopener'
         end
         attributes_table_for '' do
           row('Import Data') do
