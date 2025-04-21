@@ -16,7 +16,9 @@ class MapGroupNames
 
     return 'Get Up Limited' if name.match?(/(GetUp|Get Up)/i)
     return 'Australian Hotels Association' if name.match?(/Australian Hotels Association/i)
-    return 'Advance Australia' if name.match?(/Advance Aus|Advanced Aus/i)
+
+    return 'Advance Australia' if name.match?(/Advance Aus|Advanced Aus|^Advance$/i)
+
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
     return 'Australian Council of Trade Unions' if name.match?(/\bACTU\b/i)
     return 'Climate 200 Pty Ltd' if name.match?(/(Climate 200|Climate200)/i)
@@ -330,6 +332,7 @@ class MapGroupNames
     regex_for_longer_acronyms_1 = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bACDC\b|\bCFMEU\b/i
     regex_for_longer_acronyms_2 = /\bPESA\b|\bRISC\b|\bJERA\b|\bAMPD\b|\bAFTA\b|\bFTTH\b|\bGCFC\b|\bGIMC\b/i
     regex_for_longer_acronyms_3 = /\bCPSU\b|\bSPSF\b|\bCRRC\b|\bCSIROb|\bCTSI\b|\bERGT\b|\bGGBV\b|\bHSBC\b/i
+    regex_for_longer_acronyms_4 = /\bCPAC\b/i
 
     regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b|\bIan\b/i
     regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
@@ -350,6 +353,7 @@ class MapGroupNames
                    .gsub(regex_for_longer_acronyms_1) { |chars| chars.upcase }
                    .gsub(regex_for_longer_acronyms_2) { |chars| chars.upcase }
                    .gsub(regex_for_longer_acronyms_3) { |chars| chars.upcase }
+                   .gsub(regex_for_longer_acronyms_4) { |chars| chars.upcase }
                    .gsub(regex_for_titleize) { |word| word.titleize }
                    .gsub(regex_for_titleize_2) { |word| word.titleize }
                    .gsub(regex_for_titleize_3) { |word| word.titleize }
