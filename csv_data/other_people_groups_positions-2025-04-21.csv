@@ -1,6 +1,6 @@
-group,name,title,start_date,end_date,evidence
+group,person,title,start_date,end_date,evidence
 CPAC Australia August 2023,Warren Mundine,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
-CPAC Australia,Warren Mundine,Chairman,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
+CPAC Australia,Warren Mundine,Chairman,,,https://www.cpac.network/speakers-2023
 CPAC Australia August 2023,Jacinta Price,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
 CPAC Australia August 2023,Tony Abbott,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
 CPAC Australia August 2023,john ANderson,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
@@ -26,7 +26,7 @@ CPAC Australia August 2023,Mathew Sheahan,Speaker,2023-08-19,2023-08-20,https://
 CPAC Australia August 2023,Maurice Newman,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
 CPAC Australia August 2023,Alan Jones,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
 CPAC Australia August 2023,Michelle Pearse,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
-Australian Christian Lobby,Michelle Pearse,CEO,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
+Australian Christian Lobby,Michelle Pearse,CEO,,,https://www.cpac.network/speakers-2023
 CPAC Australia August 2023,Gordon Chang,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
 CPAC Australia August 2023,Bella d'Abrera,Speaker,2023-08-19,2023-08-20,https://www.cpac.network/speakers-2023
 Institute of Public Affairs,Bella d'Abrera,Director,,,https://www.cpac.network/speakers-2023
