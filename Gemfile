@@ -1,12 +1,12 @@
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby "3.2.2"
+ruby "3.2.2" # out of date
 
-gem "rails", "~> 7.1"
+gem "rails", "~> 7.2"
 gem "sprockets-rails"
 gem "pg", "~> 1.1"
-gem "puma", "~> 5.0"
+gem "puma", ">= 6.4.3"
 gem "importmap-rails"
 gem "turbo-rails"
 gem "stimulus-rails"
@@ -51,7 +51,7 @@ end
 
 
 gem "dockerfile-rails", ">= 1.2", :group => :development
-gem "phlex-rails"
+gem "phlex-rails" # quite out of date
 
 gem 'pg_search'
 gem 'devise'
@@ -79,3 +79,8 @@ gem 'flipper-ui'
 
 gem 'faraday'
 gem 'sidekiq'
+
+# resolving vulnerabilities
+gem "rack", ">= 3.1.12"
+gem "phlex", "~> 1.11.0"
+
