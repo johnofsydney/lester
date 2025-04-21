@@ -16,6 +16,7 @@ namespace :lester do
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-02-18.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-03-14.csv')
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-03-15.csv')
+    FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-04-21.csv')
 
 
 
