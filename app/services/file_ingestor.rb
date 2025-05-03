@@ -279,7 +279,7 @@ class FileIngestor
       end
     end
 
-    def general_upload(csv = nil, file: nil)
+    def general_upload(csv: nil, file: nil)
       raise unless csv || file
 
       csv ||= CSV.read(file, headers: true)

@@ -32,7 +32,8 @@ Style/FrozenStringLiteralComment:
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
-RSpec/ContextWording:
+RSpec/ExampleLength:
+  Enabled: false
 
 RSpec/NestedGroups:
   Enabled: false

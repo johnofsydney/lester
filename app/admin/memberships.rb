@@ -7,7 +7,7 @@ ActiveAdmin.register Membership do
     def general_upload_action
       if params[:bulk_text].present?
         csv = CSV.parse(params[:bulk_text], headers: true)
-        FileIngestor.general_upload(csv)
+        FileIngestor.general_upload(csv:)
 
         flash[:notice] = "Success!"
         redirect_to admin_memberships_path
