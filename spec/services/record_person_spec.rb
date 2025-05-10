@@ -24,43 +24,43 @@ RSpec.describe RecordPerson, type: :service do
     end
 
     it 'capitalizes McName ok' do
-      expect(described_class.call("Michael McCormack").name).to eq("Michael McCormack")
+      expect(described_class.call('Michael McCormack').name).to eq('Michael McCormack')
     end
 
     it 'removes trailing MP from name' do
-      expect(described_class.call("John Coote MP").name).to eq("John Coote")
+      expect(described_class.call('John Coote MP').name).to eq('John Coote')
     end
 
     it 'removes trailing AM from name' do
-      expect(described_class.call("Andrew D M Murray AM").name).to eq("Andrew D M Murray")
+      expect(described_class.call('Andrew D M Murray AM').name).to eq('Andrew D M Murray')
     end
 
     it 'removes trailing AO from name' do
-      expect(described_class.call("Arthur Sinodinos AO").name).to eq("Arthur Sinodinos")
+      expect(described_class.call('Arthur Sinodinos AO').name).to eq('Arthur Sinodinos')
     end
 
     it 'removes prefix Hon from name' do
-      expect(described_class.call("Hon Paul Smith").name).to eq("Paul Smith")
+      expect(described_class.call('Hon Paul Smith').name).to eq('Paul Smith')
     end
 
     it 'leaves the surname Hon in name' do
-      expect(described_class.call("Jimmy Hon").name).to eq("Jimmy Hon")
+      expect(described_class.call('Jimmy Hon').name).to eq('Jimmy Hon')
     end
 
     it 'removes prefix The Hon. from name' do
-      expect(described_class.call("The Hon. Peter Francis Watkins").name).to eq("Peter Francis Watkins")
+      expect(described_class.call('The Hon. Peter Francis Watkins').name).to eq('Peter Francis Watkins')
     end
 
     it 'removes prefix Hon from name' do
-      expect(described_class.call("Hon Catherine King").name).to eq("Catherine King")
+      expect(described_class.call('Hon Catherine King').name).to eq('Catherine King')
     end
 
     it 'removes prefix The Hon from name' do
-      expect(described_class.call("The Hon Robert Borbidge").name).to eq("Robert Borbidge")
+      expect(described_class.call('The Hon Robert Borbidge').name).to eq('Robert Borbidge')
     end
 
     it 'removes prefix Hon. from name' do
-      expect(described_class.call("Grusovin, The Hon. Deirdre Mary").name).to eq("Deirdre Mary Grusovin")
+      expect(described_class.call('Grusovin, The Hon. Deirdre Mary').name).to eq('Deirdre Mary Grusovin')
     end
 
     describe ' specific people known by shorter or longer names' do

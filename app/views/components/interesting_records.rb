@@ -8,15 +8,15 @@ class InterestingRecords < ApplicationView
   attr_reader :records
 
   def template
-    list_group_options = "list-group mb-4"
+    list_group_options = 'list-group mb-4'
     div(class: 'suggestions-container mt-3 mb-3') do
       # h3(class: 'text-secondary') { 'Suggestions' }
-      div(class: "row g-3") do
+      div(class: 'row g-3') do
 
         (Group.major_political_categories + Group.other_categories).shuffle.each do |group|
-          div(class: "col-md-4") do
-            div(class: "card shadow-sm", style: "#{color_styles(group)}; height: 100%") do
-              div(class: "card-body text-center") do
+          div(class: 'col-md-4') do
+            div(class: 'card shadow-sm', style: "#{color_styles(group)}; height: 100%") do
+              div(class: 'card-body text-center') do
                 a(
                   href: "/groups/#{group.id}",
                   class: 'btn w-100',

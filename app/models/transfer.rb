@@ -8,7 +8,7 @@ class Transfer < ApplicationRecord
   validates :effective_date, presence: true
   validates :giver_type, uniqueness: {
     scope: [:giver_id, :taker_id, :amount, :effective_date],
-    message: "should have unique combination of giver_type, giver_id, taker_id, amount, and effective_date"
+    message: 'should have unique combination of giver_type, giver_id, taker_id, amount, and effective_date'
   }
 
   def self.financial_years

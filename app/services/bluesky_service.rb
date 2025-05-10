@@ -1,7 +1,7 @@
 # from https://t27duck.com/posts/17-a-bluesky-at-proto-api-example-in-ruby
 
 class BlueskyService
-  BASE_URL = "https://bsky.social/xrpc"
+  BASE_URL = 'https://bsky.social/xrpc'
   TOKEN_CACHE_KEY = :bluesky_token_data
 
   def initialize
@@ -32,14 +32,14 @@ class BlueskyService
     facets += tag_facets(message)
 
     body = {
-      repo: @user_did, collection: "app.bsky.feed.post",
-      record: { text: message, createdAt: Time.now.iso8601, langs: ["en"], facets: facets }
+      repo: @user_did, collection: 'app.bsky.feed.post',
+      record: { text: message, createdAt: Time.now.iso8601, langs: ['en'], facets: facets }
     }
     response_body = post_request("#{BASE_URL}/com.atproto.repo.createRecord", body: body)
 
     # This is the full atproto URI
     # Ex: "at://did:plc:axbcdefg12345/app.bsky.feed.post/abcdefg12345"
-    response_body["uri"]
+    response_body['uri']
   end
 
   # Given a atproto URI of a skeet, parse out the identifying information and remove it
@@ -48,7 +48,7 @@ class BlueskyService
     # Generate, refresh, or use an active token.
     verify_tokens
 
-    did, nsid, record_key = skeet_uri.delete_prefix("at://").split("/")
+    did, nsid, record_key = skeet_uri.delete_prefix('at://').split('/')
     body = { repo: did, collection: nsid, rkey: record_key }
     post_request("#{BASE_URL}/com.atproto.repo.deleteRecord", body: body)
   end
@@ -65,8 +65,8 @@ class BlueskyService
       matches.each do |match|
         start, stop = match.byteoffset(0)
         facets << {
-          "index" => { "byteStart" => start, "byteEnd" => stop },
-          "features" => [{ "uri" => match[0], "$type" => "app.bsky.richtext.facet#link" }]
+          'index' => { 'byteStart' => start, 'byteEnd' => stop },
+          'features' => [{ 'uri' => match[0], '$type' => 'app.bsky.richtext.facet#link' }]
         }
       end
     end
@@ -79,23 +79,23 @@ class BlueskyService
       matches.each do |match|
         start, stop = match.byteoffset(2)
         facets << {
-          "index" => { "byteStart" => start, "byteEnd" => stop },
-          "features" => [{ "tag" => match[2].delete_prefix("#"), "$type" => "app.bsky.richtext.facet#tag" }]
+          'index' => { 'byteStart' => start, 'byteEnd' => stop },
+          'features' => [{ 'tag' => match[2].delete_prefix('#'), '$type' => 'app.bsky.richtext.facet#tag' }]
         }
       end
     end
   end
 
   # Makes a POST request to the API.
-  def post_request(url, body: {}, auth_token: true, content_type: "application/json")
+  def post_request(url, body: {}, auth_token: true, content_type: 'application/json')
     uri = URI.parse(url)
     http = Net::HTTP.new(uri.host, uri.port)
-    http.use_ssl = (uri.scheme == "https")
+    http.use_ssl = (uri.scheme == 'https')
     http.open_timeout = 4
     http.read_timeout = 4
     http.write_timeout = 4
     request = Net::HTTP::Post.new(uri.request_uri)
-    request["content-type"] = content_type
+    request['content-type'] = content_type
 
     # This allows the authorization token to:
     #   - Be sent using the currently stored token (true).
@@ -103,13 +103,13 @@ class BlueskyService
     #   - Use a different token - like the refresh token (string).
     if auth_token
       token = auth_token.is_a?(String) ? auth_token : @token
-      request["Authorization"] = "Bearer #{token}"
+      request['Authorization'] = "Bearer #{token}"
     end
     request.body = body.is_a?(Hash) ? body.to_json : body if body.present?
     response = http.request(request)
-    raise "#{response.code} response - #{response.body}" unless response.code.to_s.start_with?("2")
+    raise "#{response.code} response - #{response.body}" unless response.code.to_s.start_with?('2')
 
-    response.content_type == "application/json" ? JSON.parse(response.body) : response.body
+    response.content_type == 'application/json' ? JSON.parse(response.body) : response.body
   end
 
   # Generate tokens given an account identifier and app password.
@@ -143,10 +143,10 @@ class BlueskyService
   # Given the response body of generating or refreshing token, this pulls out
   # and stores the bits of information we care about.
   def process_tokens(response_body)
-    @token = response_body["accessJwt"]
-    @renewal_token = response_body["refreshJwt"]
-    @user_did = response_body["did"]
-    @token_expires_at = Time.at(JSON.parse(Base64.decode64(response_body["accessJwt"].split(".")[1]))["exp"]).utc
+    @token = response_body['accessJwt']
+    @renewal_token = response_body['refreshJwt']
+    @user_did = response_body['did']
+    @token_expires_at = Time.at(JSON.parse(Base64.decode64(response_body['accessJwt'].split('.')[1]))['exp']).utc
   end
 
   # Stores the token info for use later, else we'll have to generate the token
