@@ -18,7 +18,7 @@ class ApplicationView < ApplicationComponent
   end
 
   def background_color(item)
-    "#" + text_to_hex(safe_name(item))
+    '#' + text_to_hex(safe_name(item))
   end
 
   def color(item)
@@ -62,6 +62,6 @@ class ApplicationView < ApplicationComponent
 
     href += "/#{action}" if action
 
-    a(href: href, class:, style:, data_turbo: "false") { link_text }
+    a(href: href, class:, style:, data_turbo: 'false') { link_text }
   end
 end

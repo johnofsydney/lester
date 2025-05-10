@@ -1,5 +1,5 @@
 namespace :lester do
-  desc "Find Duplicates"
+  desc 'Find Duplicates'
   task find_duplicates: :environment do
     groups = Group.order(:name).pluck(:name).map(&:upcase)
     people = Person.order(:name).pluck(:name).map(&:upcase)
@@ -20,7 +20,7 @@ namespace :lester do
     p potential_people
   end
 
-  desc "Remove Duplicates"
+  desc 'Remove Duplicates'
   task merge_duplicates: :environment do
     ## MERGING EXAMPLE ##
     # ey = Group.find_by(name: 'EY')
@@ -74,7 +74,7 @@ namespace :lester do
     tamboran_short.other_names << 'Tamboran Resources Limited'
     tamboran_short.save
 
-    p "done."
+    p 'done.'
   end
 
   desc 'Create a group for all sole trader lobbyists'

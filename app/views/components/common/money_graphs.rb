@@ -11,7 +11,7 @@ class Common::MoneyGraphs < ApplicationView
 	end
 
   def template
-    render partial: "shared/money_graphs", locals: {
+    render partial: 'shared/money_graphs', locals: {
       colors: colors(transfers, giver:),
       transfers_by_year: group_by_year,
       transfers_by_name: group_by_name(giver:),
@@ -24,12 +24,12 @@ class Common::MoneyGraphs < ApplicationView
       query.group(:taker_id, :taker_type)
            .sum(:amount)
            .transform_keys{ |key| key[1].constantize.find(key[0]).name }
-           .map{|name, v| "#" + Digest::MD5.hexdigest(name)[0..5]}
+           .map{|name, v| '#' + Digest::MD5.hexdigest(name)[0..5]}
     else
       query.group(:giver_id, :giver_type)
            .sum(:amount)
            .transform_keys{ |key| key[1].constantize.find(key[0]).name }
-           .map{|name, v| "#" + Digest::MD5.hexdigest(name)[0..5]}
+           .map{|name, v| '#' + Digest::MD5.hexdigest(name)[0..5]}
     end
   end
 

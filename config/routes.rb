@@ -1,11 +1,11 @@
-require "sidekiq/web" # require the web UI
+require 'sidekiq/web' # require the web UI
 
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
   mount Flipper::UI.app(Flipper) => '/flipper'
-  mount Sidekiq::Web => "/sidekiq" # access it at http://localhost:3000/sidekiq
+  mount Sidekiq::Web => '/sidekiq' # access it at http://localhost:3000/sidekiq
 
   get 'groups/page=:page' => 'groups#index'
   get 'people/page=:page' => 'people#index'
@@ -41,7 +41,7 @@ Rails.application.routes.draw do
   get '/about' => 'home#index'
   # Defines the root path route ("/")
   # root "articles#index"
-  root "search#index"
+  root 'search#index'
 
 
   # # Add a custom POST route for Memberships

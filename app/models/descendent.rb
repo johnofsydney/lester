@@ -1,11 +1,11 @@
-# NOTE this class is NOT backed by a table. It does NOT inherit from ActiveRecord
+# NOTE: this class is NOT backed by a table. It does NOT inherit from ActiveRecord
 # It is a simple data object that holds data from the node, used for display
 # in the network graph, and as part of the tables created using consildated_descendents
 
 class Descendent
   attr_accessor :entity, :id, :name, :depth, :klass, :parent, :parent_count
 
-  def initialize(node: nil, id: nil, name: nil, klass: nil, depth:, parent: nil, parent_count: nil)
+  def initialize(depth:, node: nil, id: nil, name: nil, klass: nil, parent: nil, parent_count: nil)
     @entity = node # this is the entity; Person or Group
     @id = node&.id || id
     @name = node&.name || name
@@ -17,7 +17,6 @@ class Descendent
 
   def shape
     return 'circle' if depth.zero?
-    return 'dot' if member_of_large_group?
 
     klass == 'Person' ? 'dot' : 'box'
   end
@@ -37,7 +36,6 @@ class Descendent
       'rgba(170,90,240,1)'
     when 5
       'rgba(180,180,180,1)'
-    when 6
     end
   end
 
@@ -59,8 +57,12 @@ class Descendent
   end
 
   def size
-    return 35 if depth.zero?
-    return 5 if klass == 'Person'
+    # box does not appear to respond to size
+    if depth.zero?
+      35
+    elsif klass == 'Person'
+      5
+    end
   end
 
   def url
@@ -71,17 +73,9 @@ class Descendent
 
   private
 
-  def member_of_large_group?
-    return false unless parent_count || parent
-
-    count = parent_count || parent&.nodes_count || 0
-
-    klass == 'Person' && count > 15
-  end
-
   def parent_size
     return 0 unless parent_count || parent
 
-    count = parent_count || parent&.nodes_count || 0
+    parent_count || parent&.nodes_count || 0
   end
 end

@@ -7,12 +7,12 @@ ActiveAdmin.register Membership do
     def general_upload_action
       if params[:bulk_text].present?
         csv = CSV.parse(params[:bulk_text], headers: true)
-        FileIngestor.general_upload(csv)
+        FileIngestor.general_upload(csv:)
 
-        flash[:notice] = "Success!"
+        flash[:notice] = 'Success!'
         redirect_to admin_memberships_path
       else
-        flash[:alert] = "Input cannot be blank."
+        flash[:alert] = 'Input cannot be blank.'
         redirect_to admin_memberships_path
       end
     end
@@ -22,10 +22,10 @@ ActiveAdmin.register Membership do
         csv = CSV.parse(params[:bulk_text], headers: true)
         FileIngestor.ministries_upload(csv)
 
-        flash[:notice] = "Success!"
+        flash[:notice] = 'Success!'
         redirect_to admin_memberships_path
       else
-        flash[:alert] = "Input cannot be blank."
+        flash[:alert] = 'Input cannot be blank.'
         redirect_to admin_memberships_path
       end
     end
@@ -49,20 +49,20 @@ ActiveAdmin.register Membership do
   end
 
   action_item :general_upload_form, only: :index do
-    link_to "General Upload Form", general_upload_form_admin_memberships_path
+    link_to 'General Upload Form', general_upload_form_admin_memberships_path
   end
 
   collection_action :general_upload_form, method: :get do
     raise unless current_admin_user
-    render partial: "admin/memberships/general_upload_form"
+    render partial: 'admin/memberships/general_upload_form'
   end
 
   action_item :ministries_upload_form, only: :index do
-    link_to "Ministries Upload Form", ministries_upload_form_admin_memberships_path
+    link_to 'Ministries Upload Form', ministries_upload_form_admin_memberships_path
   end
 
   collection_action :ministries_upload_form, method: :get do
     raise unless current_admin_user
-    render partial: "admin/memberships/ministries_upload_form"
+    render partial: 'admin/memberships/ministries_upload_form'
   end
 end
