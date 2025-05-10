@@ -38,31 +38,59 @@ RSpec.describe Group do
   end
 
   describe '#affiliated_groups' do
+
+    let(:owning_group1) { described_class.create(name: 'Owning Group 1') }
+    let(:owning_group2) { described_class.create(name: 'Owning Group 2') }
+    let(:sub_group1) { described_class.create(name: 'Sub Group 1') }
+    let(:sub_group2) { described_class.create(name: 'Sub Group 2') }
+
+    before do
+      Membership.create(group: owning_group1, member: group)
+      Membership.create(group: owning_group2, member: group)
+      Membership.create(group: group, member: sub_group1)
+      Membership.create(group: group, member: sub_group2)
+    end
+
     it 'returns all owning groups and sub groups' do
       expect(group.affiliated_groups).to contain_exactly(owning_group1, owning_group2, sub_group1, sub_group2)
     end
   end
 
   describe '#transfers' do
+    let(:giving_group) { described_class.create(name: 'Giving Group') }
+    let(:receiver_group) { described_class.create(name: 'Receiver Group') }
+    let!(:incoming_transfer) { Transfer.create(taker: group, giver: giving_group, amount: 123, effective_date: Date.new(2025,12,25)) }
+    let!(:outgoing_transfer) { Transfer.create(taker: receiver_group, giver: group, amount: 123, effective_date: Date.new(2025,12,25)) }
+
     it 'returns all incoming and outgoing transfers' do
-      expect(group.transfers.incoming).to contain_exactly(incoming_transfer)
-      expect(group.transfers.outgoing).to contain_exactly(outgoing_transfer)
+      expect(group.incoming_transfers).to contain_exactly(incoming_transfer)
+      expect(group.outgoing_transfers).to contain_exactly(outgoing_transfer)
     end
   end
 
-  describe '#other_edge_ends' do
-    it 'returns all takers of outgoing transfers and givers of incoming transfers' do
-      expect(group.other_edge_ends).to contain_exactly(owning_group2, owning_group1)
-    end
-  end
+  # describe '#other_edge_ends' do
+  #   it 'returns all takers of outgoing transfers and givers of incoming transfers' do
+  #     expect(group.other_edge_ends).to contain_exactly(owning_group2, owning_group1)
+  #   end
+  # end
 
   describe '#nodes' do
-    it 'returns all people, affiliated groups and other edge ends when include_looser_nodes is true' do
-      expect(group.nodes(include_looser_nodes: true)).to contain_exactly(person, owning_group1, owning_group2, sub_group1, sub_group2, owning_group2, owning_group1)
+    let(:person) { Person.create(name: 'Test Person') }
+    let(:owning_group1) { described_class.create(name: 'Owning Group 1') }
+    let(:owning_group2) { described_class.create(name: 'Owning Group 2') }
+    let(:sub_group1) { described_class.create(name: 'Sub Group 1') }
+    let(:sub_group2) { described_class.create(name: 'Sub Group 2') }
+
+    before do
+      Membership.create(group: owning_group1, member: group)
+      Membership.create(group: owning_group2, member: group)
+      Membership.create(group: group, member: sub_group1)
+      Membership.create(group: group, member: sub_group2)
+      Membership.create(group: group, member: person)
     end
 
-    it 'returns all people and affiliated groups when include_looser_nodes is false' do
-      expect(group.nodes(include_looser_nodes: false)).to contain_exactly(person, owning_group1, owning_group2, sub_group1, sub_group2)
+    it 'returns all people and affiliated groups (child groups and parent groups)' do
+      expect(group.nodes).to contain_exactly(person, owning_group1, owning_group2, sub_group1, sub_group2)
     end
   end
 

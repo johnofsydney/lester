@@ -76,10 +76,6 @@ class Group < ApplicationRecord
   validates :name, uniqueness: { case_sensitive: false }
   validates :business_number, uniqueness: { case_sensitive: false }, allow_nil: true
 
-
-
-
-
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
   # scopes
@@ -96,39 +92,39 @@ class Group < ApplicationRecord
     super(value.gsub(/\D/, ''))
   end
 
-
   def parent_groups
     Group.joins(:memberships).where(memberships: { member: self, member_type: 'Group' }).where.not(id: self.id)
   end
 
-  def nodes(include_looser_nodes: false)
-    unless include_looser_nodes # TODO work on includes / bullet
-      return people + groups
-      # TODO should this be:
-      # return people + affilaietd_groups
-    end
+  def nodes
+    people + affiliated_groups
+    # unless include_looser_nodes # TODO work on includes / bullet
+    #   return people + groups
+    #   # TODO should this be:
+    #   # return people + affilaietd_groups
+    # end
 
-    [people + affiliated_groups + other_edge_ends].compact.flatten.uniq
+    # [people + affiliated_groups + other_edge_ends].compact.flatten.uniq
   end
 
   def affiliated_groups
     parent_groups + groups
   end
 
-  def other_edge_ends
-    # if a connection is not so strong as to be a relationship in the application
-    # we can consider it an 'other' edge, so far, these are only transfers
-    # at the end of an edge, there is a node,
-    # at the end of a given transfer is the taker of that transfer
-    # at the end of a received transfer is the giver of that transfer
+  # def other_edge_ends
+  #   # if a connection is not so strong as to be a relationship in the application
+  #   # we can consider it an 'other' edge, so far, these are only transfers
+  #   # at the end of an edge, there is a node,
+  #   # at the end of a given transfer is the taker of that transfer
+  #   # at the end of a received transfer is the giver of that transfer
 
-    # looser nodes is too loose for looking at a list of associated people and groups, it catches too many.
-    # try it for the degrees of seperation between two groups / two people / person & group
+  #   # looser nodes is too loose for looking at a list of associated people and groups, it catches too many.
+  #   # try it for the degrees of seperation between two groups / two people / person & group
 
 
-    outgoing_transfers.map(&:taker) +
-    incoming_transfers.map(&:giver)
-  end
+  #   outgoing_transfers.map(&:taker) +
+  #   incoming_transfers.map(&:giver)
+  # end
 
   def less_level
     # only called from a disused section in FileIngestor
