@@ -829,5 +829,98 @@ it 'returns "Idemitsu Australia Pty Ltd" for names containing "Idemitsu Australi
       expect(described_class.new('APPEA').call).to eq('Australian Energy Producers')
       expect(described_class.new('Australian Energy Producers').call).to eq('Australian Energy Producers')
     end
+
+    context 'for smaller political parties' do
+      it 'returns "Liberal Democratic Party" for names containing "Liberal Democrat"' do
+        expect(described_class.new('Liberal Democrat').call).to eq('Liberal Democratic Party')
+        expect(described_class.new('Liberal Democratic Party').call).to eq('Liberal Democratic Party')
+      end
+
+      it 'returns "Shooters, Fishers and Farmers Party" for names containing "Shooters, Fishers and Farmers"' do
+        expect(described_class.new('Shooters, Fishers and Farmers').call).to eq('Shooters, Fishers and Farmers Party')
+      end
+
+      it 'returns "Citizens Party" for names containing "Citizens Party" or "CEC"' do
+        expect(described_class.new('Citizens Party').call).to eq('Citizens Party')
+        expect(described_class.new('CEC').call).to eq('Citizens Party')
+      end
+
+      it 'returns "Sustainable Australia Party" for names containing "Sustainable Australia"' do
+        expect(described_class.new('Sustainable Australia').call).to eq('Sustainable Australia Party')
+      end
+
+      it 'returns "Centre Alliance" for names containing "Centre Alliance"' do
+        expect(described_class.new('Centre Alliance').call).to eq('Centre Alliance')
+      end
+
+      it 'returns "The Local Party of Australia" for names containing "The Local Party of Australia"' do
+        expect(described_class.new('The Local Party of Australia').call).to eq('The Local Party of Australia')
+      end
+
+      it 'returns "Katter Australia Party" for names containing "Katter Australia" or "KAP"' do
+        expect(described_class.new('Katter Australia').call).to eq('Katter Australia Party')
+        expect(described_class.new('KAP').call).to eq('Katter Australia Party')
+      end
+
+      it 'returns "Australian Conservatives" for names containing "Australian Conservatives"' do
+        expect(described_class.new('Australian Conservatives').call).to eq('Australian Conservatives')
+      end
+
+      it 'returns "Federal Independents" for names containing "Independent Fed"' do
+        expect(described_class.new('Independent Fed').call).to eq('Federal Independents')
+      end
+
+      it 'returns "Waringah Independents" for names containing "Warringah Independent" or "Waringah Independant"' do
+        expect(described_class.new('Warringah Independent').call).to eq('Waringah Independents')
+        expect(described_class.new('Waringah Independant').call).to eq('Waringah Independents')
+      end
+
+      it 'returns "Lambie Network" for names containing "Lambie"' do
+        expect(described_class.new('Lambie').call).to eq('Lambie Network')
+      end
+
+      it 'returns "United Australia Party" for names containing "United Australia Party" or "United Australia Federal"' do
+        expect(described_class.new('United Australia Party').call).to eq('United Australia Party')
+        expect(described_class.new('United Australia Federal').call).to eq('United Australia Party')
+      end
+
+      it 'returns "Pauline Hanson\'s One Nation" for names containing "Pauline Hanson" or "One Nation"' do
+        expect(described_class.new('Pauline Hanson').call).to eq("Pauline Hanson's One Nation")
+        expect(described_class.new('One Nation').call).to eq("Pauline Hanson's One Nation")
+      end
+    end
+
+    context 'for liberal party' do
+      it 'returns lib federal' do
+        expect(described_class.new('Liberal Party Menzies Research Centre').call).to eq('Liberals (Federal)')
+      end
+
+      it 'returns libs NSW' do
+      end
+
+      it 'returns libs QLD' do
+      end
+
+      it 'returns libs SA' do
+      end
+
+      it 'returns libs TAS' do
+      end
+
+      it 'returns libs WA' do
+      end
+
+      it 'returns libs VIC' do
+      end
+    end
+
+    context 'for labor party' do
+    end
+
+    context 'for greens party' do
+    end
+
+    context 'for nationals party' do
+    end
   end
 end
