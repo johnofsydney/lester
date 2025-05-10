@@ -15,11 +15,7 @@ RSpec.describe FileIngestor, type: :service do
       CSV
     end
 
-    context 'when csv text is passed' do
-      subject(:upload) { described_class.general_upload(csv:) }
-
-      let(:csv) { CSV.parse(csv_data, headers: true) }
-
+    shared_examples 'processes the CSV and creates groups, people, memberships and positions' do
       it 'processes the CSV and creates groups, people, memberships and positions', :aggregate_failures do
         upload
 
@@ -73,6 +69,22 @@ RSpec.describe FileIngestor, type: :service do
         expect(globex_jane_position.start_date).to be_nil
         expect(globex_jane_position.end_date).to be_nil
       end
+    end
+
+    context 'when csv text is passed' do
+      subject(:upload) { described_class.general_upload(csv:) }
+
+      let(:csv) { CSV.parse(csv_data, headers: true) }
+
+      it_behaves_like 'processes the CSV and creates groups, people, memberships and positions'
+    end
+
+    context 'when csv file is passed' do
+      subject(:upload) { described_class.general_upload(file:) }
+
+      let(:file) { Rails.root.join('spec/fixtures/general_upload.csv') }
+
+      it_behaves_like 'processes the CSV and creates groups, people, memberships and positions'
     end
   end
 end
