@@ -16,9 +16,7 @@ class MapGroupNames
 
     return 'Get Up Limited' if name.match?(/(GetUp|Get Up)/i)
     return 'Australian Hotels Association' if name.match?(/Australian Hotels Association/i)
-
     return 'Advance Australia' if name.match?(/Advance Aus|Advanced Aus|^Advance$/i)
-
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
     return 'Australian Council of Trade Unions' if name.match?(/\bACTU\b/i)
     return 'Climate 200 Pty Ltd' if name.match?(/(Climate 200|Climate200)/i)
@@ -28,12 +26,13 @@ class MapGroupNames
     return 'University of NSW' if name.match?(/University of (NSW|New South Wales)|UNSW/i)
     return 'Australian Communities Foundation Limited' if name.match?(/Australian Communities Foundation/i)
     return 'Australians for Unity Ltd' if name.match?(/(Australia|Australian|Australians) for Unity|\bAFUL\b/i)
-    return 'Australians for Indigenous Consititutional Recognition' if name.match?(/Australians for (Indigenous|Indigneous) (Constitution|Constitutional|Consititutional) (Recognition|Recgonition|Recongition)|\bAICR\b|\b\(aicr\)\b/i)
+    return 'Australians for Indigenous Constitutional Recognition' if name.match?(/Australians for (Indigenous|Indigneous) (Constitution|Constitutional|Consititutional) (Recognition|Recgonition|Recongition)|\bAICR\b|\b\(aicr\)\b/i)
     return 'Climate Action Network Australia' if name.match?(/Climate Action Network Australia/i)
     return 'Stand UP: Jewish Commitment TO A Better World' if name.match?(/(Tand|Stand) UP: Jewish Commitment TO A Better World/i)
     return 'The Australia Institute' if name.match?(/Australia Institute/i)
     return 'The Dugdale Trust for Women and Girls' if name.match?(/The Dugdale Trust for (Women|Womens) and Girls/i)
     return 'Uphold and Recognise Limited' if name.match?(/Uphold.+Recognise/i)
+
     return 'Keldoulis Investments Pty Ltd' if name.match?(/Keldoulis Investments/i)
     return 'Turner Components Pty Ltd' if name.match?(/Turner Components/i)
     return 'Glencore Australia' if name.match?(/Glencore Australia/i)
@@ -46,11 +45,15 @@ class MapGroupNames
     return 'Barton Deakin Pty Ltd' if name.match?(/Barton Deakin/i)
     return 'Mineralogy Pty Ltd' if name.match?(/Mineralogy/i)
     return 'Bluescope Steel Limited' if name.match?(/Bluescope Steel/i)
-    return 'Gilbert & Tobin' if name.match?(/Gilbert . Tobin/i)
+    return 'Gilbert & Tobin' if name.match?(/Gilbert (&|and|And) Tobin/i)
     return 'JMR Management Consultancy Services Pty Ltd' if name.match?(/JMR Management Consultancy/i)
+
     return 'NIB Health Funds Limited' if name.match?(/NIB Health Funds/i)
+
+
+
+
     return 'Origin Energy' if name.match?(/Origin Energy/i)
-    return 'Woodside Energy Group Ltd' if name.match?(/Woodside Energy/i)
     return 'Pricewaterhousecoopers' if name.match?(/Pricewaterhousecoopers/i)
     return 'CMAX Advisory' if name.match?(/CMAX (Advisory|Communications)/i)
     return 'Corporate Affairs Australia Pty Ltd' if name.match?(/Corporate Affairs (Australia Pty Ltd|Advisory)/i)
@@ -59,7 +62,6 @@ class MapGroupNames
     return 'Probity International Pty Ltd' if name.match?(/Probity International Pty.+Ltd/i)
     return 'The Pharmacy Guild of Australia' if name.match?(/Pharmacy Guild/i)
     return 'Your Solutions Compounding Pharmacy' if name.match?(/Your Solutions Compounding Pharmacy/i)
-
     return 'AGL Energy Limited' if name == 'AGL'
     return 'AIA Australia' if name == 'AIA'
     return 'AMP Limited' if name == 'AMP'
@@ -74,6 +76,10 @@ class MapGroupNames
     return 'Amgen Australia Pty Ltd' if name.match?(/Amgen Australia/i)
     return 'Ampol Limited' if name.match?(/Ampol (Ltd|Limited)/i)
     return 'Angus Knight Group' if name.match?(/Angus Knight (Group|Pty Ltd|Pty Limited)/i) #
+
+
+
+
     return 'Arafura Rare Earths' if name.match?(/Arafura (Rare Earths|Resources)/i) #
     return 'Ausbiotech' if name.match?(/\bAusbiotech\b/i) #
     return 'Australian Capital Equity Pty Ltd' if name.match?(/\bAustralian Capital Equity (Pty Ltd|P\/L)\b/i) #
@@ -99,6 +105,8 @@ class MapGroupNames
     return 'Droneshield Limited' if name.match?(/\bDroneshield\b/i)
     return 'Echostar Global Australia Pty Ltd' if name.match?(/\bEchostar\b/i)
     return 'Edwards Lifesciences Pty Ltd' if name.match?(/\bEdwards Life(sciences)?\b/i)
+
+
     return 'Elbit Systems of Australia P/L' if name.match?(/\bElbit Systems.+Australia/i)
     return 'Electro Optic Systems Pty Ltd' if name.match?(/\bElectro Optic Systems/i)
     return 'Eli Lilly Australia Pty Ltd' if name.match?(/\bEli Lilly Australia\b/i) || name == 'Eli Lilly'
@@ -111,11 +119,15 @@ class MapGroupNames
     return 'Football Australia' if name.match?(/\bFootball Australia Limited\b/i) || name == 'Football Australia'
     return 'Fortem Australia Limited' if name.match?(/\bFortem Australia Limited\b/i) || name == 'Fortem Australia'
     return 'Free TV Australia Limited' if name.match?(/\b(Free TV|FreeTV) Australia\b/i)
+
+
+
+
     return 'Frisk - Search Pty Ltd' if name.match?(/\bFrisk.*Search\b/i)
     return 'From the Fields Pharmaceuticals Australia Pty Ltd' if name.match?(/\bFrom The Fields\b/i)
     return 'Fugro Australia Pty Ltd' if name.match?(/\bFugro Australia\b/i) || name == 'Fugro'
     return 'GB Energy Holdings Pty Ltd' if name.match?(/\bGB Energy Holdings\b/i) || name == 'GB Energy'
-    return 'Gascoyne Gateway Limited' if name.match?(/\bGascoyne Gateway (Limited|Ltd)\b/i) || name == 'GB Energy'
+    return 'Gascoyne Gateway Limited' if name.match?(/\bGascoyne Gateway (Limited|Ltd)\b/i)
     return 'Gedeon Richter Australia Pty Ltd' if name.match?(/\bGedeon Richter Australia\b/i)
     return 'Gilmour Space Technologies Pty Ltd' if name.match?(/\bGilmour Space Technologies\b/i)
     return 'Gippsland Critical Minerals' if name.match?(/\bGippsland Critical Minerals\b/i)
@@ -127,12 +139,17 @@ class MapGroupNames
     return 'Heartland Solutions Group' if name.match?(/\bHeartland Solutions Group\b/i)
     return 'Holmes Institute' if name.match?(/\bHolmes Institute\b/i)
     return 'Holmwood Highgate Pty Ltd' if name.match?(/\bHolmwood Highgate\b/i)
+
+
+
+
+
     return 'Idemitsu Australia Pty Ltd' if name.match?(/\bIdemitsu Australia\b/i)
     return 'Inghams Group Limited' if name.match?(/\bInghams Group (Limited|LTD)\b/i) || name == 'Inghams'
     return 'Insurance Council of Australia' if name.match?(/\bInsurance Council of Australia\b/i)
     return 'Intech Strategies P/L' if name.match?(/\bIntech Strategies\b/i)
     return 'Ipsen Pty Ltd' if name.match?(/\bIpsen Pty Ltd\b/i) || name == 'Ipsen'
-    return 'Israel Aerospace Industries Limited' if name.match?(/\bIsrael Aerospace Industries (Limited|Ltd)\b/i) || name == 'Ipsen'
+    return 'Israel Aerospace Industries Limited' if name.match?(/\bIsrael Aerospace Industries (Limited|Ltd)\b/i)
     return 'JERA Australia Pty Ltd' if name.match?(/\bJERA Australia\b/i) || name == 'Jera'
     return 'Jellinbah Group' if name.match?(/\bJellinbah Group\b/i)
     return 'Johnson & Johnson Medical' if name.match?(/\bJohnson (&|And) Johnson Medical\b/i)
@@ -143,6 +160,8 @@ class MapGroupNames
     return 'Lendlease Australia Pty Ltd' if name.match?(/Lendlease.+Australia/i) || name.match?(/Lendlease Pty Ltd/i)
     return 'Lion Pty Ltd' if name.downcase == 'lion'
     return 'Lockheed Martin Australia Pty Ltd' if name.match?(/Lockheed Martin Australia/i)
+
+
     return 'Matrix Composites & Engineering' if name.match?(/Matrix Composites.+Engineering/i)
     return 'Merck Healthcare' if name.match?(/Merck Healthcare/i)
     return 'Metallicum Minerals Corporation' if name.match?(/Metallicum Minerals Corporation/i)
@@ -150,7 +169,7 @@ class MapGroupNames
     return 'Nestle Australia' if name.match?(/(Nestle|Nestlé) Australia/i)
     return 'Netapp Pty Ltd' if name.match?(/Netapp Pty Ltd/i) || name == 'Netapp'
     return 'Novo Nordisk Pharmaceuticals Pty Ltd' if name.match?(/Novo Nordisk Pharmaceuticals/i)
-    return 'Orion Sovereign Group Pty Ltd' if name.match?(/Orion Sovereign Group Pty Ltd/i)
+    return 'Orion Sovereign Group Pty Ltd' if name.match?(/Orion Sovereign Group/i)
     return 'PainAustralia Limited' if name.match?(/painaustralia/i)
     return 'Paintback Limited' if name.match?(/paintback/i)
     return 'Pathology Technology Australia' if name.match?(/Pathology Technology Australia/i)
@@ -169,8 +188,12 @@ class MapGroupNames
     return 'Saab Australia Pty Ltd' if name.match?(/Saab Australia Pty Ltd/i) || name.downcase == 'saab'
     return 'Settlement Services International' if name.match?(/Settlement Services International/i)
     return "Shop Distributive & Allied Employees Association - National'" if name.match?(/Shop.+Distributive (&|and) Allied Employees.+Association.+(National|nat branch)/i)
+    return "Shop Distributive & Allied Employees Association - National'" if name.match?(/Shop.+Allied Employees.+Association.+National/i)
     return 'SMEC Australia Pty Ltd' if name.match?(/Smec Australia/i)
     return 'Sovori Pty Ltd ATF the Sovori Trust' if name.match?(/Sovori Pty Ltd/i)
+
+
+
     return 'Space Machines Company' if name.match?(/Space Machines Company/i)
     return 'Speedcast Australia Pty Ltd' if name.match?(/Speedcast Australia Pty Ltd/i) || name == 'Speedcast'
     return 'Spirits & Cocktails Australia' if name.match?(/Spirits (&|and) Cocktails Australia/i)
@@ -188,6 +211,9 @@ class MapGroupNames
     return 'Trademark Group of Companies' if name.match?(/Trademark Group of Companies/i)
     return 'Trafigura' if name.match?(/Trafigura Pte Ltd/i) || name.downcase == 'trafigura'
     return 'Tronox Limited' if name.match?(/Tronox (Limited|Ltd)/i)
+
+
+
     return 'UCB Australia Pty Ltd' if name.match?(/UCB Australia (Pty Ltd|Proprietary Limited)/i)
     return 'Uber Australia Pty Ltd' if name.match?(/Uber Australia Pty Ltd/i) || name.downcase == 'uber'
     return 'Van Dairy Ltd' if name.match?(/Van Dairy Ltd/i) ||name.match?(/\bvanmilk\b/)
@@ -198,7 +224,7 @@ class MapGroupNames
     return 'Victorian Hydrogen and Ammonia Industries Limited' if name.match?(/Victorian Hydrogen (&|and) Ammonia Industries/i)
     return 'Wesfarmers Limited' if name.match?(/Wesfarmers (Limited|Ltd)/i) || name.downcase == 'wesfarmers'
     return 'Westpac Banking Corporation' if name.match?(/Westpac Banking Corporation/i) || name.downcase == 'westpac'
-    return 'Your (Solutions|Solution) Compounding Pharmacy' if name.match?(/Your Solutions Compounding Pharmacy/i)
+
     return 'Yumbah Aquaculture' if name.match?(/Yumbah Aquaculture/i)
     return 'Clubs Australia' if name.match?(/ClubsAustralia Inc/i)
     return 'Idameneo (No 123) Pty Ltd' if name.match?(/Idameneo.+123/i)
@@ -208,10 +234,6 @@ class MapGroupNames
     return 'Tamboran Resources Limited' if name.match?(/Tamboran Resources/i)
     return 'Paladin Group' if name.match?(/Paladin Group/i)
     return 'Qube Ports' if name.match?(/Qube Ports/i)
-
-
-
-    # https://en.wikipedia.org/wiki/Australian_Energy_Producers
     return 'Australian Energy Producers' if name.match?(/\bAPPEA\b|Australian Energy Producers/i)
 
 

@@ -13,7 +13,7 @@ class Transfers::TableOfBothSides < ApplicationView
 
       div(class: 'col', id: 'descendents-of-giver') do
         p do
-          plain "Associated People and Groups of "
+          plain 'Associated People and Groups of '
           br
           strong {transfer.giver.name}
           plain " (depth: #{depth})"
@@ -38,7 +38,7 @@ class Transfers::TableOfBothSides < ApplicationView
 
       div(class: 'col', id: 'descendents-of-taker') do
         p do
-          plain "Associated People and Groups of "
+          plain 'Associated People and Groups of '
           br
           strong {transfer.taker.name}
           plain " (depth: #{depth})"

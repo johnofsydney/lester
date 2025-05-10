@@ -53,7 +53,7 @@ class Person < ApplicationRecord
 
     call_to_action = "\n\n" + "See more: https://join-the-dots.info/people/#{id}"
     body += call_to_action if (body.length + call_to_action.length) < 300
-    aus_pol_tag = "\n\n" + "#AusPol"
+    aus_pol_tag = "\n\n" + '#AusPol'
     body += aus_pol_tag if (body.length + aus_pol_tag.length) < 300
     name_to_tag = ' #' + name.downcase.tr(' ', '_')
     body += name_to_tag if (body.length + name_to_tag.length) < 300

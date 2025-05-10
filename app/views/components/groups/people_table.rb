@@ -37,19 +37,19 @@ class Groups::PeopleTable < ApplicationView
     # TODO: Adapt and use Common::PageNav
     return if pages < 2
 
-    nav(aria: { label: "Page navigation example" }) do
-      ul(class: "pagination") do
+    nav(aria: { label: 'Page navigation example' }) do
+      ul(class: 'pagination') do
         previous_page = @page - 1
-        item_class = @page == 0 ? "page-item disabled" : "page-item"
+        item_class = @page == 0 ? 'page-item disabled' : 'page-item'
         li(class: item_class) do
-          a(class: "page-link", href: "/groups/group_people/#{exclude_group.id}/page=#{previous_page}") { "Previous" }
+          a(class: 'page-link', href: "/groups/group_people/#{exclude_group.id}/page=#{previous_page}") { 'Previous' }
         end
 
         pagination_range.each do |page_number|
-          item_class = page_number == @page ? "page-item active" : "page-item"
+          item_class = page_number == @page ? 'page-item active' : 'page-item'
           li(class: item_class) do
             a(
-              class: "page-link",
+              class: 'page-link',
               href: "/groups/group_people/#{exclude_group.id}/page=#{page_number}"
               ) do
               page_number + 1
@@ -58,9 +58,9 @@ class Groups::PeopleTable < ApplicationView
         end
 
         next_page = @page + 1
-        item_class = next_page == pages ? "page-item disabled" : "page-item"
+        item_class = next_page == pages ? 'page-item disabled' : 'page-item'
         li(class: item_class) do
-          a(class: "page-link", href: "/groups/group_people/#{exclude_group.id}/page=#{next_page}") { "Next" }
+          a(class: 'page-link', href: "/groups/group_people/#{exclude_group.id}/page=#{next_page}") { 'Next' }
         end
       end
     end

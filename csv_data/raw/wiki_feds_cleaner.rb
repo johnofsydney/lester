@@ -104,7 +104,7 @@ files_to_clean.each do |filename|
   end
 
 
-  CSV.open(filename + '_cleaned' + '.csv', "w") do |csv|
+  CSV.open(filename + '_cleaned' + '.csv', 'w') do |csv|
     rows.each do |row|
       csv << row
     end

@@ -26,7 +26,7 @@ RSpec.describe LinkedInProfileGetter, type: :service do
 
     expect(Group.count).to eq(7)
     expectGroup.pluck(:name).to contain_exactly(
-      ["Sherpa Delivery", "Mable", "Fat Zebra", "SBS", "General Assembly", "General Assembly", "DataHouseSoftware", "Stafford Island", "Hawker Batteries, Com10 International, Emerson Network Power"]
+      ['Sherpa Delivery', 'Mable', 'Fat Zebra', 'SBS', 'General Assembly', 'General Assembly', 'DataHouseSoftware', 'Stafford Island', 'Hawker Batteries, Com10 International, Emerson Network Power']
     )
   end
 
@@ -43,13 +43,13 @@ RSpec.describe LinkedInProfileGetter, type: :service do
 
     expect(Position.count).to eq(8)
     expect(Position.pluck(:title)).to contain_exactly(
-      ["Senior Software Engineer", "Software Engineer", "Software Developer", "Software Developer", "Teaching Assistant", "Web Development Immersive Student", "Recruitment Consultant", "Electrical Design Engineer"]
+      ['Senior Software Engineer', 'Software Engineer', 'Software Developer', 'Software Developer', 'Teaching Assistant', 'Web Development Immersive Student', 'Recruitment Consultant', 'Electrical Design Engineer']
     )
 
     # spot check for the first position
     position = Position.first
-    expect(position.title).to eq("Senior Software Engineer")
-    expect(position.company).to eq("Sherpa Delivery")
+    expect(position.title).to eq('Senior Software Engineer')
+    expect(position.company).to eq('Sherpa Delivery')
     expect(position.start_date).to eq(Date.new(2022, 7, 1))
     expect(position.end_date).to be_nil
   end
