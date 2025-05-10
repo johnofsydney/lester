@@ -244,7 +244,7 @@ RSpec.describe RecordGroup, type: :service do
 
   describe '.call' do
     before do
-      allow(Group).to receive(:find_or_create_by).and_call_original
+      allow(Group).to receive(:find_or_create_by)
     end
 
     it 'creates or finds a group with the given name' do
