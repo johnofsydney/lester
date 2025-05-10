@@ -32,12 +32,11 @@ class MenuComponent < ApplicationView
               a(class: 'nav-link', href: '/groups/') { 'Groups' }
             end
             li(class: 'nav-item') do
-              a(class: 'nav-link', href: '/transfers/') { 'Transfers' }
-            end
-            li(class: 'nav-item') do
               a(class: 'nav-link', href: '/people/') { 'People' }
             end
-
+            li(class: 'nav-item') do
+              a(class: 'nav-link', href: '/transfers/') { 'Transfers' }
+            end
             li(class: 'nav-item') do
               a(class: 'nav-link', href: '/home/index/') { 'About' }
             end
