@@ -75,7 +75,6 @@ class Home::IndexView < ApplicationView
             plain ' is a platform dedicated to illuminating the web of connections between people, organisations and money.'
           end
 
-
           div(class: 'card shadow-sm mb-4') do
             div(class: 'card-body') do
               p { 'At the core of Join The Dots are three main components: People, Groups, and Transfers.' }
@@ -120,7 +119,6 @@ class Home::IndexView < ApplicationView
               p { 'For groups where the owners, major shareholders, or key personnel can be identified through public records, we add these individuals to the group in our database. This enhances the depth and accuracy of our data, providing a more comprehensive view of the connections of the individual.' }
 
               p { "It's important to note that everything on our website is backed by publicly available information. We do not conduct any original research; rather, we aggregate, format, and arrange the data to reveal underlying patterns and connections. Join The Dots is committed to transparency, accountability and ensuring access to information." }
-
 
             end
           end

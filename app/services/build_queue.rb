@@ -29,7 +29,6 @@ class BuildQueue
     end.flatten.uniq
   end
 
-
   private
 
   def can_add_to_queue?(node, next_node)

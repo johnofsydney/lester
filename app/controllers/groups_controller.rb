@@ -45,7 +45,6 @@ class GroupsController < ApplicationController
     render Groups::PeopleTable.new(people:, exclude_group: group, page:, pages:)
   end
 
-
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_group

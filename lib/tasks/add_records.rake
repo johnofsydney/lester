@@ -6,7 +6,6 @@ namespace :lester do
     # https://www.parliament.nsw.gov.au/members/downloadables/Pages/downloadable-lists.aspx
     # FileIngestor.nsw_parliamentarians_upload('csv_data/nsw_parliamentarians.csv')
 
-
     # From a file created and maintained by me, whenever noteworthy people or groups appear in the news
     # COMPLETE
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2024-09-13.csv')
@@ -18,8 +17,6 @@ namespace :lester do
     # FileIngestor.general_upload('csv_data/other_people_groups_positions-2025-03-15.csv')
     FileIngestor.general_upload(file: 'csv_data/other_people_groups_positions-2025-04-21.csv')
 
-
-
     # From a file created and maintained by me, linking groups to groups, whenever information comes to light
     # COMPLETE
     # FileIngestor.affiliations_upload('csv_data/affiliations-2024-09-18.csv')
@@ -30,7 +27,6 @@ namespace :lester do
     # FileIngestor.affiliations_upload('csv_data/affiliations-2025-03-14.csv') # adding more categories
     # FileIngestor.affiliations_upload('csv_data/affiliations-2025-03-15.csv')
     FileIngestor.affiliations_upload('csv_data/affiliations-2025-03-16.csv')
-
 
     # This is a reminder, to add more info on ministries.
     federal_ministries = [
@@ -67,7 +63,6 @@ namespace :lester do
     end
 
   end
-
 
     annual_donation_files = [
   #     'csv_data/Annual_Donations_Made_2018.csv',
@@ -119,21 +114,14 @@ namespace :lester do
   #   # From a file created and maintained by me, whenever noteworthy money transfers appear in the news
   #   FileIngestor.transfers_upload('csv_data/other_transfers.csv')
 
-
   #   # Using data sourced from the AEC
   #   FileIngestor.election_donations_ingest('csv_data/Election_Donations_Made_to_2022.csv')
-
-
-
-
-
 
   #   # # ALP Senators, State and past members
   #   # Membership.find_or_create_by(group: labor_federal, member: kevin_rudd, start_date: Date.new(2006, 12, 4), end_date: Date.new(2010, 6, 24))
   #   # Membership.find_or_create_by(group: labor_federal, member: mark_latham, start_date: Date.new(2003, 12, 2), end_date: Date.new(2005, 1, 18))
   #   # Membership.find_or_create_by(group: labor_nsw, member: ian_macdonald, start_date: Date.new(1988, 3, 19), end_date: Date.new(2010, 6, 7))
   #   # Membership.find_or_create_by(group: labor_nsw, member: eddie_obeid, start_date: Date.new(1991, 5, 6), end_date: Date.new(2011, 5, 6))
-
 
   #   # Membership.find_or_create_by(group: one_nation, member: mark_latham, start_date: Date.new(2018, 11, 15), end_date: Date.new(2022, 6, 30))
 

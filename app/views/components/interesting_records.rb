@@ -29,7 +29,6 @@ class InterestingRecords < ApplicationView
 
       end
 
-
     end
   end
 

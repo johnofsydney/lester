@@ -56,7 +56,6 @@ ActiveAdmin.register Group do
     redirect_to admin_group_path(replacement_group), notice: "Group successfully merged into #{replacement_group.name}."
   end
 
-
   batch_action :add_to_category, form: -> {
     {
       category_id: Group.other_categories.map { |c| [c.name, c.id] }
