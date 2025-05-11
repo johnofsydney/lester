@@ -18,8 +18,6 @@ class RecordPersonOrGroup
     end
   end
 
-
-
   def initialize(name)
     @name = name.strip
   end

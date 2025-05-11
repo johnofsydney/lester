@@ -5,7 +5,6 @@ Membership.destroy_all
 Group.destroy_all
 Person.destroy_all
 
-
 john = Person.create(name: 'John')
 mark = Person.create(name: 'Mark')
 ben = Person.create(name: 'Ben')
@@ -24,7 +23,6 @@ kennards = Group.create(name: 'Kennards')
 greens_nsw = Group.create(name: 'The Greens NSW')
 greens_federal = Group.create(name: 'The Greens Federal')
 greens_vic = Group.create(name: 'The Greens Victoria')
-
 
 Membership.create(group: alp, person: john, title: 'Member', start_date: 2.years.ago)
 Membership.create(group: alp, person: eddie, title: 'Member', start_date: 25.years.ago, end_date: 10.years.ago)

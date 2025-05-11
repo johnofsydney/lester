@@ -80,8 +80,6 @@ Rails.application.configure do
     # Bullet.sentry = true
     # Bullet.alert = true
 
-
-
     # Bullet.raise = true
     # Bullet.xmpp = { :account  => 'bullets_account@jabber.org',
     #                 :password => 'bullets_password_for_jabber',

@@ -20,7 +20,6 @@ RSpec.describe LinkedInProfileGetter, type: :service do
     Person.create(name: 'Freda', linkedin_url: 'http://example.com')
   end
 
-
   xit 'creates a Group for each workplace' do
     service.perform
 

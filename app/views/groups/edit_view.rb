@@ -13,7 +13,6 @@ class Groups::EditView < ApplicationView
       input(type: 'text', name: 'group[name]', value: @group[:name])
       button(type: 'submit') { 'Update Group' }
 
-
       h2 { 'Current People' }
       ul do
         @group.people.each do |person|
