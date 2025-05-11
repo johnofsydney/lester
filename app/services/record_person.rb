@@ -39,8 +39,6 @@ class RecordPerson
                .delete('.')
                .strip
 
-
-
     name = CapitalizeNames.capitalize(name)
 
     # This is temporary, and should be replaced with a name disambiguator

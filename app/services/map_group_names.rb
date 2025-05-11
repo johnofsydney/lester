@@ -50,9 +50,6 @@ class MapGroupNames
 
     return 'NIB Health Funds Limited' if name.match?(/NIB Health Funds/i)
 
-
-
-
     return 'Origin Energy' if name.match?(/Origin Energy/i)
     return 'Pricewaterhousecoopers' if name.match?(/Pricewaterhousecoopers/i)
     return 'CMAX Advisory' if name.match?(/CMAX (Advisory|Communications)/i)
@@ -76,9 +73,6 @@ class MapGroupNames
     return 'Amgen Australia Pty Ltd' if name.match?(/Amgen Australia/i)
     return 'Ampol Limited' if name.match?(/Ampol (Ltd|Limited)/i)
     return 'Angus Knight Group' if name.match?(/Angus Knight (Group|Pty Ltd|Pty Limited)/i) #
-
-
-
 
     return 'Arafura Rare Earths' if name.match?(/Arafura (Rare Earths|Resources)/i) #
     return 'Ausbiotech' if name.match?(/\bAusbiotech\b/i) #
@@ -106,7 +100,6 @@ class MapGroupNames
     return 'Echostar Global Australia Pty Ltd' if name.match?(/\bEchostar\b/i)
     return 'Edwards Lifesciences Pty Ltd' if name.match?(/\bEdwards Life(sciences)?\b/i)
 
-
     return 'Elbit Systems of Australia P/L' if name.match?(/\bElbit Systems.+Australia/i)
     return 'Electro Optic Systems Pty Ltd' if name.match?(/\bElectro Optic Systems/i)
     return 'Eli Lilly Australia Pty Ltd' if name.match?(/\bEli Lilly Australia\b/i) || name == 'Eli Lilly'
@@ -119,9 +112,6 @@ class MapGroupNames
     return 'Football Australia' if name.match?(/\bFootball Australia Limited\b/i) || name == 'Football Australia'
     return 'Fortem Australia Limited' if name.match?(/\bFortem Australia Limited\b/i) || name == 'Fortem Australia'
     return 'Free TV Australia Limited' if name.match?(/\b(Free TV|FreeTV) Australia\b/i)
-
-
-
 
     return 'Frisk - Search Pty Ltd' if name.match?(/\bFrisk.*Search\b/i)
     return 'From the Fields Pharmaceuticals Australia Pty Ltd' if name.match?(/\bFrom The Fields\b/i)
@@ -140,10 +130,6 @@ class MapGroupNames
     return 'Holmes Institute' if name.match?(/\bHolmes Institute\b/i)
     return 'Holmwood Highgate Pty Ltd' if name.match?(/\bHolmwood Highgate\b/i)
 
-
-
-
-
     return 'Idemitsu Australia Pty Ltd' if name.match?(/\bIdemitsu Australia\b/i)
     return 'Inghams Group Limited' if name.match?(/\bInghams Group (Limited|LTD)\b/i) || name == 'Inghams'
     return 'Insurance Council of Australia' if name.match?(/\bInsurance Council of Australia\b/i)
@@ -160,7 +146,6 @@ class MapGroupNames
     return 'Lendlease Australia Pty Ltd' if name.match?(/Lendlease.+Australia/i) || name.match?(/Lendlease Pty Ltd/i)
     return 'Lion Pty Ltd' if name.downcase == 'lion'
     return 'Lockheed Martin Australia Pty Ltd' if name.match?(/Lockheed Martin Australia/i)
-
 
     return 'Matrix Composites & Engineering' if name.match?(/Matrix Composites.+Engineering/i)
     return 'Merck Healthcare' if name.match?(/Merck Healthcare/i)
@@ -192,8 +177,6 @@ class MapGroupNames
     return 'SMEC Australia Pty Ltd' if name.match?(/Smec Australia/i)
     return 'Sovori Pty Ltd ATF the Sovori Trust' if name.match?(/Sovori Pty Ltd/i)
 
-
-
     return 'Space Machines Company' if name.match?(/Space Machines Company/i)
     return 'Speedcast Australia Pty Ltd' if name.match?(/Speedcast Australia Pty Ltd/i) || name == 'Speedcast'
     return 'Spirits & Cocktails Australia' if name.match?(/Spirits (&|and) Cocktails Australia/i)
@@ -211,8 +194,6 @@ class MapGroupNames
     return 'Trademark Group of Companies' if name.match?(/Trademark Group of Companies/i)
     return 'Trafigura' if name.match?(/Trafigura Pte Ltd/i) || name.downcase == 'trafigura'
     return 'Tronox Limited' if name.match?(/Tronox (Limited|Ltd)/i)
-
-
 
     return 'UCB Australia Pty Ltd' if name.match?(/UCB Australia (Pty Ltd|Proprietary Limited)/i)
     return 'Uber Australia Pty Ltd' if name.match?(/Uber Australia Pty Ltd/i) || name.downcase == 'uber'
@@ -235,7 +216,6 @@ class MapGroupNames
     return 'Paladin Group' if name.match?(/Paladin Group/i)
     return 'Qube Ports' if name.match?(/Qube Ports/i)
     return 'Australian Energy Producers' if name.match?(/\bAPPEA\b|Australian Energy Producers/i)
-
 
     return 'Liberal Democratic Party' if name.match?(/Liberal.+Democrat/i)
     return 'Shooters, Fishers and Farmers Party' if name.match?(/Shooters, Fishers and Farmers/i)
@@ -295,7 +275,6 @@ class MapGroupNames
     return group_names.liberals.nsw if /Liberal Party Avalon/i.match?(name)
     return group_names.liberals.federal if /Liberal Party Of Aus/i.match?(name)
     return group_names.liberals.federal if /Australian Federal Liberal Party/i.match?(name)
-
 
     # Greens
     return group_names.greens.nsw if /((Greens|GRN).+(New South Wales|NSW|N\.S\.W)|(New South Wales|New South Wales|NSW|N\.S\.W\.).+(Greens|GRN))/i.match?(name)
@@ -366,7 +345,6 @@ class MapGroupNames
     regex_for_titleize_8 = /\Air New Zealand\b|\bAir Pacific\b|\bAir Liquide\b|Singapore/i
     regex_for_titleize_9 = /\Be Our Guest\b|\bBlack Dog\b/i
     regex_for_titleize_10 = /\bJoe\b/i
-
 
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
 

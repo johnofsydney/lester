@@ -3,7 +3,6 @@ ActiveAdmin.register Position do
 
   permit_params :membership_id, :title, :start_date, :end_date
 
-
   index do
     selectable_column
     id_column

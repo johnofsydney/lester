@@ -1,7 +1,6 @@
 require 'csv'
 require 'pry'
 
-
 class Parser
   FEDERAL_ELECTION_DATES = {
     '1993' => Date.new(1993, 3, 13),
@@ -38,7 +37,6 @@ class Parser
         .gsub(/\[.+/, '')
         .strip
   end
-
 
   def self.parse_party_name(name, level)
     parse_name(name) + level
@@ -79,8 +77,6 @@ class Parser
   end
 end
 
-
-
 files_to_clean = [
   'wiki_feds_current_mps',
   'wiki_feds_ending_2019',
@@ -103,15 +99,11 @@ files_to_clean.each do |filename|
     rows << Parser.parsed_row(row, level)
   end
 
-
   CSV.open(filename + '_cleaned' + '.csv', 'w') do |csv|
     rows.each do |row|
       csv << row
     end
   end
 end
-
-
-
 
 true

@@ -92,8 +92,6 @@
 #       Membership.find_or_create_by(member: Person.find_by(name: person), group: weaponry)
 #     end
 
-
-
 #     # Coalition
 #     Group.where('name LIKE ?', "%Nationals%").each do |group|
 #       Membership.find_or_create_by(member: group, group: coalition)
@@ -114,7 +112,6 @@
 #     Group.where('name LIKE ?', "%Greens%").each do |group|
 #       Membership.find_or_create_by(member: group, group: greens)
 #     end
-
 
 #   end
 # end
