@@ -1,5 +1,5 @@
 namespace :lester do
-  desc "Augment"
+  desc 'Augment'
   task augment: :environment do
 
     # NSW Parliamentarians from a list downloaded from

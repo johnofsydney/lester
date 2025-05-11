@@ -75,7 +75,7 @@ class LinkedInProfileGetter
     Rails.logger.debug { "Location: #{experience['location']}" }
     Rails.logger.debug { "Description: #{experience['description']}" }
     Rails.logger.debug { "Logo URL: #{experience['logo_url']}" }
-    Rails.logger.debug "-" * 40
+    Rails.logger.debug '-' * 40
 
     group = RecordGroup.call(experience['company'])
     # person
@@ -91,7 +91,7 @@ class LinkedInProfileGetter
     # the membership may not exist, if so, we need to create it
     # There is no start date or end date added to the membership at this point
     membership = Membership.find_or_create_by(
-      member_type: "Person",
+      member_type: 'Person',
       member_id: person.id,
       group: group
     )

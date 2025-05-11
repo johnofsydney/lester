@@ -13,12 +13,12 @@ class Transfers::IndexView < ApplicationView
   def template
     h2 { 'Transfers' }
 
-    form(action: '/transfers', enctype: "multipart/form-data", method: 'get', class: "row g-3") do
-      div(class: "col-12 col-md-auto") do
-        label(for: "duration_start", class: "form-label  label-row") { "Earliest Financial Year (ending in)" }
+    form(action: '/transfers', enctype: 'multipart/form-data', method: 'get', class: 'row g-3') do
+      div(class: 'col-12 col-md-auto') do
+        label(for: 'duration_start', class: 'form-label  label-row') { 'Earliest Financial Year (ending in)' }
       end
-      div(class: "col-12 col-md-auto") do
-        select(name: "duration_start", class: "form-select") do
+      div(class: 'col-12 col-md-auto') do
+        select(name: 'duration_start', class: 'form-select') do
           Transfer.financial_years.each do |year|
             selected_year = if session[:duration_start].present?
               if session[:duration_start].is_a?(String)
@@ -35,11 +35,11 @@ class Transfers::IndexView < ApplicationView
           end
         end
       end
-      div(class: "col-12 col-md-auto") do
-        label(for: "duration_end", class: "form-label  label-row") { "Last Financial Year (ending in)" }
+      div(class: 'col-12 col-md-auto') do
+        label(for: 'duration_end', class: 'form-label  label-row') { 'Last Financial Year (ending in)' }
       end
-      div(class: "col-12 col-md-auto") do
-        select(name: "duration_end", class: "form-select") do
+      div(class: 'col-12 col-md-auto') do
+        select(name: 'duration_end', class: 'form-select') do
           Transfer.financial_years.each do |year|
             selected_year = if session[:duration_end].present?
               if session[:duration_end].is_a?(String)
@@ -56,8 +56,8 @@ class Transfers::IndexView < ApplicationView
           end
         end
       end
-      div(class: "col-12 col-md-auto") do
-        button(class: "btn btn-primary", type: "submit") { "Go!" }
+      div(class: 'col-12 col-md-auto') do
+        button(class: 'btn btn-primary', type: 'submit') { 'Go!' }
       end
     end
 
@@ -74,7 +74,7 @@ class Transfers::IndexView < ApplicationView
               if transfer.id
                 a(href: "/transfers/#{transfer.id}") { transfer.id}
               else
-                "nope"
+                'nope'
               end
             end
             td { number_to_currency(transfer.amount.to_s, precision: 0) }

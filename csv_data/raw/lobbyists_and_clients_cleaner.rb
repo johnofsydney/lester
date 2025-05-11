@@ -56,7 +56,7 @@ tsv = CSV.read('csv_data/raw/lobbyists_and_clients.tsv', headers: true, col_sep:
 
 CSV.open(
   'csv_data/lobbyists_and_clients_cleaned_2025-01-02.csv',
-  "w",
+  'w',
   write_headers: true,
   headers: ['member_group', 'abn', 'group', 'business_number', 'start_date', 'evidence']
   ) do |csv|

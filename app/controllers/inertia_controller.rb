@@ -98,7 +98,7 @@ class InertiaController < ApplicationController
     elsif depth_in_session?
       "Using stored setting of depth: #{session[:depth]}. Increase the depth of the network to show more nodes."
     else
-      "Using default setting of depth: 2. Increase the depth of the network to show more nodes. Larger value will take longer to calculate."
+      'Using default setting of depth: 2. Increase the depth of the network to show more nodes. Larger value will take longer to calculate.'
     end
   end
   def depth

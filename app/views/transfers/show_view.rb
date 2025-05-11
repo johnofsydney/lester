@@ -43,8 +43,8 @@ class Transfers::ShowView < ApplicationView
 
       p do
         plain "A single 'transfer' can represent multiple single payments inthe same financial year. "
-        i { "This "}
-        plain "transfer represents the following payments:"
+        i { 'This '}
+        plain 'transfer represents the following payments:'
       end
 
       table(class: 'table table-striped') do

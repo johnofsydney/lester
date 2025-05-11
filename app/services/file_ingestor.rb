@@ -1,13 +1,53 @@
 class FileIngestor
 
+  def initialize(csv: nil, file: nil)
+    raise unless csv || file
+
+    @csv = csv || CSV.read(file, headers: true)
+  end
+
+  attr_reader :csv
+
+  def general_upload
+    # general upload does NOT record start and end dates for memberships
+    csv.each do |row|
+      group = RecordGroup.call(row['group'])
+
+      next if row['person'].blank?
+
+      person = RecordPerson.call(row['person'])
+      title = parse_title(row['title'])
+
+      evidence = row['evidence'].strip if row['evidence'].present?
+      start_date = parse_date(row['start_date']) if row['start_date'].present?
+      end_date = parse_date(row['end_date']) if row['end_date'].present?
+
+      # the membership may not exist, if so, we need to create it
+      # There is no start date or end date added to the membership at this point
+      membership = Membership.find_or_create_by(
+        member_type: 'Person',
+        member_id: person.id,
+        group: group
+      )
+
+      # create position for each row, with unique dates and title
+      position = Position.find_or_create_by(membership:, title:, start_date:, end_date:) if title || start_date || end_date
+
+      membership.update!(evidence:) if evidence
+      position.update!(evidence:) if evidence && position
+    rescue => e # rubocop:disable Style/RescueStandardError
+      Rails.logger.debug { "General Upload | Error: #{e} | row#{row.inspect}" }
+    end
+  end
+
   class << self
     def annual_donor_ingest(file)
       csv = CSV.read(file, headers: true)
       csv.each do |row|
         donation_date = Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30) # saves bothering about the date format
         financial_year = Dates::FinancialYear.new(donation_date)
-        giver = RecordPersonOrGroup.call(row["Donor Name"])
-        taker = RecordPersonOrGroup.call(row["Donation Made To"])
+        giver = RecordPersonOrGroup.call(row['Donor Name'])
+        taker = RecordPersonOrGroup.call(row['Donation Made To'])
 
         transfer = Transfer.find_or_create_by(
           giver_id: giver.id,
@@ -45,8 +85,8 @@ class FileIngestor
       csv.each do |row|
         donation_date = parse_date(row['Date'])
         financial_year = Dates::FinancialYear.new(donation_date)
-        giver = RecordPersonOrGroup.call(row["Donor Name"])
-        taker = RecordPersonOrGroup.call(row["Donation Made To"])
+        giver = RecordPersonOrGroup.call(row['Donor Name'])
+        taker = RecordPersonOrGroup.call(row['Donation Made To'])
 
         transfer = Transfer.find_or_create_by(
           giver_id: giver.id,
@@ -82,12 +122,12 @@ class FileIngestor
     def election_donations_ingest(file)
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        next if row["Donation Made To"].match?(/unendorsed/i)
+        next if row['Donation Made To'].match?(/unendorsed/i)
 
         donation_date = parse_date(row['Date'])
         financial_year = Dates::FinancialYear.new(donation_date)
-        giver = RecordPersonOrGroup.call(row["Name"])
-        taker = RecordPersonOrGroup.call(row["Donation Made To"])
+        giver = RecordPersonOrGroup.call(row['Name'])
+        taker = RecordPersonOrGroup.call(row['Donation Made To'])
 
         transfer = Transfer.find_or_create_by(
           giver_id: giver.id,
@@ -254,7 +294,7 @@ class FileIngestor
 
         # the ministry membership may not exist, if so, we need to create it
         membership = Membership.find_or_create_by(
-          member_type: "Person",
+          member_type: 'Person',
           member_id: person.id,
           group: ministry_group
         )
@@ -279,44 +319,8 @@ class FileIngestor
       end
     end
 
-    def general_upload(csv = nil, file: nil)
-      raise unless csv || file
-
-      csv ||= CSV.read(file, headers: true)
-      csv.each do |row|
-        group = RecordGroup.call(row['group'])
-
-        next if row['person'].blank?
-
-        person = RecordPerson.call(row['person'])
-
-        title = if row['title'].present?
-          CapitalizeNames.capitalize(row['title'].strip)
-                         .gsub(/\bCEO\b/i) { |word| word.upcase }
-        end
-
-        evidence = row['evidence'].strip if row['evidence'].present?
-        start_date = parse_date(row['start_date']) if row['start_date'].present?
-        end_date = parse_date(row['end_date']) if row['end_date'].present?
-
-        # the membership may not exist, if so, we need to create it
-        # There is no start date or end date added to the membership at this point
-        membership = Membership.find_or_create_by(
-          member_type: "Person",
-          member_id: person.id,
-          group: group
-        )
-        # create position for each row, with unique dates and title
-        if (title || start_date || end_date)
-          position = Position.find_or_create_by(membership:, title:, start_date:, end_date:)
-        end
-
-        membership.update!(evidence:) if evidence
-        position.update!(evidence:) if evidence && position
-
-        rescue => e
-        Rails.logger.debug { "General Upload | Error: #{e} | row#{row.inspect}" }
-      end
+    def general_upload(csv: nil, file: nil)
+      new(csv:, file:).general_upload
     end
 
     def lobbyists_upload(file)
@@ -356,7 +360,7 @@ class FileIngestor
         membership.update!(evidence:)
         position.update!(evidence:)
 
-        Rails.logger.debug "m"
+        Rails.logger.debug 'm'
 
 
         membership = Membership.find_or_create_by(
@@ -365,7 +369,7 @@ class FileIngestor
           evidence: evidence
         )
 
-        Rails.logger.debug "l"
+        Rails.logger.debug 'l'
 
         rescue => e
         Rails.logger.debug { "Lobbyist Upload | Error: #{e} | row#{row.inspect}" }
@@ -387,7 +391,7 @@ class FileIngestor
         evidence = row['evidence'].strip if row['evidence'].present?
 
         membership = Membership.find_or_create_by(
-          member_type: "Group",
+          member_type: 'Group',
           member_id: member_group.id,
           group: owning_group,
           start_date: parse_date(row['start_date']),
@@ -410,8 +414,8 @@ class FileIngestor
     def transfers_upload(file)
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        giver = RecordPersonOrGroup.call(row["giver"])
-        taker = RecordPersonOrGroup.call(row["taker"])
+        giver = RecordPersonOrGroup.call(row['giver'])
+        taker = RecordPersonOrGroup.call(row['taker'])
 
         transfer = Transfer.find_or_create_by(
           giver: giver,
@@ -439,6 +443,26 @@ class FileIngestor
         Rails.logger.debug { "Error parsing date: #{date} | Error: #{exception.message}" }
         nil
       end
+    end
+  end
+
+  private
+
+  def parse_title(title)
+    return nil if title.blank?
+
+    CapitalizeNames.capitalize(title.strip)
+                   .gsub(/\bCEO\b/i, &:upcase)
+  end
+
+  def parse_date(date)
+    return nil if date.blank?
+
+    begin
+      Date.parse(date)
+    rescue Date::Error => e
+      Rails.logger.debug { "Error parsing date: #{date} | Error: #{e.message}" }
+      nil
     end
   end
 end
