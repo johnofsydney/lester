@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 describe BuildQueue do
   let(:john) { Person.create(name: 'John') }
   let(:queue) { [john] }
@@ -25,7 +24,6 @@ describe BuildQueue do
     Membership.create(person: john, group: alp, start_date: Date.new(2022, 1, 1))
   end
 
-
   describe '#initialize' do
     xit 'initializes with correct attributes' do
       expect(build_queue.queue).to eq(queue)
@@ -45,7 +43,6 @@ describe BuildQueue do
     end
 
     context 'when queue is not empty' do
-
 
       xit 'returns an array of nodes' do
         expect(build_queue.call).to eq(john.nodes)

@@ -74,10 +74,8 @@ class Home::TodoView < ApplicationView
                 li { 'Tests' }
                 li { 'Get ASX data programatically' }
 
-
                 li { 'Pagination' }
                 li { 'More tests for record transfer taker' }
-
 
                 li { 'Add Audit table' }
                 li { 'Ex Members of a group should appear last (or not at all eg Lidia Thorpe) (app/views/components/groups/people.rb:3)' }
@@ -98,7 +96,6 @@ end
 # https://www.echo.net.au/2015/02/former-pollies-staffers-mine-rich-vein-new-jobs/
 # start again from here:
 # Minerals Council of Australia staff...
-
 
 # https://thenightly.com.au/opinion/political/cameron-milner-albanese-governments-future-made-in-australia-fund-has-been-lucrative-for-a-select-few-c-16466931
 

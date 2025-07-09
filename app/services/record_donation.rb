@@ -41,7 +41,6 @@ class RecordDonation
     return 'group' if name.match?(regex_for_company_words_6)  # Check for company names
     return 'group' if name.match?(regex_for_company_words_7)  # Check for company names
 
-
     return 'group' if name.match?(/(PricewaterhouseCoopers|MSD)/)
     return 'person' if name.match?(/(?:MP|OAM|AO)$/)  # Check for individuals with MP or OAM
     return 'person' if name.match?(/\bMP\b|\bDr\b/)  # Check for individuals with MP or OAM

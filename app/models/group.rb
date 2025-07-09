@@ -62,8 +62,6 @@ class Group < ApplicationRecord
             )
           )
 
-
-
   # TODO: memberships are only working on one direction, need to fix this
   # affiliated groups are not being followed from child to parent to other child
   has_many :memberships, dependent: :destroy
@@ -120,7 +118,6 @@ class Group < ApplicationRecord
 
   #   # looser nodes is too loose for looking at a list of associated people and groups, it catches too many.
   #   # try it for the degrees of seperation between two groups / two people / person & group
-
 
   #   outgoing_transfers.map(&:taker) +
   #   incoming_transfers.map(&:giver)

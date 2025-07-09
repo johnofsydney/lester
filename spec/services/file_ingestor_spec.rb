@@ -41,7 +41,6 @@ RSpec.describe FileIngestor, type: :service do
         globex_john = Membership.find_by!(member: john, group: globex)
         globex_jane = Membership.find_by!(member: jane, group: globex)
 
-
         # positions should be created if the title is present
         soccer_john_position = soccer_john.positions.find_by!(title: 'Manager')
         soccer_jane_position = soccer_jane.positions.find_by!(title: 'Goalkeeper')

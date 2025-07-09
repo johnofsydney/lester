@@ -10,7 +10,6 @@ module NodeMethods
       :consolidated_descendents_timestamp
     ], prefix: :cached
 
-
     # STUFF TO DO WITH CACHING
     def nodes_count
       # TODO jobs
@@ -49,7 +48,6 @@ module NodeMethods
         parent_count: descendent[:descendent_parent_count],
       ) }
     end
-
 
     # STUFF TO DO WITH MONEY SUMMARY
     def money_in
@@ -115,7 +113,6 @@ module NodeMethods
 
       max_depth = self.cached_consolidated_descendents.map{|d| d['depth']}.max
       return true if max_depth < depth
-
 
       Rails.logger.debug { "max_depth: #{max_depth}" }
       Rails.logger.debug { "depth: #{depth}" }

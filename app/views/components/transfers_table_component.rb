@@ -42,7 +42,6 @@ class TransfersTableComponent < ApplicationView
       return make_table(transfers)
     end
 
-
   end
 
   def make_table(transfers)

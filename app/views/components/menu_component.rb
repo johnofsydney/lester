@@ -22,7 +22,6 @@ class MenuComponent < ApplicationView
           span(class: 'navbar-toggler-icon')
         end
 
-
         div(class: 'collapse navbar-collapse justify-content-end', id: 'navbarSupportedContent') do
           ul(class: 'navbar-nav') do
             li(class: 'nav-item') do

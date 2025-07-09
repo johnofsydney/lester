@@ -25,7 +25,6 @@ module TransferMethods
 
       return results if depth == 0
 
-
       # add current memberships to visited memberships
       visited_membership_ids << current_depth_memberships.flatten.pluck(:id)
 
@@ -34,7 +33,6 @@ module TransferMethods
 
       # get the nodes from the current depth. remove the visited nodes. store the rest in the queue if there are overlapping memberships
       queue = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter).call
-
 
       depth -= 1
       counter += 1
@@ -111,7 +109,6 @@ module TransferMethods
                             self.incoming_transfers.or(self.outgoing_transfers)
                           end
     end
-
 
     def transfer_struct(transfer:, depth:, direction:)
       OpenStruct.new(

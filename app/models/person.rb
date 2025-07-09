@@ -20,7 +20,6 @@ class Person < ApplicationRecord
       return groups
     end
 
-
     # this + will still work for relations not just arrays
     [groups + other_edge_ends].flatten.compact.uniq
   end
@@ -49,7 +48,6 @@ class Person < ApplicationRecord
       ➡️ Direct transfers: #{direct_transfers}.
       📡 One degree separation: #{first_degree_transfers}
     SUMMARY
-
 
     call_to_action = "\n\n" + "See more: https://join-the-dots.info/people/#{id}"
     body += call_to_action if (body.length + call_to_action.length) < 300

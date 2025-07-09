@@ -43,7 +43,6 @@ Rails.application.routes.draw do
   # root "articles#index"
   root 'search#index'
 
-
   # # Add a custom POST route for Memberships
   post '/admin/memberships/general_upload_action', to: 'admin/memberships#general_upload_action', as: :general_upload_action_admin_memberships
   post '/admin/memberships/ministries_upload_action', to: 'admin/memberships#ministries_upload_action', as: :ministries_upload_action_admin_memberships

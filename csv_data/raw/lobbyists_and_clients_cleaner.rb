@@ -1,7 +1,6 @@
 require 'csv'
 require 'pry'
 
-
 class Parser
   def self.parse_lobbyist_name(name)
     lobbyist_name = name.split(' | ').first

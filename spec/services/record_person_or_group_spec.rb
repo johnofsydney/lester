@@ -124,8 +124,6 @@ RSpec.describe RecordPersonOrGroup, type: :service do
       end
     end
 
-
-
     it 'expect all groups to be reported as group', :aggregate_failures do
       group_names.each do |name|
         expect(described_class.new(name).person_or_group).to eq('group')

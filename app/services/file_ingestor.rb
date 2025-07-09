@@ -312,7 +312,6 @@ class FileIngestor
         membership.update!(evidence:) if evidence
         position.update!(evidence:) if evidence && position
 
-
         rescue => e
 
         Rails.logger.debug { "Error: #{e} | row#{row.inspect}" }
@@ -330,7 +329,6 @@ class FileIngestor
       csv.each do |row|
 
         person = RecordPerson.call(row['person'])
-
 
         evidence = 'https://lobbyists.ag.gov.au/register'
 
@@ -361,7 +359,6 @@ class FileIngestor
         position.update!(evidence:)
 
         Rails.logger.debug 'm'
-
 
         membership = Membership.find_or_create_by(
           member: group,
