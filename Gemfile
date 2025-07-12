@@ -75,7 +75,9 @@ gem 'flipper-ui'
 gem 'faraday'
 gem 'sidekiq'
 
+gem 'newrelic_rpm'
+
 # resolving vulnerabilities
-gem 'rack', '>= 3.1.12'
+gem 'rack', '>= 3.1.16'
 gem 'phlex', '~> 1.11.0'
 
