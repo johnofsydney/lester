@@ -69,18 +69,28 @@ class TenderIngestor
     purchaser = RecordGroup.call(contract[:purchaser_name])
     supplier = RecordGroup.call(contract[:supplier_name])
     contract_id = contract[:contract_id]
+    contract_date = contract[:date]
 
-
-    Transfer.create(
+    transfer = Transfer.find_or_create_by(
       giver: purchaser,
       taker: supplier,
+      effective_date: Dates::FinancialYear.new(contract_date).last_day,
+      transfer_type: 'Government Contract',
+    )
+
+
+    IndividualTransaction.create(
+      transfer: transfer,
       amount: contract[:value].to_f,
       effective_date: contract[:date],
       transfer_type: 'Government Contract',
       evidence: "https://api.tenders.gov.au/ocds/findById/#{contract_id}",
       external_id: contract[:contract_id],
-      description: contract[:description]
+      # description: contract[:description]
     )
+
+    transfer.amount += contract[:value].to_f
+    transfer.save
 
     print '.'
 
@@ -122,8 +132,7 @@ class TenderIngestor
           supplier_abn: parsed_parties.find { |party| party[:supplier] }[:abn],
           purchaser_name: parsed_parties.find { |party| !party[:supplier] }[:name],
           purchaser_abn: parsed_parties.find { |party| !party[:supplier] }[:abn],
-          description: release['contracts'].first['description'],
-          tag: release['tag'].first,
+          description: release['contracts'].first['description']
         }
       end
     end
