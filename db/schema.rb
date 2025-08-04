@@ -61,9 +61,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_29_110924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "category", default: false
+    t.json "cached_data", default: {}
     t.string "business_number"
     t.text "other_names", default: [], array: true
-    t.json "cached_data", default: {}
   end
 
   create_table "individual_transactions", force: :cascade do |t|
@@ -73,6 +73,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_29_110924) do
     t.string "transfer_type"
     t.date "effective_date"
     t.string "external_id"
+    t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["transfer_id"], name: "index_individual_transactions_on_transfer_id"
@@ -96,8 +97,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_07_29_110924) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "other_names", default: [], array: true
     t.json "cached_data", default: {}
+    t.text "other_names", default: [], array: true
     t.string "linkedin_url"
     t.date "linkedin_ingested"
   end
