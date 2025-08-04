@@ -54,11 +54,10 @@ class TenderIngestor
         if contract[:tag] == 'contractAmendment'
           p "handle amendment"
           p contract[:contract_id]
-          p contract[:contract_id]
           p "handle amendment"
-          next
+        else
+          instance.record_contract(contract)
         end
-        instance.record_contract(contract)
       end
 
       puts "\nContracts for #{url} processed."
@@ -86,7 +85,7 @@ class TenderIngestor
       transfer_type: 'Government Contract',
       evidence: "https://api.tenders.gov.au/ocds/findById/#{contract_id}",
       external_id: contract[:contract_id],
-      # description: contract[:description]
+      description: contract[:description]
     )
 
     transfer.amount += contract[:value].to_f
