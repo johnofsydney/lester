@@ -7,6 +7,7 @@ class CreateIndividualTransaction < ActiveRecord::Migration[7.2]
       t.string :transfer_type
       t.date :effective_date
       t.string :external_id
+      t.string :description
 
       t.timestamps
     end
