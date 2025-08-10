@@ -45,18 +45,16 @@ class TenderIngestor
 
     def process_for_url(url:)
       instance = new
-      contracts = instance.fetch_contracts_for_url(url: url)
-      if contracts.blank?
+      releases = instance.fetch_contracts_for_url(url: url)
+      if releases.blank?
         puts "No contracts found for #{url}."
         return
       end
-      contracts.each do |contract|
-        if contract[:tag] == 'contractAmendment'
-          p "handle amendment"
-          p contract[:contract_id]
-          p "handle amendment"
+      releases.each do |release|
+        if release[:tag] == 'contractAmendment'
+          # TODO: handle contract amendments
         else
-          instance.record_contract(contract)
+          instance.record_release(release)
         end
       end
 
@@ -64,31 +62,35 @@ class TenderIngestor
     end
   end
 
-  def record_contract(contract)
-    purchaser = RecordGroup.call(contract[:purchaser_name])
-    supplier = RecordGroup.call(contract[:supplier_name])
-    contract_id = contract[:contract_id]
-    contract_date = contract[:date]
+  def record_release(release)
+    purchaser = RecordGroup.call(release[:purchaser_name])
+    supplier = RecordGroup.call(release[:supplier_name])
+    contract_id = release[:contract_id]
+    release_date = release[:date]
+    release_id = release[:external_id]
 
     transfer = Transfer.find_or_create_by(
       giver: purchaser,
       taker: supplier,
-      effective_date: Dates::FinancialYear.new(contract_date).last_day,
+      effective_date: Dates::FinancialYear.new(release_date).last_day,
       transfer_type: 'Government Contract',
     )
 
 
+    # TODO: The amount on the release is cumulative and needs to be adjusted
     IndividualTransaction.create(
       transfer: transfer,
-      amount: contract[:value].to_f,
-      effective_date: contract[:date],
+      amount: release[:value].to_f,
+      effective_date: release[:date],
       transfer_type: 'Government Contract',
       evidence: "https://api.tenders.gov.au/ocds/findById/#{contract_id}",
-      external_id: contract[:contract_id],
-      description: contract[:description]
+      external_id: release_id, # the uniqe identifier from the external system
+      contract_id: contract_id, # the contract can include several amendments
+      description: release[:description]
     )
 
-    transfer.amount += contract[:value].to_f
+    # TODO: Fix this to handle amendments correctly
+    transfer.amount += release[:value].to_f
     transfer.save
 
     print '.'
@@ -123,11 +125,9 @@ class TenderIngestor
 
         if release['contracts'].first['id'] == 'CN3671507'
           p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-          p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
           p "Found matching contract: #{release['contracts'].first['id']}"
           p "at URL: #{url}"
-          p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-          p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+          p "release_id: #{release['id']}"
           # this contract is found when we start with date in 2025
           # [1] pry(main)> date = "2025-06-20"
           # => "2025-06-20"
@@ -140,6 +140,8 @@ class TenderIngestor
           date: release['date'],
           value: release['contracts'].first['value']['amount'],
           contract_id: release['contracts'].first['id'],
+          external_id: release['id'],
+          award_id: release['awards'].first['id'],
           tag: release['tag'].first,
           supplier_name: parsed_parties.find { |party| party[:supplier] }[:name],
           supplier_abn: parsed_parties.find { |party| party[:supplier] }[:abn],
@@ -159,6 +161,7 @@ class TenderIngestor
   end
 
   def fetch_contract(contract_id)
+    raise "Not Implemented - Single Contract Fetch"
     results = []
     url =  "https://api.tenders.gov.au/ocds/findById/#{contract_id}"
 

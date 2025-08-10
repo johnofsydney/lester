@@ -12,16 +12,55 @@ RSpec.describe TenderIngestor, type: :service do
 
   let(:response) { double('Faraday::Response', status: 200) }
   # rubocop:disable Layout/LineLength
-  let(:response_body) do
-    File.read(Rails.root.join('spec', 'fixtures', 'contract_last_modified.json'))
-  end
+  let(:response_body) { File.read(Rails.root.join('spec', 'fixtures', 'contract_last_modified.json')) }
 
   xit 'uses Faraday to fetch the tender data' do
     expect(Faraday).to receive(:new).with(url: anything)
     service
   end
 
-  describe '#fetch_contracts_for_date' do
+  describe '#process_for_url' do
+    context 'when the response is a subsequent page, which has contracts and amendments' do
+      let(:response_body) { File.read(Rails.root.join('spec', 'fixtures', 'contract_last_modified_subsequent_page.json')) }
+
+      context 'when an initial contract is present in the response' do
+        context 'and that contract does not already exist in the database' do
+          it 'creates a new transfer and individual contract' do
+            described_class.process_for_url(url: 'url')
+
+            taker = Group.find_by(name: 'Hitachi Vantara Australia Pty Ltd')
+            giver = Group.find_by(name: 'Services Australia')
+
+            expect(giver).to be_present
+            expect(taker).to be_present
+
+            eofy_2020 = Date.new(2020, 6, 30)
+            transfer = Transfer.find_by(giver: giver, taker: taker, effective_date: eofy_2020)
+
+            expect(transfer).to be_present
+
+            individual_transaction = IndividualTransaction.find_by(external_id: 'prod-63e175f2bc1c4e0bae8ba6ab54bc89eb-64b9e8e38ec83d708907f7310ca99e1f')
+
+            expect(individual_transaction).to be_present
+            expect(individual_transaction.transfer).to eq(transfer) # the containing transfer for the financial year
+            expect(individual_transaction.amount).to eq(10259869.35) # the value of the initial contract
+            expect(individual_transaction.effective_date).to eq(Date.new(2020, 4, 7)) # date of the individual transaction
+            expect(individual_transaction.description).to eq('ICT Hardware') # description of the individual transaction
+            expect(individual_transaction.contract_id).to eq('CN3671507') # the contract ID
+          end
+        end
+
+        context 'and that contract already exists in the database' do
+        end
+
+        context 'and the service is called again with the same date' do
+        end
+      end
+    end
+  end
+
+  describe '#fetch_contracts_for_url' do
+    # TEMP - this SHOULD BE a private method
     let(:date) { Date.parse('2023-10-01') }
     let(:url) { "https://api.tenders.gov.au/ocds/findByDates/contractLastModified/#{date.beginning_of_day.iso8601}/#{date.end_of_day.iso8601}" }
 
@@ -67,17 +106,33 @@ RSpec.describe TenderIngestor, type: :service do
         description: "Temporary Personnel Services",
       )
     end
+
+    context 'when the response is a subsequent page, which has contracts and amendments' do
+      let(:response_body) { File.read(Rails.root.join('spec', 'fixtures', 'contract_last_modified_subsequent_page.json')) }
+
+      context 'when an initial contract is present in the response' do
+        context 'and that contract does not already exist in the database' do
+        end
+
+        context 'and that contract already exists in the database' do
+        end
+
+        context 'and the service is called again with the same date' do
+        end
+      end
+    end
   end
 
-  describe '#record_contract' do
-  let(:description) { 'A Transfer of Stuff' }
-  let(:purchaser_name) { 'Department of Australia'}
+  describe '#record_release' do
+    # TEMP - this SHOULD BE a private method
+    let(:description) { 'A Transfer of Stuff' }
+    let(:purchaser_name) { 'Department of Australia'}
     it "is a foo" do
 
       body = JSON.parse(response.body)
       first_release = body['releases'].first
 
-      contract = {
+      release = {
         ocid: "release['ocid']",
         date: Date.today,
         value: 1001,
@@ -90,12 +145,11 @@ RSpec.describe TenderIngestor, type: :service do
         description: 'A Transfer of stuff',
       }
 
-      service.record_contract(contract)
+      service.record_release(release)
 
       transfer = Transfer.last
 
       expect(transfer.giver.name).to eq(purchaser_name)
     end
-
   end
 end
