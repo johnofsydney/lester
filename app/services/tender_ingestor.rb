@@ -121,6 +121,20 @@ class TenderIngestor
           end
         end
 
+        if release['contracts'].first['id'] == 'CN3671507'
+          p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+          p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+          p "Found matching contract: #{release['contracts'].first['id']}"
+          p "at URL: #{url}"
+          p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+          p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+          # this contract is found when we start with date in 2025
+          # [1] pry(main)> date = "2025-06-20"
+          # => "2025-06-20"
+          # [2] pry(main)> IngestContractsDateJob.perform_async(date)
+          # but it records date as 2020-04-07
+        end
+
         {
           ocid: release['ocid'],
           date: release['date'],
