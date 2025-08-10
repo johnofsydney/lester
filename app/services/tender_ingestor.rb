@@ -73,7 +73,7 @@ class TenderIngestor
       giver: purchaser,
       taker: supplier,
       effective_date: Dates::FinancialYear.new(release_date).last_day,
-      transfer_type: 'Government Contract',
+      transfer_type: 'Government Contract'
     )
 
 
@@ -111,13 +111,13 @@ class TenderIngestor
           if party['roles'].include?('supplier')
             party_supplier = {
               name: party['name'],
-              abn: party.dig('additionalIdentifiers', 0, 'id') || "",
+              abn: party.dig('additionalIdentifiers', 0, 'id') || '',
               supplier: true
             }
           elsif party['roles'].include?('procuringEntity')
             procuringEntity = {
               name: party['name'],
-              abn: party.dig('additionalIdentifiers', 0, 'id') || "",
+              abn: party.dig('additionalIdentifiers', 0, 'id') || '',
               supplier: false
             }
           end
@@ -161,7 +161,7 @@ class TenderIngestor
   end
 
   def fetch_contract(contract_id)
-    raise "Not Implemented - Single Contract Fetch"
+    raise 'Not Implemented - Single Contract Fetch'
     results = []
     url =  "https://api.tenders.gov.au/ocds/findById/#{contract_id}"
 
@@ -183,7 +183,7 @@ class TenderIngestor
           supplier: supplier(release),
           contract_id: release['contracts'].first['id'],
           awards_id: release['contracts'].first['awardID'],
-          description: release['contracts'].first['description'],
+          description: release['contracts'].first['description']
         }
       end
     end
@@ -196,11 +196,11 @@ class TenderIngestor
       contract_id: first_result[:contract_id],
       supplier: {
         name: first_result[:parties].find{ |party| party[:supplier] }[:name],
-        abn: first_result[:parties].find{ |party| party[:supplier] }[:abn],
+        abn: first_result[:parties].find{ |party| party[:supplier] }[:abn]
       },
       purchaser: {
         name: first_result[:parties].find{ |party| !party[:supplier] }[:name],
-        abn: first_result[:parties].find{ |party| !party[:supplier] }[:abn],
+        abn: first_result[:parties].find{ |party| !party[:supplier] }[:abn]
       },
       description: first_result[:description],
       value: results.map{|result| result[:values] }.flatten.map(&:to_f).sum,
@@ -209,7 +209,7 @@ class TenderIngestor
           release_id: result[:release_id],
           date: result[:date],
           values: result[:values],
-          description: result[:description],
+          description: result[:description]
         }
       end
     }
@@ -234,7 +234,7 @@ class TenderIngestor
     release['parties'].map do |party|
       {
         name: party['name'],
-        abn: party.dig('additionalIdentifiers', 0, 'id') || "cant find additional identifier",
+        abn: party.dig('additionalIdentifiers', 0, 'id') || 'cant find additional identifier',
         supplier: party['name'] == supplier(release)
       }
     end

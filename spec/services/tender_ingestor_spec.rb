@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
+# rubocop:disable Layout/LineLength
 RSpec.describe TenderIngestor, type: :service do
   subject(:service) { described_class.new }
 
@@ -11,7 +12,6 @@ RSpec.describe TenderIngestor, type: :service do
   end
 
   let(:response) { double('Faraday::Response', status: 200) }
-  # rubocop:disable Layout/LineLength
   let(:response_body) { File.read(Rails.root.join('spec', 'fixtures', 'contract_last_modified.json')) }
 
   xit 'uses Faraday to fetch the tender data' do
@@ -78,32 +78,32 @@ RSpec.describe TenderIngestor, type: :service do
       contracts = described_class.new.fetch_contracts_for_url(url: url)
 
       expect(contracts.first).to include(
-        contract_id: "CN4161550",
-        date: "2025-06-20T08:27:34Z",
-        ocid: "prod-b33dcd848f4840a4958058b1cacd1860",
-        purchaser_abn: "47065634525",
-        purchaser_name: "Department of Foreign Affairs and Trade",
-        supplier_abn: "",
-        supplier_name: "TECRAM SARL",
-        tag: "contract",
-        value: "13980.88",
-        description: "General Waste Machinery",
+        contract_id: 'CN4161550',
+        date: '2025-06-20T08:27:34Z',
+        ocid: 'prod-b33dcd848f4840a4958058b1cacd1860',
+        purchaser_abn: '47065634525',
+        purchaser_name: 'Department of Foreign Affairs and Trade',
+        supplier_abn: '',
+        supplier_name: 'TECRAM SARL',
+        tag: 'contract',
+        value: '13980.88',
+        description: 'General Waste Machinery'
       )
     end
 
     it 'returns an array of contract purchasers' do
       contracts = described_class.new.fetch_contracts_for_url(url: url)
       expect(contracts.second).to include(
-        contract_id: "CN4161551",
-        date: "2025-06-20T08:27:34Z",
-        ocid: "prod-538a2b76057c4ceb835c9fa989056b98",
-        purchaser_abn: "47065634525",
-        purchaser_name: "Department of Foreign Affairs and Trade",
-        supplier_abn: "90629363328",
-        supplier_name: "CyberCx Pty Ltd",
-        tag: "contract",
-        value: "346856.40",
-        description: "Temporary Personnel Services",
+        contract_id: 'CN4161551',
+        date: '2025-06-20T08:27:34Z',
+        ocid: 'prod-538a2b76057c4ceb835c9fa989056b98',
+        purchaser_abn: '47065634525',
+        purchaser_name: 'Department of Foreign Affairs and Trade',
+        supplier_abn: '90629363328',
+        supplier_name: 'CyberCx Pty Ltd',
+        tag: 'contract',
+        value: '346856.40',
+        description: 'Temporary Personnel Services'
       )
     end
 
@@ -127,7 +127,7 @@ RSpec.describe TenderIngestor, type: :service do
     # TEMP - this SHOULD BE a private method
     let(:description) { 'A Transfer of Stuff' }
     let(:purchaser_name) { 'Department of Australia'}
-    it "is a foo" do
+    it 'is a foo' do
 
       body = JSON.parse(response.body)
       first_release = body['releases'].first
@@ -142,7 +142,7 @@ RSpec.describe TenderIngestor, type: :service do
         supplier_abn: 'abn abn',
         purchaser_name: purchaser_name,
         purchaser_abn: '999123123',
-        description: 'A Transfer of stuff',
+        description: 'A Transfer of stuff'
       }
 
       service.record_release(release)
@@ -153,3 +153,4 @@ RSpec.describe TenderIngestor, type: :service do
     end
   end
 end
+# rubocop:enable Layout/LineLength
