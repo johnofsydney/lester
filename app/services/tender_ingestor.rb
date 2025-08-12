@@ -27,22 +27,67 @@ class TenderDownloader
   end
 end
 
+class RecordRelease
+  def initialize(release)
+    @purchaser = RecordGroup.call(release[:purchaser_name])
+    @supplier = RecordGroup.call(release[:supplier_name])
+    @contract_id = release[:contract_id]
+    @release_date = release[:date]
+    @release_id = release[:external_id]
+    @tag = release[:tag]
+    @description = release[:description]
+    @effective_date = release[:date]
+    @amends_release_id = release[:amends_release_id]
+
+    @release = release
+  end
+
+  attr_reader :purchaser, :supplier, :contract_id, :release_date, :release_id, :tag, :release, :description, :effective_date, :amends_release_id
+
+  def perform
+    return if IndividualTransaction.exists?(external_id: release_id)
+
+    # TODO: The amount on the release is cumulative and needs to be adjusted
+    IndividualTransaction.create(
+      transfer: transfer,
+      amount: effective_amount,
+      effective_date: effective_date,
+      transfer_type: 'Government Contract',
+      evidence: "https://api.tenders.gov.au/ocds/findById/#{contract_id}",
+      external_id: release_id, # the uniqe identifier from the external system
+      contract_id: contract_id, # the contract can include several amendments
+      description: description
+    )
+
+    # TODO: Fix this to handle amendments correctly
+    transfer.amount += release[:value].to_f
+    transfer.save
+
+    print '.'
+  end
+
+  def effective_amount
+    return @release[:value] unless amends_release_id.present?
+    return @release[:value] if IndividualTransaction.where(contract_id:).empty?
+
+    previous_value = IndividualTransaction.where(contract_id:).sum(:amount)
+    (@release[:value].to_f - previous_value).round(2)
+  end
+
+  def transfer
+    @transfer ||= Transfer.find_or_create_by(
+      giver: purchaser,
+      taker: supplier,
+      effective_date: Dates::FinancialYear.new(release_date).last_day,
+      transfer_type: 'Government Contract(s)'
+    )
+  end
+end
+
 class TenderIngestor
-  # def self.perform
-  #   new.perform
-  # end
+
 
   class << self
-    # def process_for_date(date:)
-    #   date = date.is_a?(String) ? Date.parse(date) : date
-    #   beginning_of_day = date.beginning_of_day.iso8601
-    #   end_of_day = date.end_of_day.iso8601
-
-    #   url = "https://api.tenders.gov.au/ocds/findByDates/contractLastModified/#{beginning_of_day}/#{end_of_day}"
-
-    #   process_for_url(url: url)
-    # end
-
     def process_for_url(url:)
       instance = new
       releases = instance.fetch_contracts_for_url(url: url)
@@ -52,49 +97,18 @@ class TenderIngestor
       end
       releases.each do |release|
         if release[:tag] == 'contractAmendment'
-          # TODO: handle contract amendments
+          instance.record_release(release)
         else
           instance.record_release(release)
         end
       end
 
-      puts "\nContracts for #{url} processed."
+      Rails.logger.info "Contracts for #{url} processed."
     end
   end
 
   def record_release(release)
-    purchaser = RecordGroup.call(release[:purchaser_name])
-    supplier = RecordGroup.call(release[:supplier_name])
-    contract_id = release[:contract_id]
-    release_date = release[:date]
-    release_id = release[:external_id]
-
-    transfer = Transfer.find_or_create_by(
-      giver: purchaser,
-      taker: supplier,
-      effective_date: Dates::FinancialYear.new(release_date).last_day,
-      transfer_type: 'Government Contract'
-    )
-
-
-    # TODO: The amount on the release is cumulative and needs to be adjusted
-    IndividualTransaction.create(
-      transfer: transfer,
-      amount: release[:value].to_f,
-      effective_date: release[:date],
-      transfer_type: 'Government Contract',
-      evidence: "https://api.tenders.gov.au/ocds/findById/#{contract_id}",
-      external_id: release_id, # the uniqe identifier from the external system
-      contract_id: contract_id, # the contract can include several amendments
-      description: release[:description]
-    )
-
-    # TODO: Fix this to handle amendments correctly
-    transfer.amount += release[:value].to_f
-    transfer.save
-
-    print '.'
-
+    RecordRelease.new(release).perform
   end
 
   def fetch_contracts_for_url(url: nil)
@@ -123,17 +137,20 @@ class TenderIngestor
           end
         end
 
-        if release['contracts'].first['id'] == 'CN3671507'
-          p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
-          p "Found matching contract: #{release['contracts'].first['id']}"
-          p "at URL: #{url}"
-          p "release_id: #{release['id']}"
-          # this contract is found when we start with date in 2025
-          # [1] pry(main)> date = "2025-06-20"
-          # => "2025-06-20"
-          # [2] pry(main)> IngestContractsDateJob.perform_async(date)
-          # but it records date as 2020-04-07
-        end
+        # if release['contracts'].first['id'] == 'CN3671507'
+        #   p '%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%'
+        #   p "Found matching contract: #{release['contracts'].first['id']}"
+        #   p "at URL: #{url}"
+        #   p "release_id: #{release['id']}"
+        #   # this contract is found when we start with date in 2025
+        #   # [1] pry(main)> date = "2025-06-20"
+        #   # => "2025-06-20"
+        #   # [2] pry(main)> IngestContractsDateJob.perform_async(date)
+        #   # but it records date as 2020-04-07
+        # end
+        # binding.pry
+        amendments = release['contracts'].first.dig('amendments')
+        amends_release_id = amendments.present? ? amendments.first['amendsReleaseID'] : nil
 
         {
           ocid: release['ocid'],
@@ -147,7 +164,9 @@ class TenderIngestor
           supplier_abn: parsed_parties.find { |party| party[:supplier] }[:abn],
           purchaser_name: parsed_parties.find { |party| !party[:supplier] }[:name],
           purchaser_abn: parsed_parties.find { |party| !party[:supplier] }[:abn],
-          description: release['contracts'].first['description']
+          description: release['contracts'].first['description'],
+          amends_release_id: amends_release_id
+          # abn: party.dig('additionalIdentifiers', 0, 'id') || 'cant find additional identifier',
         }
       end
     end

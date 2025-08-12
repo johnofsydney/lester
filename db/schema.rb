@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_10_215349) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_11_102545) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -142,7 +142,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_10_215349) do
     t.bigint "giver_id"
     t.string "taker_type"
     t.bigint "taker_id"
-    t.integer "amount", default: 0
+    t.float "amount", default: 0.0, null: false
     t.text "evidence"
     t.text "transfer_type"
     t.date "effective_date"
