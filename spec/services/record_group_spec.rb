@@ -243,13 +243,49 @@ RSpec.describe RecordGroup, type: :service do
   end
 
   describe '.call' do
-    before do
-      allow(Group).to receive(:find_or_create_by)
+    context 'when the group dopes not already exist' do
+      it 'creates a group with the given name' do
+        expect{ described_class.call('Test Name') }.to change{ Group.count }.by(1)
+
+        expect(Group.last.name).to eq('Test Name')
+      end
+
+      it 'creates a group with the given name and business number' do
+        expect{ described_class.call('Test Name', business_number: 'ABN: 123 456 789') }.to change{ Group.count }.by(1)
+
+        expect(Group.last.name).to eq('Test Name')
+        expect(Group.last.business_number).to eq('123456789')
+      end
     end
 
-    it 'creates or finds a group with the given name' do
-      described_class.call('Test Name')
-      expect(Group).to have_received(:find_or_create_by).with(name: 'Test Name')
+    context 'when the group already exists' do
+      before do
+        Group.create(name: 'Existing Group', business_number: '123456789')
+      end
+
+      context 'when given only the identical name' do
+        it 'does not create a new group' do
+          expect{ described_class.call('Existing Group') }.not_to change{ Group.count }
+        end
+      end
+
+      context 'when given the identical name and business number' do
+        it 'does not create a new group' do
+          expect{ described_class.call('Existing Group', business_number: 'ABN: 123 456 789') }.not_to change{ Group.count }
+        end
+      end
+
+      context 'when given a different name and business number' do
+        it 'does not create a new group' do
+          expect{ described_class.call('New Name for Existing Group', business_number: 'ABN: 123 456 789') }.not_to change{ Group.count }
+        end
+
+        it 'adds the new name to the list of other names' do
+          described_class.call('New Name for Existing Group', business_number: 'ABN: 123 456 789')
+          group = Group.find_by(name: 'Existing Group')
+          expect(group.other_names).to include('New Name for Existing Group')
+        end
+      end
     end
   end
 end
