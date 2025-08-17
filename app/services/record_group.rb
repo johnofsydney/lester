@@ -12,17 +12,18 @@ class RecordGroup
   end
 
   def call
-    if business_number.present?
-      @group = Group.find_or_create_by(business_number:)
+    # if business_number.present?
+    #   @group = Group.find_or_create_by(business_number:)
 
-      group.name = name unless group.name.present?
-      group.other_names << name if add_new_name_to_other_names?
+    #   group.name = name unless group.name.present?
+    #   group.other_names << name if add_new_name_to_other_names?
 
-      group.save
-    else
-      @group = Group.find_or_create_by(name:)
-    end
+    #   group.save
+    # else
+    #   @group = Group.find_or_create_by(name:)
+    # end
 
+    group = Group.find_or_create_by(name:)
     group.update(category:) if category
 
     group
