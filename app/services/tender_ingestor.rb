@@ -1,5 +1,6 @@
 class TenderDownloader
   def download(url)
+    # https://app.swaggerhub.com/apis/austender/ocds-api/1.1#/
     conn = Faraday.new(url:)
 
     response = conn.get do |req|
@@ -49,6 +50,7 @@ class RecordIndividualTransaction
 
   def perform
     return if IndividualTransaction.exists?(external_id: release_id)
+    raise unless valid?
 
     IndividualTransaction.create(
       transfer: transfer,
@@ -65,6 +67,10 @@ class RecordIndividualTransaction
     transfer.save
 
     true
+  end
+
+  def valid?
+    purchaser.present? && supplier.present? && contract_id.present? && release_date.present? && release_id.present? && tag.present? && description.present? && effective_date.present?
   end
 
   def effective_amount
@@ -91,8 +97,16 @@ class TenderIngestor
     def process_for_url(url:)
       Rails.logger.info "Processing Contracts for #{url}."
 
-      new.fetch_contracts_for_url(url: url)
-         .each { |release| RecordIndividualTransaction.new(release).perform }
+      instance = new
+
+      contracts = instance.fetch_contracts_for_url(url: url)
+
+      if contracts.nil? || contracts.empty?
+        Rails.logger.warn "No contracts found for #{url}."
+        return
+      end
+
+      contracts.each { |release| RecordIndividualTransaction.new(release).perform }
     end
   end
 
