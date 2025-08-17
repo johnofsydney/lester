@@ -9,6 +9,8 @@ RSpec.describe TenderIngestor, type: :service do
     allow(Faraday).to receive(:new).and_return(double('Faraday::Connection', get: response))
     allow(response).to receive(:body).and_return(response_body)
     allow(response).to receive(:success?).and_return(true)
+
+    allow(IngestContractsUrlJob).to receive(:perform_async).and_return("jid:123")
   end
 
   let(:response) { double('Faraday::Response', status: 200) }
@@ -139,9 +141,14 @@ RSpec.describe TenderIngestor, type: :service do
         context 'when the supplier does not have an ABN' do
         end
       end
+
+      it 'queues the next page for processing' do
+        expect(IngestContractsUrlJob).to receive(:perform_async)
+                                     .with(%r{\Ahttps://api\.tenders\.gov\.au/ocds/findByDates/contractLastModified})
+        described_class.process_for_url(url: 'url')
+      end
     end
 
-    pending 'handles contracts where the vendor name changes over time'
     context 'when the response includes a long contract where the name of the vendor has changed over time' do
       let(:response_body) { File.read(Rails.root.join('spec', 'fixtures', 'contract_with_vendor_changes_over_time.json')) }
 

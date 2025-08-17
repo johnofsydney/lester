@@ -103,59 +103,115 @@ class TenderIngestor
   end
 
   def fetch_contracts_for_url(url: nil)
+    # ingest all of the contracts for a given URL, return an array of hashes, where each element represents a release
+    # a release is a new contract or an amendment to an existing contract and contains sufficient information to create the relevant database records
     response = TenderDownloader.new.download(url)
-    return unless response
+    return unless response && response[:body] && response[:body]['releases']
 
 
     body = response[:body]
-    results = []
 
-    if response && body && body['releases']
-      results << body['releases'].map do |release|
+    results = body['releases'].map do |raw_release|
 
-        parsed_parties = release['parties'].map do |party|
-          if party['roles'].include?('supplier')
-            party_supplier = {
-              name: party['name'],
-              abn: party.dig('additionalIdentifiers', 0, 'id') || '',
-              supplier: true
-            }
-          elsif party['roles'].include?('procuringEntity')
-            procuringEntity = {
-              name: party['name'],
-              abn: party.dig('additionalIdentifiers', 0, 'id') || '',
-              supplier: false
-            }
-          end
-        end
+      release = Release.new(raw_release)
 
-        amendments = release['contracts'].first.dig('amendments')
-        amends_release_id = amendments.present? ? amendments.first['amendsReleaseID'] : nil
+      {
+        ocid: release.ocid,
+        date: release.date,
+        value: release.value,
+        contract_id: release.contract_id,
+        external_id: release.external_id,
+        award_id: release.award_id,
+        tag: release.tag,
+        supplier_name: release.supplier_name,
+        supplier_abn: release.supplier_abn,
+        purchaser_name: release.purchaser_name,
+        purchaser_abn: release.purchaser_abn,
+        description: release.description,
+        amends_release_id: release.amends_release_id
+      }
 
-        {
-          ocid: release['ocid'],
-          date: release['date'],
-          value: release['contracts'].first['value']['amount'],
-          contract_id: release['contracts'].first['id'],
-          external_id: release['id'],
-          award_id: release['awards'].first['id'],
-          tag: release['tag'].first,
-          supplier_name: parsed_parties.find { |party| party[:supplier] }[:name],
-          supplier_abn: parsed_parties.find { |party| party[:supplier] }[:abn],
-          purchaser_name: parsed_parties.find { |party| !party[:supplier] }[:name],
-          purchaser_abn: parsed_parties.find { |party| !party[:supplier] }[:abn],
-          description: release['contracts'].first['description'],
-          amends_release_id: amends_release_id
-        }
-      end
     end
 
-    if response && body && response[:next_page]
+    if response[:next_page]
       # There are is a next page, so we need to fetch it and handle it asynchronously
       IngestContractsUrlJob.perform_async(response[:next_page])
     end
 
     results.compact.flatten
   end
+end
+
+class Release
+  def initialize(raw_release)
+    @ocid = raw_release['ocid']
+    @date = raw_release['date']
+    @external_id = raw_release['id']
+
+    @raw_release = raw_release
+  end
+
+  attr_reader :ocid, :date, :external_id, :raw_release
+
+  def value
+    raw_release['contracts'].first['value']['amount']
+  end
+
+  def contract_id
+    raw_release['contracts'].first['id']
+  end
+
+  def award_id
+    raw_release['awards'].first['id']
+  end
+
+  def tag
+    raw_release['tag'].first
+  end
+
+  def supplier_name
+    parsed_parties.find { |party| party[:supplier] }[:name]
+  end
+
+  def supplier_abn
+    parsed_parties.find { |party| party[:supplier] }[:abn]
+  end
+
+  def purchaser_name
+    parsed_parties.find { |party| !party[:supplier] }[:name]
+  end
+
+  def purchaser_abn
+    parsed_parties.find { |party| !party[:supplier] }[:abn]
+  end
+
+  def description
+    raw_release['contracts'].first['description']
+  end
+
+  def amends_release_id
+    amendments = raw_release['contracts'].first.dig('amendments')
+
+    amendments.present? ? amendments.first['amendsReleaseID'] : nil
+  end
+
+  def parsed_parties
+      raw_release['parties'].map do |party|
+        if party['roles'].include?('supplier')
+          party_supplier = {
+            name: party['name'],
+            abn: party.dig('additionalIdentifiers', 0, 'id') || '',
+            supplier: true
+          }
+        elsif party['roles'].include?('procuringEntity')
+          procuringEntity = {
+            name: party['name'],
+            abn: party.dig('additionalIdentifiers', 0, 'id') || '',
+            supplier: false
+          }
+        end
+      end
+  end
+
 end
 
