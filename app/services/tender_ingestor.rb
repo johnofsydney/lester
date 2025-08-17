@@ -20,7 +20,7 @@ class TenderDownloader
     body['links'] && body['links']['next'].present?
   end
 
-    def next_page(body)
+  def next_page(body)
     return unless next_present?(body)
 
     body['links']['next']
@@ -30,17 +30,17 @@ end
 class RecordIndividualTransaction
   def initialize(release)
     # Use database records if they exist, or create them if they don't
-    @purchaser = RecordGroup.call(release[:purchaser_name])
-    @supplier = RecordGroup.call(release[:supplier_name], business_number:release[:supplier_abn])
+    @purchaser = RecordGroup.call(release.purchaser_name)
+    @supplier = RecordGroup.call(release.supplier_name, business_number: release.supplier_abn)
 
     # These values come straight from the API response
-    @contract_id = release[:contract_id]
-    @release_date = release[:date]
-    @release_id = release[:external_id]
-    @tag = release[:tag]
-    @description = release[:description]
-    @effective_date = release[:date]
-    @amends_release_id = release[:amends_release_id]
+    @contract_id = release.contract_id
+    @release_date = release.date
+    @release_id = release.external_id
+    @tag = release.tag
+    @description = release.description
+    @effective_date = release.date
+    @amends_release_id = release.amends_release_id
 
     @release = release
   end
@@ -61,19 +61,18 @@ class RecordIndividualTransaction
       description: description
     )
 
-    transfer.amount += release[:value].to_f
+    transfer.amount += release.value.to_f
     transfer.save
-    print '.'
 
     true
   end
 
   def effective_amount
-    return @release[:value] unless amends_release_id.present?
-    return @release[:value] if IndividualTransaction.where(contract_id:).empty?
+    return release.value if amends_release_id.blank?
+    return release.value if IndividualTransaction.where(contract_id:).empty?
 
     previous_value = IndividualTransaction.where(contract_id:).sum(:amount)
-    (@release[:value].to_f - previous_value).round(2)
+    (release.value.to_f - previous_value).round(2)
   end
 
   def transfer
@@ -82,7 +81,7 @@ class RecordIndividualTransaction
       taker: supplier,
       effective_date: Dates::FinancialYear.new(release_date).last_day,
       transfer_type: 'Government Contract(s)',
-      evidence: 'https://www.tenders.gov.au/cn/search',
+      evidence: 'https://www.tenders.gov.au/cn/search'
     )
   end
 end
@@ -90,15 +89,10 @@ end
 class TenderIngestor
   class << self
     def process_for_url(url:)
-      instance = new
-      releases = instance.fetch_contracts_for_url(url: url)
-      if releases.blank?
-        Rails.logger.info "No contracts found for #{url}."
-      else
-        releases.each {|release| RecordIndividualTransaction.new(release).perform }
+      Rails.logger.info "Processing Contracts for #{url}."
 
-        Rails.logger.info "Contracts for #{url} processed."
-      end
+      new.fetch_contracts_for_url(url: url)
+         .each { |release| RecordIndividualTransaction.new(release).perform }
     end
   end
 
@@ -108,37 +102,12 @@ class TenderIngestor
     response = TenderDownloader.new.download(url)
     return unless response && response[:body] && response[:body]['releases']
 
+    # If there is a next page, we need to fetch it and handle it asynchronously
+    IngestContractsUrlJob.perform_async(response[:next_page]) if response[:next_page]
 
-    body = response[:body]
-
-    results = body['releases'].map do |raw_release|
-
-      release = Release.new(raw_release)
-
-      {
-        ocid: release.ocid,
-        date: release.date,
-        value: release.value,
-        contract_id: release.contract_id,
-        external_id: release.external_id,
-        award_id: release.award_id,
-        tag: release.tag,
-        supplier_name: release.supplier_name,
-        supplier_abn: release.supplier_abn,
-        purchaser_name: release.purchaser_name,
-        purchaser_abn: release.purchaser_abn,
-        description: release.description,
-        amends_release_id: release.amends_release_id
-      }
-
+    response[:body]['releases'].map do |raw_release|
+      Release.new(raw_release)
     end
-
-    if response[:next_page]
-      # There are is a next page, so we need to fetch it and handle it asynchronously
-      IngestContractsUrlJob.perform_async(response[:next_page])
-    end
-
-    results.compact.flatten
   end
 end
 
@@ -154,11 +123,11 @@ class Release
   attr_reader :ocid, :date, :external_id, :raw_release
 
   def value
-    raw_release['contracts'].first['value']['amount']
+    contract['value']['amount']
   end
 
   def contract_id
-    raw_release['contracts'].first['id']
+    contract['id']
   end
 
   def award_id
@@ -170,48 +139,36 @@ class Release
   end
 
   def supplier_name
-    parsed_parties.find { |party| party[:supplier] }[:name]
+    supplier['name']
   end
 
   def supplier_abn
-    parsed_parties.find { |party| party[:supplier] }[:abn]
+    supplier.dig('additionalIdentifiers', 0, 'id')
   end
 
   def purchaser_name
-    parsed_parties.find { |party| !party[:supplier] }[:name]
+    purchaser['name']
   end
 
   def purchaser_abn
-    parsed_parties.find { |party| !party[:supplier] }[:abn]
+    purchaser.dig('additionalIdentifiers', 0, 'id')
   end
 
   def description
-    raw_release['contracts'].first['description']
+    contract['description']
   end
 
   def amends_release_id
-    amendments = raw_release['contracts'].first.dig('amendments')
+    amendments = raw_release['contracts'].first['amendments']
 
     amendments.present? ? amendments.first['amendsReleaseID'] : nil
   end
 
-  def parsed_parties
-      raw_release['parties'].map do |party|
-        if party['roles'].include?('supplier')
-          party_supplier = {
-            name: party['name'],
-            abn: party.dig('additionalIdentifiers', 0, 'id') || '',
-            supplier: true
-          }
-        elsif party['roles'].include?('procuringEntity')
-          procuringEntity = {
-            name: party['name'],
-            abn: party.dig('additionalIdentifiers', 0, 'id') || '',
-            supplier: false
-          }
-        end
-      end
-  end
+  private
 
+  def parties = raw_release['parties']
+  def supplier = parties.find { |party| party['roles'].include?('supplier')}
+  def purchaser = parties.find { |party| party['roles'].include?('procuringEntity')}
+  def contract = raw_release['contracts'].first
 end
 

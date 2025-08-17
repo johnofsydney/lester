@@ -32,6 +32,10 @@ Style/Documentation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/OpenStructUse:
+  Enabled: false
+
+
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
