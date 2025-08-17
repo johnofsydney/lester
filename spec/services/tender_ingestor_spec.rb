@@ -14,11 +14,6 @@ RSpec.describe TenderIngestor, type: :service do
   let(:response) { double('Faraday::Response', status: 200) }
   let(:response_body) { File.read(Rails.root.join('spec', 'fixtures', 'contract_last_modified.json')) }
 
-  xit 'uses Faraday to fetch the tender data' do
-    expect(Faraday).to receive(:new).with(url: anything)
-    service
-  end
-
   describe '#process_for_url' do
     context 'when the response is a subsequent page, which has contracts and amendments' do
       let(:response_body) { File.read(Rails.root.join('spec', 'fixtures', 'contract_last_modified_subsequent_page.json')) }
@@ -28,6 +23,7 @@ RSpec.describe TenderIngestor, type: :service do
       let(:original_release_value) { 10259869.35 }
       let(:original_release_description) { 'ICT Hardware' }
       let(:original_release_contract_id) { 'CN3671507' }
+      let(:abn) { '65005610079' }
 
       let(:supplier_name) { 'Hitachi Vantara Australia Pty Ltd' }
       let(:purchaser_name) { 'Services Australia' }
@@ -43,6 +39,7 @@ RSpec.describe TenderIngestor, type: :service do
 
             expect(giver).to be_present
             expect(taker).to be_present
+            expect(taker.business_number).to eq(abn)
 
             transfer = Transfer.find_by(giver: giver, taker: taker, effective_date: eofy_2020)
             expect(transfer).to be_present
@@ -138,6 +135,39 @@ RSpec.describe TenderIngestor, type: :service do
           expect(third_amendment_transaction.amount).to eq(1_518_042.10) # third amendment value: 13_164_242.19 - (854_260.00 + 532_070.74 + 10259869.35)
 
         end
+
+        context 'when the supplier does not have an ABN' do
+        end
+      end
+    end
+
+    pending 'handles contracts where the vendor name changes over time'
+    context 'when the response includes a long contract where the name of the vendor has changed over time' do
+      let(:response_body) { File.read(Rails.root.join('spec', 'fixtures', 'contract_with_vendor_changes_over_time.json')) }
+
+      let(:original_release_id) { 'prod-c5762ddcfc405dfbdf428f47abfa35e6-f64b27a0859135e7846aa5c5e27239a8' }
+      let(:first_amendment_release_id) { 'prod-c5762ddcfc405dfbdf428f47abfa35e6-9bdf4acd03593c3bb981d7af9abe7d54' }
+      let(:second_amendment_release_id) { 'prod-c5762ddcfc405dfbdf428f47abfa35e6-6b2d253ebee531c2844b00bcd0304380' }
+
+      it 'processes all of the suppliers for a contract' do
+        described_class.process_for_url(url: 'url')
+
+        # CN1405771
+
+        original_release_transaction = IndividualTransaction.find_by(external_id: original_release_id)
+        first_amendment_transaction = IndividualTransaction.find_by(external_id: first_amendment_release_id)
+        second_amendment_transaction = IndividualTransaction.find_by(external_id: second_amendment_release_id)
+
+        expect(original_release_transaction).to be_present
+        expect(first_amendment_transaction).to be_present
+        expect(second_amendment_transaction).to be_present
+
+        expect(original_release_transaction.transfer.taker.name).to eq('Department of Finance and Deregulation')
+        expect(original_release_transaction.transfer.giver.name).to eq('Department of Industry, Science and Resources')
+        expect(first_amendment_transaction.transfer.taker.name).to eq('UGL Services Pty Ltd')
+        expect(first_amendment_transaction.transfer.giver.name).to eq('Department of Industry, Science and Resources')
+        expect(second_amendment_transaction.transfer.taker.other_names).to include('Department of Finance and Administration')
+        expect(second_amendment_transaction.transfer.giver.name).to eq('Department of Industry, Science and Resources')
       end
     end
   end
@@ -206,8 +236,8 @@ RSpec.describe TenderIngestor, type: :service do
     end
   end
 
-  describe '#record_release' do
-    # TEMP - this SHOULD BE a private method
+  describe '#record_individual_transaction' do
+    # This is testing the _Private_ class
     let(:description) { 'A Transfer of Stuff' }
     let(:purchaser_name) { 'Department of Australia'}
     it 'is a foo' do
@@ -228,7 +258,8 @@ RSpec.describe TenderIngestor, type: :service do
         description: 'A Transfer of stuff'
       }
 
-      service.record_release(release)
+      # service.record_release(release)
+      RecordIndividualTransaction.new(release).perform
 
       transfer = Transfer.last
 
