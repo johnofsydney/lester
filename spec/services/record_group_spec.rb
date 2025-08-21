@@ -259,30 +259,34 @@ RSpec.describe RecordGroup, type: :service do
     end
 
     context 'when the group already exists' do
+      let(:existing_name) { 'Existing Group' }
+      let(:business_number) { '123456789' }
+      let(:business_number_different_format) { 'ABN: 123 456 789' }
+
       before do
-        Group.create(name: 'Existing Group', business_number: '123456789')
+        Group.create(name: existing_name, business_number: business_number)
       end
 
       context 'when given only the identical name' do
         it 'does not create a new group' do
-          expect{ described_class.call('Existing Group') }.not_to change{ Group.count }
+          expect{ described_class.call(existing_name) }.not_to change{ Group.count }
         end
       end
 
       context 'when given the identical name and business number' do
         it 'does not create a new group' do
-          expect{ described_class.call('Existing Group', business_number: 'ABN: 123 456 789') }.not_to change{ Group.count }
+          expect{ described_class.call(existing_name, business_number: business_number_different_format) }.not_to change{ Group.count }
         end
       end
 
-      context 'when given a different name and business number' do
+      context 'when given a different name and same business number' do
         it 'does not create a new group' do
-          expect{ described_class.call('New Name for Existing Group', business_number: 'ABN: 123 456 789') }.not_to change{ Group.count }
+          expect{ described_class.call('New Name for Existing Group', business_number: business_number_different_format) }.not_to change{ Group.count }
         end
 
         it 'adds the new name to the list of other names' do
-          described_class.call('New Name for Existing Group', business_number: 'ABN: 123 456 789')
-          group = Group.find_by(name: 'Existing Group')
+          described_class.call('New Name for Existing Group', business_number: business_number_different_format)
+          group = Group.find_by(name: existing_name)
           expect(group.other_names).to include('New Name for Existing Group')
         end
       end

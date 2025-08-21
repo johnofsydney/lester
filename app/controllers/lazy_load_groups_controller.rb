@@ -4,3 +4,5 @@ class LazyLoadGroupsController < ApplicationController
     @group = Group.find(params[:id])
   end
 end
+
+# TODO: find transfers in the controller. Can they be done in a job?

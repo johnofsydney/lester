@@ -120,7 +120,7 @@ class TenderIngestor
     IngestContractsUrlJob.perform_async(response[:next_page]) if response[:next_page]
 
     response[:body]['releases'].map do |raw_release|
-      Release.new(raw_release)
+      Release.new(raw_release) # mapping everything into a nice PORO Release object
     end
   end
 end

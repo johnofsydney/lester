@@ -3,7 +3,7 @@ class RecordGroup
 
   def initialize(name, category = nil, business_number = nil)
     @name = MapGroupNames.new(name).call
-    @category = !!category
+    @category = !category.nil?
     @business_number = business_number&.gsub(/\D/, '')
   end
 
@@ -12,24 +12,21 @@ class RecordGroup
   end
 
   def call
-    # if business_number.present?
-    #   @group = Group.find_or_create_by(business_number:)
+    if business_number.present? && (@group = Group.find_by(business_number:))
+      @group.other_names << name if add_new_name_to_other_names?
+    elsif (@group = Group.find_by(name:))
+      @group.business_number = business_number if business_number.present?
+    else
+      @group = Group.create(name:, business_number:)
+    end
 
-    #   group.name = name unless group.name.present?
-    #   group.other_names << name if add_new_name_to_other_names?
+    @group.update(category:) if category
+    @group.save
 
-    #   group.save
-    # else
-    #   @group = Group.find_or_create_by(name:)
-    # end
-
-    group = Group.find_or_create_by(name:)
-    group.update(category:) if category
-
-    group
+    @group
   end
 
   def add_new_name_to_other_names?
-    name != group.name && group.other_names.exclude?(name)
+    name != @group.name && @group.other_names.exclude?(name)
   end
 end
