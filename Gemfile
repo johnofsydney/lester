@@ -43,7 +43,7 @@ group :development do
 
   gem 'pry'
   gem 'pry-rails'
-  # gem 'pry-byebug'
+  gem 'pry-byebug'
 end
 
 gem 'dockerfile-rails', '>= 1.2', :group => :development
