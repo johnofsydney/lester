@@ -63,7 +63,7 @@ class RecordIndividualTransaction
       description: description
     )
 
-    transfer.amount += release.value.to_f
+    transfer.amount += effective_amount.to_f
     transfer.save
 
     true
@@ -77,7 +77,7 @@ class RecordIndividualTransaction
     return release.value if amends_release_id.blank?
     return release.value if IndividualTransaction.where(contract_id:).empty?
 
-    previous_value = IndividualTransaction.where(contract_id:).sum(:amount)
+    previous_value = IndividualTransaction.find(release.amends_release_id).amount
     (release.value.to_f - previous_value).round(2)
   end
 
