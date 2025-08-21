@@ -2,7 +2,6 @@ class IngestContractsUrlJob
   include Sidekiq::Job
 
   def perform(url)
-    p url
     TenderIngestor.process_for_url(url: url)
   rescue StandardError => e
     Rails.logger.error "Error processing URL #{url}: #{e.message}"

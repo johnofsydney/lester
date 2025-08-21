@@ -2,7 +2,6 @@ class IngestContractsDateJob
   include Sidekiq::Job
 
   def perform(date)
-
     date = Date.parse(date)
     beginning_of_day = date.beginning_of_day.iso8601
     end_of_day = date.end_of_day.iso8601

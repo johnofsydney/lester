@@ -225,7 +225,7 @@ RSpec.describe TenderIngestor, type: :service do
     let(:mock_release) do
       OpenStruct.new(
         ocid: "release['ocid']",
-        external_id: "prod-708a09015d15425e885ff47b255797b1-8d636becf3903647b958ed88e3681df6",
+        external_id: 'prod-708a09015d15425e885ff47b255797b1-8d636becf3903647b958ed88e3681df6',
         date: Time.zone.today,
         value: 1001,
         contract_id: 'CN4160732',

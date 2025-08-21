@@ -245,13 +245,13 @@ RSpec.describe RecordGroup, type: :service do
   describe '.call' do
     context 'when the group dopes not already exist' do
       it 'creates a group with the given name' do
-        expect{ described_class.call('Test Name') }.to change{ Group.count }.by(1)
+        expect { described_class.call('Test Name') }.to change(Group, :count).by(1)
 
         expect(Group.last.name).to eq('Test Name')
       end
 
       it 'creates a group with the given name and business number' do
-        expect{ described_class.call('Test Name', business_number: 'ABN: 123 456 789') }.to change{ Group.count }.by(1)
+        expect { described_class.call('Test Name', business_number: 'ABN: 123 456 789') }.to change(Group, :count).by(1)
 
         expect(Group.last.name).to eq('Test Name')
         expect(Group.last.business_number).to eq('123456789')
@@ -269,19 +269,19 @@ RSpec.describe RecordGroup, type: :service do
 
       context 'when given only the identical name' do
         it 'does not create a new group' do
-          expect{ described_class.call(existing_name) }.not_to change{ Group.count }
+          expect { described_class.call(existing_name) }.not_to(change(Group, :count))
         end
       end
 
       context 'when given the identical name and business number' do
         it 'does not create a new group' do
-          expect{ described_class.call(existing_name, business_number: business_number_different_format) }.not_to change{ Group.count }
+          expect { described_class.call(existing_name, business_number: business_number_different_format) }.not_to(change(Group, :count))
         end
       end
 
       context 'when given a different name and same business number' do
         it 'does not create a new group' do
-          expect{ described_class.call('New Name for Existing Group', business_number: business_number_different_format) }.not_to change{ Group.count }
+          expect { described_class.call('New Name for Existing Group', business_number: business_number_different_format) }.not_to(change(Group, :count))
         end
 
         it 'adds the new name to the list of other names' do

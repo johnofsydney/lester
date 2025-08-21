@@ -101,7 +101,7 @@ class TenderIngestor
 
       contracts = instance.fetch_contracts_for_url(url: url)
 
-      if contracts.nil? || contracts.empty?
+      if contracts.blank?
         Rails.logger.warn "No contracts found for #{url}."
         return
       end
