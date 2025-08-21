@@ -4,6 +4,8 @@ class Transfer < ApplicationRecord
   belongs_to :giver, polymorphic: true  # could be a Person or a Group
   belongs_to :taker, polymorphic: true  # could be a Person or a Group
 
+  has_many :individual_transactions, dependent: :destroy
+
   validates :amount, presence: true
   validates :effective_date, presence: true
   validates :giver_type, uniqueness: {

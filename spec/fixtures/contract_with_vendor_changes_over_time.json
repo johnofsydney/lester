@@ -1,0 +1,3442 @@
+{
+	"uri": "https://api.tenders.gov.au/ocds/findByDates/contractLastModified/2025-03-24T00:00:00Z/2025-03-24T23:59:59Z",
+	"publisher": {
+		"name": "Department of Finance"
+	},
+	"publishedDate": "2025-03-24T00:19:13Z",
+	"license": "https://creativecommons.org/licenses/by/3.0/au/",
+	"version": "1.1",
+	"releases": [
+		{
+			"ocid": "prod-3779d206954037977af45dc1dbdc069f",
+			"id": "prod-3779d206954037977af45dc1dbdc069f-32281f14cbde37cca516ca66a64b2c00",
+			"date": "2025-03-24T00:19:13Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "376ded489b3b51c795cd7091ab94501a",
+					"name": "GOWRIE SA LADY GOWRIE CHILD CENTRE INCORPORAT",
+					"additionalIdentifiers": [
+						{
+							"id": "85215237980",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "THEBARTON",
+						"region": "SA",
+						"postalCode": "5031",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356800-3779d205d16b20ceb3f38f607ea33b5e",
+					"suppliers": [
+						{
+							"id": "376ded489b3b51c795cd7091ab94501a",
+							"name": "GOWRIE SA LADY GOWRIE CHILD CENTRE INCORPORAT"
+						}
+					],
+					"date": "2016-06-30T02:31:41Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356800",
+					"awardID": "CN3356800-3779d205d16b20ceb3f38f607ea33b5e",
+					"dateSigned": "2016-06-30T02:31:41Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025255",
+					"items": [
+						{
+							"id": "86000000-3f5a59e7229146fba449a3b5f6fd4c4f",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "31653231.00"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356800-A6",
+							"releaseID": "prod-3779d206954037977af45dc1dbdc069f-32281f14cbde37cca516ca66a64b2c00",
+							"amendsReleaseID": "prod-3779d206954037977af45dc1dbdc069f-16498423f1a43f8b839b8deb729f1230"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-3779d206954037977af45dc1dbdc069f",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-3779d206954037977af45dc1dbdc069f",
+			"id": "prod-3779d206954037977af45dc1dbdc069f-c45885c07f9e385f83b61f487306b9d0",
+			"date": "2025-03-24T00:19:13Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "376ded489b3b51c795cd7091ab94501a",
+					"name": "GOWRIE SA LADY GOWRIE CHILD CENTRE INCORPORAT",
+					"additionalIdentifiers": [
+						{
+							"id": "85215237980",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "THEBARTON",
+						"region": "SA",
+						"postalCode": "5031",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356800-3779d205d16b20ceb3f38f607ea33b5e",
+					"suppliers": [
+						{
+							"id": "376ded489b3b51c795cd7091ab94501a",
+							"name": "GOWRIE SA LADY GOWRIE CHILD CENTRE INCORPORAT"
+						}
+					],
+					"status": "active",
+					"date": "2016-06-30T02:31:41Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356800",
+					"awardID": "CN3356800-3779d205d16b20ceb3f38f607ea33b5e",
+					"dateSigned": "2016-06-30T02:31:41Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025255",
+					"items": [
+						{
+							"id": "86000000-345d7a80b4ab47c1b85c966af7c26cc1",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "35124545.00"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356800-A7",
+							"releaseID": "prod-3779d206954037977af45dc1dbdc069f-c45885c07f9e385f83b61f487306b9d0",
+							"amendsReleaseID": "prod-3779d206954037977af45dc1dbdc069f-16498423f1a43f8b839b8deb729f1230"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-3779d206954037977af45dc1dbdc069f",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+			"id": "prod-37766d760bf57afa1d9c1959d4a8c59e-0dbdb228e94d307fa0954ba17f91e46e",
+			"date": "2016-06-30T02:31:19Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "377073a2ad51b64f82d5ece632743b4b",
+					"name": "LADY GOWRIE TASMANIA",
+					"additionalIdentifiers": [
+						{
+							"id": "34730372717",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO BOX 263",
+						"locality": "NORTH HOBART",
+						"region": "TAS",
+						"postalCode": "7000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"suppliers": [
+						{
+							"id": "377073a2ad51b64f82d5ece632743b4b",
+							"name": "LADY GOWRIE TASMANIA"
+						}
+					],
+					"date": "2016-06-30T02:31:19Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356775",
+					"awardID": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"dateSigned": "2016-06-30T02:31:19Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025252",
+					"items": [
+						{
+							"id": "86000000-37766d75b7aaaa2235f3ee5e5a2570bd",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "2624200.00"
+					},
+					"status": "active"
+				}
+			],
+			"tag": [
+				"contract"
+			],
+			"tender": {
+				"id": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+			"id": "prod-37766d760bf57afa1d9c1959d4a8c59e-ec94fe05df323b08968363e822052042",
+			"date": "2025-03-24T00:19:09Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "377073a2ad51b64f82d5ece632743b4b",
+					"name": "LADY GOWRIE TASMANIA",
+					"additionalIdentifiers": [
+						{
+							"id": "34730372717",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO BOX 263",
+						"locality": "NORTH HOBART",
+						"region": "TAS",
+						"postalCode": "7000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"suppliers": [
+						{
+							"id": "377073a2ad51b64f82d5ece632743b4b",
+							"name": "LADY GOWRIE TASMANIA"
+						}
+					],
+					"date": "2016-06-30T02:31:19Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356775",
+					"awardID": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"dateSigned": "2016-06-30T02:31:19Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025252",
+					"items": [
+						{
+							"id": "86000000-07acf3d5033cee9da6f7fa85e9ee894f",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "2886620.00"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356775-A1",
+							"releaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-ec94fe05df323b08968363e822052042",
+							"amendsReleaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-0dbdb228e94d307fa0954ba17f91e46e"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+			"id": "prod-37766d760bf57afa1d9c1959d4a8c59e-7bd6cf9488563dc2bc0697f428985676",
+			"date": "2025-03-24T00:19:09Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "377073a2ad51b64f82d5ece632743b4b",
+					"name": "LADY GOWRIE TASMANIA",
+					"additionalIdentifiers": [
+						{
+							"id": "34730372717",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO BOX 263",
+						"locality": "NORTH HOBART",
+						"region": "TAS",
+						"postalCode": "7000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"suppliers": [
+						{
+							"id": "377073a2ad51b64f82d5ece632743b4b",
+							"name": "LADY GOWRIE TASMANIA"
+						}
+					],
+					"date": "2016-06-30T02:31:19Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356775",
+					"awardID": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"dateSigned": "2016-06-30T02:31:19Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025252",
+					"items": [
+						{
+							"id": "86000000-d78bc829e00126a8f3e592b2c6688979",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "4715802.00"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356775-A2",
+							"releaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-7bd6cf9488563dc2bc0697f428985676",
+							"amendsReleaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-0dbdb228e94d307fa0954ba17f91e46e"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+			"id": "prod-37766d760bf57afa1d9c1959d4a8c59e-e7442039549d3b65a1c92e0a2cfffe4a",
+			"date": "2025-03-24T00:19:09Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "377073a2ad51b64f82d5ece632743b4b",
+					"name": "LADY GOWRIE TASMANIA",
+					"additionalIdentifiers": [
+						{
+							"id": "34730372717",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO BOX 263",
+						"locality": "NORTH HOBART",
+						"region": "TAS",
+						"postalCode": "7000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"suppliers": [
+						{
+							"id": "377073a2ad51b64f82d5ece632743b4b",
+							"name": "LADY GOWRIE TASMANIA"
+						}
+					],
+					"date": "2016-06-30T02:31:19Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356775",
+					"awardID": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"dateSigned": "2016-06-30T02:31:19Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025252",
+					"items": [
+						{
+							"id": "86000000-2e0d2731a0624289b2d3c68242937a1e",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "5742921.00"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356775-A3",
+							"releaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-e7442039549d3b65a1c92e0a2cfffe4a",
+							"amendsReleaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-0dbdb228e94d307fa0954ba17f91e46e"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+			"id": "prod-37766d760bf57afa1d9c1959d4a8c59e-d78b026b4b1f3671aa9bd682c7eb3b51",
+			"date": "2025-03-24T00:19:09Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "377073a2ad51b64f82d5ece632743b4b",
+					"name": "LADY GOWRIE TASMANIA",
+					"additionalIdentifiers": [
+						{
+							"id": "34730372717",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO BOX 263",
+						"locality": "NORTH HOBART",
+						"region": "TAS",
+						"postalCode": "7000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"suppliers": [
+						{
+							"id": "377073a2ad51b64f82d5ece632743b4b",
+							"name": "LADY GOWRIE TASMANIA"
+						}
+					],
+					"date": "2016-06-30T02:31:19Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356775",
+					"awardID": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"dateSigned": "2016-06-30T02:31:19Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025252",
+					"items": [
+						{
+							"id": "86000000-8e9a4edf3fa7471589c1e2f0129121fe",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "6657512.00"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356775-A4",
+							"releaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-d78b026b4b1f3671aa9bd682c7eb3b51",
+							"amendsReleaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-0dbdb228e94d307fa0954ba17f91e46e"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+			"id": "prod-37766d760bf57afa1d9c1959d4a8c59e-e8af470b570a3acfb5c07e5783b157a6",
+			"date": "2025-03-24T00:19:09Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "377073a2ad51b64f82d5ece632743b4b",
+					"name": "LADY GOWRIE TASMANIA",
+					"additionalIdentifiers": [
+						{
+							"id": "34730372717",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO BOX 263",
+						"locality": "NORTH HOBART",
+						"region": "TAS",
+						"postalCode": "7000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"suppliers": [
+						{
+							"id": "377073a2ad51b64f82d5ece632743b4b",
+							"name": "LADY GOWRIE TASMANIA"
+						}
+					],
+					"date": "2016-06-30T02:31:19Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356775",
+					"awardID": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"dateSigned": "2016-06-30T02:31:19Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025252",
+					"items": [
+						{
+							"id": "86000000-bca101f7248c40d2b99c78a9ebe66674",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "9686694.00"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356775-A5",
+							"releaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-e8af470b570a3acfb5c07e5783b157a6",
+							"amendsReleaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-0dbdb228e94d307fa0954ba17f91e46e"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+			"id": "prod-37766d760bf57afa1d9c1959d4a8c59e-5b121df41f4336679b085bf46b4439f9",
+			"date": "2025-03-24T00:19:09Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "377073a2ad51b64f82d5ece632743b4b",
+					"name": "LADY GOWRIE TASMANIA",
+					"additionalIdentifiers": [
+						{
+							"id": "34730372717",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "SOUTH HOBART",
+						"region": "TAS",
+						"postalCode": "7004",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"suppliers": [
+						{
+							"id": "377073a2ad51b64f82d5ece632743b4b",
+							"name": "LADY GOWRIE TASMANIA"
+						}
+					],
+					"date": "2016-06-30T02:31:19Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356775",
+					"awardID": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"dateSigned": "2016-06-30T02:31:19Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025252",
+					"items": [
+						{
+							"id": "86000000-235b2cc511f0400289aba1d026a5d248",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "10925734.00"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356775-A6",
+							"releaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-5b121df41f4336679b085bf46b4439f9",
+							"amendsReleaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-0dbdb228e94d307fa0954ba17f91e46e"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+			"id": "prod-37766d760bf57afa1d9c1959d4a8c59e-1e826e6673d73fb588a11f26cea71d46",
+			"date": "2025-03-24T00:19:09Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "377073a2ad51b64f82d5ece632743b4b",
+					"name": "LADY GOWRIE TASMANIA",
+					"additionalIdentifiers": [
+						{
+							"id": "34730372717",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "SOUTH HOBART",
+						"region": "TAS",
+						"postalCode": "7004",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "GROUP ADMINISTRATION OFFICER",
+						"email": "Procurement@education.gov.au",
+						"telephone": "",
+						"branch": "Department of Education",
+						"division": "DEPARTMENT OF EDUCATION"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "4541c811d7e2ab9da7de0f1e0de3b651",
+					"name": "Department of Education",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "12862898150",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"suppliers": [
+						{
+							"id": "377073a2ad51b64f82d5ece632743b4b",
+							"name": "LADY GOWRIE TASMANIA"
+						}
+					],
+					"status": "active",
+					"date": "2016-06-30T02:31:19Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3356775",
+					"awardID": "CN3356775-37766d75b7aaaa2235f3ee5e5a2570bd",
+					"dateSigned": "2016-06-30T02:31:19Z",
+					"description": "Inclusion Agency Services under the Inclusion Support Program.",
+					"title": "4400025252",
+					"items": [
+						{
+							"id": "86000000-fff1765e37fe4ee89093f1ad5085dfee",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "86000000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2016-05-29T14:00:00Z",
+						"endDate": "2026-09-29T14:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "11931544.30"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3356775-A7",
+							"releaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-1e826e6673d73fb588a11f26cea71d46",
+							"amendsReleaseID": "prod-37766d760bf57afa1d9c1959d4a8c59e-0dbdb228e94d307fa0954ba17f91e46e"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-37766d760bf57afa1d9c1959d4a8c59e",
+				"procurementMethod": "open",
+				"procurementMethodDetails": "Open tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417",
+			"date": "2015-01-04T21:23:08Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-243110dfcca5a1a07ed51e9008eb11a4",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "150615976.50"
+					},
+					"status": "active"
+				}
+			],
+			"tag": [
+				"contract"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-5a331f8f4bbd3007ab64e636271144e3",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-1d0c642203d859644d5a4b314d27c96b",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "238038763.93"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A10",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-5a331f8f4bbd3007ab64e636271144e3",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-0d21696741453b719180310c30b00059",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-6f2da4f721f54e93899adbe8c4ce6461",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "240433342.60"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A11",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-0d21696741453b719180310c30b00059",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-d85e248c9f403e89bba330c6bf9503a8",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-49ed9c4a6a55472b9e6e9bf00500240a",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "240754368.80"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A12",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-d85e248c9f403e89bba330c6bf9503a8",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-d2c6897224463baa8730101bd6d750cc",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-d6fff13a06024c2696c6dce1711ae65d",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "241178813.70"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A13",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-d2c6897224463baa8730101bd6d750cc",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-7df009fd72193c2d9c351d9cf74196e0",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-e0be0298d2f9464ea23a0e7a2a32d048",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "242878380.80"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A14",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-7df009fd72193c2d9c351d9cf74196e0",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-3cccd842814f356ab72b8f8914bff4df",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-ce11aaaaf9404dea8fb62b7f10d06862",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "243978380.80"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A15",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-3cccd842814f356ab72b8f8914bff4df",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-3da55cdaa2df3a46b4113539bc3cb425",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-98b610ed8f1a460794505e49b74213a3",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "248069854.67"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A16",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-3da55cdaa2df3a46b4113539bc3cb425",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-2246882b060334818d52d156c0cc140c",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-2bb30bd0c6d24756aec1245f751a1ae2",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "254561253.10"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A17",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-2246882b060334818d52d156c0cc140c",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-fc620e1a71513e559a6bd710ad6013bd",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LENDLEASE CONSTRUCTION",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LENDLEASE CONSTRUCTION"
+						}
+					],
+					"status": "active",
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-16c65718b77d4b7d932843644e513197",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "249315524.51"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A18",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-fc620e1a71513e559a6bd710ad6013bd",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-a623ccfface33dcc8544ea26c5222c9e",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T21:23:08Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T21:23:08Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-b3aaf939cf4b1cc4d35a27f29c33bdf0",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "234565503.62"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A9",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-a623ccfface33dcc8544ea26c5222c9e",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-bbdc7af9d82430db89adf5f5b7f48400",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T13:00:00Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T13:00:00Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-8006a97f028ef29419d9464b28708bd2",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "150729507.50"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A1",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-bbdc7af9d82430db89adf5f5b7f48400",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-e9d1122f00f93e42a40eecd7b579f837",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T13:00:00Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T13:00:00Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-5a530cbbd3879478687529685d8fe822",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "150816462.50"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A2",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-e9d1122f00f93e42a40eecd7b579f837",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-e2521233129f3789b6c1f4a31fc1af8e",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T13:00:00Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T13:00:00Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-6955cabf04538642dcfee88c59a06d1c",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "231641777.40"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A3",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-e2521233129f3789b6c1f4a31fc1af8e",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-a700361a2bce387f938134fd2ec97c3e",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T13:00:00Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T13:00:00Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-d5d45d46bf804d364dbb3bf44f583c1f",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "231678311.70"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A4",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-a700361a2bce387f938134fd2ec97c3e",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-cfdde2ee0e4c338c903b92a8449cc066",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T13:00:00Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T13:00:00Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-c6cae6cbe9cac723dd53429a7e182e3a",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "231699090.70"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A5",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-cfdde2ee0e4c338c903b92a8449cc066",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-fd825e21202b36639c73f7e616775b4c",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T13:00:00Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T13:00:00Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-28cb58d9924a21537065192478d486ab",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "233149208.60"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A6",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-fd825e21202b36639c73f7e616775b4c",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-a701ab3031f43d6b82e16f8c1cb14df2",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T13:00:00Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T13:00:00Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-fa1bd9ebfa202737169f212f05ef165a",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "233294752.90"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A7",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-a701ab3031f43d6b82e16f8c1cb14df2",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+			"id": "prod-243110e0f2bc64b1ac81ec4f70935a43-3add0036f3193f1a957ee66ad6a4fb6d",
+			"date": "2025-03-24T21:47:41Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+					"name": "LEND LEASE BUILDING PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "97000098162",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "THE BOND, 30 HICKSON ROAD",
+						"locality": "MILLERS POINT",
+						"region": "NSW",
+						"postalCode": "2000",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "SEG - Infrastructure Division",
+						"email": "DEFENCE.PROCUREMENT@DEFENCE.GOV.AU",
+						"telephone": "00",
+						"branch": "SEG - Infrastructure Division",
+						"division": "SEG"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ec9911c9e99d1b7bb1b77f4abffc583",
+					"name": "Department of Defence",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "62950639680",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"suppliers": [
+						{
+							"id": "f1f6a3b893bd89a6109b08b9787a1ed6",
+							"name": "LEND LEASE BUILDING PTY LTD"
+						}
+					],
+					"date": "2015-01-04T13:00:00Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN2780132",
+					"awardID": "CN2780132-243110dfcca5a1a07ed51e9008eb11a4",
+					"dateSigned": "2015-01-04T13:00:00Z",
+					"description": "Management Costs and Services",
+					"title": "4500955023",
+					"items": [
+						{
+							"id": "72100000-4fa02e0c9716e9b1199965f588ff5e43",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "72100000"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2014-12-15T13:00:00Z",
+						"endDate": "2025-03-30T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "233659308.40"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN2780132-A8",
+							"releaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-3add0036f3193f1a957ee66ad6a4fb6d",
+							"amendsReleaseID": "prod-243110e0f2bc64b1ac81ec4f70935a43-81842d7d419f3a5f957282764da87417"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-243110e0f2bc64b1ac81ec4f70935a43",
+				"procurementMethod": "selective",
+				"procurementMethodDetails": "Prequalified tender"
+			}
+		},
+		{
+			"ocid": "prod-c5762ddcfc405dfbdf428f47abfa35e6",
+			"id": "prod-c5762ddcfc405dfbdf428f47abfa35e6-f64b27a0859135e7846aa5c5e27239a8",
+			"date": "2013-05-21T05:00:57Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "ac3545c6a1e90c4074832acb210b4963",
+					"name": "DEPARTMENT OF FINANCE AND DEREGULATION",
+					"additionalIdentifiers": [
+						{
+							"id": "61970632495",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "JOHN GORTON BUILDING KING EDWARD TERRACE",
+						"locality": "PARKES",
+						"region": "ACT",
+						"postalCode": "2600",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "MANAGER PROCUREMENT",
+						"email": "procurementinbox@industry.gov.au",
+						"telephone": "",
+						"branch": "",
+						"division": ""
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "fae76f4df3955b1f87c716ecd2e0f84e",
+					"name": "Department of Industry, Science and Resources",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "74599608295",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"region": "ACT",
+						"postalCode": "2601"
+					},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN1405771-c5762dd2be2b67dcd0dafe53c5c4e7da",
+					"suppliers": [
+						{
+							"id": "ac3545c6a1e90c4074832acb210b4963",
+							"name": "DEPARTMENT OF FINANCE AND DEREGULATION"
+						}
+					],
+					"date": "2013-05-21T05:00:57Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN1405771",
+					"awardID": "CN1405771-c5762dd2be2b67dcd0dafe53c5c4e7da",
+					"dateSigned": "2013-05-21T05:00:57Z",
+					"description": "MOU - Questacon Deakin QTLC Lease 30 Nov 2011 to 2031",
+					"title": "CON003942",
+					"items": [
+						{
+							"id": "80131500-c5762dd2be2b67dcd0dafe53c5c4e7da",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "80131500"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2011-11-30T13:00:00Z",
+						"endDate": "2025-03-20T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "54912205.70"
+					},
+					"status": "active"
+				}
+			],
+			"tag": [
+				"contract"
+			],
+			"tender": {
+				"id": "prod-c5762ddcfc405dfbdf428f47abfa35e6",
+				"procurementMethod": "limited",
+				"procurementMethodDetails": "Limited tender",
+				"limitedTenderExempt": "1",
+				"exemptionCode": "LP",
+				"exemption": "App A: 1. Leasing of immovable property or any associated rights."
+			}
+		},
+		{
+			"ocid": "prod-c5762ddcfc405dfbdf428f47abfa35e6",
+			"id": "prod-c5762ddcfc405dfbdf428f47abfa35e6-9bdf4acd03593c3bb981d7af9abe7d54",
+			"date": "2025-03-24T02:48:30Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "bbd52cb7f19e322c322d9913b24e007f",
+					"name": "UGL SERVICES PTY LTD",
+					"additionalIdentifiers": [
+						{
+							"id": "86090608361",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO BOX 1511",
+						"locality": "WODEN",
+						"region": "ACT",
+						"postalCode": "2606",
+						"countryName": "AUSTRALIA"
+					},
+					"contactPoint": {
+						"name": "MANAGER PROCUREMENT",
+						"email": "procurementinbox@industry.gov.au",
+						"telephone": "",
+						"branch": "",
+						"division": ""
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "fae76f4df3955b1f87c716ecd2e0f84e",
+					"name": "Department of Industry, Science and Resources",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "74599608295",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"region": "ACT",
+						"postalCode": "2601"
+					},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN1405771-c5762dd2be2b67dcd0dafe53c5c4e7da",
+					"suppliers": [
+						{
+							"id": "bbd52cb7f19e322c322d9913b24e007f",
+							"name": "UGL SERVICES PTY LTD"
+						}
+					],
+					"date": "2013-05-21T05:00:57Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN1405771",
+					"awardID": "CN1405771-c5762dd2be2b67dcd0dafe53c5c4e7da",
+					"dateSigned": "2013-05-21T05:00:57Z",
+					"description": "MOU - Questacon Deakin QTLC Lease 30 Nov 2011 to 2031",
+					"title": "CON003942",
+					"items": [
+						{
+							"id": "80131500-5566cc7dcdbdc3ba52b1f6f2e86eaf57",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "80131500"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2011-11-30T13:00:00Z",
+						"endDate": "2025-03-20T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "54912205.70"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN1405771-A1",
+							"releaseID": "prod-c5762ddcfc405dfbdf428f47abfa35e6-9bdf4acd03593c3bb981d7af9abe7d54",
+							"amendsReleaseID": "prod-c5762ddcfc405dfbdf428f47abfa35e6-f64b27a0859135e7846aa5c5e27239a8"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-c5762ddcfc405dfbdf428f47abfa35e6",
+				"procurementMethod": "limited",
+				"procurementMethodDetails": "Limited tender",
+				"limitedTenderExempt": "1",
+				"exemptionCode": "LP",
+				"exemption": "App A: 1. Leasing of immovable property or any associated rights."
+			}
+		},
+		{
+			"ocid": "prod-c5762ddcfc405dfbdf428f47abfa35e6",
+			"id": "prod-c5762ddcfc405dfbdf428f47abfa35e6-6b2d253ebee531c2844b00bcd0304380",
+			"date": "2025-03-24T02:48:30Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "ac3545c6a1e90c4074832acb210b4963",
+					"name": "DEPARTMENT OF FINANCE AND ADMINISTRATION",
+					"additionalIdentifiers": [
+						{
+							"id": "61970632495",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "",
+						"locality": "PARKES",
+						"region": "ACT",
+						"postalCode": "2600",
+						"countryName": "Australia"
+					},
+					"contactPoint": {
+						"name": "MANAGER PROCUREMENT",
+						"email": "procurementinbox@industry.gov.au",
+						"telephone": "",
+						"branch": "",
+						"division": ""
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "fae76f4df3955b1f87c716ecd2e0f84e",
+					"name": "Department of Industry, Science and Resources",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "74599608295",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"region": "ACT",
+						"postalCode": "2601"
+					},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN1405771-c5762dd2be2b67dcd0dafe53c5c4e7da",
+					"suppliers": [
+						{
+							"id": "ac3545c6a1e90c4074832acb210b4963",
+							"name": "DEPARTMENT OF FINANCE AND ADMINISTRATION"
+						}
+					],
+					"status": "active",
+					"date": "2013-05-21T05:00:57Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN1405771",
+					"awardID": "CN1405771-c5762dd2be2b67dcd0dafe53c5c4e7da",
+					"dateSigned": "2013-05-21T05:00:57Z",
+					"description": "MOU - Questacon Deakin QTLC Lease 30 Nov 2011 to 2031",
+					"title": "CON003942",
+					"items": [
+						{
+							"id": "80131500-5b3f060d9f21f240d0fc0be7c5d6f6d1",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "80131500"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2011-11-30T13:00:00Z",
+						"endDate": "2025-03-20T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "54912205.70"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN1405771-A2",
+							"releaseID": "prod-c5762ddcfc405dfbdf428f47abfa35e6-6b2d253ebee531c2844b00bcd0304380",
+							"amendsReleaseID": "prod-c5762ddcfc405dfbdf428f47abfa35e6-f64b27a0859135e7846aa5c5e27239a8"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-c5762ddcfc405dfbdf428f47abfa35e6",
+				"procurementMethod": "limited",
+				"procurementMethodDetails": "Limited tender",
+				"limitedTenderExempt": "1",
+				"exemptionCode": "LP",
+				"exemption": "App A: 1. Leasing of immovable property or any associated rights."
+			}
+		}
+	],
+	"extensions": [
+		"http://cdn.tenders.gov.au/ocds/schema/extension.json"
+	],
+	"links": {
+		"prev": "https://api.tenders.gov.au/ocds/findByDates/contractLastModified/2025-03-24T00:00:00Z/2025-03-24T23:59:59Z?cursor=VeVCLEQwQW9ONHp0WGF6WVlETEVOT016azBPRGcwT1MxQk1TeERUak01TkRnNE5Ea3RRVEU9kAM&prevcursor=VR6i09owQW9Od3Y0Q3ErSThETEVOT05EQTJNalEyTnkxQk1peERUalF3TmpJME5qY3RRVEk9rAI",
+		"self": "https://api.tenders.gov.au/ocds/findByDates/contractLastModified/2025-03-24T00:00:00Z/2025-03-24T23:59:59Z?cursor=VeOEGrcwQW9ONDdMakp6OVVDTEVOT016TTFOamd3TUMxQk5TeERUak16TlRZNE1EQXRRVFU99AM&lastcursor=VR6i09owQW9Od3Y0Q3ErSThETEVOT05EQTJNalEyTnkxQk1peERUalF3TmpJME5qY3RRVEk9rAI&prevcursor=VeVCLEQwQW9ONHp0WGF6WVlETEVOT016azBPRGcwT1MxQk1TeERUak01TkRnNE5Ea3RRVEU9kAM",
+		"next": "https://api.tenders.gov.au/ocds/findByDates/contractLastModified/2025-03-24T00:00:00Z/2025-03-24T23:59:59Z?cursor=VTOk-GkwQW9ONDhzWGQ0cjRDTEVOT01UUXdOVGMzTVMxQk1peERUakUwTURVM056RXRRVEk9lAQ&prevcursor=VeOEGrcwQW9ONDdMakp6OVVDTEVOT016TTFOamd3TUMxQk5TeERUak16TlRZNE1EQXRRVFU99AM&lastcursor=VeVCLEQwQW9ONHp0WGF6WVlETEVOT016azBPRGcwT1MxQk1TeERUak01TkRnNE5Ea3RRVEU9kAM"
+	}
+}

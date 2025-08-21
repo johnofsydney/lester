@@ -1,0 +1,331 @@
+{
+	"uri": "https://api.tenders.gov.au/ocds/findById/CN3470670",
+	"publisher": {
+		"name": "Department of Finance"
+	},
+	"publishedDate": "2017-11-27T00:21:23Z",
+	"version": "1.1",
+	"releases": [
+		{
+			"ocid": "prod-cc3bde80b92ae61d6809efe807a9f726",
+			"id": "prod-cc3bde80b92ae61d6809efe807a9f726-0becf3c9633e361ea1a45312ddc288dd",
+			"date": "2017-11-27T00:21:23Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "EXEMPTUUID-A75F6380CA0132CB8818260698BE1CCB",
+					"name": "PALADIN SOLUTIONS PNG LTD",
+					"address": {
+						"streetAddress": "PARK TOWER ANNEX, SECTION 25,ALLOTMENT 35, HUNTERS STREET, GRANVILLE",
+						"locality": "NATIONAL CAPITAL DISTRICT",
+						"region": "Outside Australia",
+						"postalCode": "125",
+						"countryName": "PAPUA NEW GUINEA"
+					},
+					"contactPoint": {
+						"name": "Procurement & Contracts",
+						"email": "procurement@homeaffairs.gov.au",
+						"branch": "Procurement & Contracts",
+						"division": "Finance Division"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ecb6c7b909071a105efb4ff2f94efa6",
+					"name": "Department of Home Affairs",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "33380054835",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO Box 25",
+						"locality": "Belconnen",
+						"region": "ACT",
+						"postalCode": "2616"
+					},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3470670-cc3bde7fac9c3d05a83e8e61a2fcde7c",
+					"suppliers": [
+						{
+							"id": "EXEMPTUUID-A75F6380CA0132CB8818260698BE1CCB",
+							"name": "PALADIN SOLUTIONS PNG LTD"
+						}
+					],
+					"date": "2017-11-27T00:21:23Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3470670",
+					"awardID": "CN3470670-cc3bde7fac9c3d05a83e8e61a2fcde7c",
+					"dateSigned": "2017-11-27T00:21:23Z",
+					"description": "Provision of Garrison Services at East Lorengau Refugee Transit Centre Manus",
+					"title": "0070020581",
+					"items": [
+						{
+							"id": "80161500-cc3bde7fac9c3d05a83e8e61a2fcde7c",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "80161500"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2017-09-20T14:00:00Z",
+						"endDate": "2018-02-27T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "39743817.76"
+					},
+					"status": "active"
+				}
+			],
+			"tag": [
+				"contract"
+			],
+			"tender": {
+				"id": "prod-cc3bde80b92ae61d6809efe807a9f726",
+				"procurementMethod": "limited",
+				"procurementMethodDetails": "Limited tender",
+				"limitedTenderExempt": "1",
+				"exemptionCode": "AM",
+				"exemption": "Paragraph 2.6 was applied in some part."
+			}
+		},
+		{
+			"ocid": "prod-cc3bde80b92ae61d6809efe807a9f726",
+			"id": "prod-cc3bde80b92ae61d6809efe807a9f726-3bf2c7d27d9d3ee5a125b4f18648c9aa",
+			"date": "2023-04-27T08:08:01Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "EXEMPTUUID-A75F6380CA0132CB8818260698BE1CCB",
+					"name": "PALADIN SOLUTIONS PNG LTD",
+					"address": {
+						"streetAddress": "PARK TOWER ANNEX, SECTION 25,ALLOTMENT 35, HUNTERS STREET, GRANVILLE",
+						"locality": "NATIONAL CAPITAL DISTRICT",
+						"region": "Outside Australia",
+						"postalCode": "125",
+						"countryName": "PAPUA NEW GUINEA"
+					},
+					"contactPoint": {
+						"name": "Procurement & Contracts",
+						"email": "procurement@homeaffairs.gov.au",
+						"branch": "Procurement & Contracts",
+						"division": "Finance Division"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ecb6c7b909071a105efb4ff2f94efa6",
+					"name": "Department of Home Affairs",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "33380054835",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO Box 25",
+						"locality": "Belconnen",
+						"region": "ACT",
+						"postalCode": "2616"
+					},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3470670-cc3bde7fac9c3d05a83e8e61a2fcde7c",
+					"suppliers": [
+						{
+							"id": "EXEMPTUUID-A75F6380CA0132CB8818260698BE1CCB",
+							"name": "PALADIN SOLUTIONS PNG LTD"
+						}
+					],
+					"date": "2017-11-27T00:21:23Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3470670",
+					"awardID": "CN3470670-cc3bde7fac9c3d05a83e8e61a2fcde7c",
+					"dateSigned": "2017-11-27T00:21:23Z",
+					"description": "Provision of Garrison Services at East Lorengau Refugee Transit Centre Manus",
+					"title": "0070020581",
+					"items": [
+						{
+							"id": "80161500-0cecc1a1dcdfc9e5f03c4c25efff0d4c",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "80161500"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2017-09-20T14:00:00Z",
+						"endDate": "2018-02-27T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "72743817.76"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3470670-A1",
+							"releaseID": "prod-cc3bde80b92ae61d6809efe807a9f726-3bf2c7d27d9d3ee5a125b4f18648c9aa",
+							"amendsReleaseID": "prod-cc3bde80b92ae61d6809efe807a9f726-0becf3c9633e361ea1a45312ddc288dd"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-cc3bde80b92ae61d6809efe807a9f726",
+				"procurementMethod": "limited",
+				"procurementMethodDetails": "Limited tender",
+				"limitedTenderExempt": "1",
+				"exemptionCode": "AM",
+				"exemption": "Paragraph 2.6 was applied in some part."
+			}
+		},
+		{
+			"ocid": "prod-cc3bde80b92ae61d6809efe807a9f726",
+			"id": "prod-cc3bde80b92ae61d6809efe807a9f726-9e9f19fb21a039dcb80d81a15c448337",
+			"date": "2023-04-27T08:08:01Z",
+			"initiationType": "tender",
+			"language": "EN",
+			"parties": [
+				{
+					"id": "EXEMPTUUID-A75F6380CA0132CB8818260698BE1CCB",
+					"name": "PALADIN SOLUTIONS PNG LTD",
+					"address": {
+						"streetAddress": "PARK TOWER ANNEX, SECTION 25,ALLOTMENT 35, HUNTERS STREET, GRANVILLE",
+						"locality": "NATIONAL CAPITAL DISTRICT",
+						"region": "Outside Australia",
+						"postalCode": "125",
+						"countryName": "PAPUA NEW GUINEA"
+					},
+					"contactPoint": {
+						"name": "Procurement & Contracts",
+						"email": "procurement@homeaffairs.gov.au",
+						"branch": "Procurement & Contracts",
+						"division": "Finance Division"
+					},
+					"roles": [
+						"supplier"
+					]
+				},
+				{
+					"id": "0ecb6c7b909071a105efb4ff2f94efa6",
+					"name": "Department of Home Affairs",
+					"roles": [
+						"procuringEntity"
+					],
+					"additionalIdentifiers": [
+						{
+							"id": "33380054835",
+							"scheme": "AU-ABN"
+						}
+					],
+					"address": {
+						"streetAddress": "PO Box 25",
+						"locality": "Belconnen",
+						"region": "ACT",
+						"postalCode": "2616"
+					},
+					"contactPoint": {
+						"email": "tenders@finance.gov.au"
+					}
+				}
+			],
+			"awards": [
+				{
+					"id": "CN3470670-cc3bde7fac9c3d05a83e8e61a2fcde7c",
+					"suppliers": [
+						{
+							"id": "EXEMPTUUID-A75F6380CA0132CB8818260698BE1CCB",
+							"name": "PALADIN SOLUTIONS PNG LTD"
+						}
+					],
+					"status": "active",
+					"date": "2017-11-27T00:21:23Z"
+				}
+			],
+			"contracts": [
+				{
+					"id": "CN3470670",
+					"awardID": "CN3470670-cc3bde7fac9c3d05a83e8e61a2fcde7c",
+					"dateSigned": "2017-11-27T00:21:23Z",
+					"description": "Provision of Garrison Services at East Lorengau Refugee Transit Centre Manus",
+					"title": "0070020581",
+					"items": [
+						{
+							"id": "80161500-7cfa115fc39a103cfe709f50ccd80431",
+							"classification": {
+								"scheme": "UNSPSC",
+								"id": "80161500"
+							}
+						}
+					],
+					"period": {
+						"startDate": "2017-09-20T14:00:00Z",
+						"endDate": "2018-02-27T13:00:00Z"
+					},
+					"value": {
+						"currency": "AUD",
+						"amount": "89243817.76"
+					},
+					"status": "active",
+					"amendments": [
+						{
+							"id": "CN3470670-A2",
+							"releaseID": "prod-cc3bde80b92ae61d6809efe807a9f726-9e9f19fb21a039dcb80d81a15c448337",
+							"amendsReleaseID": "prod-cc3bde80b92ae61d6809efe807a9f726-0becf3c9633e361ea1a45312ddc288dd"
+						}
+					]
+				}
+			],
+			"tag": [
+				"contractAmendment"
+			],
+			"tender": {
+				"id": "prod-cc3bde80b92ae61d6809efe807a9f726",
+				"procurementMethod": "limited",
+				"procurementMethodDetails": "Limited tender",
+				"limitedTenderExempt": "1",
+				"exemptionCode": "AM",
+				"exemption": "Paragraph 2.6 was applied in some part."
+			}
+		}
+	],
+	"extensions": [
+		"http://cdn.tenders.gov.au/ocds/schema/extension.json"
+	]
+}

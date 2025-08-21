@@ -1,11 +1,11 @@
 <%= turbo_frame_tag :feed do %>
   <div>
-    <% depth = @group.category? ? 1 : Constants::MAX_SEARCH_DEPTH %>
+
     <%= render TransfersTableComponent.new(
         entity: @group,
-        transfers: @group.consolidated_transfers(depth: depth), # <== Because we are recursively fetching the transfers, we need to specify the depth.
+        transfers: @group_consolidated_transfers, # <== Because we are recursively fetching the transfers, we need to specify the depth.
         # Because it is recursive, it is slow. That's why lazy loading with turbo is great
-        heading: "Transfers Connected to groups and people that are connected to #{@group.name} to a depth of #{depth} degrees of separation",
+        heading: "Transfers Connected to groups and people that are connected to #{@group.name} to a depth of #{@depth} degrees of separation",
         summarise_for: Group.summarise_for(@group),
         remove_zero_degrees: true
       )

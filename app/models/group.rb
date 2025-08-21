@@ -109,20 +109,6 @@ class Group < ApplicationRecord
     parent_groups + groups
   end
 
-  # def other_edge_ends
-  #   # if a connection is not so strong as to be a relationship in the application
-  #   # we can consider it an 'other' edge, so far, these are only transfers
-  #   # at the end of an edge, there is a node,
-  #   # at the end of a given transfer is the taker of that transfer
-  #   # at the end of a received transfer is the giver of that transfer
-
-  #   # looser nodes is too loose for looking at a list of associated people and groups, it catches too many.
-  #   # try it for the degrees of seperation between two groups / two people / person & group
-
-  #   outgoing_transfers.map(&:taker) +
-  #   incoming_transfers.map(&:giver)
-  # end
-
   def less_level
     # only called from a disused section in FileIngestor
     name.gsub(/(Federal|NSW|VIC|SA|WA|TAS|ACT|NT)/, '')
