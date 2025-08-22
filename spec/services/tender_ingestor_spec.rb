@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'spec_helper'
+require 'tender_ingestor'
 
 RSpec.describe TenderIngestor, type: :service do
   subject(:service) { described_class.new }
@@ -21,7 +22,7 @@ RSpec.describe TenderIngestor, type: :service do
       let(:response_body) { Rails.root.join('spec/fixtures/contract_last_modified_subsequent_page.json').read }
       let(:original_release_id) { 'prod-63e175f2bc1c4e0bae8ba6ab54bc89eb-64b9e8e38ec83d708907f7310ca99e1f' }
       let(:original_release_date) { Date.new(2020, 4, 7) }
-      let(:eofy_twenty_wenty) { Date.new(2020, 6, 30) }
+      let(:eofy_twenty_twenty) { Date.new(2020, 6, 30) }
       let(:original_release_value) { 10_259_869.35 }
       let(:original_release_description) { 'ICT Hardware' }
       let(:original_release_contract_id) { 'CN3671507' }
@@ -42,7 +43,7 @@ RSpec.describe TenderIngestor, type: :service do
             expect(taker).to be_present
             expect(taker.business_number).to eq(abn)
 
-            transfer = Transfer.find_by(giver: giver, taker: taker, effective_date: eofy_twenty_wenty)
+            transfer = Transfer.find_by(giver: giver, taker: taker, effective_date: eofy_twenty_twenty)
             expect(transfer).to be_present
 
             individual_transaction = IndividualTransaction.find_by(external_id: original_release_id)
@@ -59,7 +60,7 @@ RSpec.describe TenderIngestor, type: :service do
         context 'and that contract already exists in the database' do
           let!(:taker) { Group.create(name: supplier_name) }
           let!(:giver) { Group.create(name: purchaser_name) }
-          let(:transfer) { Transfer.create(giver:, taker:, effective_date: eofy_twenty_wenty) }
+          let(:transfer) { Transfer.create(giver:, taker:, effective_date: eofy_twenty_twenty) }
 
           before do
             IndividualTransaction.create(
@@ -221,7 +222,7 @@ RSpec.describe TenderIngestor, type: :service do
   end
 
   describe '#record_individual_transaction' do
-    # This is testing the _Private_ class
+    # This is testing the RecordIndividualTransaction class
 
     let(:mock_release) do
       OpenStruct.new(
@@ -233,7 +234,7 @@ RSpec.describe TenderIngestor, type: :service do
         tag: "'release['tag'].first'",
         supplier_name: 'Accounting Consulting Guys',
         supplier_abn: 'abn abn',
-        purchaser_name: 'Deprtment of Spending',
+        purchaser_name: 'Department of Spending',
         purchaser_abn: '999123123',
         description: 'A Transfer of stuff'
       )

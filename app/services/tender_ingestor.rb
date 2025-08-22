@@ -1,3 +1,5 @@
+class ValidationError < StandardError; end
+
 class TenderDownloader
   def download(url)
     # https://app.swaggerhub.com/apis/austender/ocds-api/1.1#/
@@ -30,10 +32,6 @@ end
 
 class RecordIndividualTransaction
   def initialize(release)
-    # Use database records if they exist, or create them if they don't
-    @purchaser = RecordGroup.call(release.purchaser_name)
-    @supplier = RecordGroup.call(release.supplier_name, business_number: release.supplier_abn)
-
     # These values come straight from the API response
     @contract_id = release.contract_id
     @release_date = release.date
@@ -46,21 +44,21 @@ class RecordIndividualTransaction
     @release = release
   end
 
-  attr_reader :purchaser, :supplier, :contract_id, :release_date, :release_id, :tag, :release, :description, :effective_date, :amends_release_id
+  attr_reader :contract_id, :release_date, :release_id, :tag, :release, :description, :effective_date, :amends_release_id
 
   def perform
     return if IndividualTransaction.exists?(external_id: release_id)
-    raise unless valid?
+    raise ValidationError unless valid?
 
     IndividualTransaction.create(
-      transfer: transfer,
+      transfer:,
       amount: effective_amount,
-      effective_date: effective_date,
+      effective_date:,
       transfer_type: 'Government Contract',
       evidence: "https://api.tenders.gov.au/ocds/findById/#{contract_id}",
-      external_id: release_id,  # the uniqe identifier from the external system
-      contract_id: contract_id, # the contract can include several amendments
-      description: description
+      external_id: release_id, # the uniqe identifier from the external system
+      contract_id:, # the contract can include several amendments
+      description:
     )
 
     transfer.amount += effective_amount.to_f
@@ -70,7 +68,7 @@ class RecordIndividualTransaction
   end
 
   def valid?
-    purchaser.present? && supplier.present? && contract_id.present? && release_date.present? && release_id.present? && tag.present? && description.present? && effective_date.present?
+    [purchaser, supplier, contract_id, release_date, release_id, tag, description, effective_date].all?(&:present?)
   end
 
   def effective_amount
@@ -90,6 +88,14 @@ class RecordIndividualTransaction
       evidence: 'https://www.tenders.gov.au/cn/search'
     )
   end
+
+  def purchaser
+    @purchaser ||= RecordGroup.call(release.purchaser_name, business_number: release.purchaser_abn)
+  end
+
+  def supplier
+    @supplier ||= RecordGroup.call(release.supplier_name, business_number: release.supplier_abn)
+  end
 end
 
 class TenderIngestor
@@ -97,9 +103,7 @@ class TenderIngestor
     def process_for_url(url:)
       Rails.logger.info "Processing Contracts for #{url}."
 
-      instance = new
-
-      contracts = instance.fetch_contracts_for_url(url: url)
+      contracts = new.fetch_contracts_for_url(url:)
 
       if contracts.blank?
         Rails.logger.warn "No contracts found for #{url}."
@@ -111,7 +115,7 @@ class TenderIngestor
   end
 
   def fetch_contracts_for_url(url: nil)
-    # ingest all of the contracts for a given URL, return an array of hashes, where each element represents a release
+    # ingest all of the contracts for a given URL, return an array of Nice RELEASE Objects, where each element represents a release
     # a release is a new contract or an amendment to an existing contract and contains sufficient information to create the relevant database records
     response = TenderDownloader.new.download(url)
     return unless response && response[:body] && response[:body]['releases']
