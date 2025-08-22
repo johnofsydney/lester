@@ -21,7 +21,7 @@ RSpec.describe TenderIngestor, type: :service do
       let(:response_body) { Rails.root.join('spec/fixtures/contract_last_modified_subsequent_page.json').read }
       let(:original_release_id) { 'prod-63e175f2bc1c4e0bae8ba6ab54bc89eb-64b9e8e38ec83d708907f7310ca99e1f' }
       let(:original_release_date) { Date.new(2020, 4, 7) }
-      let(:eofy_twenty_wenty) { Date.new(2020, 6, 30) }
+      let(:eofy_twenty_twenty) { Date.new(2020, 6, 30) }
       let(:original_release_value) { 10_259_869.35 }
       let(:original_release_description) { 'ICT Hardware' }
       let(:original_release_contract_id) { 'CN3671507' }
