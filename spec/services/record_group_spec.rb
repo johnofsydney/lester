@@ -243,7 +243,7 @@ RSpec.describe RecordGroup, type: :service do
   end
 
   describe '.call' do
-    context 'when the group dopes not already exist' do
+    context 'when the group does not already exist' do
       it 'creates a group with the given name' do
         expect { described_class.call('Test Name') }.to change(Group, :count).by(1)
 
