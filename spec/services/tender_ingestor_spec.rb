@@ -220,7 +220,7 @@ RSpec.describe TenderIngestor, type: :service do
   end
 
   describe '#record_individual_transaction' do
-    # This is testing the _Private_ class
+    # This is testing the RecordIndividualTransaction class
 
     let(:mock_release) do
       OpenStruct.new(
