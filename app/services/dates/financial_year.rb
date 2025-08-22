@@ -1,7 +1,6 @@
 class Dates::FinancialYear
   def initialize(date)
     @date = date.is_a?(String) ? Date.parse(date) : date
-
   end
 
   def last_day

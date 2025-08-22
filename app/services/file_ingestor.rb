@@ -35,7 +35,7 @@ class FileIngestor
 
       membership.update!(evidence:) if evidence
       position.update!(evidence:) if evidence && position
-    rescue => e # rubocop:disable Style/RescueStandardError
+    rescue => e
       Rails.logger.debug { "General Upload | Error: #{e} | row#{row.inspect}" }
     end
   end

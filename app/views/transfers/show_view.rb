@@ -65,37 +65,37 @@ class Transfers::ShowView < ApplicationView
       end
     end
 
-    if transfer.individual_transactions.present?
-      hr
+    return if transfer.individual_transactions.blank?
 
-      p do
-        plain "A single 'transfer' can represent multiple single payments inthe same financial year. "
-        i { 'This '}
-        plain 'transfer represents the following payments:'
-      end
+    hr
 
-      table(class: 'table table-striped') do
-        thead do
-          tr do
-            th { 'Payment Type' }
-            th { 'Evidence' }
-            th { 'External ID' }
-            th { 'Description' }
-            th(class: 'text-end') { 'Amount' }
-            th(class: 'text-end') { 'Date' }
-          end
+    p do
+      plain "A single 'transfer' can represent multiple single payments inthe same financial year. "
+      i { 'This '}
+      plain 'transfer represents the following payments:'
+    end
+
+    table(class: 'table table-striped') do
+      thead do
+        tr do
+          th { 'Payment Type' }
+          th { 'Evidence' }
+          th { 'External ID' }
+          th { 'Description' }
+          th(class: 'text-end') { 'Amount' }
+          th(class: 'text-end') { 'Date' }
         end
-        transfer.individual_transactions.each do |individual_transaction|
-          tbody do
-            td { individual_transaction.transfer_type }
-            td do
-              a(href: individual_transaction.evidence) { individual_transaction.evidence }
-            end
-            td { individual_transaction.external_id }
-            td { individual_transaction.description }
-            td(class: 'text-end') { number_to_currency(individual_transaction.amount, precision: 0) }
-            td(class: 'text-end') { individual_transaction.effective_date.strftime('%d %b %Y') }
+      end
+      transfer.individual_transactions.each do |individual_transaction|
+        tbody do
+          td { individual_transaction.transfer_type }
+          td do
+            a(href: individual_transaction.evidence) { individual_transaction.evidence }
           end
+          td { individual_transaction.external_id }
+          td { individual_transaction.description }
+          td(class: 'text-end') { number_to_currency(individual_transaction.amount, precision: 0) }
+          td(class: 'text-end') { individual_transaction.effective_date.strftime('%d %b %Y') }
         end
       end
     end

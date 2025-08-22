@@ -121,7 +121,8 @@ RSpec.describe TenderIngestor, type: :service do
           expect(fourth_amendment_transaction.effective_date).to eq(contract_amendment_date)
         end
 
-        xit 'calculates the value of each amendment' do
+        it 'calculates the value of each amendment' do
+          pending 'Skipping becuase it fails and I am not sure of logic for the amount maths'
           described_class.process_for_url(url: 'url')
 
           original_release_transaction = IndividualTransaction.find_by(external_id: original_release_id)
