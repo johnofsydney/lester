@@ -232,7 +232,7 @@ RSpec.describe TenderIngestor, type: :service do
         tag: "'release['tag'].first'",
         supplier_name: 'Accounting Consulting Guys',
         supplier_abn: 'abn abn',
-        purchaser_name: 'Deprtment of Spending',
+        purchaser_name: 'Department of Spending',
         purchaser_abn: '999123123',
         description: 'A Transfer of stuff'
       )
