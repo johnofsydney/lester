@@ -61,10 +61,12 @@ class RecordIndividualTransaction
       description:
     )
 
+    # rubocop:disable Rails/Output
     print '.'
 
     transfer.amount += effective_amount.to_f
     transfer.save
+    # rubocop:enable Rails/Output
 
     true
   end
