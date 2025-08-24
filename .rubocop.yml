@@ -1,9 +1,12 @@
+inherit_from: .rubocop_todo.yml
+
 require:
-  - rubocop-rspec_rails
+  # - rubocop-rspec_rails
 
 plugins:
   - rubocop-rails
   - rubocop-rspec
+  - rubocop-rspec_rails
   - rubocop-performance
 
 AllCops:
@@ -28,6 +31,10 @@ Style/Documentation:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Style/OpenStructUse:
+  Enabled: false
+
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

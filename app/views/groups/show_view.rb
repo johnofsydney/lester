@@ -24,7 +24,7 @@ class Groups::ShowView < ApplicationView
 
     render TransfersTableComponent.new(
     entity: group,
-    transfers: group.consolidated_transfers(depth: 0), # <== This is building a table with transfers directly connected to the group
+    transfers: group.consolidated_transfers(depth: 0), # <== This is building a table with transfers directly connected to the group. Let's make a method for direct transfers where depth == 0
     heading: "Directly Connected to #{group.name}",
     summarise_for: Group.summarise_for(group),
     )

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_04_05_093513) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_11_102545) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,23 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_05_093513) do
     t.json "cached_data", default: {}
     t.string "business_number"
     t.text "other_names", default: [], array: true
+  end
+
+  create_table "individual_transactions", force: :cascade do |t|
+    t.bigint "transfer_id"
+    t.float "amount"
+    t.text "evidence"
+    t.string "transfer_type"
+    t.date "effective_date"
+    t.string "external_id"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "contract_id"
+    t.index ["contract_id"], name: "index_individual_transactions_on_contract_id"
+    t.index ["effective_date"], name: "index_individual_transactions_on_effective_date"
+    t.index ["external_id"], name: "index_individual_transactions_on_external_id"
+    t.index ["transfer_id"], name: "index_individual_transactions_on_transfer_id"
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -125,14 +142,16 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_05_093513) do
     t.bigint "giver_id"
     t.string "taker_type"
     t.bigint "taker_id"
-    t.integer "amount", default: 0
+    t.float "amount", default: 0.0, null: false
     t.text "evidence"
     t.text "transfer_type"
     t.date "effective_date"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.json "data"
+    t.text "external_id"
     t.index ["effective_date"], name: "index_transfers_on_effective_date"
+    t.index ["external_id"], name: "index_transfers_on_external_id"
     t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
     t.index ["taker_type", "taker_id"], name: "index_transfers_on_taker"
   end
@@ -149,6 +168,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_04_05_093513) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "individual_transactions", "transfers"
   add_foreign_key "memberships", "groups"
   add_foreign_key "positions", "memberships"
 end
