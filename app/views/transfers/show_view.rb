@@ -42,7 +42,7 @@ class Transfers::ShowView < ApplicationView
       hr
 
       p do
-        plain "A single 'transfer' can represent multiple single payments inthe same financial year. "
+        plain "A single 'transfer' can represent multiple single payments in the same financial year. "
         i { 'This '}
         plain 'transfer represents the following payments:'
       end
@@ -70,7 +70,7 @@ class Transfers::ShowView < ApplicationView
     hr
 
     p do
-      plain "A single 'transfer' can represent multiple single payments inthe same financial year. "
+      plain "A single 'transfer' can represent multiple single payments in the same financial year. "
       i { 'This '}
       plain 'transfer represents the following payments:'
     end
