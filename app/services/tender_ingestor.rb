@@ -61,6 +61,8 @@ class RecordIndividualTransaction
       description:
     )
 
+    print '.'
+
     transfer.amount += effective_amount.to_f
     transfer.save
 
