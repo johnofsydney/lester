@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_08_11_102545) do
+ActiveRecord::Schema[7.2].define(version: 2025_08_25_072542) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_08_11_102545) do
     t.json "cached_data", default: {}
     t.string "business_number"
     t.text "other_names", default: [], array: true
+    t.datetime "last_cached"
   end
 
   create_table "individual_transactions", force: :cascade do |t|

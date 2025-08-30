@@ -24,13 +24,14 @@ class Groups::ShowView < ApplicationView
 
     render TransfersTableComponent.new(
     entity: group,
-    transfers: group.consolidated_transfers(depth: 0), # <== This is building a table with transfers directly connected to the group. Let's make a method for direct transfers where depth == 0
+    transfers: group.direct_consolidated_transfers, # <== This is building a table with transfers directly connected to the group. Let's make a method for direct transfers where depth == 0
+    # transfers: group.consolidated_transfers(depth: 0), # <== This is building a table with transfers directly connected to the group. Let's make a method for direct transfers where depth == 0
     heading: "Directly Connected to #{group.name}",
     summarise_for: Group.summarise_for(group),
     )
 
-    turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do  # <== This is lazy loading a turbo frame for indirect transfers as well
-      p(class: 'grey') { 'Fetching More Transfer Records...'}
-    end
+    # turbo_frame(id: 'feed', src: lazy_load_group_path, loading: :lazy) do  # <== This is lazy loading a turbo frame for indirect transfers as well
+    #   p(class: 'grey') { 'Fetching More Transfer Records...'}
+    # end
   end
 end

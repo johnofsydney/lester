@@ -19,7 +19,8 @@ class TransfersTableComponent < ApplicationView
 
     # TODO: also deal with summarise outbound?
     if summarise_for.present?
-      transfers_to_summarise = transfers.group_by { |t| [t.taker.name, t.effective_date, t.depth, t.direction, t.taker.id] }
+      transfers_to_summarise = transfers.reject { |t| t.values.any?(&:nil?) }
+                                        .group_by { |t| [t.taker_name, t.effective_date, t.depth, t.direction, t.taker_id] }
                                         .select { |combo, transfers| summarise_for.include?(combo.first) && transfers.count > 1 }
 
       summary_rows = transfers_to_summarise.map do |combo, transfers|
@@ -35,7 +36,7 @@ class TransfersTableComponent < ApplicationView
 
       make_table(transfers - transfers_to_summarise.values.flatten + summary_rows)
     elsif exclude.present?
-      transfers_grouped_by_name = transfers.group_by { |t| t.taker.name }
+      transfers_grouped_by_name = transfers.group_by { |t| t.taker_name }
       transfers_grouped_by_each_exclude_name = transfers_grouped_by_name.slice(*exclude)
       make_table(transfers - transfers_grouped_by_each_exclude_name.values.flatten)
     else
@@ -59,7 +60,9 @@ class TransfersTableComponent < ApplicationView
           th(class: 'desktop-only') { 'Direction' }
         end
 
-        transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
+        transfers.reject { |t| t.nil? || t.values.any?(&:nil?) }
+                 .sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
+          next if transfer.values.any?(&:nil?) # skip incomplete records
           tr do
             td(style: row_style(transfer)) do
               if transfer.id
@@ -70,13 +73,16 @@ class TransfersTableComponent < ApplicationView
             end
             td(style: row_style(transfer)) { number_to_currency(transfer.amount.to_s, precision: 0) }
             td(style: row_style(transfer)) { transfer.effective_date.year.to_s }
-            if transfer.giver.id
-              td(style: row_style(transfer)) { link_for(entity: transfer.giver) if transfer.giver}
-            elsif transfer.giver
+            if transfer.giver_id # it is NOT a summary row
+              td(style: row_style(transfer)) { link_for(klass: 'group', id: transfer.giver_id, link_text: transfer.giver_name) }
+            else
               td(style: row_style(transfer)) { transfer.giver.name } # only for summary rows
+            # elsif transfer.giver
+            #   td(style: row_style(transfer)) { transfer.giver.name } # only for summary rows
             end
 
-            td(style: row_style(transfer)) { link_for(entity: transfer.taker) if transfer.taker}
+            td(style: row_style(transfer)) { link_for(klass: 'group', id: transfer.taker_id, link_text: transfer.taker_name) } # if transfer.taker}
+            # td(style: row_style(transfer)) { link_for(entity: transfer.taker) if transfer.taker}
             td(style: row_style(transfer), class: 'desktop-only') { transfer.depth }
             td(style: row_style(transfer), class: 'desktop-only') { transfer.direction }
           end

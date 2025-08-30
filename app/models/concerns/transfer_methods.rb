@@ -84,16 +84,16 @@ module TransferMethods
     def category_incoming_transfers
       return Transfer.none unless self.is_category?
 
-      @category_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: [self.groups.pluck(:id)])
-                                               .where.not(giver_id: [self.groups.pluck(:id)])
-                                               .or(Transfer.where(taker_type: 'Person', taker_id: [self.people.pluck(:id)]))
+      @category_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: [self.groups.select(:id)])
+                                               .where.not(giver_id: [self.groups.select(:id)])
+                                               .or(Transfer.where(taker_type: 'Person', taker_id: [self.people.select(:id)]))
     end
 
     def category_outgoing_transfers
       return Transfer.none unless self.is_category?
 
-      group_ids = self.groups.pluck(:id)
-      people_ids = self.people.pluck(:id)
+      group_ids = self.groups.select(:id)
+      people_ids = self.people.select(:id)
 
       @category_outgoing_transfers ||= Transfer.where(giver_type: 'Group', giver_id: group_ids)
                                                .where.not(taker_id: group_ids)
@@ -111,15 +111,16 @@ module TransferMethods
     end
 
     def transfer_struct(transfer:, depth:, direction:)
-      OpenStruct.new(
-        id: transfer.id,
-        giver: transfer.giver,
-        taker: transfer.taker,
-        amount: transfer.amount,
-        effective_date: transfer.effective_date,
-        depth:,
-        direction:
-      )
+      # OpenStruct.new(
+      #   id: transfer.id,
+      #   giver: transfer.giver,
+      #   taker: transfer.taker,
+      #   amount: transfer.amount,
+      #   effective_date: transfer.effective_date,
+      #   depth:,
+      #   direction:
+      # )
+      ConsolidatedTransfer.new(transfer:, depth:, direction:)
     end
   end
 end
