@@ -84,13 +84,37 @@ module NodeMethods
         money_in:,
         money_out:,
         nodes_count:,
-        direct_connections: nodes.map{|n| {klass: n.class.name, id: n.id, name: n.name, nodes_count: n.nodes_count, is_category: n.is_category?} },
-        transfers_as_taker: inbound_transfers.map{|t| t.augment(depth: is_category? ? 1 : 0, direction: 'incoming').to_h },
-        transfers_as_giver: outbound_transfers.map{|t| t.augment(depth: is_category? ? 1 : 0, direction: 'outgoing').to_h }
+        direct_connections:,
+        transfers_as_taker:,
+        transfers_as_giver:
       }
     end
 
     private
+
+    def direct_connections
+      nodes.map do |n|
+        {
+          klass: n.class.name,
+          id: n.id,
+          name: n.name,
+          nodes_count: n.nodes_count,
+          is_category: n.is_category?
+        }
+      end
+    end
+
+    def transfers_as_taker
+      inbound_transfers.map do |t|
+        t.augment(depth: is_category? ? 1 : 0, direction: 'incoming').to_h
+      end
+    end
+
+    def transfers_as_giver
+      outbound_transfers.map do |t|
+        t.augment(depth: is_category? ? 1 : 0, direction: 'outgoing').to_h
+      end
+    end
 
     def configure_descendent(descendent)
       {
