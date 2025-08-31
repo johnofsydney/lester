@@ -51,33 +51,70 @@ module NodeMethods
 
     # STUFF TO DO WITH MONEY SUMMARY
     def money_in
-      if is_category?
-        amount = category_incoming_transfers.sum(:amount)
-      else
-        amount = incoming_transfers.sum(:amount)
-      end
-
+      amount = inbound_transfers.sum(:amount)
       return unless amount.positive?
 
       number_to_currency amount, precision: 0
     end
 
+    def inbound_transfers
+      @inbound_transfers ||= is_category? ? category_incoming_transfers : incoming_transfers
+    end
+
     def money_out
-      if is_category?
-        amount = category_outgoing_transfers.sum(:amount)
-      else
-        amount = outgoing_transfers.sum(:amount)
-      end
+      amount = outbound_transfers.sum(:amount)
       return unless amount.positive?
 
       number_to_currency amount, precision: 0
+    end
+
+    def outbound_transfers
+      @outbound_transfers ||= is_category? ? category_outgoing_transfers : outgoing_transfers
     end
 
     def is_category?
       is_category?
     end
 
+    def to_h
+      {
+        id:,
+        name:,
+        is_category: is_category?,
+        money_in:,
+        money_out:,
+        nodes_count:,
+        direct_connections:,
+        transfers_as_taker:,
+        transfers_as_giver:
+      }
+    end
+
     private
+
+    def direct_connections
+      nodes.map do |n|
+        {
+          klass: n.class.name,
+          id: n.id,
+          name: n.name,
+          nodes_count: n.nodes_count,
+          is_category: n.is_category?
+        }
+      end
+    end
+
+    def transfers_as_taker
+      inbound_transfers.map do |t|
+        t.augment(depth: is_category? ? 1 : 0, direction: 'incoming').to_h
+      end
+    end
+
+    def transfers_as_giver
+      outbound_transfers.map do |t|
+        t.augment(depth: is_category? ? 1 : 0, direction: 'outgoing').to_h
+      end
+    end
 
     def configure_descendent(descendent)
       {

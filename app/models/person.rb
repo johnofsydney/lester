@@ -25,6 +25,7 @@ class Person < ApplicationRecord
   end
 
   def transfers
+    # TODO: Potentially useless code
     OpenStruct.new(
       incoming: Transfer.where(taker: self), # always nil. replace with [] ?,
       outgoing: Transfer.where(giver: self, giver_type: 'Person').order(amount: :desc)
@@ -71,6 +72,8 @@ class Person < ApplicationRecord
   end
 
   def direct_transfers
+    # TODO: Potentially Useless Code
+    # largely duplicated by code inside node methods
     transfers_in = incoming_transfers.sum(:amount)
     transfers_out = outgoing_transfers.sum(:amount)
 
@@ -83,6 +86,8 @@ class Person < ApplicationRecord
 
   def first_degree_transfers
     # TODO: cache some of these database calls
+    # TODO: Potentially Useless Code
+    # largely duplicated by code inside node methods
     transfers = consolidated_transfers(depth: 1).filter { |transfer| transfer.depth == 1 }
     incoming_transfers = transfers.filter { |transfer| transfer.direction == 'incoming' }
     outgoing_transfers = transfers.filter { |transfer| transfer.direction == 'outgoing' }

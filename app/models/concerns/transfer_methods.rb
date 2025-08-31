@@ -15,11 +15,11 @@ module TransferMethods
 
         # TODO: are the transfer methods in Person and Group helpful or harmful?
         Transfer.where(giver: node).find_each do |transfer|
-          results << transfer_struct(transfer:, depth: counter, direction: 'outgoing')
+          results << transfer.augment(depth: counter, direction: 'outgoing')
         end
 
         Transfer.where(taker: node).find_each do |transfer|
-          results << transfer_struct(transfer:, depth: counter, direction: 'incoming')
+          results << transfer.augment(depth: counter, direction: 'incoming')
         end
       end
 
@@ -108,18 +108,6 @@ module TransferMethods
                           else
                             self.incoming_transfers.or(self.outgoing_transfers)
                           end
-    end
-
-    def transfer_struct(transfer:, depth:, direction:)
-      OpenStruct.new(
-        id: transfer.id,
-        giver: transfer.giver,
-        taker: transfer.taker,
-        amount: transfer.amount,
-        effective_date: transfer.effective_date,
-        depth:,
-        direction:
-      )
     end
   end
 end

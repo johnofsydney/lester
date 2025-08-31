@@ -35,6 +35,10 @@ Style/FrozenStringLiteralComment:
 Style/OpenStructUse:
   Enabled: false
 
+Style/RedundantBegin:
+  Exclude:
+    - 'app/views/components/common/money_graphs.rb'
+
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

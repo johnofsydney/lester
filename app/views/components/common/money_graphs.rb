@@ -20,16 +20,18 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def colors(query, giver: false)
-    if giver
-      query.group(:taker_id, :taker_type)
-           .sum(:amount)
-           .transform_keys{ |key| key[1].constantize.find(key[0]).name }
-           .map{|name, v| '#' + Digest::MD5.hexdigest(name)[0..5]}
-    else
-      query.group(:giver_id, :giver_type)
-           .sum(:amount)
-           .transform_keys{ |key| key[1].constantize.find(key[0]).name }
-           .map{|name, v| '#' + Digest::MD5.hexdigest(name)[0..5]}
+    @colors ||= begin
+      if giver
+        query.group(:taker_id, :taker_type)
+            .sum(:amount)
+            .transform_keys{ |key| key[1].constantize.find(key[0]).name }
+            .map{|name, v| '#' + Digest::MD5.hexdigest(name)[0..5]}
+      else
+        query.group(:giver_id, :giver_type)
+            .sum(:amount)
+            .transform_keys{ |key| key[1].constantize.find(key[0]).name }
+            .map{|name, v| '#' + Digest::MD5.hexdigest(name)[0..5]}
+      end
     end
   end
 
@@ -46,26 +48,30 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def group_by_year
-    transfers.group(:effective_date)
-         .sum(:amount)
-         .sort_by{|k, _v| k }
-         .to_h
-         .transform_keys{ |key| key.year }
+    @group_by_year ||= begin
+      transfers.group(:effective_date)
+        .sum(:amount)
+        .sort_by{|k, _v| k }
+        .to_h
+        .transform_keys{ |key| key.year }
+    end
   end
 
   def all_the_groups
     # sorts the giver or takers by the amount of money they have given or taken (sum)
     # does not consider year
-    if giver
-      all_the_groups = transfers.group(:taker_id, :taker_type)
-                          .sum(:amount)
-                          .transform_keys{ |key| name_for_bar_graph(key) }
-                          .sort_by{|k, v| v}
-    else
-      all_the_groups = transfers.group(:giver_id, :giver_type)
-                          .sum(:amount)
-                          .transform_keys{ |key| name_for_bar_graph(key) }
-                          .sort_by{|k, v| v}
+    @all_the_groups ||= begin
+      if giver
+        all_the_groups = transfers.group(:taker_id, :taker_type)
+                            .sum(:amount)
+                            .transform_keys{ |key| name_for_bar_graph(key) }
+                            .sort_by{|k, v| v}
+      else
+        all_the_groups = transfers.group(:giver_id, :giver_type)
+                            .sum(:amount)
+                            .transform_keys{ |key| name_for_bar_graph(key) }
+                            .sort_by{|k, v| v}
+      end
     end
   end
 
