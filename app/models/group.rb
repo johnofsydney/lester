@@ -111,6 +111,7 @@ class Group < ApplicationRecord
 
   def less_level
     # only called from a disused section in FileIngestor
+    # TODO: Potentially useless code
     name.gsub(/(Federal|NSW|VIC|SA|WA|TAS|ACT|NT)/, '')
         .delete('(')
         .delete(')')
