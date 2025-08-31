@@ -61,12 +61,9 @@ class RecordIndividualTransaction
       description:
     )
 
-    # rubocop:disable Rails/Output
-    print '.'
+    print '.' # rubocop:disable Rails/Output
 
-    transfer.amount += effective_amount.to_f
-    transfer.save
-    # rubocop:enable Rails/Output
+    transfer.increment!(:amount, effective_amount.to_f) # rubocop:disable Rails/SkipsModelValidations
 
     true
   end
