@@ -29,7 +29,7 @@ class HomeController < ApplicationController
   end
 
   def post_to_socials
-    message = Person.all.shuffle.last.summary
+    message = Person.all.shuffle.last.tweet_body
     BlueskyService.skeet(message)
 
     render json: { message: message }, status: :ok

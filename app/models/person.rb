@@ -38,7 +38,7 @@ class Person < ApplicationRecord
 
   def is_category? = false
 
-  def summary
+  def tweet_body
     body = <<~SUMMARY.strip
       🔍 #{name}
 
