@@ -60,10 +60,12 @@ class InertiaController < ApplicationController
   end
 
   def all_memberships_of_descendents
-    # There is a good index for this, and it is ONE query, so it's not very slow
-    Membership.where(member_id: ids_people_descendents, member_type: 'Person')
-              .or(Membership.where(member_id: ids_group_descendents, member_type: 'Group'))
-              .or(Membership.where(group_id: ids_group_descendents))
+    ActiveRecord::Base.logger.silence do
+      # There is a good index for this, and it is ONE query, so it's not very slow
+      Membership.where(member_id: ids_people_descendents, member_type: 'Person')
+                .or(Membership.where(member_id: ids_group_descendents, member_type: 'Group'))
+                .or(Membership.where(group_id: ids_group_descendents))
+    end
   end
 
   def configure_edge(membership)

@@ -15,34 +15,6 @@ module NodeMethods
       nodes.count
     end
 
-    def consolidated_descendents_depth(depth)
-      # if refresh_consolidated_descendents_depth_cache?(depth)
-      #   result = self.consolidated_descendents(depth: depth).map{
-      #     |descendent| descendent.to_h
-      #   }
-
-      #   self.update(
-      #     cached_consolidated_descendents: result,
-      #     cached_consolidated_descendents_timestamp:Time.zone.now
-      #   )
-      # end
-
-      # result = self.reload
-      #              .cached_consolidated_descendents
-      #              .map{|d| d.symbolize_keys }
-      #              .filter{|d| d[:depth] <= depth}
-
-      # result = self.cached_summary['consolidated_descendents']
-
-      # result.map{ |descendent| Descendent.new(
-      #   id: descendent['id'],
-      #   klass: descendent['klass'],
-      #   name: descendent['name'],
-      #   depth: descendent['depth'],
-      #   parent_count: descendent['descendent_parent_count'],
-      # ) }
-    end
-
     # STUFF TO DO WITH MONEY SUMMARY
     def money_in
       amount = inbound_transfers.sum(:amount)
@@ -64,7 +36,6 @@ module NodeMethods
       return unless amount.positive?
 
       number_to_currency number_to_human amount, precision: 4
-      # number_to_currency amount, precision: 0
     end
 
     def outbound_transfers
@@ -90,7 +61,7 @@ module NodeMethods
         top_six_as_giver: top_six_as_giver.to_h,
         top_six_as_taker: top_six_as_taker.to_h,
         graph_color: "##{ Digest::MD5.hexdigest(name)[0..5]}",
-        consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h)
+        consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h) # used for the network graph
       }
     end
 
@@ -150,6 +121,7 @@ module NodeMethods
     end
 
     def name_for_bar_graph(key)
+      # TODO: refactor out the fetching from  the db. This is inefficient.
       klass = key[1].constantize # key[1] == type, giver_type or taker_type
       instance = klass.find(key[0]) # key[0] == id, giver_id or taker_id
       name = instance.name
@@ -182,46 +154,5 @@ module NodeMethods
         t.augment(depth: is_category? ? 1 : 0, direction: 'outgoing')
       end
     end
-
-    # def configure_descendent(descendent)
-    #   {
-    #     id: descendent.id,
-    #     klass: descendent.klass,
-    #     name: descendent.name,
-    #     depth: descendent.depth,
-    #     descendent_parent_id: descendent&.parent&.id,
-    #     descendent_parent_count: descendent&.parent&.nodes_count,
-    #   }
-    # end
-
-    # def refresh_nodes_count_cache?
-    #   return true if nodes_count_cache_expired?
-
-    #   cached_nodes_count_missing?
-    # end
-
-    # def cached_nodes_count_missing?
-    #   cached_nodes_count.blank?
-    # end
-
-    # def nodes_count_cache_expired?
-    #   return true if cached_nodes_count_missing?
-
-    #   Time.zone.now - Time.zone.parse(self.cached_nodes_count_timestamp) > 1.week
-    # end
-
-    # def refresh_consolidated_descendents_depth_cache?(depth)
-    #   return false
-    #   # if the depth has been previouslt exhausted at this depth, return true TODO
-
-    #   return true if self.cached_consolidated_descendents.blank?
-
-    #   max_depth = self.cached_consolidated_descendents.map{|d| d['depth']}.max
-    #   return true if max_depth < depth
-
-    #   Rails.logger.debug { "max_depth: #{max_depth}" }
-    #   Rails.logger.debug { "depth: #{depth}" }
-    #   false
-    # end
   end
 end
