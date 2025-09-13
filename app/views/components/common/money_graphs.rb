@@ -49,11 +49,12 @@ class Common::MoneyGraphs < ApplicationView
 
   def group_by_year
     @group_by_year ||= begin
-      transfers.group(:effective_date)
-        .sum(:amount)
-        .sort_by{|k, _v| k }
-        .to_h
-        .transform_keys{ |key| key.year }
+    transfers
+      .to_a
+      .group_by { |t| t.effective_date.year }
+      .transform_values { |ts| ts.sum(&:amount) }
+      .sort_by { |year, _| year }
+      .to_h
     end
   end
 
