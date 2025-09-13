@@ -15,6 +15,42 @@ class Descendent
     @parent_count = parent_count
   end
 
+  def to_h
+    {
+      parent_id: parent&.id,
+      parent_name: parent&.name,
+      parent_klass: parent&.class&.to_s,
+      parent_count: parent_count || parent_size,
+      id:,
+      name:,
+      klass:,
+      depth:,
+      shape:,
+      color:,
+      mass:,
+      size:,
+      url:,
+    }
+  end
+
+  def to_open
+    OpenStruct.new(
+      parent_id: parent&.id,
+      parent_name: parent&.name,
+      parent_klass: parent&.class&.to_s,
+      parent_count: parent_count,
+      id:,
+      name:,
+      klass:,
+      depth:,
+      shape:,
+      color:,
+      mass:,
+      size:,
+      url:,
+    )
+  end
+
   def shape
     return 'circle' if depth.zero?
 

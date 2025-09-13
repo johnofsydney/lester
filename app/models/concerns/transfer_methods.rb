@@ -53,6 +53,7 @@ module TransferMethods
           parent = with_parents.reverse.find{ |element| element[:child] == node }[:parent]
         end
 
+        # Descendent is probably too big and too memory hungry. TODO: refactor
         results << Descendent.new(node: node, depth: counter, parent:)
       end
 

@@ -62,7 +62,7 @@ export default function NetworkGraph({ name, json_nodes, json_edges }) {
 
   return (
     <>
-      <div  className="bottom-0" id="network">
+      <div className="bottom-0 results" id="network">
         <h3 className="center">Network Diagram centred on {name}</h3>
 
         <Graph

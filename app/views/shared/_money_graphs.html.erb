@@ -2,7 +2,7 @@
 <div class="row graph rounded bg-light mt-3 shadow-sm border">
   <%= bar_chart(
     transfers_by_name,
-    colors:,
+    # colors:,
     prefix: "$",
     thousands: ",",
     download: true,
@@ -43,7 +43,7 @@
 <div class="row graph rounded bg-light mt-3 border">
   <%= pie_chart(
     transfers_by_name,
-    colors:,
+    # colors:,
     prefix: "$",
     thousands: ",",
     download: true,
@@ -56,7 +56,7 @@
 <div class="row graph rounded bg-light mt-3 mb-3 border">
   <%= column_chart(
     transfers_by_year,
-    colors:,
+    # colors:,
     prefix: "$",
     thousands: ",",
     download: true,
