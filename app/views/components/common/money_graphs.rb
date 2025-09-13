@@ -6,10 +6,10 @@ class Common::MoneyGraphs < ApplicationView
   attr_reader :entity, :giver
 
   def initialize(entity:, giver: false)
-    # TODO: refactor out the giver boolean. It's not very clear.
-		@entity = entity
+  # TODO: refactor out the giver boolean. It's not very clear.
+    @entity = entity
     @giver = giver
-	end
+  end
 
   def template
     render partial: 'shared/money_graphs', locals: {

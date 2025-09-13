@@ -7,7 +7,7 @@ module NodeMethods
       :consolidated_descendents,
       :consolidated_descendents_timestamp,
       :summary,
-      :summary_timestamp,
+      :summary_timestamp
     ], prefix: :cached
 
     # STUFF TO DO WITH CACHING
@@ -60,7 +60,7 @@ module NodeMethods
         transfers_as_giver: transfers_as_giver.map(&:to_h),
         top_six_as_giver: top_six_as_giver.to_h,
         top_six_as_taker: top_six_as_taker.to_h,
-        graph_color: "##{ Digest::MD5.hexdigest(name)[0..5]}",
+        graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}",
         consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h) # used for the network graph
       }
     end
@@ -73,13 +73,13 @@ module NodeMethods
       @all_the_groups ||= begin
         {
           as_giver: outbound_transfers.group(:taker_id, :taker_type)
-                                .sum(:amount)
-                                .transform_keys{ |key| name_for_bar_graph(key) }
-                                .sort_by{|k, v| v},
+                                      .sum(:amount)
+                                      .transform_keys{ |key| name_for_bar_graph(key) }
+                                      .sort_by{|_k, v| v},
           as_taker: inbound_transfers.group(:giver_id, :giver_type)
-                                .sum(:amount)
-                                .transform_keys{ |key| name_for_bar_graph(key) }
-                                .sort_by{|k, v| v}
+                                     .sum(:amount)
+                                     .transform_keys{ |key| name_for_bar_graph(key) }
+                                     .sort_by{|_k, v| v}
         }
       end
     end

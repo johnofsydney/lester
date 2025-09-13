@@ -29,7 +29,7 @@ class Descendent
       color:,
       mass:,
       size:,
-      url:,
+      url:
     }
   end
 
@@ -47,7 +47,7 @@ class Descendent
       color:,
       mass:,
       size:,
-      url:,
+      url:
     )
   end
 

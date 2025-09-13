@@ -28,20 +28,6 @@ class Transfer < ApplicationRecord
     effective_date.year
   end
 
-  def giver_name
-    if cached_giver_name.blank?
-      self.update(cached_giver_name: giver.name)
-    end
-
-    cached_giver_name
-  end
-
-  def taker_name
-    self.update(cached_taker_name: taker.name) if cached_taker_name.blank?
-
-    cached_taker_name
-  end
-
   def to_h
     {
       id:,

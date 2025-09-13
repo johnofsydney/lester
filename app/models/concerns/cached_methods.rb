@@ -18,7 +18,7 @@ class RehydratedNode
     cached_value = @node.cached_summary&.[]('consolidated_descendents')
 
     if cached_value.present? && cache_fresh?
-      cached_value.map{|h| OpenStruct.new(h) }
+      cached_value.map {|h| OpenStruct.new(h) }
     else
       cache_builder.set(wait: 60.seconds).perform_async(node.id)
       node.consolidated_descendents(depth: 5)
