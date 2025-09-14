@@ -22,24 +22,10 @@ class Transfer < ApplicationRecord
   # other data is immutable
   store_accessor :data, %i(donations)
 
-  attr_accessor :depth, :direction
+  attr_accessor :depth, :direction, :giver_name, :taker_name
 
   def financial_year
     effective_date.year
-  end
-
-  def giver_name
-    if cached_giver_name.blank?
-      self.update(cached_giver_name: giver.name)
-    end
-
-    cached_giver_name
-  end
-
-  def taker_name
-    self.update(cached_taker_name: taker.name) if cached_taker_name.blank?
-
-    cached_taker_name
   end
 
   def to_h
@@ -61,6 +47,8 @@ class Transfer < ApplicationRecord
   def augment(depth:, direction:)
     self.depth = depth
     self.direction = direction
+    self.giver_name = giver.name
+    self.taker_name = taker.name
 
     self
   end

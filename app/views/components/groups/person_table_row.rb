@@ -2,7 +2,8 @@ class Groups::PersonTableRow < ApplicationView
 	def initialize(person:, exclude_group: nil)
 		@person = person
     @exclude_group = exclude_group
-    @membership = Membership.find_by(group: exclude_group, member: person)
+    # @membership = Membership.find_by(group: exclude_group, member: @person)
+    @membership = person.memberships.to_a.find{|m| m.group_id == exclude_group.id } # is this faster than going back to the database
 	end
 
   attr_reader :person, :exclude_group, :membership
@@ -26,7 +27,7 @@ class Groups::PersonTableRow < ApplicationView
 
       render Common::CollapsibleButtonCollection.new(
         entity: person,
-        collection: person.groups.where.not(id: exclude_group.id),
+        collection: person.groups.where.not(id: exclude_group.id).includes(memberships: :positions),
         render_inside: 'td'
       )
     end

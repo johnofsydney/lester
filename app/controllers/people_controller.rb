@@ -22,7 +22,7 @@ class PeopleController < ApplicationController
   end
 
   def post_to_socials
-    message = @person.summary
+    message = @person.tweet_body
     BlueskyService.skeet(message)
 
     render json: { message: message }, status: :ok

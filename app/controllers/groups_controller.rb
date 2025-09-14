@@ -33,11 +33,13 @@ class GroupsController < ApplicationController
   end
 
   def group_people
+    # This action has pagination. TODO: re-add pagination into the new format?
     group = Group.find(params[:group_id])
     page = params[:page].to_i
     pages = (group.people.count.to_f / page_size).ceil
 
     people = group.people
+                  .includes(memberships: :positions)
                   .order(:name)
                   .offset(page * page_size)
                   .limit(page_size)
@@ -48,7 +50,7 @@ class GroupsController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_group
-    @group = Group.find(params[:id])
+    @group = Group.includes(:incoming_transfers, :outgoing_transfers).find_by(id: params[:id])
   end
 
   def set_page
@@ -72,7 +74,7 @@ class GroupsController < ApplicationController
   end
 
   def page_size
-    return 250
+    return 20
 
     @page_size ||= Constants::PAGE_LIMIT
   end
