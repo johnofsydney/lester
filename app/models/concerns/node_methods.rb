@@ -61,7 +61,8 @@ module NodeMethods
         top_six_as_giver: top_six_as_giver.to_h,
         top_six_as_taker: top_six_as_taker.to_h,
         graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}",
-        consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h) # used for the network graph
+        consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h), # used for the network graph
+        data_time_range: data_time_range
       }
     end
 

@@ -13,6 +13,7 @@ class RehydratedNode
   end
 
   def consolidated_descendents
+    # This is a lot of descendents. TODO: use it for downstream methods
     # TODO: decide which to coerce?
     # Cached hash into dot format, or Query result into array of hashes?
     cached_value = @node.cached_summary&.[]('consolidated_descendents')
@@ -66,6 +67,53 @@ class RehydratedNode
     else
       cache_builder.set(wait: 60.seconds).perform_async(node.id)
       node.transfers_as_taker
+    end
+  end
+
+  def money_in
+    cached_value = @node.cached_summary&.[]('money_in')
+
+    if cache_fresh?
+      # skipping the present? check as nil is a valid value
+      cached_value
+    else
+      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      node.money_in
+    end
+  end
+
+  def money_out
+    cached_value = @node.cached_summary&.[]('money_out')
+
+    if cache_fresh?
+      # skipping the present? check as nil is a valid value
+      cached_value
+    else
+      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      node.money_out
+    end
+  end
+
+  def data_time_range
+    # quite specific - it is used in graphs
+    cached_value = @node.cached_summary&.[]('data_time_range')
+
+    if cached_value.present? && cache_fresh?
+      cached_value
+    else
+      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      node.data_time_range
+    end
+  end
+
+  def direct_connections
+    cached_value = @node.cached_summary&.[]('direct_connections')
+
+    if cached_value.present? && cache_fresh?
+      cached_value
+    else
+      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      node.direct_connections
     end
   end
 
