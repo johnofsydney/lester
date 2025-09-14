@@ -24,7 +24,7 @@ class Groups::ShowView < ApplicationView
 
 
     turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}/page=#{page_number}", loading: :lazy) do
-      raise 'add pagination. reduce queries and counts'
+      # raise 'add pagination. reduce queries and counts'
       p(class: 'grey') { 'Fetching Affiliated Groups...'  }
     end
 
