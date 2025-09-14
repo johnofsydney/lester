@@ -21,6 +21,10 @@ class RehydratedNode
     end
   end
 
+  def direct_transfers
+    (transfers_as_taker + transfers_as_giver)
+  end
+
   def consolidated_descendents
     # This is a lot of descendents. TODO: use it for downstream methods
     # TODO: decide which to coerce?
@@ -32,6 +36,19 @@ class RehydratedNode
     else
       cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.consolidated_descendents(depth: 5)
+    end
+  end
+
+  def consolidated_transfers
+    # This is a lot of transfers. TODO: use it for downstream methods
+    # Cached hash into dot format, or Query result into array of hashes?
+    cached_value = @node.cached_summary&.[]('consolidated_transfers')
+
+    if cached_value.present? && cache_fresh?
+      cached_value.map {|h| OpenStruct.new(h) } # TODO: _probably_ want to uses hashes throughout
+    else
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
+      node.consolidated_transfers(depth: 2)
     end
   end
 

@@ -56,7 +56,12 @@ class ApplicationView < ApplicationComponent
                         else
                           class_of(entity)
                         end
-    id = entity.id
+    id = if entity.respond_to?(:id)
+            entity.id
+          else
+            entity['id']
+          end
+
     link_text ||= entity.respond_to?(:name) ? entity.name : entity.amount
     href = "/#{klass_name_plural}/#{id}"
 

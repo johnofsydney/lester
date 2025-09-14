@@ -19,7 +19,7 @@ class TransfersTableComponent < ApplicationView
 
     # TODO: also deal with summarise outbound?
     if summarise_for.present?
-      transfers_to_summarise = transfers.group_by { |t| [t.taker.name, t.effective_date, t.depth, t.direction, t.taker.id] }
+      transfers_to_summarise = transfers.group_by { |t| [t.taker_name, t.effective_date, t.depth, t.direction, t.taker_id] }
                                         .select { |combo, transfers| summarise_for.include?(combo.first) && transfers.count > 1 }
 
       summary_rows = transfers_to_summarise.map do |combo, transfers|
@@ -69,14 +69,14 @@ class TransfersTableComponent < ApplicationView
               end
             end
             td(style: row_style(transfer)) { number_to_currency(transfer.amount.to_s, precision: 0) }
-            td(style: row_style(transfer)) { transfer.effective_date.year.to_s }
-            if transfer.giver.id
-              td(style: row_style(transfer)) { link_for(entity: transfer.giver) if transfer.giver}
+            td(style: row_style(transfer)) { transfer.effective_date.to_date.year.to_s }
+            if transfer.giver_id
+              td(style: row_style(transfer)) { transfer.giver_name } # { link_for(entity: transfer.giver) if transfer.giver}
             elsif transfer.giver
-              td(style: row_style(transfer)) { transfer.giver.name } # only for summary rows
+              td(style: row_style(transfer)) { transfer.giver_name } # only for summary rows
             end
 
-            td(style: row_style(transfer)) { link_for(entity: transfer.taker) if transfer.taker}
+            td(style: row_style(transfer)) { transfer.taker_name } # { link_for(entity: transfer.taker) if transfer.taker}
             td(style: row_style(transfer), class: 'desktop-only') { transfer.depth }
             td(style: row_style(transfer), class: 'desktop-only') { transfer.direction }
           end

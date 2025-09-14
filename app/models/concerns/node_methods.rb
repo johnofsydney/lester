@@ -56,13 +56,14 @@ module NodeMethods
         money_out:,
         nodes_count:,
         direct_connections:,
-        transfers_as_taker: transfers_as_taker.map(&:to_h),
-        transfers_as_giver: transfers_as_giver.map(&:to_h),
-        top_six_as_giver: top_six_as_giver.to_h,
-        top_six_as_taker: top_six_as_taker.to_h,
-        graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}",
+        transfers_as_taker: transfers_as_taker.map(&:to_h), # used in chartkick graphs
+        transfers_as_giver: transfers_as_giver.map(&:to_h), # used in chartkick graphs
+        top_six_as_giver: top_six_as_giver.to_h, # used in chartkick graphs
+        top_six_as_taker: top_six_as_taker.to_h, # used in chartkick graphs
+        graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}", # used in chartkick graphs
         consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h), # used for the network graph
-        data_time_range: data_time_range
+        consolidated_transfers: consolidated_transfers(depth: 2).map(&:to_h), #
+        data_time_range: data_time_range # used in chartkick graphs
       }
     end
 
@@ -154,6 +155,10 @@ module NodeMethods
       outbound_transfers.map do |t|
         t.augment(depth: is_category? ? 1 : 0, direction: 'outgoing')
       end
+    end
+
+    def direct_transfers
+      transfers_as_taker + transfers_as_giver
     end
   end
 end

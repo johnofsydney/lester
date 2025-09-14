@@ -23,7 +23,9 @@ module TransferMethods
         end
       end
 
-      return results if depth == 0
+      return results if depth.zero? # The end, we've recursed to depth 0
+      return results if results.size > 100 # stop recursing. we have enough. don't go any deeper
+      # limit the size of the results to avoid overwhelming the system
 
       # add current memberships to visited memberships
       visited_membership_ids << current_depth_memberships.flatten.pluck(:id)
@@ -77,6 +79,8 @@ module TransferMethods
     end
 
     def data_time_range
+      return if all_transfers.empty?
+
       from_date = all_transfers.order(:effective_date).limit(1).take.effective_date
       to_date =  all_transfers.order(effective_date: :desc).limit(1).take.effective_date
 
