@@ -13,7 +13,7 @@ class InterestingRecords < ApplicationView
       # h3(class: 'text-secondary') { 'Suggestions' }
       div(class: 'row g-3') do
 
-        (Group.major_political_categories + Group.other_categories).shuffle.each do |group|
+        (Group.major_political_categories + Group.other_categories).each do |group|
           div(class: 'col-md-4') do
             div(class: 'card shadow-sm', style: "#{color_styles(group)}; height: 100%") do
               div(class: 'card-body text-center') do

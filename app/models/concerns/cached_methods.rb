@@ -13,6 +13,14 @@ class RehydratedNode
     @node = node
   end
 
+  def method_missing(method_name, *args, &block)
+    if node.respond_to?(method_name)
+      node.send(method_name, *args, &block)
+    else
+      raise NoMethodError, "undefined method `#{method_name}` for #{self.class}"
+    end
+  end
+
   def consolidated_descendents
     # This is a lot of descendents. TODO: use it for downstream methods
     # TODO: decide which to coerce?
