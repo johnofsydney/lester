@@ -7,6 +7,7 @@ module CachedMethods
 end
 
 class RehydratedNode
+  WORKER_DELAY_TIME = 6.seconds
   # It should be OK to have methods in here with same names the group or person (or it's mixins) - the namespace should protect us from ambiguity.
   def initialize(node)
     @node = node
@@ -21,7 +22,7 @@ class RehydratedNode
     if cached_value.present? && cache_fresh?
       cached_value.map {|h| OpenStruct.new(h) }
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.consolidated_descendents(depth: 5)
     end
   end
@@ -32,7 +33,7 @@ class RehydratedNode
     if cached_value.present? && cache_fresh?
       cached_value
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.top_six_as_giver
     end
   end
@@ -43,7 +44,7 @@ class RehydratedNode
     if cached_value.present? && cache_fresh?
       cached_value
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.top_six_as_taker
     end
   end
@@ -54,7 +55,7 @@ class RehydratedNode
     if cached_value.present? && cache_fresh?
       cached_value
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.transfers_as_giver
     end
   end
@@ -65,7 +66,7 @@ class RehydratedNode
     if cached_value.present? && cache_fresh?
       cached_value
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.transfers_as_taker
     end
   end
@@ -77,7 +78,7 @@ class RehydratedNode
       # skipping the present? check as nil is a valid value
       cached_value
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.money_in
     end
   end
@@ -89,7 +90,7 @@ class RehydratedNode
       # skipping the present? check as nil is a valid value
       cached_value
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.money_out
     end
   end
@@ -101,7 +102,7 @@ class RehydratedNode
     if cached_value.present? && cache_fresh?
       cached_value
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.data_time_range
     end
   end
@@ -112,7 +113,7 @@ class RehydratedNode
     if cached_value.present? && cache_fresh?
       cached_value
     else
-      cache_builder.set(wait: 60.seconds).perform_async(node.id)
+      cache_builder.set(wait: WORKER_DELAY_TIME).perform_async(node.id)
       node.direct_connections
     end
   end

@@ -14,7 +14,7 @@ class Common::StatsSummary < ApplicationView
 
       people_box unless entity.is_a?(Person)
 
-
+      group_box
     end
   end
 
