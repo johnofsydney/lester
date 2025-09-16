@@ -1,4 +1,4 @@
-class InterestingRecords < ApplicationView
+class HomepageCategories < ApplicationView
   include ActionView::Helpers::NumberHelper
 
   def initialize(records: nil)
@@ -10,7 +10,6 @@ class InterestingRecords < ApplicationView
   def template
     list_group_options = 'list-group mb-4'
     div(class: 'suggestions-container mt-3 mb-3') do
-      # h3(class: 'text-secondary') { 'Suggestions' }
       div(class: 'row g-3') do
 
         (Group.major_political_categories + Group.other_categories).each do |group|
@@ -30,25 +29,5 @@ class InterestingRecords < ApplicationView
       end
 
     end
-  end
-
-  def text(record)
-    return text_for_transfer(record) if record.is_a?(Transfer)
-    return text_for_group(record) if record.is_a?(Group)
-    return text_for_person(record) if record.is_a?(Person)
-  end
-
-  def text_for_transfer(record)
-    "#{number_to_currency(record.amount, precision: 0)} \nFrom: #{record.giver.name} \nTo: #{record.taker.name} \nYear: #{record.financial_year}"
-  end
-
-def text_for_group(record)
-  name = record.name
-  truncated_name = name.length > 40 ? "#{name[0, 20]}..." : name
-  truncated_name
-end
-
-  def text_for_person(record)
-    "#{record.name}"
   end
 end

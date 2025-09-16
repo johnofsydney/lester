@@ -16,6 +16,7 @@ class InertiaController < ApplicationController
     # session[:depth] = depth
 
     render inertia: 'NetworkGraph', props: {
+      url: "/people/#{person.id}",
       name: person.name,
       json_nodes: nodes.map { |node| configure_node(node) }.to_json,
       json_edges: edges.to_json
@@ -32,6 +33,7 @@ class InertiaController < ApplicationController
     session[:depth] = depth
 
     render inertia: 'NetworkGraph', props: {
+      url: "/groups/#{group.id}",
       name: group.name,
       json_nodes: nodes.map { |node| configure_node(node) }.to_json,
       json_edges: edges.to_json

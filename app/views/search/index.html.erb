@@ -21,7 +21,7 @@
     <%= render(SearchResults.new(results: @results)) %>
   <% end %>
 
-  <% if @results.empty? && @records.present? %>
-    <%= render(InterestingRecords.new(records: @records)) %>
+  <% if @results.empty? %>
+    <%= render(HomepageCategories.new) %>
   <% end %>
 </div>

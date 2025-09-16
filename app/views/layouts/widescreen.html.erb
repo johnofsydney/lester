@@ -63,14 +63,6 @@
       </div>
     </div>
 
-    <div id="searchbox-container">
-      <%= form_with url: {controller: "inertia", action: @action}, method: :get, class: 'd-flex align-items-center' do %>
-        <%= label_tag :depth, 'Depth', class: 'me-2' %>
-        <%= number_field_tag :depth, @depth, min: 1, step: 1, class: 'form-control me-2', style: 'width: 150px' %>
-        <%= submit_tag 'Go!', class: 'btn btn-primary' %>
-      <% end %>
-    </div>
-
     <%= yield %>
 
   </body>

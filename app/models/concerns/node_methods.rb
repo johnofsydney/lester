@@ -135,13 +135,21 @@ module NodeMethods
 
     def direct_connections
       nodes.map do |n|
-        {
+        last_position = fetch_last_position(n)
+
+        basic_info = {
           klass: n.class.name,
           id: n.id,
           name: n.name,
           nodes_count: n.nodes_count,
           is_category: n.is_category?
         }
+
+        if last_position.present?
+          basic_info[:last_position] = last_position
+        end
+
+        basic_info
       end
     end
 
@@ -159,6 +167,35 @@ module NodeMethods
 
     def direct_transfers
       transfers_as_taker + transfers_as_giver
+    end
+
+    def fetch_last_position(node)
+      membership = if self.is_a?(Group) && node.is_a?(Person)
+                     Membership.find_by(group: self, member: node)
+                   elsif self.is_a?(Person) && node.is_a?(Group)
+                     Membership.find_by(group: node, member: self)
+                   end
+
+      position = membership&.last_position
+
+      return '' unless position
+
+      result = position.title
+      return '' unless result
+
+      if position.end_date.present? && position.start_date.present?
+        if position.end_date == position.start_date
+          result += " | (#{position.formatted_start_date})"
+        else
+          result += " | (#{position.formatted_start_date} - #{position.formatted_end_date})"
+        end
+      elsif position.start_date.present?
+        result += " | (since #{position.formatted_start_date})"
+      elsif position.end_date.present?
+        result += " | (until #{position.formatted_end_date})"
+      end
+
+      result
     end
   end
 end
