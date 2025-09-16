@@ -17,6 +17,8 @@ describe Common::MoneyGraphs do
     Transfer.create(giver: giving_group_three, taker: current_group, amount: 3000, effective_date: '2023-01-01')
     Transfer.create(giver: giving_group_four, taker: current_group, amount: 4000, effective_date: '2023-02-01')
 
+    allow(BuildPersonCachedDataJob).to receive(:perform_async)
+    allow(BuildGroupCachedDataJob).to receive(:perform_async)
   end
 
   describe '#group_by_name' do
