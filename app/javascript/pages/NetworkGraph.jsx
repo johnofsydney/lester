@@ -1,7 +1,7 @@
 import React from 'react'
 import Graph from 'react-vis-network-graph'
 
-export default function NetworkGraph({ name, json_nodes, json_edges }) {
+export default function NetworkGraph({ url, name, json_nodes, json_edges }) {
   const nodes = JSON.parse(json_nodes).map((node) => {
     return (
       {
@@ -63,7 +63,17 @@ export default function NetworkGraph({ name, json_nodes, json_edges }) {
   return (
     <>
       <div className="bottom-0 results" id="network">
-        <h3 className="center">Network Diagram centred on {name}</h3>
+        <h3 className="center">
+          Network Diagram centred on{' '}
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'none' }}
+          >
+            {name}
+          </a>
+        </h3>
 
         <Graph
           graph={graph}

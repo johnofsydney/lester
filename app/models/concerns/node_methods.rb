@@ -62,7 +62,7 @@ module NodeMethods
         top_six_as_taker: top_six_as_taker.to_h, # used in chartkick graphs
         graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}", # used in chartkick graphs
         consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h), # used for the network graph
-        consolidated_transfers: consolidated_transfers(depth: 2).map(&:to_h), #
+        consolidated_transfers: consolidated_transfers(depth: 2).map(&:to_h), # is this enough - probably
         data_time_range: data_time_range # used in chartkick graphs
       }
     end
@@ -130,18 +130,24 @@ module NodeMethods
 
       return name if name.length <= 25
 
-      name[0..25] + '...'
+      "#{name[0..25]}..."
     end
 
     def direct_connections
       nodes.map do |n|
-        {
+        last_position = fetch_last_position(n)
+
+        basic_info = {
           klass: n.class.name,
           id: n.id,
           name: n.name,
           nodes_count: n.nodes_count,
           is_category: n.is_category?
         }
+
+        basic_info[:last_position] = last_position if last_position.present?
+
+        basic_info
       end
     end
 
@@ -159,6 +165,35 @@ module NodeMethods
 
     def direct_transfers
       transfers_as_taker + transfers_as_giver
+    end
+
+    def fetch_last_position(node)
+      membership = if self.is_a?(Group) && node.is_a?(Person)
+                     Membership.find_by(group: self, member: node)
+                   elsif self.is_a?(Person) && node.is_a?(Group)
+                     Membership.find_by(group: node, member: self)
+                   end
+
+      position = membership&.last_position
+
+      return '' unless position
+
+      result = position.title
+      return '' unless result
+
+      if position.end_date.present? && position.start_date.present?
+        if position.end_date == position.start_date
+          result += " | (#{position.formatted_start_date})"
+        else
+          result += " | (#{position.formatted_start_date} - #{position.formatted_end_date})"
+        end
+      elsif position.start_date.present?
+        result += " | (since #{position.formatted_start_date})"
+      elsif position.end_date.present?
+        result += " | (until #{position.formatted_end_date})"
+      end
+
+      result
     end
   end
 end

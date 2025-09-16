@@ -32,7 +32,8 @@ class Common::StatsSummary < ApplicationView
 
   def money_box
     div(class: column_class) do
-        div(class: 'p-3 bg-light rounded shadow-sm equal-height border') do
+      div(class: 'p-3 bg-light rounded shadow-sm equal-height border') do
+        if entity.cached.money_in.present? || entity.cached.money_out.present?
           div(class: 'vertical-centre-value') do
             table_style = (entity.cached.money_in.present? && entity.cached.money_out.present?) ? 'margin-bottom: 1rem;' : 'margin-bottom: 0;'
             table(class: 'table table-sm  no-border-table', style: table_style) do
@@ -42,16 +43,16 @@ class Common::StatsSummary < ApplicationView
                   td { 'in' }
                 end if entity.cached.money_in.present?
                 tr do
-
                   td(class: 'h5 fw-bold mb-0') { entity.cached.money_out }
                   td { 'out' }
                 end if entity.cached.money_out.present?
               end
             end
-          end if entity.cached.money_in.present? || entity.cached.money_out.present?
-          p(class: 'text-muted small bottom-text') { 'Transfers' }
+          end
         end
+        p(class: 'text-muted small bottom-text') { 'Transfers' }
       end
+    end
   end
 
   def people_box

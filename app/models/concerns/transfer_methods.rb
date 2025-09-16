@@ -25,6 +25,7 @@ module TransferMethods
 
       return results if depth.zero? # The end, we've recursed to depth 0
       return results if results.size > 100 # stop recursing. we have enough. don't go any deeper
+
       # limit the size of the results to avoid overwhelming the system
 
       # add current memberships to visited memberships

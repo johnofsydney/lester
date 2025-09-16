@@ -6,7 +6,7 @@ class Common::MoneyGraphs < ApplicationView
   attr_reader :entity, :giver
 
   def initialize(entity:, giver: false)
-  # TODO: refactor out the giver boolean. It's not very clear.
+    # TODO: refactor out the giver boolean. It's not very clear.
     @entity = entity
     @giver = giver
   end
@@ -50,7 +50,7 @@ class Common::MoneyGraphs < ApplicationView
   def group_by_year
     @group_by_year ||= begin
       transfers.group_by{|t| t['effective_date'].to_date.year }
-              .transform_values{ |ts| ts.map{|h| h['amount'].to_f}.sum }
+              .transform_values{ |ts| ts.sum{|h| h['amount'].to_f} }
               .sort_by { |year, _| year }.to_h
     end
   end
