@@ -18,7 +18,7 @@ class People::ShowView < ApplicationView
     render TransfersTableComponent.new(
       entity: person,
       transfers: person.cached.consolidated_transfers,
-      heading: "Directly connected to #{person.name}",
+      heading: "Directly connected to #{person.name}"
       # summarise_for: Group.summarise_for
     )
   end

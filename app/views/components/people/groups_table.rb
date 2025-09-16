@@ -6,7 +6,7 @@ class People::GroupsTable < ApplicationView
   attr_reader :person
 
 	def template
-    groups = person.direct_connections.filter{ |c| c['klass'] == 'Group' }
+    groups = person.direct_connections.filter { |c| c['klass'] == 'Group' }
     if groups.present?
       div(class: 'row mt-3 mb-3') do
         h4(class: 'font-italic') { 'Groups' }

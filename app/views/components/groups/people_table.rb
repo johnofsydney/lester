@@ -35,7 +35,7 @@ class Groups::PeopleTable < ApplicationView
 
   def page_nav
     # TODO: Adapt and use Common::PageNav
-    return if (pages.nil? || pages < 2)
+    return if pages.nil? || pages < 2
 
     nav(aria: { label: 'Page navigation example' }) do
       ul(class: 'pagination') do

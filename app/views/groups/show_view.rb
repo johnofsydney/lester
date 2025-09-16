@@ -29,10 +29,10 @@ class Groups::ShowView < ApplicationView
     ##################################################
 
     render TransfersTableComponent.new(
-    entity: group,
-    transfers: group.cached.consolidated_transfers,
-    heading: "Directly Connected to #{group.name}",
-    # summarise_for: Group.summarise_for(group), # not required for depth 0 ?
+      entity: group,
+      transfers: group.cached.consolidated_transfers,
+      heading: "Directly Connected to #{group.name}",
+      # summarise_for: Group.summarise_for(group), # not required for depth 0 ?
     )
   end
 end

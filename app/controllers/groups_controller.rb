@@ -40,8 +40,8 @@ class GroupsController < ApplicationController
 
     people = group.cached
                   .direct_connections
-                  .filter{ |c| c['klass'] == 'Person' }
-                  .sort_by{ |c| c['name'] }
+                  .filter { |c| c['klass'] == 'Person' }
+                  .sort_by { |c| c['name'] }
 
     #  passing an array of hashes to the view
     render Groups::PeopleTable.new(people:, exclude_group: group, page:, pages:)

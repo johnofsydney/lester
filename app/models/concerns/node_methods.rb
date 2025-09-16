@@ -62,7 +62,7 @@ module NodeMethods
         top_six_as_taker: top_six_as_taker.to_h, # used in chartkick graphs
         graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}", # used in chartkick graphs
         consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h), # used for the network graph
-        consolidated_transfers: consolidated_transfers(depth: 2).map(&:to_h), #
+        consolidated_transfers: consolidated_transfers(depth: 2).map(&:to_h), # is this enough - probably
         data_time_range: data_time_range # used in chartkick graphs
       }
     end
@@ -130,7 +130,7 @@ module NodeMethods
 
       return name if name.length <= 25
 
-      name[0..25] + '...'
+      "#{name[0..25]}..."
     end
 
     def direct_connections
@@ -145,9 +145,7 @@ module NodeMethods
           is_category: n.is_category?
         }
 
-        if last_position.present?
-          basic_info[:last_position] = last_position
-        end
+        basic_info[:last_position] = last_position if last_position.present?
 
         basic_info
       end

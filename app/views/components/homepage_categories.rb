@@ -8,7 +8,6 @@ class HomepageCategories < ApplicationView
   attr_reader :records
 
   def template
-    list_group_options = 'list-group mb-4'
     div(class: 'suggestions-container mt-3 mb-3') do
       div(class: 'row g-3') do
 
@@ -19,7 +18,7 @@ class HomepageCategories < ApplicationView
                 a(
                   href: "/groups/#{group.id}",
                   class: 'btn w-100',
-                  style: "#{color_styles(group)}; height: 100%",
+                  style: "#{color_styles(group)}; height: 100%"
                 ) { group.name }
               end
             end
