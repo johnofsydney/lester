@@ -28,4 +28,3 @@ class Membership < ApplicationRecord
     positions.order(start_date: :desc).first
   end
 end
-
