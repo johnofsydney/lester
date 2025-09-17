@@ -56,14 +56,8 @@ class RehydratedNode
   def consolidated_transfers
     # This is a lot of transfers. TODO: use it for downstream methods
     # Cached hash into dot format, or Query result into array of hashes?
-    cached_value = @node.cached_summary&.[]('consolidated_transfers')
-
-    if cached_value.present? && cache_fresh?
-      cached_value.map {|h| OpenStruct.new(h) } # TODO: _probably_ want to uses hashes throughout
-    else
-      cache_builder.perform_async(node.id)
-      node.consolidated_transfers(depth: 2)
-    end
+    @node.cached_summary['consolidated_transfers']
+         .map {|h| OpenStruct.new(h) } # TODO: _probably_ want to uses hashes throughout
   end
 
   def top_six_as_giver
