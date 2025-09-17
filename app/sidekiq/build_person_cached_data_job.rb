@@ -1,6 +1,8 @@
 class BuildPersonCachedDataJob
   include Sidekiq::Job
 
+  sidekiq_options queue: :cache_build, lock: :until_executed, on_conflict: :log
+
   def perform(id)
     person = Person.find_by(id:)
     return unless person
