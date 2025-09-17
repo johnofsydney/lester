@@ -90,26 +90,12 @@ class RehydratedNode
   end
 
   def transfers_as_giver
-    # cached_value = @node.cached_summary&.[]('transfers_as_giver')
-
-    # if cached_value.present? && cache_fresh?
-    #   cached_value
-    # else
-    #   cache_builder.perform_async(node.id)
-    #   node.transfers_as_giver
-    # end
+    # TODO: This is an intermediary method I think can be removed
     direct_transfers.select { |t| t.giver_id == node.id }
   end
 
   def transfers_as_taker
-    # cached_value = @node.cached_summary&.[]('transfers_as_taker')
-
-    # if cached_value.present? && cache_fresh?
-    #   cached_value
-    # else
-    #   cache_builder.perform_async(node.id)
-    #   node.transfers_as_taker
-    # end
+    # TODO: This is an intermediary method I think can be removed
     direct_transfers.select { |t| t.taker_id == node.id }
   end
 

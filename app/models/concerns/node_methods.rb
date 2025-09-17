@@ -51,8 +51,8 @@ module NodeMethods
         money_out:,
         nodes_count:,
         direct_connections:,
-        transfers_as_taker: transfers_as_taker.map(&:to_h), # used in chartkick graphs
-        transfers_as_giver: transfers_as_giver.map(&:to_h), # used in chartkick graphs
+        # transfers_as_taker: transfers_as_taker.map(&:to_h), # used in chartkick graphs
+        # transfers_as_giver: transfers_as_giver.map(&:to_h), # used in chartkick graphs
         top_six_as_giver: top_six_as_giver.to_h, # used in chartkick graphs
         top_six_as_taker: top_six_as_taker.to_h, # used in chartkick graphs
         graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}", # used in chartkick graphs
