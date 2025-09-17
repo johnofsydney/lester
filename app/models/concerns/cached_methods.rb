@@ -19,13 +19,13 @@ class RehydratedNode
     @node = node
   end
 
-  def method_missing(method_name, *args, &block)
-    if node.respond_to?(method_name)
-      node.send(method_name, *args, &block)
-    else
-      raise NoMethodError, "undefined method `#{method_name}` for #{self.class}"
-    end
-  end
+  # def method_missing(method_name, *args, &block)
+  #   if node.respond_to?(method_name)
+  #     node.send(method_name, *args, &block)
+  #   else
+  #     raise NoMethodError, "undefined method `#{method_name}` for #{self.class}"
+  #   end
+  # end
 
   def klass
     node.class.name
@@ -43,7 +43,7 @@ class RehydratedNode
     # This is a lot of descendents. TODO: use it for downstream methods
     # TODO: decide which to coerce?
     # Cached hash into dot format, or Query result into array of hashes?
-    cached_value = @node.cached_summary&.[]('consolidated_descendents')
+    cached_value = @node.cached_summary['consolidated_descendents']
 
     if cached_value.present? && cache_fresh?
       cached_value.map {|h| OpenStruct.new(h) }
@@ -58,6 +58,13 @@ class RehydratedNode
     # Cached hash into dot format, or Query result into array of hashes?
     @node.cached_summary['consolidated_transfers']
          .map {|h| OpenStruct.new(h) } # TODO: _probably_ want to uses hashes throughout
+  end
+
+  def direct_transfers
+    desired_depth = @node.is_category? ? 1 : 0
+
+    # Will require adjusting if/when we use hash instead of open struct in consolidated_transfers
+    consolidated_transfers.select { |t| t.depth == desired_depth }
   end
 
   def top_six_as_giver
@@ -83,25 +90,27 @@ class RehydratedNode
   end
 
   def transfers_as_giver
-    cached_value = @node.cached_summary&.[]('transfers_as_giver')
+    # cached_value = @node.cached_summary&.[]('transfers_as_giver')
 
-    if cached_value.present? && cache_fresh?
-      cached_value
-    else
-      cache_builder.perform_async(node.id)
-      node.transfers_as_giver
-    end
+    # if cached_value.present? && cache_fresh?
+    #   cached_value
+    # else
+    #   cache_builder.perform_async(node.id)
+    #   node.transfers_as_giver
+    # end
+    direct_transfers.select { |t| t.giver_id == node.id }
   end
 
   def transfers_as_taker
-    cached_value = @node.cached_summary&.[]('transfers_as_taker')
+    # cached_value = @node.cached_summary&.[]('transfers_as_taker')
 
-    if cached_value.present? && cache_fresh?
-      cached_value
-    else
-      cache_builder.perform_async(node.id)
-      node.transfers_as_taker
-    end
+    # if cached_value.present? && cache_fresh?
+    #   cached_value
+    # else
+    #   cache_builder.perform_async(node.id)
+    #   node.transfers_as_taker
+    # end
+    direct_transfers.select { |t| t.taker_id == node.id }
   end
 
   def money_in

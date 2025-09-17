@@ -3,12 +3,7 @@ module NodeMethods
   include ActionView::Helpers::NumberHelper
 
   included do
-    store_accessor :cached_data, [
-      :consolidated_descendents,
-      :consolidated_descendents_timestamp,
-      :summary,
-      :summary_timestamp
-    ], prefix: :cached
+    store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
 
     # STUFF TO DO WITH CACHING
     def nodes_count
@@ -151,21 +146,21 @@ module NodeMethods
       end
     end
 
-    def transfers_as_taker
-      inbound_transfers.map do |t|
-        t.augment(depth: is_category? ? 1 : 0, direction: 'incoming')
-      end
-    end
+    # def transfers_as_taker
+    #   inbound_transfers.map do |t|
+    #     t.augment(depth: is_category? ? 1 : 0, direction: 'incoming')
+    #   end
+    # end
 
-    def transfers_as_giver
-      outbound_transfers.map do |t|
-        t.augment(depth: is_category? ? 1 : 0, direction: 'outgoing')
-      end
-    end
+    # def transfers_as_giver
+    #   outbound_transfers.map do |t|
+    #     t.augment(depth: is_category? ? 1 : 0, direction: 'outgoing')
+    #   end
+    # end
 
-    def direct_transfers
-      transfers_as_taker + transfers_as_giver
-    end
+    # def direct_transfers
+    #   transfers_as_taker + transfers_as_giver
+    # end
 
     def fetch_last_position(node)
       membership = if self.is_a?(Group) && node.is_a?(Person)
