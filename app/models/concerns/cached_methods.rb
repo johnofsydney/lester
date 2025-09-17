@@ -91,12 +91,12 @@ class RehydratedNode
 
   def transfers_as_giver
     # TODO: This is an intermediary method I think can be removed
-    direct_transfers.select { |t| t.giver_id == node.id }
+    direct_transfers.select { |t| t.direction == 'outgoing' }
   end
 
   def transfers_as_taker
     # TODO: This is an intermediary method I think can be removed
-    direct_transfers.select { |t| t.taker_id == node.id }
+    direct_transfers.filter { |t| t.direction == 'incoming' }
   end
 
   def money_in
