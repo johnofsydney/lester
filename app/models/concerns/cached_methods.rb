@@ -4,6 +4,13 @@ module CachedMethods
   def cached
     RehydratedNode.new(self)
   end
+
+
+  def cache_fresh?
+    return false unless cached_summary_timestamp
+
+    cached_summary_timestamp > 1.week.ago
+  end
 end
 
 class RehydratedNode
@@ -153,13 +160,6 @@ class RehydratedNode
   private
 
   attr_reader :node
-
-  def cache_fresh?
-    return false unless node.cached_summary_timestamp
-
-    node.cached_summary_timestamp > 1.week.ago
-  end
-
   def cache_builder
     node.is_a?(Person) ? BuildPersonCachedDataJob : BuildGroupCachedDataJob
   end

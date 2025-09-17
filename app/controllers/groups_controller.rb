@@ -18,7 +18,13 @@ class GroupsController < ApplicationController
   end
 
   def show
-    render Groups::ShowView.new(group: @group, depth: Constants::MAX_SEARCH_DEPTH)
+    if @group.cache_fresh?
+      render Groups::ShowView.new(group: @group, depth: Constants::MAX_SEARCH_DEPTH)
+    else
+      BuildGroupCachedDataJob.perform_async(@group.id)
+
+      render plain: "Building cached data. Please refresh in a moment.", status: 200
+    end
   end
 
   def affiliated_groups
