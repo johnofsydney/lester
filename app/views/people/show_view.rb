@@ -10,7 +10,13 @@ class People::ShowView < ApplicationView
 
   def template
     render Common::Heading.new(entity: person)
-    render Common::StatsSummary.new(entity: person)
+
+    render Common::StatsSummary.new(
+      klass: 'Person',
+      direct_connections: person.cached.direct_connections,
+      money_in: person.cached.money_in,
+      money_out: person.cached.money_out
+    )
     render Common::GraphSummary.new(entity: person)
 
     render People::GroupsTable.new(person:)

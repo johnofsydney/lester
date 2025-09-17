@@ -19,7 +19,7 @@ class GroupsController < ApplicationController
 
   def show
     if @group.cache_fresh?
-      render Groups::ShowView.new(group: @group, depth: Constants::MAX_SEARCH_DEPTH)
+      render Groups::ShowView.new(group: @group)
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
 

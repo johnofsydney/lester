@@ -1,18 +1,23 @@
 class Groups::ShowView < ApplicationView
 
-  attr_reader :group, :depth
+  attr_reader :group
 
-  def initialize(group:, depth:)
+  def initialize(group:)
     # TODO: push the .cached version further up the stack. stop passing around group
     @group = group
-    @depth = depth
   end
 
   def template
     page_number = 0
 
     render Common::Heading.new(entity: group)
-    render Common::StatsSummary.new(entity: group)
+
+    render Common::StatsSummary.new(
+      klass: 'Group',
+      direct_connections: group.cached.direct_connections,
+      money_in: group.cached.money_in,
+      money_out: group.cached.money_out
+    )
     render Common::GraphSummary.new(entity: group)
 
     ##################################################
