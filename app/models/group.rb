@@ -5,6 +5,8 @@ class Group < ApplicationRecord
   include PgSearch::Model
   multisearchable against: [:name]
 
+  lazy_columns :cached_data
+
   MAJOR_POLITICAL_CATEGORIES = ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens']
 
   NAMES = OpenStruct.new(
