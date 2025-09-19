@@ -6,20 +6,24 @@ class Common::MoneyGraphs < ApplicationView
   attr_reader :entity, :giver
 
   def initialize(entity:, giver: false)
-		@entity = entity
+    # TODO: refactor out the giver boolean. It's not very clear.
+    @entity = entity
     @giver = giver
-	end
+  end
 
   def template
     render partial: 'shared/money_graphs', locals: {
-      colors: colors(transfers, giver:),
-      transfers_by_year: group_by_year,
-      transfers_by_name: group_by_name(giver:),
-      entity:, giver:, top_six:, others:
+      # colors: colors(transfers, giver:),
+      transfers_by_year: group_by_year, # transfers_as_giver / taker # now coming from cache
+      transfers_by_name: group_by_name, # top six # now coming from cache
+      entity:,
+      giver:
     }
   end
 
   def colors(query, giver: false)
+    # TODO: refactor to use cached data - which is an array of hashes
+    # DO NOT find from the database. The name should be added to the cached data.
     @colors ||= begin
       if giver
         query.group(:taker_id, :taker_type)
@@ -36,70 +40,26 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def transfers
-    @transfers ||= if giver && entity.is_category?
-                     entity.category_outgoing_transfers
-                   elsif giver
-                     entity.outgoing_transfers
-                   elsif entity.is_category?
-                     entity.category_incoming_transfers
+    @transfers ||= if giver
+                     entity.cached.transfers_as_giver
                    else
-                     entity.incoming_transfers
+                     entity.cached.transfers_as_taker
                    end
   end
 
   def group_by_year
     @group_by_year ||= begin
-      transfers.group(:effective_date)
-        .sum(:amount)
-        .sort_by{|k, _v| k }
-        .to_h
-        .transform_keys{ |key| key.year }
+      transfers.group_by{|t| t['effective_date'].to_date.year }
+              .transform_values{ |ts| ts.sum{|h| h['amount'].to_f} }
+              .sort_by { |year, _| year }.to_h
     end
   end
 
-  def all_the_groups
-    # sorts the giver or takers by the amount of money they have given or taken (sum)
-    # does not consider year
-    @all_the_groups ||= begin
-      if giver
-        all_the_groups = transfers.group(:taker_id, :taker_type)
-                            .sum(:amount)
-                            .transform_keys{ |key| name_for_bar_graph(key) }
-                            .sort_by{|k, v| v}
-      else
-        all_the_groups = transfers.group(:giver_id, :giver_type)
-                            .sum(:amount)
-                            .transform_keys{ |key| name_for_bar_graph(key) }
-                            .sort_by{|k, v| v}
-      end
-    end
-  end
-
-  def top_five
-    all_the_groups.last(5)
-  end
-
-  def others
-    all_the_groups - top_five
-  end
-
-  def top_six
-    sum_others = others.sum{|a| a.last}
-
-    if sum_others.zero?
-      top_five.to_h
+  def group_by_name
+    if giver
+      entity.cached.top_six_as_giver
     else
-      top_five.to_h.merge('Others' => sum_others).sort_by { |_k, value| value }
-    end
-  end
-
-  def group_by_name(giver: false)
-    sum_others = others.sum{|a| a.last}
-
-    if sum_others.zero?
-      top_five.to_h
-    else
-      top_five.to_h.merge('Others' => sum_others).sort_by { |_k, value| value }
+      entity.cached.top_six_as_taker
     end
   end
 

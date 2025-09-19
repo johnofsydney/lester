@@ -2,6 +2,7 @@ class Groups::PeopleTable < ApplicationView
   include Constants
 
 	def initialize(people: nil, exclude_group: nil, page: nil, pages: nil)
+    # leaving pagination related args in place for now. exclude_group is better named as current_group
     @people = people
     @exclude_group = exclude_group
     @page = page
@@ -16,16 +17,15 @@ class Groups::PeopleTable < ApplicationView
         div(class: 'row mt-3 mb-3') do
           h4(class: 'font-italic') { 'People' }
 
-          page_nav
+          # page_nav # put this back - there can be too many people for a single page
 
           table(class: 'table table-striped responsive-table') do
             tr do
               th { 'Person' }
               th { '(Last) Position' }
-              th(style: 'text-align: right;') { 'Other Groups' }
             end
             people.each do |person|
-              render Groups::PersonTableRow.new(person:, exclude_group:)
+              render Common::TableRow.new(hentity: person)
             end
           end
         end
@@ -35,7 +35,7 @@ class Groups::PeopleTable < ApplicationView
 
   def page_nav
     # TODO: Adapt and use Common::PageNav
-    return if pages < 2
+    return if pages.nil? || pages < 2
 
     nav(aria: { label: 'Page navigation example' }) do
       ul(class: 'pagination') do

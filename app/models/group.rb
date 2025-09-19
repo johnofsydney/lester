@@ -1,6 +1,7 @@
 class Group < ApplicationRecord
   include TransferMethods
   include NodeMethods
+  include CachedMethods
   include PgSearch::Model
   multisearchable against: [:name]
 
@@ -80,10 +81,10 @@ class Group < ApplicationRecord
 
   # scopes
   scope :major_political_categories, -> do
-    where(category: true).where(name: MAJOR_POLITICAL_CATEGORIES).order(:name)
+    where(category: true).where(name: MAJOR_POLITICAL_CATEGORIES).order(:name).select(:id, :name, :category)
   end
   scope :other_categories, -> do
-    where(category: true).where.not(name: MAJOR_POLITICAL_CATEGORIES).order(:name)
+    where(category: true).where.not(name: MAJOR_POLITICAL_CATEGORIES).order(:name).select(:id, :name, :category)
   end
 
   def business_number=(value)

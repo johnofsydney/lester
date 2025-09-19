@@ -18,11 +18,16 @@ class PeopleController < ApplicationController
   end
 
   def show
-    render People::ShowView.new(person: @person)
+    if @person.cache_fresh?
+      render People::ShowView.new(person: @person)
+    else
+      BuildPersonCachedDataJob.perform_async(@person.id)
+      render plain: "Building cached data. Please refresh in a moment.", status: 200
+    end
   end
 
   def post_to_socials
-    message = @person.summary
+    message = @person.tweet_body
     BlueskyService.skeet(message)
 
     render json: { message: message }, status: :ok
