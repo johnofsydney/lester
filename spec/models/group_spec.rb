@@ -101,4 +101,49 @@ RSpec.describe Group do
       expect(group.reload.business_number).to eq('123456789')
     end
   end
+
+  describe 'node methods' do
+    let(:group) { Group.create(name: 'Test Group') }
+
+    before do
+      # Transfers where the group is the giver
+      Transfer.create(giver: group, taker: Person.create(name: 'Person A'), amount: 100, effective_date: Date.new(2024,1,1))
+      Transfer.create(giver: group, taker: Person.create(name: 'Person B'), amount: 200, effective_date: Date.new(2024,2,1))
+      Transfer.create(giver: group, taker: Group.create(name: 'Group C'), amount: 300, effective_date: Date.new(2024,3,1))
+      Transfer.create(giver: group, taker: Group.create(name: 'Group D'), amount: 400, effective_date: Date.new(2024,4,1))
+      Transfer.create(giver: group, taker: Person.create(name: 'Person E'), amount: 500, effective_date: Date.new(2024,5,1))
+      Transfer.create(giver: group, taker: Person.create(name: 'Person F'), amount: 600, effective_date: Date.new(2024,6,1))
+
+      # Transfers where the group is the taker
+      Transfer.create(taker: group, giver: Person.create(name: 'Person G'), amount: 150, effective_date: Date.new(2024,1,15))
+      Transfer.create(taker: group, giver: Person.create(name: 'Person H'), amount: 250, effective_date: Date.new(2024,2,15))
+      Transfer.create(taker: group, giver: Group.create(name: 'Group I'), amount: 350, effective_date: Date.new(2024,3,15))
+      Transfer.create(taker: group, giver: Group.create(name: 'Group J'), amount: 450, effective_date: Date.new(2024,4,15))
+      Transfer.create(taker: group, giver: Person.create(name: 'Person K'), amount: 550, effective_date: Date.new(2024,5,15))
+      Transfer.create(taker: group, giver: Person.create(name: 'Person L'), amount: 650, effective_date: Date.new(2024,6,15))
+    end
+
+    describe '#all_the_groups' do
+      it 'returns a hash with sums of amounts given and taken grouped by taker and giver' do
+        expect(group.all_the_groups).to eq({
+          :as_giver => [
+            ["Person A", 100.0],
+            ["Person B", 200.0],
+            ["Group C", 300.0],
+            ["Group D", 400.0],
+            ["Person E", 500.0],
+            ["Person F", 600.0]
+          ],
+          :as_taker => [
+            ["Person G", 150.0],
+            ["Person H", 250.0],
+            ["Group I", 350.0],
+            ["Group J", 450.0],
+            ["Person K", 550.0],
+            ["Person L", 650.0]
+          ]
+        })
+      end
+    end
+  end
 end
