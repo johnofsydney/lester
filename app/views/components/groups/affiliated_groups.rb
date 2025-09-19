@@ -8,8 +8,8 @@ class Groups::AffiliatedGroups < ApplicationView
   def template
     turbo_frame(id: 'affiliated_groups') do
 
-      affiliated_groups = group.cached.direct_connections.filter{ |c| (c['klass'] == 'Group') && !c['is_category'] }
-      parent_categories = group.cached.direct_connections.filter{ |c| (c['klass'] == 'Group') && c['is_category'] }
+      affiliated_groups = group.direct_connections.filter{ |c| (c['klass'] == 'Group') && !c['is_category'] }
+      parent_categories = group.direct_connections.filter{ |c| (c['klass'] == 'Group') && c['is_category'] }
 
       if parent_categories.present?
         h4(class: 'font-italic mt-3') { 'Categories' }
