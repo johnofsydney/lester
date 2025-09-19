@@ -4,6 +4,13 @@ module CachedMethods
   def cached
     RehydratedNode.new(self)
   end
+
+
+  def cache_fresh?
+    return false unless cached_summary_timestamp
+
+    cached_summary_timestamp > 1.week.ago
+  end
 end
 
 class RehydratedNode
@@ -12,13 +19,13 @@ class RehydratedNode
     @node = node
   end
 
-  def method_missing(method_name, *args, &block)
-    if node.respond_to?(method_name)
-      node.send(method_name, *args, &block)
-    else
-      raise NoMethodError, "undefined method `#{method_name}` for #{self.class}"
-    end
-  end
+  # def method_missing(method_name, *args, &block)
+  #   if node.respond_to?(method_name)
+  #     node.send(method_name, *args, &block)
+  #   else
+  #     raise NoMethodError, "undefined method `#{method_name}` for #{self.class}"
+  #   end
+  # end
 
   def klass
     node.class.name
@@ -36,7 +43,7 @@ class RehydratedNode
     # This is a lot of descendents. TODO: use it for downstream methods
     # TODO: decide which to coerce?
     # Cached hash into dot format, or Query result into array of hashes?
-    cached_value = @node.cached_summary&.[]('consolidated_descendents')
+    cached_value = @node.cached_summary['consolidated_descendents']
 
     if cached_value.present? && cache_fresh?
       cached_value.map {|h| OpenStruct.new(h) }
@@ -49,14 +56,15 @@ class RehydratedNode
   def consolidated_transfers
     # This is a lot of transfers. TODO: use it for downstream methods
     # Cached hash into dot format, or Query result into array of hashes?
-    cached_value = @node.cached_summary&.[]('consolidated_transfers')
+    @node.cached_summary['consolidated_transfers']
+         .map {|h| OpenStruct.new(h) } # TODO: _probably_ want to uses hashes throughout
+  end
 
-    if cached_value.present? && cache_fresh?
-      cached_value.map {|h| OpenStruct.new(h) } # TODO: _probably_ want to uses hashes throughout
-    else
-      cache_builder.perform_async(node.id)
-      node.consolidated_transfers(depth: 2)
-    end
+  def direct_transfers
+    desired_depth = @node.is_category? ? 1 : 0
+
+    # Will require adjusting if/when we use hash instead of open struct in consolidated_transfers
+    consolidated_transfers.select { |t| t.depth == desired_depth }
   end
 
   def top_six_as_giver
@@ -82,25 +90,13 @@ class RehydratedNode
   end
 
   def transfers_as_giver
-    cached_value = @node.cached_summary&.[]('transfers_as_giver')
-
-    if cached_value.present? && cache_fresh?
-      cached_value
-    else
-      cache_builder.perform_async(node.id)
-      node.transfers_as_giver
-    end
+    # TODO: This is an intermediary method I think can be removed
+    direct_transfers.select { |t| t.direction == 'outgoing' }
   end
 
   def transfers_as_taker
-    cached_value = @node.cached_summary&.[]('transfers_as_taker')
-
-    if cached_value.present? && cache_fresh?
-      cached_value
-    else
-      cache_builder.perform_async(node.id)
-      node.transfers_as_taker
-    end
+    # TODO: This is an intermediary method I think can be removed
+    direct_transfers.filter { |t| t.direction == 'incoming' }
   end
 
   def money_in
@@ -153,13 +149,6 @@ class RehydratedNode
   private
 
   attr_reader :node
-
-  def cache_fresh?
-    return false unless node.cached_summary_timestamp
-
-    node.cached_summary_timestamp > 1.week.ago
-  end
-
   def cache_builder
     node.is_a?(Person) ? BuildPersonCachedDataJob : BuildGroupCachedDataJob
   end

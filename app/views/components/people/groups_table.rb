@@ -20,7 +20,6 @@ class People::GroupsTable < ApplicationView
             render Common::TableRow.new(hentity: group)
           end
         end
-
       end
     end
   end

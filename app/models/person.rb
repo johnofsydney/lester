@@ -5,6 +5,8 @@ class Person < ApplicationRecord
   include PgSearch::Model
   multisearchable against: [:name]
 
+  lazy_columns :cached_data
+
   include ActionView::Helpers::NumberHelper
 
   has_many :memberships, as: :member, dependent: :destroy

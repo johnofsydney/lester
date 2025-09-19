@@ -57,7 +57,7 @@ module TransferMethods
         end
 
         # Descendent is probably too big and too memory hungry. TODO: refactor
-        # Can the node simply be augmented?
+        # Can the node simply be augmented? Descendent DOES add a lot though
         results << Descendent.new(node: node, depth: counter, parent:)
       end
 

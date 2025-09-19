@@ -1,10 +1,13 @@
 class Common::StatsSummary < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :entity
+  attr_reader :direct_connections, :klass, :money_in, :money_out
 
-  def initialize(entity:)
-		@entity = entity
+  def initialize(direct_connections:, klass:, money_in:, money_out:)
+    @direct_connections = direct_connections
+    @klass = klass
+    @money_in = money_in
+    @money_out = money_out
   end
 
   def template
@@ -12,40 +15,40 @@ class Common::StatsSummary < ApplicationView
     div(class: 'row text-center mb-4') do
       money_box
 
-      people_box unless entity.is_a?(Person)
+      people_box if klass == 'Group'
 
       group_box
     end
   end
 
   def column_class
-    entity.is_a?(Group) ? 'col-md-4' : 'col-md-6'
+    klass == 'Group' ? 'col-md-4' : 'col-md-6'
   end
 
   def groups_count
-    entity.cached.direct_connections.count {|c| c['klass'] == 'Group' }
+    direct_connections.count {|c| c['klass'] == 'Group' }
   end
 
   def people_count
-    entity.cached.direct_connections.count {|c| c['klass'] == 'Person' }
+    direct_connections.count {|c| c['klass'] == 'Person' }
   end
 
   def money_box
     div(class: column_class) do
       div(class: 'p-3 bg-light rounded shadow-sm equal-height border') do
-        if entity.cached.money_in.present? || entity.cached.money_out.present?
+        if money_in.present? || money_out.present?
           div(class: 'vertical-centre-value') do
-            table_style = (entity.cached.money_in.present? && entity.cached.money_out.present?) ? 'margin-bottom: 1rem;' : 'margin-bottom: 0;'
+            table_style = (money_in.present? && money_out.present?) ? 'margin-bottom: 1rem;' : 'margin-bottom: 0;'
             table(class: 'table table-sm  no-border-table', style: table_style) do
               tbody do
                 tr do
-                  td(class: 'h5 fw-bold mb-0') { entity.cached.money_in }
+                  td(class: 'h5 fw-bold mb-0') { money_in }
                   td { 'in' }
-                end if entity.cached.money_in.present?
+                end if money_in.present?
                 tr do
-                  td(class: 'h5 fw-bold mb-0') { entity.cached.money_out }
+                  td(class: 'h5 fw-bold mb-0') { money_out }
                   td { 'out' }
-                end if entity.cached.money_out.present?
+                end if money_out.present?
               end
             end
           end

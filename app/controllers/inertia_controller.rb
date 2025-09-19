@@ -15,12 +15,18 @@ class InertiaController < ApplicationController
     @toast_note ||= define_toast_note # required in layout
     # session[:depth] = depth
 
-    render inertia: 'NetworkGraph', props: {
-      url: "/people/#{person.id}",
-      name: person.name,
-      json_nodes: nodes.map { |node| configure_node(node) }.to_json,
-      json_edges: edges.to_json
-    }
+    if @person.cache_fresh?
+      render inertia: 'NetworkGraph', props: {
+        url: "/people/#{person.id}",
+        name: person.name,
+        json_nodes: nodes.map { |node| configure_node(node) }.to_json,
+        json_edges: edges.to_json
+      }
+    else
+      BuildPersonCachedDataJob.perform_async(@person.id)
+
+      render plain: "Building cached data. Please refresh in a moment.", status: 200
+    end
   end
 
   def network_graph_group
@@ -32,12 +38,18 @@ class InertiaController < ApplicationController
     @toast_note ||= define_toast_note
     session[:depth] = depth
 
-    render inertia: 'NetworkGraph', props: {
-      url: "/groups/#{group.id}",
-      name: group.name,
-      json_nodes: nodes.map { |node| configure_node(node) }.to_json,
-      json_edges: edges.to_json
-    }
+    if @group.cache_fresh?
+      render inertia: 'NetworkGraph', props: {
+        url: "/groups/#{group.id}",
+        name: group.name,
+        json_nodes: nodes.map { |node| configure_node(node) }.to_json,
+        json_edges: edges.to_json
+      }
+    else
+      BuildGroupCachedDataJob.perform_async(@group.id)
+
+      render plain: "Building cached data. Please refresh in a moment.", status: 200
+    end
   end
 
   def ids_people_descendents
@@ -57,7 +69,6 @@ class InertiaController < ApplicationController
   def nodes
     node = person || group
 
-    # node.consolidated_descendents_depth(depth)
     node.cached.consolidated_descendents
   end
 
