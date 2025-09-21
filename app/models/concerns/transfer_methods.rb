@@ -1,4 +1,6 @@
 module TransferMethods
+  include Constants
+
   extend ActiveSupport::Concern
 
   included do
@@ -24,7 +26,7 @@ module TransferMethods
       end
 
       return results if depth.zero? # The end, we've recursed to depth 0
-      return results if results.size > 100 # stop recursing. we have enough. don't go any deeper
+      return results if results.size > Constants::DIRECT_TRANSFERS_COUNT_THRESHOLD # stop recursing. we have enough. don't go any deeper
 
       # limit the size of the results to avoid overwhelming the system
 

@@ -30,6 +30,7 @@ class Groups::IndexView < ApplicationView
           div(class: class_list) do
             group_name_link(group)
 
+            # TODO: this is usning un-cached data - decide whether to keep it
             render Common::CollapsibleButtonCollection.new(
               collection: group.parent_groups.where(category: true),
               entity: group,

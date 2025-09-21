@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
 
-      render plain: "Building cached data. Please refresh in a moment.", status: 200
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: 200
     end
   end
 
@@ -80,7 +80,7 @@ class GroupsController < ApplicationController
   end
 
   def page_size
-    return 20
+    return 250
 
     @page_size ||= Constants::PAGE_LIMIT
   end

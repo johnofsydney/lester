@@ -12,7 +12,7 @@ class InertiaController < ApplicationController
     reduce_network_depth if network_too_big?
 
     @action = 'network_graph_person' # required in layout
-    @toast_note ||= define_toast_note # required in layout
+    # @toast_note ||= define_toast_note # required in layout
     # session[:depth] = depth
 
     if @person.cache_fresh?
@@ -25,7 +25,7 @@ class InertiaController < ApplicationController
     else
       BuildPersonCachedDataJob.perform_async(@person.id)
 
-      render plain: "Building cached data. Please refresh in a moment.", status: 200
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: 200
     end
   end
 
@@ -48,7 +48,7 @@ class InertiaController < ApplicationController
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
 
-      render plain: "Building cached data. Please refresh in a moment.", status: 200
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: 200
     end
   end
 
@@ -108,9 +108,9 @@ class InertiaController < ApplicationController
     }
   end
 
-  def define_toast_note
-    'Building network graph... this may take a few seconds.'
-  end
+  # def define_toast_note
+  #   'Building network graph... this may take a few seconds.'
+  # end
 
   def depth
     @depth ||= if depth_in_params?

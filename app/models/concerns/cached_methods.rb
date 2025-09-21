@@ -5,7 +5,6 @@ module CachedMethods
     RehydratedNode.new(self)
   end
 
-
   def cache_fresh?
     return false unless cached_summary_timestamp
 
@@ -19,25 +18,11 @@ class RehydratedNode
     @node = node
   end
 
-  # def method_missing(method_name, *args, &block)
-  #   if node.respond_to?(method_name)
-  #     node.send(method_name, *args, &block)
-  #   else
-  #     raise NoMethodError, "undefined method `#{method_name}` for #{self.class}"
-  #   end
-  # end
-
   def klass
     node.class.name
   end
 
-  def name
-    node.name
-  end
-
-  def direct_transfers
-    (transfers_as_taker + transfers_as_giver)
-  end
+  delegate :name, to: :node
 
   def consolidated_descendents
     # This is a lot of descendents. TODO: use it for downstream methods
@@ -70,6 +55,9 @@ class RehydratedNode
 
   def transfers_as_giver
     # TODO: This is an intermediary method I think can be removed
+    # maybe put back into money_graphs.rb
+    # https://github.com/johnofsydney/lester/pull/73/files#diff-99e8346c873510085b69b3991bf9e3c4ec82ee3944865c89cf1391aa309ce608
+    # wherever they go, put less things into cached_summary
     direct_transfers.select { |t| t.direction == 'outgoing' }
   end
 
@@ -98,7 +86,4 @@ class RehydratedNode
   private
 
   attr_reader :node
-  def cache_builder
-    node.is_a?(Person) ? BuildPersonCachedDataJob : BuildGroupCachedDataJob
-  end
 end
