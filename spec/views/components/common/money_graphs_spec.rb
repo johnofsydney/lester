@@ -19,6 +19,8 @@ describe Common::MoneyGraphs do
 
     allow(BuildPersonCachedDataJob).to receive(:perform_async)
     allow(BuildGroupCachedDataJob).to receive(:perform_async)
+
+    current_group.update(cached_summary: current_group.to_h, cached_summary_timestamp: Time.zone.now)
   end
 
   describe '#group_by_name' do

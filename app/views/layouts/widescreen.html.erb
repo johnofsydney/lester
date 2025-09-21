@@ -51,17 +51,17 @@
 
     <%= render MenuComponent.new %>
 
-    <div class="toast-container position-fixed top-0 end-0 p-3">
-      <div id="liveToast" class="toast solid-background" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="toast-header">
-          <strong class="me-auto">Network Graph Settings</strong>
-          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-          <p><%= @toast_note %></p>
-        </div>
-      </div>
-    </div>
+    # <div class="toast-container position-fixed top-0 end-0 p-3">
+    #   <div id="liveToast" class="toast solid-background" role="alert" aria-live="assertive" aria-atomic="true">
+    #     <div class="toast-header">
+    #       <strong class="me-auto">Network Graph Settings</strong>
+    #       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    #     </div>
+    #     <div class="toast-body">
+    #       <p><%= @toast_note %></p>
+    #     </div>
+    #   </div>
+    # </div>
 
     <%= yield %>
 

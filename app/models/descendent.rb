@@ -35,26 +35,6 @@ class Descendent
     }
   end
 
-  def to_open
-    OpenStruct.new(
-      parent_id: parent&.id,
-      parent_name: parent&.name,
-      parent_klass: parent&.class&.to_s,
-      parent_count: parent_count,
-      id:,
-      name:,
-      klass:,
-      depth:,
-      shape:,
-      color:,
-      mass:,
-      size:,
-      url:,
-      last_position: last_position(parent, entity),
-      is_category: entity.is_a?(Group) ? entity.is_category? : false
-    )
-  end
-
   def shape
     return 'circle' if depth.zero?
 

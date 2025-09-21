@@ -32,8 +32,6 @@ class BuildQueue
   private
 
   def can_add_to_queue?(node, next_node)
-    # return true # too expensive
-
     if counter > 200
       raise 'Counter exceeded'
       # TODO: remove
