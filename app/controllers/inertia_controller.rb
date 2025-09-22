@@ -25,7 +25,7 @@ class InertiaController < ApplicationController
     else
       BuildPersonCachedDataJob.perform_async(@person.id)
 
-      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: 200
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
     end
   end
 
@@ -35,8 +35,8 @@ class InertiaController < ApplicationController
     reduce_network_depth if network_too_big?
 
     @action = 'network_graph_group'
-    @toast_note ||= define_toast_note
-    session[:depth] = depth
+    # @toast_note ||= define_toast_note
+    # session[:depth] = depth
 
     if @group.cache_fresh?
       render inertia: 'NetworkGraph', props: {
@@ -48,7 +48,7 @@ class InertiaController < ApplicationController
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
 
-      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: 200
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
     end
   end
 

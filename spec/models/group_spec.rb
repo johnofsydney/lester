@@ -125,24 +125,26 @@ RSpec.describe Group do
 
     describe '#all_the_groups' do
       it 'returns a hash with sums of amounts given and taken grouped by taker and giver' do
-        expect(group.all_the_groups).to eq({
-          :as_giver => [
-            ["Person A", 100.0],
-            ["Person B", 200.0],
-            ["Group C", 300.0],
-            ["Group D", 400.0],
-            ["Person E", 500.0],
-            ["Person F", 600.0]
-          ],
-          :as_taker => [
-            ["Person G", 150.0],
-            ["Person H", 250.0],
-            ["Group I", 350.0],
-            ["Group J", 450.0],
-            ["Person K", 550.0],
-            ["Person L", 650.0]
-          ]
-        })
+        expect(group.all_the_groups).to eq(
+          {
+            as_giver: [
+              ['Person A', 100.0],
+              ['Person B', 200.0],
+              ['Group C', 300.0],
+              ['Group D', 400.0],
+              ['Person E', 500.0],
+              ['Person F', 600.0]
+            ],
+            as_taker: [
+              ['Person G', 150.0],
+              ['Person H', 250.0],
+              ['Group I', 350.0],
+              ['Group J', 450.0],
+              ['Person K', 550.0],
+              ['Person L', 650.0]
+            ]
+          }
+        )
       end
     end
   end

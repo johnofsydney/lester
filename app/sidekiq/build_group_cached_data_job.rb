@@ -9,7 +9,9 @@ class BuildGroupCachedDataJob
 
     Rails.logger.info "Building cached data for Group #{group.name} (ID: #{group.id})"
 
-    group.update(cached_summary: group.to_h, cached_summary_timestamp: Time.zone.now)
+    group.cached_summary = group.to_h
+    group.cached_summary_timestamp = Time.zone.now
+    group.save
   rescue StandardError => e
     NewRelic::Agent.notice_error(e) if defined?(NewRelic)
     Rails.logger.error "Error building cached data for Group ID #{id}: #{e.message}"
