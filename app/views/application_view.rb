@@ -50,14 +50,35 @@ class ApplicationView < ApplicationComponent
   # style: the CSS style to use
   # link_text: the text to display in the link
   # action: the action to append to the link
-  def link_for(entity:, class: '', style: '', link_text: nil, action: nil, klass: nil)
+  def link_for(entity:, class: '', style: '', link_text: nil, action: nil, klass: nil, id: nil)
     klass_name_plural = if klass.present?
                           klass.to_s.pluralize.downcase
                         else
                           class_of(entity)
                         end
-    id = entity.id
+    id ||= if entity
+            entity.id
+          end
+
     link_text ||= entity.respond_to?(:name) ? entity.name : entity.amount
+    href = "/#{klass_name_plural}/#{id}"
+
+    href += "/#{action}" if action
+
+    a(href: href, class:, style:, data_turbo: 'false') { link_text }
+  end
+
+  def link_for_hash(h:, class: '', style: '', link_text: nil, action: nil, klass: nil, id: nil)
+    klass_name_plural = if klass.present?
+                          klass.to_s.pluralize.downcase
+                        else
+                          h['klass'].to_s.downcase.pluralize
+                        end
+    id ||= if h['id']
+            h['id']
+          end
+
+    link_text ||= h['name'] || h['amount']
     href = "/#{klass_name_plural}/#{id}"
 
     href += "/#{action}" if action

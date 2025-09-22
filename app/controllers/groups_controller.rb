@@ -18,7 +18,13 @@ class GroupsController < ApplicationController
   end
 
   def show
-    render Groups::ShowView.new(group: @group, depth: Constants::MAX_SEARCH_DEPTH)
+    if @group.cache_fresh?
+      render Groups::ShowView.new(group: @group)
+    else
+      BuildGroupCachedDataJob.perform_async(@group.id)
+
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
+    end
   end
 
   def affiliated_groups
@@ -33,15 +39,17 @@ class GroupsController < ApplicationController
   end
 
   def group_people
+    # This action used to have pagination. TODO: re-add pagination into the new format?
     group = Group.find(params[:group_id])
     page = params[:page].to_i
     pages = (group.people.count.to_f / page_size).ceil
 
-    people = group.people
-                  .order(:name)
-                  .offset(page * page_size)
-                  .limit(page_size)
+    people = group.cached
+                  .direct_connections
+                  .filter { |c| c['klass'] == 'Person' }
+                  .sort_by { |c| c['name'] }
 
+    #  passing an array of hashes to the view
     render Groups::PeopleTable.new(people:, exclude_group: group, page:, pages:)
   end
 

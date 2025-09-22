@@ -1,9 +1,9 @@
 class TransfersTableComponent < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  def initialize(transfers:, heading:, summarise_for: nil, exclude: nil, entity:, remove_zero_degrees: false)
+  def initialize(transfers:, heading:, summarise_for: nil, exclude: nil, entity:)
     # these transfers are already consolidated with depth relative to the entity
-    @transfers = remove_zero_degrees ? transfers.select { |t| t.depth > 0 } : transfers
+    @transfers = transfers
     @heading = heading
     @summarise_for = summarise_for
     @exclude = exclude
@@ -19,13 +19,14 @@ class TransfersTableComponent < ApplicationView
 
     # TODO: also deal with summarise outbound?
     if summarise_for.present?
-      transfers_to_summarise = transfers.group_by { |t| [t.taker.name, t.effective_date, t.depth, t.direction, t.taker.id] }
+      transfers_to_summarise = transfers.group_by { |t| [t.taker_name, t.effective_date, t.depth, t.direction, t.taker_id] }
                                         .select { |combo, transfers| summarise_for.include?(combo.first) && transfers.count > 1 }
 
       summary_rows = transfers_to_summarise.map do |combo, transfers|
         OpenStruct.new(
-          giver: OpenStruct.new(name: "#{transfers.count} individual records, from various donors"),
-          taker: OpenStruct.new(name: combo.first, id: combo[4], report_as: 'group'),
+          giver_name: "#{transfers.count} individual records, from various donors",
+          taker_name: combo.first,
+          taker_id: combo[4],
           amount: transfers.sum(&:amount),
           effective_date: transfers.map(&:effective_date).max,
           depth: combo[2],
@@ -41,7 +42,6 @@ class TransfersTableComponent < ApplicationView
     else
       return make_table(transfers)
     end
-
   end
 
   def make_table(transfers)
@@ -69,14 +69,14 @@ class TransfersTableComponent < ApplicationView
               end
             end
             td(style: row_style(transfer)) { number_to_currency(transfer.amount.to_s, precision: 0) }
-            td(style: row_style(transfer)) { transfer.effective_date.year.to_s }
-            if transfer.giver.id
-              td(style: row_style(transfer)) { link_for(entity: transfer.giver) if transfer.giver}
-            elsif transfer.giver
-              td(style: row_style(transfer)) { transfer.giver.name } # only for summary rows
+            td(style: row_style(transfer)) { transfer.effective_date.to_date.year.to_s }
+            if transfer.giver_id
+              td(style: row_style(transfer)) { a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { transfer.giver_name } }
+            elsif transfer.giver_name
+              td(style: row_style(transfer)) { transfer.giver_name } # only for summary rows
             end
 
-            td(style: row_style(transfer)) { link_for(entity: transfer.taker) if transfer.taker}
+            td(style: row_style(transfer)) { a(href: "/groups/#{transfer.taker_id}") {transfer.taker_name} }
             td(style: row_style(transfer), class: 'desktop-only') { transfer.depth }
             td(style: row_style(transfer), class: 'desktop-only') { transfer.direction }
           end

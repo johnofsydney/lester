@@ -81,10 +81,10 @@ class Transfers::IndexView < ApplicationView
             td { transfer.effective_date.strftime('%d/%m/%Y') }
             td { transfer.transfer_type.titleize }
             td do
-              a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { transfer.giver_name }
+              a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { transfer.giver.name }
             end
             td do
-              a(href: "/#{transfer.taker_type.downcase.pluralize}/#{transfer.taker_id}") { transfer.taker_name }
+              a(href: "/#{transfer.taker_type.downcase.pluralize}/#{transfer.taker_id}") { transfer.taker.name }
             end
           end
         end

@@ -17,6 +17,7 @@ AllCops:
     - vendor/**/*
     - 'db/schema.rb'
     - 'config/initializers/*.rb' # created by installers - leave them be
+    - 'app/views/application_view.rb' # temporary it is toooo shit
 
 Layout/LineLength:
   Max: 400
@@ -36,9 +37,10 @@ Style/OpenStructUse:
   Enabled: false
 
 Style/RedundantBegin:
-  Exclude:
-    - 'app/views/components/common/money_graphs.rb'
+  Enabled: false
 
+RSpec/DescribedClass:
+  Enabled: false # temporary
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
@@ -61,3 +63,4 @@ RSpec/ContextWording:
     - unless
     - for
     - and
+

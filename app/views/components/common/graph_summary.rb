@@ -9,15 +9,15 @@ class Common::GraphSummary < ApplicationView
 
   def template
     turbo_frame(id: 'money_summary') do
-      if entity.money_in.present? || entity.money_out.present?
+      if entity.cached.money_in.present? || entity.cached.money_out.present?
         div(class: 'margin-above ') do
 
-          if entity.money_in.present?
+          if entity.cached.money_in.present?
             div(class: 'col') do
               render Common::MoneyGraphs.new(entity:, giver: false)
             end
           end
-          if entity.money_out.present?
+          if entity.cached.money_out.present?
             div(class: 'col') do
               render Common::MoneyGraphs.new(entity:, giver: true)
             end

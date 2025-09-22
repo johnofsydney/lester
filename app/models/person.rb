@@ -1,10 +1,13 @@
 class Person < ApplicationRecord
-  include PgSearch::Model
-  include ActionView::Helpers::NumberHelper
-  multisearchable against: [:name]
-
   include TransferMethods
   include NodeMethods
+  include CachedMethods
+  include PgSearch::Model
+  multisearchable against: [:name]
+
+  lazy_columns :cached_data
+
+  include ActionView::Helpers::NumberHelper
 
   has_many :memberships, as: :member, dependent: :destroy
   has_many :groups, through: :memberships
@@ -38,7 +41,7 @@ class Person < ApplicationRecord
 
   def is_category? = false
 
-  def summary
+  def tweet_body
     body = <<~SUMMARY.strip
       🔍 #{name}
 

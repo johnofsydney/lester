@@ -12,14 +12,21 @@ class InertiaController < ApplicationController
     reduce_network_depth if network_too_big?
 
     @action = 'network_graph_person' # required in layout
-    @toast_note ||= define_toast_note # required in layout
-    session[:depth] = depth
+    # @toast_note ||= define_toast_note # required in layout
+    # session[:depth] = depth
 
-    render inertia: 'NetworkGraph', props: {
-      name: person.name,
-      json_nodes: nodes.map { |node| configure_node(node) }.to_json,
-      json_edges: edges.to_json
-    }
+    if @person.cache_fresh?
+      render inertia: 'NetworkGraph', props: {
+        url: "/people/#{person.id}",
+        name: person.name,
+        json_nodes: nodes.map { |node| configure_node(node) }.to_json,
+        json_edges: edges.to_json
+      }
+    else
+      BuildPersonCachedDataJob.perform_async(@person.id)
+
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
+    end
   end
 
   def network_graph_group
@@ -28,14 +35,21 @@ class InertiaController < ApplicationController
     reduce_network_depth if network_too_big?
 
     @action = 'network_graph_group'
-    @toast_note ||= define_toast_note
-    session[:depth] = depth
+    # @toast_note ||= define_toast_note
+    # session[:depth] = depth
 
-    render inertia: 'NetworkGraph', props: {
-      name: group.name,
-      json_nodes: nodes.map { |node| configure_node(node) }.to_json,
-      json_edges: edges.to_json
-    }
+    if @group.cache_fresh?
+      render inertia: 'NetworkGraph', props: {
+        url: "/groups/#{group.id}",
+        name: group.name,
+        json_nodes: nodes.map { |node| configure_node(node) }.to_json,
+        json_edges: edges.to_json
+      }
+    else
+      BuildGroupCachedDataJob.perform_async(@group.id)
+
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
+    end
   end
 
   def ids_people_descendents
@@ -55,14 +69,16 @@ class InertiaController < ApplicationController
   def nodes
     node = person || group
 
-    node.consolidated_descendents_depth(depth)
+    node.cached.consolidated_descendents
   end
 
   def all_memberships_of_descendents
-    # There is a good index for this, and it is ONE query, so it's not very slow
-    Membership.where(member_id: ids_people_descendents, member_type: 'Person')
-              .or(Membership.where(member_id: ids_group_descendents, member_type: 'Group'))
-              .or(Membership.where(group_id: ids_group_descendents))
+    ActiveRecord::Base.logger.silence do
+      # There is a good index for this, and it is ONE query, so it's not very slow
+      Membership.where(member_id: ids_people_descendents, member_type: 'Person')
+                .or(Membership.where(member_id: ids_group_descendents, member_type: 'Group'))
+                .or(Membership.where(group_id: ids_group_descendents))
+    end
   end
 
   def configure_edge(membership)
@@ -87,20 +103,15 @@ class InertiaController < ApplicationController
       color: node.color,
       mass: node.mass,
       size: node.size,
-      url: node.url,
+      url: "#{node.url}/network_graph",
       klass: node.klass
     }
   end
 
-  def define_toast_note
-    if depth_in_params?
-      "Using your setting of depth: #{params[:depth]}. Increase the depth of the network to show more nodes."
-    elsif depth_in_session?
-      "Using stored setting of depth: #{session[:depth]}. Increase the depth of the network to show more nodes."
-    else
-      'Using default setting of depth: 2. Increase the depth of the network to show more nodes. Larger value will take longer to calculate.'
-    end
-  end
+  # def define_toast_note
+  #   'Building network graph... this may take a few seconds.'
+  # end
+
   def depth
     @depth ||= if depth_in_params?
                  params[:depth].to_i

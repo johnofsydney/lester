@@ -81,5 +81,7 @@ gem 'newrelic_rpm'
 gem 'rack', '>= 3.1.16'
 gem 'phlex', '~> 1.11.0'
 
+gem 'sidekiq-unique-jobs'
+
 # https://github.com/fatkodima/activerecord_lazy_columns
-gem "activerecord_lazy_columns"
+gem 'activerecord_lazy_columns'

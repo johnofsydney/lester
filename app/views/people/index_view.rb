@@ -25,6 +25,7 @@ class People::IndexView < ApplicationView
           div(class: class_list) do
             person_name_link(person)
 
+            # TODO: this is usning un-cached data - decide whether to keep it
             render Common::CollapsibleButtonCollection.new(
               collection: person.groups,
               entity: person,

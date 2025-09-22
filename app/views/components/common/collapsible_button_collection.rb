@@ -1,11 +1,14 @@
 class Common::CollapsibleButtonCollection < ApplicationView
-  attr_reader :entity, :collection, :render_inside, :contains_only
+  attr_reader :entity, :collection, :collection_count, :render_inside, :contains_only
 
   def initialize(entity:, collection:, render_inside:, contains_only: nil)
     @entity = entity
     @collection = collection
+    @collection_count = collection.count
     @render_inside = render_inside
     @contains_only = contains_only
+
+    # TODO: this component is still using ActiveRecord instances instead of hashes from cached connections. Fix this.
   end
 
   def template
@@ -14,12 +17,12 @@ class Common::CollapsibleButtonCollection < ApplicationView
   end
 
   def render_inside_td
-    return td { ' ' } if collection.count < 1
+    return td { ' ' } if collection_count < 1
 
     td(class: 'desktop-only', style: 'text-align: right;') do
 
       div do
-        if collection.count < 8
+        if collection_count < 8
           several_buttons
         else
           single_button
@@ -34,11 +37,11 @@ class Common::CollapsibleButtonCollection < ApplicationView
   end
 
   def render_inside_div
-    return div { ' ' } if collection.count < 1
+    return div { ' ' } if collection_count < 1
 
     div(class: 'desktop-only', style: 'text-align: right;') do
 
-      if collection.count < 8
+      if collection_count < 8
         several_buttons
       else
         single_button
@@ -71,8 +74,8 @@ class Common::CollapsibleButtonCollection < ApplicationView
   end
 
   def link_text
-    return "#{collection.count} members" if contains_only == 'people'
+    return "#{collection_count} members" if contains_only == 'people'
 
-    "Member of #{collection.count} other #{'Group'.pluralize(collection.count)}"
+    "Member of #{collection_count} other #{'Group'.pluralize(collection_count)}"
   end
 end
