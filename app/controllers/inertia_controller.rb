@@ -35,8 +35,8 @@ class InertiaController < ApplicationController
     reduce_network_depth if network_too_big?
 
     @action = 'network_graph_group'
-    @toast_note ||= define_toast_note
-    session[:depth] = depth
+    # @toast_note ||= define_toast_note
+    # session[:depth] = depth
 
     if @group.cache_fresh?
       render inertia: 'NetworkGraph', props: {
