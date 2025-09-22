@@ -39,6 +39,9 @@ Style/OpenStructUse:
 Style/RedundantBegin:
   Enabled: false
 
+RSpec/DescribedClass:
+  Enabled: false # temporary
+
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 
@@ -60,3 +63,4 @@ RSpec/ContextWording:
     - unless
     - for
     - and
+

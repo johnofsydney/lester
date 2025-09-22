@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
 
-      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: 200
+      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
     end
   end
 

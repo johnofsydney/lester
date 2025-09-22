@@ -5,10 +5,7 @@ module NodeMethods
   included do
     store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
 
-    # STUFF TO DO WITH CACHING
-    def nodes_count
-      nodes.count
-    end
+    def nodes_count = nodes.count # rubocop:disable Rails/Delegate
 
     # STUFF TO DO WITH MONEY SUMMARY
     def money_in
@@ -54,7 +51,7 @@ module NodeMethods
         money_in:,
         money_out:,
         nodes_count:,
-        direct_connections:,  # TODO: Remove from here
+        direct_connections:, # TODO: Remove from here
         # transfers_as_taker: transfers_as_taker.map(&:to_h), # used in chartkick graphs
         # transfers_as_giver: transfers_as_giver.map(&:to_h), # used in chartkick graphs
         top_six_as_giver: top_six_as_giver.to_h, # used in chartkick graphs # TODO: Remove from here

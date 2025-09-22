@@ -18,9 +18,7 @@ class RehydratedNode
     @node = node
   end
 
-  def klass
-    node.class.name
-  end
+  def klass = node.class.name
 
   delegate :name, to: :node
 

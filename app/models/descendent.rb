@@ -104,30 +104,24 @@ class Descendent
     return '' unless node && entity
 
     membership = if entity.is_a?(Group) && node.is_a?(Person)
-                    Membership.find_by(group: entity, member: node)
-                  elsif entity.is_a?(Person) && node.is_a?(Group)
-                    Membership.find_by(group: node, member: entity)
-                  end
+                   Membership.find_by(group: entity, member: node)
+                 elsif entity.is_a?(Person) && node.is_a?(Group)
+                   Membership.find_by(group: node, member: entity)
+                 end
 
     position = membership&.last_position
-
-    return '' unless position
-
-    result = position.title
-    return '' unless result
+    return '' unless position&.title
 
     if position.end_date.present? && position.start_date.present?
       if position.end_date == position.start_date
-        result += " | (#{position.formatted_start_date})"
+        "#{position.title} | (#{position.formatted_start_date})"
       else
-        result += " | (#{position.formatted_start_date} - #{position.formatted_end_date})"
+        "#{position.title} | (#{position.formatted_start_date} - #{position.formatted_end_date})"
       end
     elsif position.start_date.present?
-      result += " | (since #{position.formatted_start_date})"
+      "#{position.title} | (since #{position.formatted_start_date})"
     elsif position.end_date.present?
-      result += " | (until #{position.formatted_end_date})"
+      "#{position.title} | (until #{position.formatted_end_date})"
     end
-
-    result
   end
 end
