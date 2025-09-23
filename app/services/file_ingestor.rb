@@ -11,7 +11,7 @@ class FileIngestor
   def general_upload
     # general upload does NOT record start and end dates for memberships
     csv.each do |row|
-      group = RecordGroup.call(row['group'])
+      group = RecordGroup.call(row['group'], mapper: MapGroupNamesAecDonations.new, mapper: MapGroupNamesAecDonations.new)
 
       next if row['person'].blank?
 
@@ -161,7 +161,7 @@ class FileIngestor
     end
 
     def nsw_parliamentarians_upload(file)
-      parliament = RecordGroup.call('NSW Parliament')
+      parliament = RecordGroup.call('NSW Parliament', mapper: MapGroupNamesAecDonations.new)
 
       csv = CSV.read(file, headers: true)
       csv.each do |row|
@@ -178,7 +178,7 @@ class FileIngestor
         # independents are not in a party, so we don't need to create a party membership for them
         next if (row['party'].nil? || row['party'].match?(/independent/i))
 
-        party = RecordGroup.call(row['party'])
+        party = RecordGroup.call(row['party'], mapper: MapGroupNamesAecDonations.new)
         # major_party = party.name.match?(/ALP|Liberals|Greens|Nationals/)
 
         # For MPs who belong to a party, create a membership and position.
@@ -191,7 +191,7 @@ class FileIngestor
     end
 
     def federal_parliamentarians_upload(file)
-      parliament = RecordGroup.call('Australian Federal Parliament')
+      parliament = RecordGroup.call('Australian Federal Parliament', mapper: MapGroupNamesAecDonations.new)
 
       csv = CSV.read(file, headers: true)
       csv.each do |row|

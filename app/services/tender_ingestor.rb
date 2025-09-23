@@ -91,11 +91,15 @@ class RecordIndividualTransaction
   end
 
   def purchaser
-    @purchaser ||= RecordGroup.call(release.purchaser_name, business_number: release.purchaser_abn)
+    @purchaser ||= RecordGroup.call(release.purchaser_name, business_number: release.purchaser_abn, mapper:)
   end
 
   def supplier
-    @supplier ||= RecordGroup.call(release.supplier_name, business_number: release.supplier_abn)
+    @supplier ||= RecordGroup.call(release.supplier_name, business_number: release.supplier_abn, mapper:)
+  end
+
+  def mapper
+    MapGroupNamesAecDonations.new
   end
 end
 

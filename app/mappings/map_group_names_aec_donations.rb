@@ -1,12 +1,11 @@
 require 'capitalize_names'
 
-class MapGroupNames
-  def initialize(name)
-    @name = map_or_return_name(name)
+class MapGroupNamesAecDonations
+  def initialize
   end
 
-  def call
-    @name
+  def call(name)
+    map_or_return_name(name)
   end
 
   def map_or_return_name(name)
