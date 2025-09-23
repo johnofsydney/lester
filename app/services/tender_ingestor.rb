@@ -99,7 +99,7 @@ class RecordIndividualTransaction
   end
 
   def mapper
-    MapGroupNamesAecDonations.new
+    MapGroupNamesGeneral.new
   end
 end
 

@@ -27,7 +27,6 @@ RSpec.describe FileIngestor, type: :service do
         globex = Group.find_by!(name: 'Globex Corporation')
 
         # memberships should be created, with the correct start and end dates and evidence if present
-        # binding.pry
         soccer_john = Membership.find_by!(member: john, group: soccer_team)
         soccer_jane = Membership.find_by!(member: jane, group: soccer_team)
         expect(soccer_john.evidence).to eq('Some evidence')
