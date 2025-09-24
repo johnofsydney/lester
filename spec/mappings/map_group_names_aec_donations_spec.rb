@@ -146,10 +146,6 @@ RSpec.describe MapGroupNamesAecDonations, type: :service do
       expect(described_class.new.call('NIB Health Funds')).to eq('NIB Health Funds Limited')
     end
 
-    it 'returns "Origin Energy" for names containing "Origin Energy"' do
-      expect(described_class.new.call('Origin Energy')).to eq('Origin Energy')
-    end
-
     it 'returns "Pricewaterhousecoopers" for names containing "Pricewaterhousecoopers"' do
       expect(described_class.new.call('Pricewaterhousecoopers')).to eq('Pricewaterhousecoopers')
     end
@@ -894,33 +890,6 @@ RSpec.describe MapGroupNamesAecDonations, type: :service do
       it 'returns lib federal' do
         expect(described_class.new.call('Liberal Party Menzies Research Centre')).to eq('Liberals (Federal)')
       end
-
-      it 'returns libs NSW' do
-      end
-
-      it 'returns libs QLD' do
-      end
-
-      it 'returns libs SA' do
-      end
-
-      it 'returns libs TAS' do
-      end
-
-      it 'returns libs WA' do
-      end
-
-      it 'returns libs VIC' do
-      end
-    end
-
-    context 'for labor party' do
-    end
-
-    context 'for greens party' do
-    end
-
-    context 'for nationals party' do
     end
   end
 end

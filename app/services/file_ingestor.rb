@@ -11,7 +11,7 @@ class FileIngestor
   def general_upload
     # general upload does NOT record start and end dates for memberships
     csv.each do |row|
-      group = RecordGroup.call(row['group'], mapper: MapGroupNamesAecDonations.new, mapper: MapGroupNamesAecDonations.new)
+      group = RecordGroup.call(row['group'], mapper: MapGroupNamesAecDonations.new)
 
       next if row['person'].blank?
 
