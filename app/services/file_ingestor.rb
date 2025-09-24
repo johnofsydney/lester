@@ -218,7 +218,7 @@ class FileIngestor
         # we also don't need to create a branch / electorate membership for them, that's handled independently
         next if independent
 
-        federal_party = RecordGroup.call(row['party'])
+        federal_party = RecordGroup.call(row['party'], mapper: MapGroupNamesAecDonations.new)
         major_party = federal_party.name.match?(/ALP|Liberals|Greens|Nationals/)
 
         # For MPs who belong to a party, create a membership and position.
@@ -254,7 +254,7 @@ class FileIngestor
 
           if major_party
             # if the person belongs to a _major_ party, they also belong to the state party too
-            state_party = RecordGroup.call(row['party'].downcase.gsub('federal', row['state']))
+            state_party = RecordGroup.call(row['party'].downcase.gsub('federal', row['state']), mapper: MapGroupNamesAecDonations.new)
             state_membership = Membership.find_or_create_by(member: person, group: state_party)
 
             # dont need start and end date because we dont know when they joined the local state party.
@@ -339,7 +339,7 @@ class FileIngestor
           evidence: evidence
         )
 
-        group = RecordGroup.call(row['company']) if row['company'].present?
+        group = RecordGroup.call(row['company'], mapper: MapGroupNamesAecDonations.new) if row['company'].present?
         title = if row['title'].present?
           CapitalizeNames.capitalize(row['title'].strip)
                          .gsub(/\bCEO\b/i) { |word| word.titleize }
@@ -378,8 +378,8 @@ class FileIngestor
 
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        owning_group = RecordGroup.call(row['group'])
-        member_group = RecordGroup.call(row['member_group'])
+        owning_group = RecordGroup.call(row['group'], mapper: MapGroupNamesAecDonations.new)
+        member_group = RecordGroup.call(row['member_group'], mapper: MapGroupNamesAecDonations.new)
 
         next unless owning_group && member_group
         owning_group.update(business_number: row['business_number'].gsub(/\D/, '')) if row['business_number'].present?

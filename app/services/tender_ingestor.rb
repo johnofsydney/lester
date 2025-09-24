@@ -99,7 +99,7 @@ class RecordIndividualTransaction
   end
 
   def mapper
-    MapGroupNamesGeneral.new
+    ::MapGroupNamesGeneral.new
   end
 end
 

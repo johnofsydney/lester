@@ -245,52 +245,66 @@ RSpec.describe RecordGroup, type: :service do
   end
 
   describe '.call' do
-    context 'when the group does not already exist' do
-      it 'creates a group with the given name' do
-        expect { described_class.call('Test Name', mapper:) }.to change(Group, :count).by(1)
+    context 'when the mapper is AEC Donations' do
+      let(:mapper) { MapGroupNamesAecDonations.new }
 
-        expect(Group.last.name).to eq('Test Name')
+      context 'when the group does not already exist' do
+        it 'creates a group with the given name' do
+          expect { described_class.call('Test Name', mapper:) }.to change(Group, :count).by(1)
+
+          expect(Group.last.name).to eq('Test Name')
+        end
+
+        it 'creates a group with the given name and business number' do
+          expect { described_class.call('Test Name', business_number: 'ABN: 123 456 789', mapper: ) }.to change(Group, :count).by(1)
+
+          expect(Group.last.name).to eq('Test Name')
+          expect(Group.last.business_number).to eq('123456789')
+        end
       end
 
-      it 'creates a group with the given name and business number' do
-        expect { described_class.call('Test Name', business_number: 'ABN: 123 456 789', mapper: ) }.to change(Group, :count).by(1)
+      context 'when the group already exists' do
+        let(:existing_name) { 'Existing Group' }
+        let(:business_number) { '123456789' }
+        let(:business_number_different_format) { 'ABN: 123 456 789' }
 
-        expect(Group.last.name).to eq('Test Name')
-        expect(Group.last.business_number).to eq('123456789')
+        before do
+          Group.create(name: existing_name, business_number: business_number)
+        end
+
+        context 'when given only the identical name' do
+          it 'does not create a new group' do
+            expect { described_class.call(existing_name, mapper:) }.not_to(change(Group, :count))
+          end
+        end
+
+        context 'when given the identical name and business number' do
+          it 'does not create a new group' do
+            expect { described_class.call(existing_name, business_number: business_number_different_format, mapper:) }.not_to(change(Group, :count))
+          end
+        end
+
+        context 'when given a different name and same business number' do
+          it 'does not create a new group' do
+            expect { described_class.call('New Name for Existing Group', business_number: business_number_different_format, mapper:) }.not_to(change(Group, :count))
+          end
+
+          it 'adds the new name to the list of other names' do
+            described_class.call('New Name for Existing Group', business_number: business_number_different_format, mapper:)
+            group = Group.find_by(name: existing_name)
+            expect(group.other_names).to include('New Name for Existing Group')
+          end
+        end
       end
     end
 
-    context 'when the group already exists' do
-      let(:existing_name) { 'Existing Group' }
-      let(:business_number) { '123456789' }
-      let(:business_number_different_format) { 'ABN: 123 456 789' }
+    describe 'when the mapper is General' do
+      let(:mapper) { MapGroupNamesGeneral.new }
 
-      before do
-        Group.create(name: existing_name, business_number: business_number)
-      end
+      it 'creates a group with the given name' do
+        expect { described_class.call('GREENS LIST CLERKING SERVICES', mapper:) }.to change(Group, :count).by(1)
 
-      context 'when given only the identical name' do
-        it 'does not create a new group' do
-          expect { described_class.call(existing_name, mapper:) }.not_to(change(Group, :count))
-        end
-      end
-
-      context 'when given the identical name and business number' do
-        it 'does not create a new group' do
-          expect { described_class.call(existing_name, business_number: business_number_different_format, mapper:) }.not_to(change(Group, :count))
-        end
-      end
-
-      context 'when given a different name and same business number' do
-        it 'does not create a new group' do
-          expect { described_class.call('New Name for Existing Group', business_number: business_number_different_format, mapper:) }.not_to(change(Group, :count))
-        end
-
-        it 'adds the new name to the list of other names' do
-          described_class.call('New Name for Existing Group', business_number: business_number_different_format, mapper:)
-          group = Group.find_by(name: existing_name)
-          expect(group.other_names).to include('New Name for Existing Group')
-        end
+        expect(Group.last.name).to eq('Greens List Clerking Services')
       end
     end
   end

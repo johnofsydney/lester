@@ -89,7 +89,7 @@ class Group < ApplicationRecord
   end
 
   def business_number=(value)
-    return if value.blank?
+    return if value.nil?
 
     super(value.gsub(/\D/, ''))
   end
