@@ -32,6 +32,26 @@ ActiveAdmin.register Group do
     end
   end
 
+  show do
+    attributes_table do
+      row :id
+      row :name
+      row :business_number
+      row :other_names
+      row :last_cached
+      row :created_at
+      row :updated_at
+    end
+  end
+
+  form do |f|
+    f.inputs do
+      f.input :name
+      f.input :business_number
+    end
+    f.actions
+  end
+
   action_item :view_group, only: :show do
     link_to 'View Group', group_path(resource), method: :get
   end
