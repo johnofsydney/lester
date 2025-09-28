@@ -21,8 +21,13 @@ class RecordGroup
       @group = Group.create(name:, business_number:)
     end
 
-    @group.update(category:) if category
-    @group.save
+    Group.transaction do
+      lock_id = Zlib.crc32(@group.title).to_i
+      Group.connection.execute("SELECT pg_advisory_xact_lock(#{lock_id})")
+
+      @group.update(category:) if category
+      @group.save
+    end
 
     @group
   end
