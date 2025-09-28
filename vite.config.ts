@@ -13,10 +13,12 @@ export default defineConfig({
   ],
   build: {
     outDir: 'public/vite',
+    chunkSizeWarningLimit: 1000, // Adjust warning limit if needed
     rollupOptions: {
       output: {
         manualChunks: {
           vendor: ['react', 'react-dom'], // adjust based on your dependencies
+          inertia: ['@inertiajs/react'],
         },
       },
     },

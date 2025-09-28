@@ -1,14 +1,11 @@
 # .github/workflows/deploy.yml
 name: "Deploy to Production"
 on:
-  workflow_run:
-    workflows: ["Ruby on Rails CI"]
+  push:
     branches: [main]
-    types: [completed]
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     environment:
       name: production
