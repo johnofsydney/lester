@@ -2,6 +2,7 @@
   "private": true,
   "type": "module",
   "devDependencies": {
+    "@types/node": "^24.5.2",
     "vite": "^6.3.6",
     "vite-plugin-ruby": "^5.1.1"
   },
@@ -15,5 +16,10 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-vis-network-graph": "^3.0.1"
+  },
+  "scripts": {
+    "build": "vite build",
+    "build:production": "NODE_ENV=production vite build",
+    "postinstall": "npm run build:production"
   }
 }
