@@ -22,7 +22,7 @@ class RecordGroup
     end
 
     Group.transaction do
-      lock_id = Zlib.crc32(@group.title).to_i
+      lock_id = Zlib.crc32(@group.name).to_i
       Group.connection.execute("SELECT pg_advisory_xact_lock(#{lock_id})")
 
       @group.update(category:) if category

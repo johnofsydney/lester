@@ -99,6 +99,7 @@ jobs:
           RAILS_ENV=production bundle exec rails vite:build
         env:
           NODE_ENV: production
+          SECRET_KEY_BASE: dummy_secret_for_asset_compilation
 
       - name: Upload precompiled assets
         uses: actions/upload-artifact@v4
