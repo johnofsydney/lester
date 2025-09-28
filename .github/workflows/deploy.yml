@@ -15,13 +15,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Download precompiled assets
-        uses: actions/download-artifact@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          name: precompiled-assets
-          path: ./
-          run-id: ${{ github.event.workflow_run.id }}
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@78c01b705fd9d5ad960d432d3a0cfa341d50e410
+        with:
+          bundler-cache: true
+
+      - name: Precompile assets
+        run: |
+          RAILS_ENV=production bundle exec rails assets:precompile
+          RAILS_ENV=production bundle exec rails vite:build
+        env:
+          NODE_ENV: production
+          SECRET_KEY_BASE: dummy_secret_for_asset_compilation
 
       - name: Deploy to Hatchbox
         uses: hatchboxio/github-hatchbox-deploy-action@v2
