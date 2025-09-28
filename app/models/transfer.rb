@@ -13,6 +13,8 @@ class Transfer < ApplicationRecord
     message: 'should have unique combination of giver_type, giver_id, taker_id, amount, and effective_date'
   }
 
+  scope :government_contract, -> { where(transfer_type: 'Government Contract(s)') }
+
   def self.financial_years
     (Transfer.order(:effective_date).first.effective_date.year..Time.zone.now.year).to_a
   end
