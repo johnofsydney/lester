@@ -11,4 +11,18 @@ export default defineConfig({
     react(),
     RubyPlugin()
   ],
+  build: {
+    outDir: 'public/vite',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'], // adjust based on your dependencies
+        },
+      },
+    },
+  },
+  // Production optimizations
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+  },
 })
