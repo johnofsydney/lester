@@ -27,6 +27,11 @@ Metrics/MethodLength:
   Exclude:
     - 'app/models/descendent.rb' # case statements
 
+Naming/VariableNumber:
+  Exclude:
+    - 'app/mappings/*.rb'
+    - 'app/services/record_*.rb'
+
 Style/Documentation:
   Enabled: false
 

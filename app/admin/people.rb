@@ -31,6 +31,18 @@ ActiveAdmin.register Person do
     column :linkedin_ingested
   end
 
+  show do
+    attributes_table do
+      row :id
+      row :name
+      row :created_at
+      row :updated_at
+      row :other_names
+      row :linkedin_url
+      row :linkedin_ingested
+    end
+  end
+
   form do |f|
     f.inputs 'Person' do
       f.input :name

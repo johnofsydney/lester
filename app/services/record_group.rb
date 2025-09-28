@@ -1,14 +1,15 @@
 class RecordGroup
-  attr_reader :name, :category, :business_number, :group
+  attr_reader :name, :category, :business_number, :group, :mapper
 
-  def initialize(name, category = nil, business_number = nil)
-    @name = MapGroupNames.new(name).call
+  def initialize(name, category = nil, business_number = nil, mapper = nil)
+    @name = mapper ? mapper.call(name) : name
     @category = !category.nil?
     @business_number = business_number&.gsub(/\D/, '')
+    @mapper = mapper
   end
 
-  def self.call(name, category: nil, business_number: nil)
-    new(name, category, business_number).call
+  def self.call(name, category: nil, business_number: nil, mapper: nil)
+    new(name, category, business_number, mapper).call
   end
 
   def call

@@ -1,12 +1,6 @@
-require 'capitalize_names'
-
-class MapGroupNames
-  def initialize(name)
-    @name = map_or_return_name(name)
-  end
-
-  def call
-    @name
+class MapGroupNamesAecDonations < MapGroupNamesBase
+  def call(name)
+    map_or_return_name(name)
   end
 
   def map_or_return_name(name)
@@ -72,13 +66,13 @@ class MapGroupNames
     return 'Amazon Australia' if name.match?(/\bAmazon\b/i)
     return 'Amgen Australia Pty Ltd' if name.match?(/Amgen Australia/i)
     return 'Ampol Limited' if name.match?(/Ampol (Ltd|Limited)/i)
-    return 'Angus Knight Group' if name.match?(/Angus Knight (Group|Pty Ltd|Pty Limited)/i) #
+    return 'Angus Knight Group' if name.match?(/Angus Knight (Group|Pty Ltd|Pty Limited)/i)
 
-    return 'Arafura Rare Earths' if name.match?(/Arafura (Rare Earths|Resources)/i) #
-    return 'Ausbiotech' if name.match?(/\bAusbiotech\b/i) #
-    return 'Australian Capital Equity Pty Ltd' if name.match?(/\bAustralian Capital Equity (Pty Ltd|P\/L)\b/i) #
-    return 'Australian Computer Society' if name.match?(/\bAustralian Computer Society Incorporated\b/i) #
-    return 'BP Australia Pty Ltd' if name.match?(/\bBP Australia Pty Ltd\b/i) || name == 'BP Australia' #
+    return 'Arafura Rare Earths' if name.match?(/Arafura (Rare Earths|Resources)/i)
+    return 'Ausbiotech' if name.match?(/\bAusbiotech\b/i)
+    return 'Australian Capital Equity Pty Ltd' if name.match?(%r{\bAustralian Capital Equity (Pty Ltd|P/L)\b}i)
+    return 'Australian Computer Society' if name.match?(/\bAustralian Computer Society Incorporated\b/i)
+    return 'BP Australia Pty Ltd' if name.match?(/\bBP Australia Pty Ltd\b/i) || name == 'BP Australia'
     return 'Bayer Australia Ltd' if name.match?(/\bBayer Australia (Ltd|Limited)\b/i)
     return 'Beach Energy Limited' if name.match?(/\bBeach Energy\b/i)
     return 'Bowen Coking Coal' if name.match?(/\bBowen Coking Coal\b/i)
@@ -197,7 +191,7 @@ class MapGroupNames
 
     return 'UCB Australia Pty Ltd' if name.match?(/UCB Australia (Pty Ltd|Proprietary Limited)/i)
     return 'Uber Australia Pty Ltd' if name.match?(/Uber Australia Pty Ltd/i) || name.downcase == 'uber'
-    return 'Van Dairy Ltd' if name.match?(/Van Dairy Ltd/i) ||name.match?(/\bvanmilk\b/)
+    return 'Van Dairy Ltd' if name.match?(/Van Dairy Ltd/i) || name.match?(/\bvanmilk\b/)
     return 'Varley Rafael Australia' if name.match?(/Varley Rafael Australia/i) || name.downcase == 'varley rafael'
     return 'Verbrec Ltd' if name.match?(/Verbrec (Ltd|Limited)/i) || name.downcase == 'verbrec'
     return 'Verdant Minerals' if name.match?(/Verdant Minerals/i)
@@ -326,49 +320,5 @@ class MapGroupNames
 
   def group_names
     Group::NAMES
-  end
-
-  def cleaned_up_name(name)
-    regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
-    regex_for_longer_acronyms_1 = /\bAENM\b|\bKPMG\b|\bAPAC\b|\bACCI\b|\bDBPC\b|\bCEPU\b|\bACDC\b|\bCFMEU\b/i
-    regex_for_longer_acronyms_2 = /\bPESA\b|\bRISC\b|\bJERA\b|\bAMPD\b|\bAFTA\b|\bFTTH\b|\bGCFC\b|\bGIMC\b/i
-    regex_for_longer_acronyms_3 = /\bCPSU\b|\bSPSF\b|\bCRRC\b|\bCSIROb|\bCTSI\b|\bERGT\b|\bGGBV\b|\bHSBC\b/i
-    regex_for_longer_acronyms_4 = /\bCPAC\b/i
-
-    regex_for_titleize = /\bPty\b|\bLtd\b|\bBus\b|\bInc\b|\bCo\b|\bTel\b|\bVan\b|\bAus\b|\bIan\b/i
-    regex_for_titleize_2 = /\bMud\b\bWeb\b|\bNow\b|\bNo\b|\bTen\b|Eli lilly\b|\bNew\b|\bJob\b/i
-    regex_for_titleize_3 = /\bDot\b|\bRex\b|\bTan\b|\bUmi\b|\bBig\b|\bDr\b|\bGas\b|\bOil\b/i
-    regex_for_titleize_4 = /\bTax\b|\bAid\b|\bBay\b|\bTo\b|\bYes\b|\bRed\b|\bOne\b|\bSky\b/i
-    regex_for_titleize_5 = /\bAmazon Web Services\b|\bAce Gutters\b|\bMud Guards\b|\bGum Tree\b|\bYe Family\b/i
-    regex_for_titleize_6 = /\bRio Tinto\b|\bRed Rocketship\b|\bCar Park\b|\bAir Liquide\b/i
-    regex_for_titleize_7 = /\bVictoria\b|\bQueensland\b|\bTasmania\b/i
-    regex_for_titleize_8 = /\Air New Zealand\b|\bAir Pacific\b|\bAir Liquide\b|Singapore/i
-    regex_for_titleize_9 = /\Be Our Guest\b|\bBlack Dog\b/i
-    regex_for_titleize_10 = /\bJoe\b/i
-
-    regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i
-
-    CapitalizeNames.capitalize(name.strip)
-                   .gsub(regex_for_two_and_three_chars) { |chars| chars.upcase }
-                   .gsub(regex_for_longer_acronyms_1) { |chars| chars.upcase }
-                   .gsub(regex_for_longer_acronyms_2) { |chars| chars.upcase }
-                   .gsub(regex_for_longer_acronyms_3) { |chars| chars.upcase }
-                   .gsub(regex_for_longer_acronyms_4) { |chars| chars.upcase }
-                   .gsub(regex_for_titleize) { |word| word.titleize }
-                   .gsub(regex_for_titleize_2) { |word| word.titleize }
-                   .gsub(regex_for_titleize_3) { |word| word.titleize }
-                   .gsub(regex_for_titleize_4) { |word| word.titleize }
-                   .gsub(regex_for_titleize_5) { |word| word.titleize }
-                   .gsub(regex_for_titleize_6) { |word| word.titleize }
-                   .gsub(regex_for_titleize_7) { |word| word.titleize }
-                   .gsub(regex_for_titleize_8) { |word| word.titleize }
-                   .gsub(regex_for_titleize_9) { |word| word.titleize }
-                   .gsub(regex_for_titleize_10) { |word| word.titleize }
-                   .gsub(regex_for_downcase) { |word| word.downcase }
-                   .gsub(/^the/) { |word| word.titleize }
-                   .gsub('australia') { |word| word.titleize }
-                   .gsub(/Pty Limited|Pty\. Ltd\.|Pty Ltd\./, 'Pty Ltd')
-                   .gsub(/PTE\.? Ltd\.?/i, 'Pte Ltd')
-                   .gsub('(t/as Clubsnsw)', '(T/As ClubsNSW)')
   end
 end
