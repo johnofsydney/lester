@@ -6,8 +6,6 @@
 # run tests and linters.
 name: "Ruby on Rails CI"
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 jobs:
@@ -72,3 +70,4 @@ jobs:
           bundler-cache: true
       - name: Security audit dependencies
         run: bundle exec bundler-audit --update
+
