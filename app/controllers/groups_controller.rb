@@ -27,6 +27,13 @@ class GroupsController < ApplicationController
     end
   end
 
+  def reload
+    @group = Group.find(params[:id])
+    BuildGroupCachedDataJob.perform_async(@group.id)
+
+    render Groups::ShowView.new(group: @group.reload)
+  end
+
   def affiliated_groups
     @group = Group.find(params[:group_id])
     @page = params[:page].to_i
