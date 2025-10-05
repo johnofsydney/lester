@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   get 'groups/group_people/:group_id/page=:page' => 'groups#group_people'
   get 'groups/affiliated_groups/:group_id/page=:page' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
+  get 'groups/:id/reload' => 'groups#reload'
 
   get 'people/:id/network_graph' => 'inertia#network_graph_person'
   get 'groups/:id/network_graph' => 'inertia#network_graph_group'
@@ -23,6 +24,8 @@ Rails.application.routes.draw do
 
   get '/post_to_socials' => 'home#post_to_socials'              # Random
   get '/people/:id/post_to_socials' => 'people#post_to_socials' # Person
+
+  get '/people/:id/reload' => 'people#reload'
 
   resources :transfers
   resources :groups

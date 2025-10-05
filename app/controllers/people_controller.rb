@@ -26,6 +26,13 @@ class PeopleController < ApplicationController
     end
   end
 
+  def reload
+    @person = Person.find(params[:id])
+    BuildPersonCachedDataJob.perform_async(@person.id)
+
+    render People::ShowView.new(person: @person.reload)
+  end
+
   def post_to_socials
     message = @person.tweet_body
     BlueskyService.skeet(message)
