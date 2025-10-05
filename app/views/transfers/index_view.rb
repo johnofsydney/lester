@@ -69,6 +69,8 @@ class Transfers::IndexView < ApplicationView
 
       tbody do
         transfers.each do |transfer|
+          raise "Transfer ##{transfer.id} missing giver or taker!" if transfer.giver.nil? || transfer.taker.nil?
+
           tr do
             td do
               if transfer.id
