@@ -5,7 +5,6 @@ class IngestSingleContractJob
 
   def perform(contract_id)
     AusTender::IngestSingleContract.new(contract_id).perform
-
   rescue StandardError => e
     Rails.logger.error "Error ingesting Contract #{contract_id}: #{e.message}"
     Rails.logger.error e.backtrace.join("\n")

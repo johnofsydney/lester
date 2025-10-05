@@ -26,7 +26,7 @@ class TenderIngestor
     IngestContractsUrlJob.perform_async(response[:next_page]) if response[:next_page]
 
     # return array of unique contract ids
-    response[:body]['releases'].map { |raw_release| raw_release['contracts'].first['id'] }.compact.uniq
+    response[:body]['releases'].filter_map { |raw_release| raw_release['contracts'].first['id'] }.uniq
   end
 end
 

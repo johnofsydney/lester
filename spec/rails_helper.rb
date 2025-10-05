@@ -8,6 +8,7 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 require 'pry'
+require 'sidekiq/testing'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -63,6 +64,12 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Disable actual job processing
+  Sidekiq::Testing.fake! # => jobs go into Sidekiq::Queues, not run immediately
+
+  # Optional: clear jobs between tests, default is each
+  config.before { Sidekiq::Worker.clear_all }
 end
 
 require 'shoulda/matchers'
