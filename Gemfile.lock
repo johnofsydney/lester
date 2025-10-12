@@ -231,6 +231,8 @@ GEM
       net-protocol
     newrelic_rpm (9.19.0)
     nio4r (2.7.4)
+    nokogiri (1.18.9-aarch64-linux-gnu)
+      racc (~> 1.4)
     nokogiri (1.18.9-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-darwin)
@@ -254,6 +256,8 @@ GEM
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
+    prettytodo (0.1.1)
+      rails (>= 7.0.0)
     prism (1.4.0)
     pry (0.14.2)
       coderay (~> 1.1)
@@ -269,7 +273,7 @@ GEM
     puma (6.6.0)
       nio4r (~> 2.0)
     racc (1.8.1)
-    rack (3.1.16)
+    rack (3.1.18)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
@@ -426,7 +430,7 @@ GEM
     unicode-display_width (3.1.4)
       unicode-emoji (~> 4.0, >= 4.0.4)
     unicode-emoji (4.0.4)
-    uri (1.0.3)
+    uri (1.0.4)
     useragent (0.16.11)
     vite_rails (3.0.19)
       railties (>= 5.1, < 9)
@@ -451,6 +455,7 @@ GEM
     zeitwerk (2.7.3)
 
 PLATFORMS
+  aarch64-linux
   arm64-darwin-22
   arm64-darwin-24
   x86_64-darwin-21
@@ -481,11 +486,12 @@ DEPENDENCIES
   pg_search
   phlex (~> 1.11.0)
   phlex-rails
+  prettytodo
   pry
   pry-byebug
   pry-rails
   puma (>= 6.4.3)
-  rack (>= 3.1.16)
+  rack (>= 3.1.18)
   rails (~> 7.2)
   redis (~> 4.0)
   rspec-rails (~> 6.1.0)
@@ -502,6 +508,7 @@ DEPENDENCIES
   stimulus-rails
   turbo-rails
   tzinfo-data
+  uri (~> 1.0.4)
   vite_rails
   web-console
 
