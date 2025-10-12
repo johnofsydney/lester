@@ -85,3 +85,5 @@ gem 'sidekiq-unique-jobs'
 
 # https://github.com/fatkodima/activerecord_lazy_columns
 gem 'activerecord_lazy_columns'
+
+gem "prettytodo"

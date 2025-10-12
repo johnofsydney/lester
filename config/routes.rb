@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   mount Flipper::UI.app(Flipper) => '/flipper'
   mount Sidekiq::Web => '/sidekiq' # access it at http://localhost:3000/sidekiq
+  mount Prettytodo::Engine => '/prettytodo' if Rails.env.development?
 
   get 'groups/page=:page' => 'groups#index'
   get 'people/page=:page' => 'people#index'
