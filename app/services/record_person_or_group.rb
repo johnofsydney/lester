@@ -1,6 +1,6 @@
 class RecordPersonOrGroup
-  def self.call(name)
-    new(name).call
+  def self.call(name, mapper: nil)
+    new(name, mapper:).call
   end
 
   def call
@@ -8,18 +8,14 @@ class RecordPersonOrGroup
 
     if person_or_group == 'person'
       RecordPerson.call(first_name_last_name)
-    elsif person_or_group == 'group'
-      RecordGroup.call(name)
-    elsif person_or_group == 'couple'
-      RecordGroup.call(name)
-      # TODO: create memberships for each person in the couple
     else
-      RecordGroup.call(name)
+      RecordGroup.call(name, mapper:)
     end
   end
 
-  def initialize(name)
+  def initialize(name, mapper: nil)
     @name = name.strip
+    @mapper = mapper
   end
 
   def person_or_group
@@ -52,6 +48,9 @@ class RecordPersonOrGroup
 
     regex_for_specific_companies_1 = /Anniversary|Empowered|Employment|campaign/i
 
+    # tom jones and lady gaga
+    return 'group' if name.match?(/([a-z]+) [a-z]+ (and) ([a-z]+) ([a-z]+)/i)
+
     return 'group' if name.match?(regex_for_3_or_4_capitals)  # Check for acronyms
     return 'group' if name.match?(regex_for_company_words_1)  # Check for company names
     return 'group' if name.match?(regex_for_company_words_2)  # Check for company names
@@ -80,6 +79,7 @@ class RecordPersonOrGroup
     return 'group' if name.match?(/Not A Race/i)
     return 'group' if name.match?(/NIB Health/i)
     return 'group' if name.match?(/Jewish Commitment To A Better World/i)
+    return 'group' if name.match?(/Fairfax Matters/i)
     return 'group' if name.match?(/PricewaterhouseCoopers/i)
     return 'group' if name.match?(/\bSpectrum Health\b/i)
     return 'group' if name.match?(/\bGroundswell Giving\b/i)
@@ -120,7 +120,7 @@ class RecordPersonOrGroup
 
   private
 
-  attr_reader :name
+  attr_reader :name, :mapper
 
   def first_name_last_name
     # handle last_name, first_name if in that format

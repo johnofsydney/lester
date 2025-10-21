@@ -73,10 +73,14 @@ class TransfersTableComponent < ApplicationView
             if transfer.giver_id
               td(style: row_style(transfer)) { a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { transfer.giver_name } }
             elsif transfer.giver_name
-              td(style: row_style(transfer)) { transfer.giver_name } # only for summary rows
+              # only for summary rows
+              # as it is a summary, there is no id (one giver, multiple records)
+              # therefore no link to individual transaction
+              td(style: row_style(transfer)) { transfer.giver_name }
             end
 
-            td(style: row_style(transfer)) { a(href: "/groups/#{transfer.taker_id}") {transfer.taker_name} }
+            td(style: row_style(transfer)) { a(href: "/#{transfer.taker_type.downcase.pluralize}/#{transfer.taker_id}") { transfer.taker_name } }
+
             td(style: row_style(transfer), class: 'desktop-only') { transfer.depth }
             td(style: row_style(transfer), class: 'desktop-only') { transfer.direction }
           end
