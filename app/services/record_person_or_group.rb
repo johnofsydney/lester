@@ -1,6 +1,6 @@
 class RecordPersonOrGroup
-  def self.call(name, mapper = nil)
-    new(name, mapper = nil).call
+  def self.call(name, mapper: nil)
+    new(name, mapper:).call
   end
 
   def call
@@ -13,7 +13,7 @@ class RecordPersonOrGroup
     end
   end
 
-  def initialize(name, mapper = nil)
+  def initialize(name, mapper: nil)
     @name = name.strip
     @mapper = mapper
   end
