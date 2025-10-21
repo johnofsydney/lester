@@ -127,8 +127,8 @@ class FileIngestor
 
         donation_date = parse_date(row['Date'])
         financial_year = Dates::FinancialYear.new(donation_date)
-        giver = RecordPersonOrGroup.call(row['Name'])
-        taker = RecordPersonOrGroup.call(row['Donation Made To'])
+        giver = RecordPersonOrGroup.call(row['Name'], mapper: MapGroupNamesAecDonations.new)
+        taker = RecordPersonOrGroup.call(row['Donation Made To'], mapper: MapGroupNamesAecDonations.new)
 
         transfer = Transfer.find_or_create_by(
           giver_id: giver.id,
@@ -139,6 +139,7 @@ class FileIngestor
           transfer_type: 'donations',
           evidence: 'https://transparency.aec.gov.au/Donor',
         )
+        p 't'
 
         transfer.data ||= {}
         transfer.donations ||= []

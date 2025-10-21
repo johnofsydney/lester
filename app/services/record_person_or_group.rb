@@ -1,6 +1,6 @@
 class RecordPersonOrGroup
-  def self.call(name)
-    new(name).call
+  def self.call(name, mapper = nil)
+    new(name, mapper = nil).call
   end
 
   def call
@@ -8,18 +8,14 @@ class RecordPersonOrGroup
 
     if person_or_group == 'person'
       RecordPerson.call(first_name_last_name)
-    elsif person_or_group == 'group'
-      RecordGroup.call(name)
-    elsif person_or_group == 'couple'
-      RecordGroup.call(name)
-      # TODO: create memberships for each person in the couple
     else
-      RecordGroup.call(name)
+      RecordGroup.call(name, mapper:)
     end
   end
 
-  def initialize(name)
+  def initialize(name, mapper = nil)
     @name = name.strip
+    @mapper = mapper
   end
 
   def person_or_group
@@ -120,7 +116,7 @@ class RecordPersonOrGroup
 
   private
 
-  attr_reader :name
+  attr_reader :name, :mapper
 
   def first_name_last_name
     # handle last_name, first_name if in that format
