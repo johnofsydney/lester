@@ -36,7 +36,7 @@ class Groups::ShowView < ApplicationView
     render TransfersTableComponent.new(
       entity: group,
       transfers: group.cached.consolidated_transfers,
-      heading: "Directly Connected to #{group.name}",
+      heading: "Connected to #{group.name}",
       summarise_for: Group.summarise_for(group)
     )
   end

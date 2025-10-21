@@ -71,6 +71,7 @@ class RecordPerson
     return 'Kristina Keneally' if name.match?(/Kristina Keneally|Kristina Kerscher Keneally/i)
     return 'Linda Burney' if name.match?(/Linda Burney|Linda Jean Burney/i)
     return 'Peter Collins' if name.match?(/Peter Collins|Peter Edward James Collins/i)
+    return 'Rebekha Sharkie' if name.match?(/Rebekha.+Sharkie/i)
 
     name.strip
   end

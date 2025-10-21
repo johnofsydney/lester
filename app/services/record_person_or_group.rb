@@ -48,6 +48,9 @@ class RecordPersonOrGroup
 
     regex_for_specific_companies_1 = /Anniversary|Empowered|Employment|campaign/i
 
+    # tom jones and lady gaga
+    return 'group' if name.match?(/([a-z]+) [a-z]+ (and) ([a-z]+) ([a-z]+)/i)
+
     return 'group' if name.match?(regex_for_3_or_4_capitals)  # Check for acronyms
     return 'group' if name.match?(regex_for_company_words_1)  # Check for company names
     return 'group' if name.match?(regex_for_company_words_2)  # Check for company names
@@ -76,6 +79,7 @@ class RecordPersonOrGroup
     return 'group' if name.match?(/Not A Race/i)
     return 'group' if name.match?(/NIB Health/i)
     return 'group' if name.match?(/Jewish Commitment To A Better World/i)
+    return 'group' if name.match?(/Fairfax Matters/i)
     return 'group' if name.match?(/PricewaterhouseCoopers/i)
     return 'group' if name.match?(/\bSpectrum Health\b/i)
     return 'group' if name.match?(/\bGroundswell Giving\b/i)
