@@ -121,6 +121,7 @@ class FileIngestor
 
     def election_donations_ingest(file)
       csv = CSV.read(file, headers: true)
+
       csv.each do |row|
         next if row['Donation Made To'].match?(/unendorsed/i)
 

@@ -12,6 +12,7 @@ class RecordPerson
   end
 
   def call
+    p 'p'
     Person.find_or_create_by(name:)
   end
 
