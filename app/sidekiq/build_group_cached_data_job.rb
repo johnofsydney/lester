@@ -1,7 +1,7 @@
 class BuildGroupCachedDataJob
   include Sidekiq::Job
 
-  sidekiq_options queue: :low_concurrency, lock: :until_executed, on_conflict: :log
+  sidekiq_options queue: :low, lock: :until_executed, on_conflict: :log
 
   def perform(id)
     group = Group.find_by(id:)

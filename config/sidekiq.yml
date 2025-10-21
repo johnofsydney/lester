@@ -1,3 +1,6 @@
+:concurrency: 3        # keep low on small instances (2-5 recommended)
 :queues:
-  - [default, 5]       # default queue, concurrency 5
-  - [low_concurrency, 2]   # low_concurrency queue, concurrency 2
+  - [critical, 2]
+  - [default, 1]
+  - [low, 0.5]         # use :low for this bulk ingestion work
+
