@@ -139,7 +139,7 @@ class FileIngestor
           transfer_type: 'donations',
           evidence: 'https://transparency.aec.gov.au/Donor',
         )
-        p 't'
+        print 't'
 
         transfer.data ||= {}
         transfer.donations ||= []
