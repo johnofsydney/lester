@@ -11,7 +11,7 @@ class Common::MoneyGraphs < ApplicationView
     @giver = giver
   end
 
-  def template
+  def view_template
     render partial: 'shared/money_graphs', locals: {
       # colors: colors(transfers, giver:),
       transfers_by_year: group_by_year, # transfers_as_giver / taker # now coming from cache

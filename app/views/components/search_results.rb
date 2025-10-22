@@ -5,7 +5,7 @@ class SearchResults < ApplicationView
 
   attr_reader :results
 
-  def template
+  def view_template
     return if results.empty?
 
     div do

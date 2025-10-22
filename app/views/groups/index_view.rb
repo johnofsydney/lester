@@ -8,7 +8,7 @@ class Groups::IndexView < ApplicationView
     @subheading = subheading
   end
 
-  def template
+  def view_template
     div(class: 'mt-3 mb-3') do
       if subheading
         h4(class: 'font-italic') { subheading }

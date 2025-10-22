@@ -10,7 +10,7 @@ class Transfers::IndexView < ApplicationView
     @session = session
   end
 
-  def template
+  def view_template
     h2 { 'Transfers' }
 
     form(action: '/transfers', enctype: 'multipart/form-data', method: 'get', class: 'row g-3') do
