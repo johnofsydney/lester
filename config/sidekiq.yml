@@ -1,6 +1,6 @@
-:concurrency: 2        # keep low on small instances (2-5 recommended)
+:concurrency: 2 # delibertely low to preserve CPU and memory on low spec server
 :queues:
-  - [critical, 2]
-  - [default, 1]
-  - [low, 0.5]         # use :low for this bulk ingestion work
+  - [critical, 5]
+  - [default, 2]
+  - [low, 1]
 

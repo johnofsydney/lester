@@ -12,6 +12,7 @@ class Transfer < ApplicationRecord
     scope: [:giver_id, :taker_id, :amount, :effective_date],
     message: 'should have unique combination of giver_type, giver_id, taker_id, amount, and effective_date'
   }
+  validates :giver_id, :taker_id, presence: true
 
   scope :government_contract, -> { where(transfer_type: 'Government Contract(s)') }
 

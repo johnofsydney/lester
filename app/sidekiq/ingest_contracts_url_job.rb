@@ -4,7 +4,7 @@ class IngestContractsUrlJob
   sidekiq_options queue: :low, lock: :until_executed, on_conflict: :log
 
   def perform(url)
-    TenderIngestor.process_for_url(url: url)
+    TenderIngestor.process_for_url(url:)
   rescue StandardError => e
     Rails.logger.error "Error processing URL #{url}: #{e.message}"
     Rails.logger.error e.backtrace.join("\n")
