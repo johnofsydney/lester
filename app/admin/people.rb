@@ -24,11 +24,16 @@ ActiveAdmin.register Person do
   filter :linkedin_ingested, as: :date_range
 
   index do
-    selectable_column
-    id_column
-    column(:name, sortable: 'person_id')
-    column :linkedin_url
-    column :linkedin_ingested
+    if current_user&.id == 1
+      selectable_column
+      id_column
+      column(:name, sortable: 'person_id')
+      column :linkedin_url
+      column :linkedin_ingested
+    else
+      # Show minimal or no content for non-admin users
+      text_node "Access restricted"
+    end
   end
 
   show do
