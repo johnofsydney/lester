@@ -10,6 +10,7 @@ class MenuComponent < ApplicationView
   attr_reader :entity, :new_path, :new_text
 
   def template
+
     nav(class: 'navbar navbar-expand-lg navbar-light bg-light') do
       div(class: 'container-fluid') do
         a(class: 'navbar-brand brand-text', href: '/') { 'Join The Dots...' }
@@ -38,6 +39,18 @@ class MenuComponent < ApplicationView
             end
             li(class: 'nav-item') do
               a(class: 'nav-link', href: '/home/index/') { 'About' }
+            end
+            if Current.user
+              li(class: 'nav-item') do
+                a(class: 'nav-link', href: '/admin/') { 'Admin' }
+              end
+              li(class: 'nav-item') do
+                a(class: 'nav-link', href: '/admin/logout') { 'Logout' }
+              end
+            else
+              li(class: 'nav-item') do
+                a(class: 'nav-link', href: '/admin/login') { 'Login' }
+              end
             end
           end
         end

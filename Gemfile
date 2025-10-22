@@ -78,10 +78,13 @@ gem 'sidekiq'
 gem 'newrelic_rpm'
 
 # resolving vulnerabilities
-gem 'rack', '>= 3.1.16'
+gem 'rack', '>= 3.1.18'
 gem 'phlex', '~> 1.11.0'
+gem 'uri', '~> 1.0.4'
 
 gem 'sidekiq-unique-jobs'
 
 # https://github.com/fatkodima/activerecord_lazy_columns
 gem 'activerecord_lazy_columns'
+
+gem "prettytodo"
