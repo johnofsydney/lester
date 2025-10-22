@@ -54,7 +54,7 @@ class AusTender::RecordIndividualTransaction
   end
 
   def transfer
-    @transfer ||= Transfer.find_or_create_by(
+    @transfer ||= Transfer.find_or_create_by!(
       giver: purchaser,
       taker: supplier,
       effective_date: Dates::FinancialYear.new(release_date).last_day,
