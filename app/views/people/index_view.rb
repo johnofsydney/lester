@@ -7,7 +7,7 @@ class People::IndexView < ApplicationView
     @pages = pages
 	end
 
-	def template
+	def view_template
     div(class: 'mt-3 mb-3') do
       h2 { 'People' }
 

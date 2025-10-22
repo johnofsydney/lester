@@ -5,7 +5,7 @@ class Groups::AffiliatedGroups < ApplicationView
 		@group = group.cached
 	end
 
-  def template
+  def view_template
     turbo_frame(id: 'affiliated_groups') do
 
       affiliated_groups = group.direct_connections.filter{ |c| (c['klass'] == 'Group') && !c['is_category'] }

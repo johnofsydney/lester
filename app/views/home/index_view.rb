@@ -2,7 +2,7 @@
 #   def initialize
 #   end
 
-#   def template
+#   def view_template
 #     div(class: 'jumbotron', style: 'background-color: #243447; color: white;') do
 #       h1(class: 'display-4') { '...follow the money...' }
 #     end
@@ -61,7 +61,7 @@
 # end
 
 class Home::IndexView < ApplicationView
-  def template
+  def view_template
     div(class: 'bg-dark text-white p-5 mb-4 rounded-3') do
       h1(class: 'display-4 mb-0') { '...follow the money...' }
     end

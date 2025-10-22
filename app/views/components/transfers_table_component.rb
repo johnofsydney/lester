@@ -12,7 +12,7 @@ class TransfersTableComponent < ApplicationView
 
   attr_reader :transfers, :heading, :summarise_for, :exclude, :entity
 
-  def template
+  def view_template
     return nil if transfers.empty?
 
     return make_table(transfers) if (summarise_for.nil? && exclude.nil?)

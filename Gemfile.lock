@@ -90,8 +90,8 @@ GEM
     ast (2.4.3)
     base64 (0.3.0)
     bcrypt (3.1.20)
-    benchmark (0.4.1)
-    bigdecimal (3.2.2)
+    benchmark (0.5.0)
+    bigdecimal (3.3.1)
     bindex (0.8.1)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -106,7 +106,7 @@ GEM
     chartkick (5.0.7)
     coderay (1.1.3)
     concurrent-ruby (1.3.5)
-    connection_pool (2.5.3)
+    connection_pool (2.5.4)
     crass (1.0.6)
     csv (3.3.3)
     date (3.4.1)
@@ -124,7 +124,7 @@ GEM
       rails
     drb (2.2.3)
     dry-cli (1.2.0)
-    erb (5.0.2)
+    erb (5.1.1)
     erubi (1.13.1)
     faraday (2.12.2)
       faraday-net_http (>= 2.0, < 3.5)
@@ -148,7 +148,7 @@ GEM
     formtastic (5.0.0)
       actionpack (>= 6.0.0)
     formtastic_i18n (0.7.0)
-    globalid (1.2.1)
+    globalid (1.3.0)
       activesupport (>= 6.1)
     groupdate (6.5.1)
       activesupport (>= 7)
@@ -203,10 +203,10 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.0.4)
+    marcel (1.1.0)
     method_source (1.0.0)
     mini_mime (1.1.5)
-    minitest (5.25.5)
+    minitest (5.26.0)
     monetize (1.13.0)
       money (~> 6.12)
     money (6.16.0)
@@ -220,7 +220,7 @@ GEM
     mutex_m (0.3.0)
     net-http (0.6.0)
       uri
-    net-imap (0.5.9)
+    net-imap (0.5.12)
       date
       net-protocol
     net-pop (0.1.2)
@@ -231,13 +231,13 @@ GEM
       net-protocol
     newrelic_rpm (9.19.0)
     nio4r (2.7.4)
-    nokogiri (1.18.9-aarch64-linux-gnu)
+    nokogiri (1.18.10-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.18.9-arm64-darwin)
+    nokogiri (1.18.10-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.9-x86_64-darwin)
+    nokogiri (1.18.10-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.9-x86_64-linux-gnu)
+    nokogiri (1.18.10-x86_64-linux-gnu)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     parallel (1.27.0)
@@ -248,12 +248,13 @@ GEM
     pg_search (2.3.6)
       activerecord (>= 5.2)
       activesupport (>= 5.2)
-    phlex (1.11.0)
-    phlex-rails (1.0.0)
-      phlex (~> 1.7)
-      rails (>= 6.1, < 8)
-      zeitwerk (~> 2.6)
-    pp (0.6.2)
+    phlex (2.3.1)
+      zeitwerk (~> 2.7)
+    phlex-rails (2.3.1)
+      phlex (~> 2.3.0)
+      railties (>= 7.1, < 9)
+      zeitwerk (~> 2.7)
+    pp (0.6.3)
       prettyprint
     prettyprint (0.2.0)
     prettytodo (0.1.1)
@@ -322,9 +323,10 @@ GEM
       activerecord (>= 6.1.5)
       activesupport (>= 6.1.5)
       i18n
-    rdoc (6.14.2)
+    rdoc (6.15.0)
       erb
       psych (>= 4.0.0)
+      tsort
     redis (4.8.1)
     redis-client (0.24.0)
       connection_pool
@@ -421,6 +423,7 @@ GEM
     thor (1.4.0)
     tilt (2.3.0)
     timeout (0.4.3)
+    tsort (0.2.0)
     turbo-rails (1.4.0)
       actionpack (>= 6.0.0)
       activejob (>= 6.0.0)
@@ -484,8 +487,7 @@ DEPENDENCIES
   newrelic_rpm
   pg (~> 1.1)
   pg_search
-  phlex (~> 1.11.0)
-  phlex-rails
+  phlex-rails (> 2)
   prettytodo
   pry
   pry-byebug

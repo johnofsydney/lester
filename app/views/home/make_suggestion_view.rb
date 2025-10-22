@@ -1,5 +1,5 @@
 class Home::MakeSuggestionView < ApplicationView
-  def template
+  def view_template
     div(id: 'suggestions') do
       p { 'Send us a suggestion...' }
       p { 'The effectiveness of this application relies on having comprehensive data, and if you know of a person or group of interest please let us know' }

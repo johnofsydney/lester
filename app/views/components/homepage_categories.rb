@@ -7,7 +7,7 @@ class HomepageCategories < ApplicationView
 
   attr_reader :records
 
-  def template
+  def view_template
     div(class: 'suggestions-container mt-3 mb-3') do
       div(class: 'row g-3') do
 

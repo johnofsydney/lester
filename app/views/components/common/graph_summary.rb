@@ -7,7 +7,7 @@ class Common::GraphSummary < ApplicationView
 		@entity = entity
   end
 
-  def template
+  def view_template
     turbo_frame(id: 'money_summary') do
       if entity.cached.money_in.present? || entity.cached.money_out.present?
         div(class: 'margin-above ') do

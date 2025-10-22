@@ -11,7 +11,7 @@ class Groups::PeopleTable < ApplicationView
 
   attr_reader :people, :exclude_group, :page, :pages
 
-  def template
+  def view_template
     turbo_frame(id: 'people') do
       if people.present?
         div(class: 'row mt-3 mb-3') do

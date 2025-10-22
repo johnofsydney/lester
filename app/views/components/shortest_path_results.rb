@@ -5,7 +5,7 @@ class ShortestPathResults < ApplicationView
 
   attr_reader :shortest_path
 
-  def template
+  def view_template
     return if shortest_path.empty?
 
     div(class: 'results') do

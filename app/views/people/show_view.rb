@@ -8,7 +8,7 @@ class People::ShowView < ApplicationView
     @person = person
   end
 
-  def template
+  def view_template
     render Common::Heading.new(entity: person)
 
     render Common::StatsSummary.new(

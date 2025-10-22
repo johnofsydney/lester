@@ -1,5 +1,5 @@
 class Home::TodoView < ApplicationView
-  def template
+  def view_template
     div(class: 'container') do
       div(class: 'row', id: 'todo') do
         h2 { 'TODO:' }

@@ -10,7 +10,7 @@ class Common::StatsSummary < ApplicationView
     @money_out = money_out
   end
 
-  def template
+  def view_template
     comment { 'Stats Section' }
     div(class: 'row text-center mb-4') do
       money_box

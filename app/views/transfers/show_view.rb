@@ -8,7 +8,7 @@ class Transfers::ShowView < ApplicationView
     @depth = 6
   end
 
-  def template
+  def view_template
     div(class: 'heading') do
       a(
         href: "/transfers/#{transfer.id}",

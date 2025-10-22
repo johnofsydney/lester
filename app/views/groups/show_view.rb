@@ -7,7 +7,7 @@ class Groups::ShowView < ApplicationView
     @group = group
   end
 
-  def template
+  def view_template
     page_number = 0
 
     render Common::Heading.new(entity: group)

@@ -1,5 +1,5 @@
 class Imports::AnnualAssociatedEntityView < Phlex::HTML
-	def template
+	def view_template
 		h1 { 'Imports' }
 
       form(action: '/imports/annual_associated_entity_upload', enctype: 'multipart/form-data', method: 'post') do
