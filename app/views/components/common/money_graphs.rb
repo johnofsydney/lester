@@ -12,13 +12,11 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def view_template
-    render partial: 'shared/money_graphs', locals: {
-      # colors: colors(transfers, giver:),
-      transfers_by_year: group_by_year, # transfers_as_giver / taker # now coming from cache
-      transfers_by_name: group_by_name, # top six # now coming from cache
-      entity:,
-      giver:
-    }
+  render "shared/money_graphs",
+    transfers_by_year: group_by_year,
+    transfers_by_name: group_by_name,
+    entity: entity,
+    giver: giver
   end
 
   def colors(query, giver: false)
