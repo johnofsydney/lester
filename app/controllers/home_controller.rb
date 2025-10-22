@@ -1,5 +1,5 @@
 class HomeController < ApplicationController
-  layout -> { ApplicationLayout }
+  # layout -> { ApplicationLayout }
 
   def todo
     render Home::TodoView.new

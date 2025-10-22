@@ -5,7 +5,7 @@ class GroupsController < ApplicationController
   before_action :set_page, only: %i[ index ]
   before_action :authenticate_user!, only: %i[ new edit update destroy ]
 
-  layout -> { ApplicationLayout }
+  # layout -> { ApplicationLayout }
 
   def index
     @groups = Rails.cache.fetch("groups_index_#{params[:page]}", expires_in: 12.seconds) do
