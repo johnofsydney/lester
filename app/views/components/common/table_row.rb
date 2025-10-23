@@ -5,7 +5,7 @@ class Common::TableRow < ApplicationView
 
   attr_reader :hentity
 
-  def template
+  def view_template
     tr do
       td do
         span { link_for_hash(h: hentity) }

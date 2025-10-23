@@ -7,7 +7,7 @@ class Common::PageNav < ApplicationView
     @pages = pages
   end
 
-  def template
+  def view_template
     return unless pages > 1
 
     nav(aria: { label: 'Page navigation example' }) do
