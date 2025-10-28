@@ -16,13 +16,6 @@ class IngestContractsDateJob
     Rails.logger.warn "API Server Error for #{url}: #{e.message} - will retry"
     ApiLog.create( endpoint: url, message: e.message)
     raise e
-<<<<<<< HEAD
-  rescue Net::TimeoutError, Faraday::TimeoutError => e
-    Rails.logger.warn "Network timeout for #{url}: #{e.message} - will retry"
-    ApiLog.create( endpoint: url, message: e.message)
-    raise e
-=======
->>>>>>> main
   rescue StandardError => e
     Rails.logger.error "Error processing URL #{url}: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
