@@ -4,3 +4,11 @@
   - [default, 1]
   - [low, 0.5]         # use :low for this bulk ingestion work
 
+:scheduler:
+  :schedule:
+    # hard_job:
+    #   cron: '0 * * * * *'
+    #   class: HardJob
+    ingest_contracts_date:
+      cron: '0 2 * * *' # every day ay 2am
+      class: IngestContractsDateJob
