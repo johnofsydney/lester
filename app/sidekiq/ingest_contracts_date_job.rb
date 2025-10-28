@@ -1,3 +1,4 @@
+# The main entry point for ingesting contracts published or modified on a specific date
 require 'sidekiq-scheduler'
 
 class IngestContractsDateJob
@@ -10,7 +11,7 @@ class IngestContractsDateJob
 
     url = "https://api.tenders.gov.au/ocds/findByDates/contractLastModified/#{beginning_of_day}/#{end_of_day}"
 
-    TenderIngestor.process_for_url(url: url)
+    TenderIngestor.process_for_url(url:)
   rescue ApiServerError => e
     Rails.logger.warn "API Server Error for #{url}: #{e.message} - will retry"
     ApiLog.create( endpoint: url, message: e.message)

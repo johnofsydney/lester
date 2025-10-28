@@ -11,6 +11,7 @@ RSpec.describe TenderIngestor, type: :service do
     allow(response).to receive_messages(body: response_body, success?: true)
 
     allow(IngestContractsUrlJob).to receive(:perform_async).and_return('jid:123')
+    allow(IngestContractsUrlJob).to receive(:perform_in)
   end
 
   let(:response) { double('Faraday::Response', status: 200) }
@@ -43,9 +44,11 @@ RSpec.describe TenderIngestor, type: :service do
       it 'queues the next page for processing' do
         described_class.process_for_url(url: 'url')
 
-        expect(IngestContractsUrlJob).to have_received(:perform_async)
-                                     .with(%r{\Ahttps://api\.tenders\.gov\.au/ocds/findByDates/contractLastModified})
-
+        expect(IngestContractsUrlJob).to have_received(:perform_in)
+                                     .with(
+                                        30.seconds,
+                                        %r{\Ahttps://api\.tenders\.gov\.au/ocds/findByDates/contractLastModified}
+                                     )
       end
     end
   end
