@@ -1,4 +1,5 @@
 class ValidationError < StandardError; end
+class ApiServerError < StandardError; end
 
 class TenderIngestor
   class << self
@@ -20,6 +21,14 @@ class TenderIngestor
     # the url in this context will fetch all contracts for a given day (and page)
     # return an array of contract ids so we can process them individually
     response = AusTender::TenderDownloader.new.download(url)
+
+    unless response[:success]
+      raise ApiServerError.new(response.body) if response.status == 500
+      raise StandardError.new("Failed to download data: #{response.body}, status code: #{response.status}")
+    end
+
+
+
     return unless response && response[:body] && response[:body]['releases']
 
     # If there is a next page, we need to fetch it and handle it asynchronously
