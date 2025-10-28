@@ -1,4 +1,5 @@
 require "sidekiq-unique-jobs"
+require "sidekiq-scheduler/web"  # Add web UI for scheduler
 
 Sidekiq.configure_server do |config|
   config.redis = { url: ENV["REDIS_URL"] }

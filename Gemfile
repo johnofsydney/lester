@@ -87,3 +87,5 @@ gem 'sidekiq-unique-jobs'
 gem 'activerecord_lazy_columns'
 
 gem "prettytodo"
+
+gem 'sidekiq-scheduler'

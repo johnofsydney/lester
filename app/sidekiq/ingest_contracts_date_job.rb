@@ -1,9 +1,10 @@
 # The main entry point for ingesting contracts published or modified on a specific date
+require 'sidekiq-scheduler'
 
 class IngestContractsDateJob
   include Sidekiq::Job
 
-  def perform(date)
+  def perform(date = Date.yesterday.to_s)
     date = Date.parse(date)
     beginning_of_day = date.beginning_of_day.iso8601
     end_of_day = date.end_of_day.iso8601
@@ -15,12 +16,15 @@ class IngestContractsDateJob
     Rails.logger.warn "API Server Error for #{url}: #{e.message} - will retry"
     ApiLog.create( endpoint: url, message: e.message)
     raise e
+<<<<<<< HEAD
   rescue Net::TimeoutError, Faraday::TimeoutError => e
     Rails.logger.warn "Network timeout for #{url}: #{e.message} - will retry"
     ApiLog.create( endpoint: url, message: e.message)
     raise e
+=======
+>>>>>>> main
   rescue StandardError => e
-    Rails.logger.error "Error processing URL #{url}: #{e.message}"
+    Rails.logger.error "Error processing URL #{url}: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
     ApiLog.create( endpoint: url, message: e.message)
     raise e

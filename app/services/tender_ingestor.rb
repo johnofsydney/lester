@@ -22,7 +22,7 @@ class TenderIngestor
     # return an array of contract ids so we can process them individually
     response = AusTender::TenderDownloader.new.download(url)
 
-    unless response.success?
+    unless response[:success]
       raise ApiServerError.new(response.body) if response.status == 500
       raise StandardError.new("Failed to download data: #{response.body}, status code: #{response.status}")
     end
