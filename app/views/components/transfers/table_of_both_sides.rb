@@ -6,7 +6,7 @@ class Transfers::TableOfBothSides < ApplicationView
     @depth = Constants::MAX_SEARCH_DEPTH
 	end
 
-  def template
+  def view_template
     div(class: 'row') do
       giver_descendents = transfer.giver.consolidated_descendents(depth:, transfer:)
       taker_descendents = transfer.taker.consolidated_descendents(depth:)

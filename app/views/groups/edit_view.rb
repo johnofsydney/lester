@@ -3,7 +3,7 @@ class Groups::EditView < ApplicationView
 		@group = group
 	end
 
-	def template
+	def view_template
     h1 { 'Editing Group' }
 
     form(action: "/groups/#{@group[:id]}", method: 'post') do

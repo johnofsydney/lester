@@ -9,7 +9,7 @@ class MenuComponent < ApplicationView
 
   attr_reader :entity, :new_path, :new_text
 
-  def template
+  def view_template
 
     nav(class: 'navbar navbar-expand-lg navbar-light bg-light') do
       div(class: 'container-fluid') do

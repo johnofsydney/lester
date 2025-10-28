@@ -5,7 +5,7 @@ class TransfersController < ApplicationController
   before_action :authenticate_user!, only: %i[ new edit update destroy ]
   before_action :set_page, only: %i[ index ]
 
-  layout -> { ApplicationLayout }
+  # layout -> { ApplicationLayout }
 
   def index
     if params[:duration_start].present?

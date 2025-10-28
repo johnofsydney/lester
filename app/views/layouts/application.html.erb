@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title inertia>Join The Dots...</title>
+    <title inertia>ERB Join The Dots...</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -45,6 +45,8 @@
     <% if alert.present? %>
       <p class="alert"><%= alert %></p>
     <% end %>
+
+    <%= render MenuComponent.new %>
 
     <%= yield %>
   </body>

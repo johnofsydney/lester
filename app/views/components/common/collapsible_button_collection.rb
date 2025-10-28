@@ -11,7 +11,7 @@ class Common::CollapsibleButtonCollection < ApplicationView
     # TODO: this component is still using ActiveRecord instances instead of hashes from cached connections. Fix this.
   end
 
-  def template
+  def view_template
     render_inside_td if render_inside == 'td'
     render_inside_div if render_inside == 'div'
   end

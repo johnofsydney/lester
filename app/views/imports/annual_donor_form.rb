@@ -1,5 +1,5 @@
 class Imports::AnnualDonorForm < Phlex::HTML
-	def template
+	def view_template
 		h1 { 'Imports' }
 
     div do
