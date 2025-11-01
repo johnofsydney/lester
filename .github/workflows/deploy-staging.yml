@@ -8,7 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: production
+      name: staging
     steps:
       - uses: actions/checkout@v4
 
@@ -28,8 +28,8 @@ jobs:
 
       - name: Precompile assets
         run: |
-          RAILS_ENV=production bundle exec rails assets:precompile
-          RAILS_ENV=production bundle exec rails vite:build
+          RAILS_ENV=staging bundle exec rails assets:precompile
+          RAILS_ENV=staging bundle exec rails vite:build
         env:
           NODE_ENV: production
           SECRET_KEY_BASE: dummy_secret_for_asset_compilation
