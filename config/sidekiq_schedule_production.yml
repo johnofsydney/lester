@@ -1,0 +1,3 @@
+ingest_contracts_date:
+  cron: '0 2 * * *' # every day ay 2am
+  class: IngestContractsDateJob
