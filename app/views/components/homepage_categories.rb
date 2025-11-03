@@ -10,7 +10,7 @@ class HomepageCategories < ApplicationView
   def view_template
     style = Current.local_host? ? 'background-color: #555555' : 'background-color: #333333; padding: 20px; border-radius: 8px;'
 
-    div(class: 'suggestions-container mt-3 mb-3', style: ) do
+    div(class: 'suggestions-container mt-3 mb-3') do
       div(class: 'row g-3') do
 
         (Group.major_political_categories + Group.other_categories).each do |group|
@@ -26,9 +26,7 @@ class HomepageCategories < ApplicationView
             end
           end
         end
-
       end
-
     end
   end
 end
