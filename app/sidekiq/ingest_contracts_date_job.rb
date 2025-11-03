@@ -9,6 +9,10 @@ class IngestContractsDateJob
     beginning_of_day = date.beginning_of_day.iso8601
     end_of_day = date.end_of_day.iso8601
 
+    if Rails.env.staging?
+      return unless date.day % 4 == 0
+    end
+
     url = "https://api.tenders.gov.au/ocds/findByDates/contractLastModified/#{beginning_of_day}/#{end_of_day}"
 
     TenderIngestor.process_for_url(url:)
