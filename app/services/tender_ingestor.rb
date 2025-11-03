@@ -23,8 +23,8 @@ class TenderIngestor
     response = AusTender::TenderDownloader.new.download(url)
 
     unless response[:success]
-      raise ApiServerError.new(response.body) if response.status == 500
-      raise StandardError.new("Failed to download data: #{response.body}, status code: #{response.status}")
+      raise ApiServerError.new(response[:body]) if response[:status] == 500
+      raise StandardError.new("Failed to download data: #{response[:body]}, status code: #{response[:status]}")
     end
 
 

@@ -7,19 +7,22 @@ class AusTender::TenderDownloader
       req.params['pretty'] = true
     end
 
-    if response.success?
+    success = response&.success? || response[:success]
+    status = response&.status || response[:status]
+
+    if success
       body = JSON.parse(response.body)
 
       {
-        success: response.success?,
+        success:,
         body: body,
         next_page: next_page(body)
       }
     else
       {
-        success: response.success?,
-        status: response.status,
-        body: "#{response.reason_phrase} #{response.headers['x-cache']}"
+        success:,
+        status:,
+        body: "#{response&.reason_phrase} #{response&.headers['x-cache']}"
       }
     end
   end
