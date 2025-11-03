@@ -8,7 +8,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: production
+      name: staging
     steps:
       - uses: actions/checkout@v4
 
@@ -28,11 +28,12 @@ jobs:
 
       - name: Precompile assets
         run: |
-          RAILS_ENV=production bundle exec rails assets:precompile
-          RAILS_ENV=production bundle exec rails vite:build
+          RAILS_ENV=staging SKIP_REDIS=true bundle exec rails assets:precompile
+          RAILS_ENV=staging SKIP_REDIS=true bundle exec rails vite:build
         env:
           NODE_ENV: production
           SECRET_KEY_BASE: dummy_secret_for_asset_compilation
+          REDIS_URL: redis://localhost:6379  # Dummy Redis URL
 
       - name: Deploy to Hatchbox
         uses: hatchboxio/github-hatchbox-deploy-action@v2
