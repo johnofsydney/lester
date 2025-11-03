@@ -1,25 +1,27 @@
 class AusTender::TenderDownloader
+  attr_reader :response
+
   def download(url)
     # https://app.swaggerhub.com/apis/austender/ocds-api/1.1#/
     conn = Faraday.new(url:)
 
-    response = conn.get do |req|
+    @response = conn.get do |req|
       req.params['pretty'] = true
     end
 
-    if response.success?
+    if success
       body = JSON.parse(response.body)
 
       {
-        success: response.success?,
-        body: body,
+        success:,
+        body:,
         next_page: next_page(body)
       }
     else
       {
-        success: response.success?,
-        status: response.status,
-        body: "#{response.reason_phrase} #{response.headers['x-cache']}"
+        success:,
+        status:,
+        body: "#{response&.reason_phrase} #{response&.headers['x-cache']}"
       }
     end
   end
@@ -32,5 +34,17 @@ class AusTender::TenderDownloader
     return unless next_present?(body)
 
     body['links']['next']
+  end
+
+  def success
+    return false unless response
+
+    response&.success? || response&.success || response[:success]
+  end
+
+  def status
+    return unless response
+
+    response&.status || response[:status]
   end
 end
