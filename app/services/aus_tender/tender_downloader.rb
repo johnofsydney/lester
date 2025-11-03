@@ -39,7 +39,7 @@ class AusTender::TenderDownloader
   def success
     return false unless response
 
-    response&.success? || response&.success || response[:success]
+    response&.success? || response[:success]
   end
 
   def status
