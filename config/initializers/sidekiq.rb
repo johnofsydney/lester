@@ -1,5 +1,4 @@
 require "sidekiq-unique-jobs"
-require 'sidekiq-scheduler'
 require "sidekiq-scheduler/web"  # Add web UI for scheduler
 
 Sidekiq.configure_server do |config|
@@ -22,16 +21,4 @@ Sidekiq.configure_client do |config|
   config.client_middleware do |chain|
     chain.add SidekiqUniqueJobs::Middleware::Client
   end
-end
-
-schedule_file =
-  if Rails.env.production?
-    Rails.root.join('config', 'sidekiq_schedule_production.yml')
-  else
-    Rails.root.join('config', 'sidekiq_schedule_staging.yml')
-  end
-
-if File.exist?(schedule_file)
-  Sidekiq.schedule = YAML.load_file(schedule_file) # assign schedule
-  Sidekiq::Scheduler.reload_schedule!               # reloads schedule, no args
 end
