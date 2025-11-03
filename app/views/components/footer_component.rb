@@ -3,6 +3,8 @@ class FooterComponent < ApplicationView
   end
 
   def view_template
+    return unless Current.local_host?
+
     footer(class: "py-3 my-4") do
       ul(class: "nav justify-content-center border-bottom pb-3 mb-3") do
         li(class: "nav-item") { a(href: "#", class: "nav-link px-2 text-body-secondary") { "Home" } }
