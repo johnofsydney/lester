@@ -33,7 +33,8 @@ class TenderIngestor
 
     # If there is a next page, we need to fetch it and handle it asynchronously.
     # By doing it quite a bit later we aim to reduce load on the server.
-    IngestContractsUrlJob.perform_in(30.seconds, response[:next_page]) if response[:next_page]
+    delay = rand(30..60)
+    IngestContractsUrlJob.perform_in(delay.seconds, response[:next_page]) if response[:next_page]
 
     # return array of unique contract ids
     response[:body]['releases'].filter_map { |raw_release| raw_release['contracts'].first['id'] }.uniq
