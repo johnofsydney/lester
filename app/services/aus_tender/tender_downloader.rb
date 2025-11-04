@@ -10,28 +10,18 @@ class AusTender::TenderDownloader
     end
 
     if success
-      body = JSON.parse(response.body)
-
-      {
-        success:,
-        body:,
-        next_page: next_page(body)
-      }
+      { success:, status:, body:, next_page: }
     else
-      {
-        success:,
-        status:,
-        body: "#{response&.reason_phrase} #{response&.headers['x-cache']}"
-      }
+      { success:, status:, body: }
     end
   end
 
-  def next_present?(body)
+  def next_present?
     body['links'] && body['links']['next'].present?
   end
 
-  def next_page(body)
-    return unless next_present?(body)
+  def next_page
+    return unless next_present?
 
     body['links']['next']
   end
@@ -46,5 +36,12 @@ class AusTender::TenderDownloader
     return unless response
 
     response&.status || response[:status]
+  end
+
+
+  def body
+    return unless response
+
+    JSON.parse(response.body)
   end
 end
