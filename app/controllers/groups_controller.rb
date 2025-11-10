@@ -18,6 +18,11 @@ class GroupsController < ApplicationController
   end
 
   def show
+    if @group.nodes_count > Constants::TOO_MANY_CONNECTIONS_THRESHOLD
+      render plain: Constants::TOO_MANY_CONNECTIONS_MESSAGE, status: :ok
+      return
+    end
+
     if @group.cache_fresh?
       render Groups::ShowView.new(group: @group)
     else
