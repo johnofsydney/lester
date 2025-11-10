@@ -8,7 +8,7 @@ class AcncCharities::IngestCsv
     return unless response && response[:body]
 
     csv = CSV.parse(response[:body], headers: true)
-    category = Group.find_or_create_by(name: 'Charity', category: true)
+    category = Group.find_or_create_by(name: 'Charities')
 
     csv.map{|row| {name: row['Charity_Legal_Name'], abn: row['ABN']} }
        .reject{|row| row[:abn].nil? }
