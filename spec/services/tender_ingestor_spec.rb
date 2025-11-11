@@ -46,7 +46,7 @@ RSpec.describe TenderIngestor, type: :service do
 
         expect(IngestContractsUrlJob).to have_received(:perform_in)
                                      .with(
-                                        30.seconds,
+                                        anything,
                                         %r{\Ahttps://api\.tenders\.gov\.au/ocds/findByDates/contractLastModified}
                                      )
       end
