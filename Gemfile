@@ -89,3 +89,5 @@ gem 'activerecord_lazy_columns'
 gem "prettytodo"
 
 gem 'sidekiq-scheduler'
+
+gem 'selenium-webdriver', '~> 4.34'
