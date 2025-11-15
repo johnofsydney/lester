@@ -8,7 +8,7 @@ class AcncCharities::IngestCsv
     return unless response && response[:body]
 
     csv = CSV.parse(response[:body], headers: true)
-    category = Group.find_or_create_by(name: 'Charity', category: true)
+    category = Group.find_or_create_by(name: 'Charities')
 
     csv.map{|row| {name: row['Charity_Legal_Name'], abn: row['ABN']} }
        .reject{|row| row[:abn].nil? }
@@ -17,6 +17,9 @@ class AcncCharities::IngestCsv
         # possibly add a small delay between jobs
         # Each operation is not very heavy, but there are a thousands of rows to process,
         # delay = (index % 10 )+ 1
+        break if Rails.env.development? && index > 20
+        break if Rails.env.staging? && index > 1000
+
         RecordSingleCharityGroupJob.perform_async(row[:name], row[:abn], category.id)
        end
   end

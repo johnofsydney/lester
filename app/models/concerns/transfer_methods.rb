@@ -10,18 +10,23 @@ module TransferMethods
 
       queue.each do |node|
         # members and affiliate groups.
-        return results  if node.name == 'Federal Parliment' # TODO: use or discard
+        # TODO - move to a method on Group.
+        # If the group is too large for it to make sense to follow transfers through it, skip it, eg Charities
+        return results  if node.name == 'Federal Parliament' # TODO: use or discard
+        return results  if node.name == 'Charities' # TODO: use or discard
 
         visited_nodes << node # store the current node as visited
         current_depth_memberships << node.memberships.to_a
 
         # TODO: are the transfer methods in Person and Group helpful or harmful?
         Transfer.where(giver: node).find_each do |transfer|
-          results << transfer.augment(depth: counter, direction: 'outgoing')
+          augmented_transfer = transfer.augment(depth: counter, direction: 'outgoing')
+          results << augmented_transfer if augmented_transfer
         end
 
         Transfer.where(taker: node).find_each do |transfer|
-          results << transfer.augment(depth: counter, direction: 'incoming')
+          augmented_transfer = transfer.augment(depth: counter, direction: 'incoming')
+          results << augmented_transfer if augmented_transfer
         end
       end
 
