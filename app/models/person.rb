@@ -13,8 +13,8 @@ class Person < ApplicationRecord
   has_many :groups, through: :memberships
   has_many :positions, through: :memberships
 
-  has_many :outgoing_transfers, class_name: 'Transfer', as: :giver
-  has_many :incoming_transfers, class_name: 'Transfer', as: :taker
+  has_many :outgoing_transfers, class_name: 'Transfer', as: :giver, dependent: :destroy
+  has_many :incoming_transfers, class_name: 'Transfer', as: :taker, dependent: :destroy
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 

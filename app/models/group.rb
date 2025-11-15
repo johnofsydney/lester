@@ -72,8 +72,8 @@ class Group < ApplicationRecord
   has_many :people, through: :memberships, source: :member, source_type: 'Person'
   has_many :groups, through: :memberships, source: :member, source_type: 'Group' # these are the groups that _belong_ to _this_ group
   # these are a bit weird, hence the transfers method below
-  has_many :outgoing_transfers, class_name: 'Transfer', as: :giver
-  has_many :incoming_transfers, class_name: 'Transfer', as: :taker
+  has_many :outgoing_transfers, class_name: 'Transfer', as: :giver, dependent: :destroy
+  has_many :incoming_transfers, class_name: 'Transfer', as: :taker, dependent: :destroy
 
   validates :name, uniqueness: { case_sensitive: false }
   validates :business_number, uniqueness: { case_sensitive: false }, allow_nil: true
