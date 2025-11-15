@@ -65,8 +65,11 @@ class AcncCharities::FetchSingleCharityPeople
   end
 
   def setup_selenium_driver
+    require 'selenium-webdriver'
+
     options = Selenium::WebDriver::Chrome::Options.new
 
+    # Common scraping-safe options
     options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
@@ -75,16 +78,28 @@ class AcncCharities::FetchSingleCharityPeople
     options.add_argument('--disable-extensions')
     options.add_argument('--disable-web-security')
     options.add_argument('--window-size=1920,1080')
-
-    # User agent to appear more like a real browser
     options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36')
 
-    begin
-      Selenium::WebDriver.for(:chrome, options:)
-    rescue Selenium::WebDriver::Error::WebDriverError => e
-      Rails.logger.error "Chrome driver setup failed: #{e.message}"
-      raise StandardError, "Chrome browser not available. Install Google Chrome or use a different scraping method."
+    if RUBY_PLATFORM =~ /darwin/
+      # Local Mac: do nothing, default stable Chrome will be used
+      # Webdrivers will auto-manage ChromeDriver
+    else
+      # Linux Gravitron/ARM64
+      chrome_binary = '/usr/bin/chromium-browser'
+      unless File.exist?(chrome_binary)
+        raise StandardError, "Chromium binary not found at #{chrome_binary}. Please run provisioning script."
+      end
+      options.binary = chrome_binary
+
+      # Use Snap Chromium's built-in ChromeDriver
+      snap_driver_path = '/snap/bin/chromium.chromedriver'
+      unless File.exist?(snap_driver_path)
+        raise StandardError, "Snap Chromium ChromeDriver not found at #{snap_driver_path}. Please run provisioning script."
+      end
+      Selenium::WebDriver::Chrome::Service.driver_path = snap_driver_path
     end
+
+    Selenium::WebDriver.for(:chrome, options: options)
   end
 
   def safe_text(element)

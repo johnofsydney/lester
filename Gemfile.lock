@@ -523,7 +523,7 @@ DEPENDENCIES
   rubocop-rspec
   rubocop-rspec_rails
   sassc-rails
-  selenium-webdriver (~> 4.34)
+  selenium-webdriver (~> 4.38)
   shoulda-matchers (~> 5.0)
   sidekiq
   sidekiq-scheduler
