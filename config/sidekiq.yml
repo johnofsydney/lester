@@ -14,11 +14,11 @@
     ingest_charities_dataset_csv:
       cron: '0 0 1 3 *' # every year on March 1st at midnight
       class: IngestCharitiesDatasetCsv
-    # Every year fetch all the people from the ACNC Charities webstie (scraping)
+    # Every year fetch all the people from the ACNC Charities website (scraping)
     ingest_charities_people:
       cron: '0 0 1 4 *' # every year on April 1st at midnight
       class: IngestCharitiesPeopleJob
-    # Every week fectch the people ofr any charities which have no people (scraping) (there should be no charities missing people)
+    # Every week fetch the people ofr any charities which have no people (scraping) (there should be no charities missing people)
     ingest_twenty_charities_missing_people:
       cron: '0 3 * * 0' # every week on Sunday at 3am
       class: IngestTwentyCharitiesMissingPeopleJob

@@ -90,4 +90,4 @@ gem "prettytodo"
 
 gem 'sidekiq-scheduler'
 
-gem 'selenium-webdriver', '~> 4.34'
+gem 'selenium-webdriver', '~> 4.38'
