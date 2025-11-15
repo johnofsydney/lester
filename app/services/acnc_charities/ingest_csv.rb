@@ -17,6 +17,9 @@ class AcncCharities::IngestCsv
         # possibly add a small delay between jobs
         # Each operation is not very heavy, but there are a thousands of rows to process,
         # delay = (index % 10 )+ 1
+        break if Rails.env.development? && index > 20
+        break if Rails.env.staging? && index > 1000
+
         RecordSingleCharityGroupJob.perform_async(row[:name], row[:abn], category.id)
        end
   end
