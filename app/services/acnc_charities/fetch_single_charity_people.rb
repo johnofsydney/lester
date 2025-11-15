@@ -87,20 +87,21 @@ class AcncCharities::FetchSingleCharityPeople
       # Local Mac: do nothing, default stable Chrome will be used
       # Webdrivers will auto-manage ChromeDriver
     else
-      # Linux Gravitron/ARM64
-      chrome_binary = '/usr/bin/chromium-browser'
-      unless File.exist?(chrome_binary)
-        raise StandardError, "Chromium binary not found at #{chrome_binary}. Please run provisioning script."
-      end
-      options.binary = chrome_binary
+        # Linux Graviton/ARM64 – REQUIRED extra flags
+        options.add_argument('--disable-background-networking')
+        options.add_argument('--disable-software-rasterizer')
+        options.add_argument('--disable-features=VizDisplayCompositor')
+        options.add_argument('--enable-features=UseOzonePlatform')
+        options.add_argument('--ozone-platform=wayland')
 
-      # Use Snap Chromium's built-in ChromeDriver
-      snap_driver_path = '/snap/bin/chromium.chromedriver'
-      unless File.exist?(snap_driver_path)
-        raise StandardError, "Snap Chromium ChromeDriver not found at #{snap_driver_path}. Please run provisioning script."
+        chrome_binary = '/usr/bin/chromium-browser'
+        raise "Chromium binary missing" unless File.exist?(chrome_binary)
+        options.binary = chrome_binary
+
+        driver_path = '/snap/bin/chromium.chromedriver'
+        raise "Snap ChromeDriver missing" unless File.exist?(driver_path)
+        Selenium::WebDriver::Chrome::Service.driver_path = driver_path
       end
-      Selenium::WebDriver::Chrome::Service.driver_path = snap_driver_path
-    end
 
     Selenium::WebDriver.for(:chrome, options: options)
   end
