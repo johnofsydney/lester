@@ -21,6 +21,7 @@ class AcncCharities::FetchSingleCharityPeople
     return { success: false, error: 'Request failed' } unless response.success?
 
     body = JSON.parse(response.body)
+    return { success: false, error: 'No results found' } if body['results'].blank? || !body['results'].is_a?(Array) || body['results'][0].nil?
     @uuid = body['results'][0]['uuid']
 
 
@@ -47,7 +48,7 @@ class AcncCharities::FetchSingleCharityPeople
 
       person = RecordPerson.call(name)
       membership = Membership.find_or_create_by(group: @charity, member: person)
-      position = Position.find_or_create_by(membership:, title:)
+      Position.find_or_create_by(membership:, title:)
 
       Rails.logger.info("Recorded person: #{name} - #{title} to charity #{@charity.name}")
     end
