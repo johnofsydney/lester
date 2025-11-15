@@ -54,7 +54,7 @@ class Transfer < ApplicationRecord
     self.taker_name = taker.name
 
     self
-  rescue => e
+  rescue StandardError=> e
     # If there is a giver_id but no giver (or taker), log the error
     NewRelic::Agent.notice_error(e) if defined?(NewRelic)
     Rails.logger.error "Error augmenting Transfer ID #{id}: #{e.message}"
