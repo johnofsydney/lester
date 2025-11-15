@@ -65,7 +65,7 @@ class Transfer < ApplicationRecord
     return false unless valid?
 
     giver.present? && taker.present?
-  rescue => e
+  rescue StandardError => e
     Rails.logger.error "Error validating Transfer ID #{id}: #{e.message}"
     false
   end
