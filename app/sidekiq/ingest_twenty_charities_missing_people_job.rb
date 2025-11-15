@@ -7,7 +7,7 @@ class IngestTwentyCharitiesMissingPeopleJob
   def perform
     # lightweight query to find charities without people (20 at a time to avoid trouble)
     # generally there should not be any charities without people, so this should be a quick job
-    charities = Group.where(name: 'Charities').first.groups
+    charities = Group.find_by(name: 'Charities').groups
     charities_without_people = charities.left_joins(:people).where(people: { id: nil }).limit(20)
 
     charities_without_people.each do |charity|
