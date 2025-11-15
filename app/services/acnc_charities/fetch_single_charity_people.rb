@@ -54,6 +54,9 @@ class AcncCharities::FetchSingleCharityPeople
     end
 
     driver.quit
+    { success: true, people_count: cards.count }
+  ensure
+    driver.quit if driver
   end
 
   def search_url
