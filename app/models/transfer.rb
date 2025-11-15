@@ -54,5 +54,19 @@ class Transfer < ApplicationRecord
     self.taker_name = taker.name
 
     self
+  rescue => e
+    # If there is a giver_id but no giver (or taker), log the error
+    NewRelic::Agent.notice_error(e) if defined?(NewRelic)
+    Rails.logger.error "Error augmenting Transfer ID #{id}: #{e.message}"
+    nil
+  end
+
+  def extra_valid?
+    return false unless valid?
+
+    giver.present? && taker.present?
+  rescue StandardError => e
+    Rails.logger.error "Error validating Transfer ID #{id}: #{e.message}"
+    false
   end
 end
