@@ -90,7 +90,9 @@ class AcncCharities::FetchSingleCharityPeople
 
     if RUBY_PLATFORM =~ /darwin/
       # Local Mac: default Chrome + Webdrivers auto-managed
-      Selenium::WebDriver.for(:chrome, options: options)
+      # Selenium::WebDriver.for(:chrome, options: options)
+      # Local Mac: do nothing, default stable Chrome will be used
+      # Webdrivers will auto-manage ChromeDriver
     else
       # Linux Graviton/ARM64
       chrome_bin = '/usr/bin/chromium-browser'
