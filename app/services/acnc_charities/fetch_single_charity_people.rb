@@ -77,18 +77,17 @@ class AcncCharities::FetchSingleCharityPeople
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
-    options.add_argument('--remote-debugging-port=9222')
     options.add_argument('--disable-extensions')
     options.add_argument('--disable-web-security')
     options.add_argument('--window-size=1920,1080')
+    options.add_argument('--remote-debugging-port=0') # Let Chrome pick a free port
     options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36')
 
     if RUBY_PLATFORM =~ /darwin/
-      # Local Mac: do nothing, default stable Chrome will be used
-      # Webdrivers will auto-manage ChromeDriver
+      # Local Mac: do nothing, default Chrome/Webdrivers auto-managed
+      Selenium::WebDriver.for(:chrome, options: options)
     else
-      # Linux Gravitron/ARM64
-
+      # Linux Graviton/ARM64
       chrome_bin = '/usr/bin/chromium-browser'
       chromedriver_bin = '/usr/lib/chromium-browser/chromedriver'
 
@@ -96,11 +95,15 @@ class AcncCharities::FetchSingleCharityPeople
       raise "ChromeDriver missing at #{chromedriver_bin}" unless File.exist?(chromedriver_bin)
 
       options.binary = chrome_bin
-      Selenium::WebDriver::Chrome::Service.driver_path = chromedriver_bin
 
+      # Create a new ChromeDriver service on a free port
+      service = Selenium::WebDriver::Service.chrome(
+        path: chromedriver_bin,
+        args: ['--verbose'] # optional, for debugging
+      )
+
+      Selenium::WebDriver.for(:chrome, options: options, service: service)
     end
-
-    Selenium::WebDriver.for(:chrome, options: options)
   end
 
   def safe_text(element)
