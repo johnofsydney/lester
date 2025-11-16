@@ -112,15 +112,17 @@ class AcncCharities::FetchSingleCharityPeople
       raise "ChromeDriver missing at #{chromedriver_bin}" unless File.exist?(chromedriver_bin)
 
       options.binary = chrome_bin
-
-      service = Selenium::WebDriver::Service.chrome(
-        path: chromedriver_bin,
-        args: ['--verbose', '--port=0'] # ephemeral port
-      )
-
       driver = nil
+
       3.times do |i|
         begin
+          port = find_free_port
+
+          service = Selenium::WebDriver::Service.chrome(
+            path: chromedriver_bin,
+            args: ["--verbose", "--port=#{port}"]
+          )
+
           driver = Selenium::WebDriver.for(:chrome, options: options, service: service)
           break
         rescue Errno::ECONNREFUSED, Selenium::WebDriver::Error::WebDriverError => e
@@ -140,6 +142,13 @@ class AcncCharities::FetchSingleCharityPeople
     %w[chromedriver chromium-browser google-chrome].each do |bin|
       system("pkill -f #{bin} || true")
     end
+  end
+
+  def find_free_port
+    server = TCPServer.new('127.0.0.1', 0)
+    port = server.addr[1]
+    server.close
+    port
   end
 
   def safe_text(element)
