@@ -22,41 +22,51 @@ class AcncCharities::FetchSingleCharityPeople
 
     body = JSON.parse(response.body)
     return { success: false, error: 'No results found' } if body['results'].blank? || !body['results'].is_a?(Array) || body['results'][0].nil?
+
     @uuid = body['results'][0]['uuid']
 
-
     # Part 2 - Go to the people page for that charity UUID, scrape the people data using Selenium
-    driver = setup_selenium_driver
+    driver = nil
 
-    driver.get(people_url)
+    begin
+      driver = setup_selenium_driver
+      people_count = 0
 
-    # Wait for the Vue app to load
-    wait = Selenium::WebDriver::Wait.new(timeout: 15)
 
-    # Wait for people content to appear (adjust selector as needed)
-    wait.until do
-      driver.find_elements(css: '.charity-people').any?
+      driver.get(people_url)
+
+      # Wait for the Vue app to load
+      wait = Selenium::WebDriver::Wait.new(timeout: 15)
+
+      # Wait for people content to appear (adjust selector as needed)
+      wait.until do
+        driver.find_elements(css: '.charity-people').any?
+      end
+
+      # Give it a bit more time for all content to load
+      sleep(1)
+
+      cards = driver.find_elements(css: '.card-body')
+      cards.each do |card|
+        name = safe_text(card.find_elements(css: 'h4')[0])
+        title = safe_text(card.find_elements(css: 'li')[0]).gsub('Role: ', '')
+
+        person = RecordPerson.call(name)
+        membership = Membership.find_or_create_by(group: @charity, member: person)
+        Position.find_or_create_by(membership:, title:)
+
+        Rails.logger.info("Recorded person: #{name} - #{title} to charity #{@charity.name}")
+        people_count += 1
+      end
+
+      { success: true, people_count: people_count }
+    rescue StandardError => e
+      Rails.logger.error "Error during Selenium scraping: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+      raise e
+    ensure
+      driver&.quit
     end
-
-    # Give it a bit more time for all content to load
-    sleep(1)
-
-    cards = driver.find_elements(css: '.card-body')
-    cards.each do |card|
-      name = safe_text(card.find_elements(css: 'h4')[0])
-      title = safe_text(card.find_elements(css: 'li')[0]).gsub('Role: ', '')
-
-      person = RecordPerson.call(name)
-      membership = Membership.find_or_create_by(group: @charity, member: person)
-      Position.find_or_create_by(membership:, title:)
-
-      Rails.logger.info("Recorded person: #{name} - #{title} to charity #{@charity.name}")
-    end
-
-    driver.quit
-    { success: true, people_count: cards.count }
-  ensure
-    driver.quit if driver
   end
 
   def search_url
@@ -88,7 +98,7 @@ class AcncCharities::FetchSingleCharityPeople
     options.add_argument('--disable-software-rasterizer')
     options.add_argument('--disable-features=VizDisplayCompositor')
 
-    if RUBY_PLATFORM =~ /darwin/
+    if RUBY_PLATFORM.match?(/darwin/)
       # Local Mac: default Chrome + Webdrivers auto-managed
       # Selenium::WebDriver.for(:chrome, options: options)
       # Local Mac: do nothing, default stable Chrome will be used
@@ -105,7 +115,7 @@ class AcncCharities::FetchSingleCharityPeople
 
       service = Selenium::WebDriver::Service.chrome(
         path: chromedriver_bin,
-        args: ['--verbose']
+        args: ['--verbose', '--port=0'] # ephemeral port
       )
 
       driver = nil
@@ -119,7 +129,7 @@ class AcncCharities::FetchSingleCharityPeople
         end
       end
 
-      raise "Failed to launch Selenium ChromeDriver after 3 attempts" unless driver
+      raise 'Failed to launch Selenium ChromeDriver after 3 attempts' unless driver
 
       driver
     end
