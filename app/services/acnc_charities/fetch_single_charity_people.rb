@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'selenium-webdriver'
 
 class AcncCharities::FetchSingleCharityPeople
@@ -10,41 +11,35 @@ class AcncCharities::FetchSingleCharityPeople
   end
 
   def perform
-    # Part 1 - Go to the search page, search for the charity by ABN, get the UUID from the results
+    # Part 1 - query API for UUID
     conn = Faraday.new(url: search_url) do |config|
-      config.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+      config.headers['User-Agent'] = user_agent
       config.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
     end
 
     response = conn.get
-
     return { success: false, error: 'Request failed' } unless response.success?
 
     body = JSON.parse(response.body)
-    return { success: false, error: 'No results found' } if body['results'].blank? || !body['results'].is_a?(Array) || body['results'][0].nil?
+    if body['results'].blank? || !body['results'].is_a?(Array) || body['results'][0].nil?
+      return { success: false, error: 'No results found' }
+    end
 
     @uuid = body['results'][0]['uuid']
 
-    # Part 2 - Go to the people page for that charity UUID, scrape the people data using Selenium
+    # Part 2 - Selenium scraping
     driver = nil
+    people_count = 0
 
     begin
       driver = setup_selenium_driver
-      people_count = 0
-
 
       driver.get(people_url)
 
-      # Wait for the Vue app to load
       wait = Selenium::WebDriver::Wait.new(timeout: 15)
+      wait.until { driver.find_elements(css: '.charity-people').any? }
 
-      # Wait for people content to appear (adjust selector as needed)
-      wait.until do
-        driver.find_elements(css: '.charity-people').any?
-      end
-
-      # Give it a bit more time for all content to load
-      sleep(1)
+      sleep 1 # extra time for client-side rendering
 
       cards = driver.find_elements(css: '.card-body')
       cards.each do |card|
@@ -61,13 +56,19 @@ class AcncCharities::FetchSingleCharityPeople
 
       { success: true, people_count: people_count }
     rescue StandardError => e
-      Rails.logger.error "Error during Selenium scraping: #{e.message}"
+      Rails.logger.error "Error during Selenium scraping for charity_id=#{@charity.id}: #{e.class} - #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
-      raise e
+      raise e # let Sidekiq retry according to policy
     ensure
-      driver&.quit
+      begin
+        driver&.quit
+      rescue StandardError => e
+        Rails.logger.warn "Error while quitting Selenium driver: #{e.class} - #{e.message}"
+      end
     end
   end
+
+  private
 
   def search_url
     "https://www.acnc.gov.au/api/dynamics/search/charity?search=#{@charity.business_number}"
@@ -77,15 +78,21 @@ class AcncCharities::FetchSingleCharityPeople
     "https://www.acnc.gov.au/charity/charities/#{@uuid}/people"
   end
 
+  def user_agent
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+  end
+
   def setup_selenium_driver
+    # make sure selenium-webdriver loaded
     require 'selenium-webdriver'
 
-    # Ensure no leftover Chrome/ChromeDriver processes interfere
+    # Run cleanup - ChromeDriverBootstrapper also performs cleanup when launching,
+    # but we call this early to reduce leftover processes interfering.
     cleanup_chrome_processes
 
     options = Selenium::WebDriver::Chrome::Options.new
 
-    # All current scraping-safe options preserved
+    # preserve all your options
     options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
@@ -93,66 +100,31 @@ class AcncCharities::FetchSingleCharityPeople
     options.add_argument('--disable-extensions')
     options.add_argument('--disable-web-security')
     options.add_argument('--window-size=1920,1080')
-    options.add_argument('--remote-debugging-port=0') # ephemeral port
-    options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36')
+    options.add_argument('--remote-debugging-port=0') # ephemeral port where possible
+    options.add_argument("--user-agent=#{user_agent}")
     options.add_argument('--disable-software-rasterizer')
     options.add_argument('--disable-features=VizDisplayCompositor')
 
     if RUBY_PLATFORM.match?(/darwin/)
-      # Local Mac: default Chrome + Webdrivers auto-managed
-      # Selenium::WebDriver.for(:chrome, options: options)
-      # Local Mac: do nothing, default stable Chrome will be used
-      # Webdrivers will auto-manage ChromeDriver
-    else
-      # Linux Graviton/ARM64
-      chrome_bin = '/usr/bin/chromium-browser'
-      chromedriver_bin = '/usr/lib/chromium-browser/chromedriver'
-
-      raise "Chromium binary missing at #{chrome_bin}" unless File.exist?(chrome_bin)
-      raise "ChromeDriver missing at #{chromedriver_bin}" unless File.exist?(chromedriver_bin)
-
-      options.binary = chrome_bin
-      driver = nil
-
-      3.times do |i|
-        begin
-          port = find_free_port
-
-          service = Selenium::WebDriver::Service.chrome(
-            path: chromedriver_bin,
-            args: ["--verbose", "--port=#{port}"]
-          )
-
-          driver = Selenium::WebDriver.for(:chrome, options: options, service: service)
-          break
-        rescue Errno::ECONNREFUSED, Selenium::WebDriver::Error::WebDriverError => e
-          Rails.logger.warn "Selenium startup failed (attempt #{i + 1}/3): #{e.message}"
-          sleep 1
-        end
-      end
-
-      raise 'Failed to launch Selenium ChromeDriver after 3 attempts' unless driver
-
-      driver
+      # Local Mac: Webdrivers gem will manage chromedriver; return driver directly
+      return Selenium::WebDriver.for(:chrome, options: options)
     end
+
+    # Linux (ARM64/Graviton) branch: use your bootstrapper to start chromedriver reliably
+    service = ChromeDriverBootstrapper.new.launch
+
+    Selenium::WebDriver.for(:chrome, options: options, service: service)
   end
 
   def cleanup_chrome_processes
-    # Kill any leftover ChromeDriver or Chromium processes
-    %w[chromedriver chromium-browser google-chrome].each do |bin|
-      system("pkill -f #{bin} || true")
+    # Best-effort kill of any lingering processes (no exceptions raised)
+    %w[chromedriver chromium-browser google-chrome chromium chrome].each do |bin|
+      system("pkill -f #{bin} >/dev/null 2>&1 || true")
     end
   end
 
-  def find_free_port
-    server = TCPServer.new('127.0.0.1', 0)
-    port = server.addr[1]
-    server.close
-    port
-  end
-
   def safe_text(element)
-    element.text.strip
+    element&.text.to_s.strip
   rescue StandardError
     ''
   end
@@ -160,7 +132,7 @@ class AcncCharities::FetchSingleCharityPeople
   def safe_element_text(parent_element, selector)
     element = parent_element.find_element(css: selector)
     element.text.strip
-  rescue Selenium::WebDriver::Error::NoSuchElementError
+  rescue Selenium::WebDriver::Error::NoSuchElementError, StandardError
     ''
   end
 end
