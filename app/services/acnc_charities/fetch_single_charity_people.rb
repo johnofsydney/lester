@@ -88,18 +88,16 @@ class AcncCharities::FetchSingleCharityPeople
       # Webdrivers will auto-manage ChromeDriver
     else
       # Linux Gravitron/ARM64
-      chrome_binary = '/usr/bin/chromium-browser'
-      unless File.exist?(chrome_binary)
-        raise StandardError, "Chromium binary not found at #{chrome_binary}. Please run provisioning script."
-      end
-      options.binary = chrome_binary
 
-      # Use Snap Chromium's built-in ChromeDriver
-      snap_driver_path = '/snap/bin/chromium.chromedriver'
-      unless File.exist?(snap_driver_path)
-        raise StandardError, "Snap Chromium ChromeDriver not found at #{snap_driver_path}. Please run provisioning script."
-      end
-      Selenium::WebDriver::Chrome::Service.driver_path = snap_driver_path
+      chrome_bin = '/usr/bin/chromium-browser'
+      chromedriver_bin = '/usr/lib/chromium-browser/chromedriver'
+
+      raise "Chromium binary missing at #{chrome_bin}" unless File.exist?(chrome_bin)
+      raise "ChromeDriver missing at #{chromedriver_bin}" unless File.exist?(chromedriver_bin)
+
+      options.binary = chrome_bin
+      Selenium::WebDriver::Chrome::Service.driver_path = chromedriver_bin
+
     end
 
     Selenium::WebDriver.for(:chrome, options: options)
