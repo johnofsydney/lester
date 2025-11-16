@@ -70,11 +70,12 @@ class AcncCharities::FetchSingleCharityPeople
   def setup_selenium_driver
     require 'selenium-webdriver'
 
-    cleanup_chrome_processes  # <-- ensures no old sessions interfere
+    # Ensure no leftover Chrome/ChromeDriver processes interfere
+    cleanup_chrome_processes
 
     options = Selenium::WebDriver::Chrome::Options.new
 
-    # Common scraping-safe options
+    # All current scraping-safe options preserved
     options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
@@ -82,11 +83,13 @@ class AcncCharities::FetchSingleCharityPeople
     options.add_argument('--disable-extensions')
     options.add_argument('--disable-web-security')
     options.add_argument('--window-size=1920,1080')
-    options.add_argument('--remote-debugging-port=0') # Let Chrome pick a free port
+    options.add_argument('--remote-debugging-port=0') # ephemeral port
     options.add_argument('--user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36')
+    options.add_argument('--disable-software-rasterizer')
+    options.add_argument('--disable-features=VizDisplayCompositor')
 
     if RUBY_PLATFORM =~ /darwin/
-      # Local Mac: do nothing, default Chrome/Webdrivers auto-managed
+      # Local Mac: default Chrome + Webdrivers auto-managed
       Selenium::WebDriver.for(:chrome, options: options)
     else
       # Linux Graviton/ARM64
@@ -98,13 +101,25 @@ class AcncCharities::FetchSingleCharityPeople
 
       options.binary = chrome_bin
 
-      # Create a new ChromeDriver service on a free port
       service = Selenium::WebDriver::Service.chrome(
         path: chromedriver_bin,
-        args: ['--verbose'] # optional, for debugging
+        args: ['--verbose']
       )
 
-      Selenium::WebDriver.for(:chrome, options: options, service: service)
+      driver = nil
+      3.times do |i|
+        begin
+          driver = Selenium::WebDriver.for(:chrome, options: options, service: service)
+          break
+        rescue Errno::ECONNREFUSED, Selenium::WebDriver::Error::WebDriverError => e
+          Rails.logger.warn "Selenium startup failed (attempt #{i + 1}/3): #{e.message}"
+          sleep 1
+        end
+      end
+
+      raise "Failed to launch Selenium ChromeDriver after 3 attempts" unless driver
+
+      driver
     end
   end
 
