@@ -2,7 +2,7 @@
 
 class ChromeDriverBootstrapper
   MAX_ATTEMPTS = 3
-  PORT_RANGE   = (9515..9600) # safe isolated range
+  PORT_RANGE   = (9515..9600)
 
   def initialize(logger: Rails.logger)
     @logger = logger
@@ -15,17 +15,13 @@ class ChromeDriverBootstrapper
       attempts += 1
       @logger.info "Launching ChromeDriver (attempt #{attempts}/#{MAX_ATTEMPTS})"
 
-      # 1) choose a free port
       port = pick_free_port
       @logger.info "Selected ChromeDriver port #{port}"
 
-      # 2) cleanup stale processes
       cleanup_stale_processes
 
-      # 3) start driver
       service = start_service(port)
 
-      # 4) validate that it booted
       wait_until_ready(port)
 
       @logger.info "ChromeDriver successfully launched on port #{port}"
@@ -39,16 +35,12 @@ class ChromeDriverBootstrapper
         retry
       end
 
-      # FINAL FAIL — re-raise so Sidekiq retries the job
       raise RuntimeError, "Failed to launch Selenium ChromeDriver after #{MAX_ATTEMPTS} attempts: #{e.message}"
     end
   end
 
   private
 
-  # ------------------------------------------
-  # Pick an available port
-  # ------------------------------------------
   def pick_free_port
     PORT_RANGE.each do |port|
       begin
@@ -62,9 +54,6 @@ class ChromeDriverBootstrapper
     raise "No free ports available for ChromeDriver"
   end
 
-  # ------------------------------------------
-  # Clean up any stale Chrome/Chromedriver processes
-  # ------------------------------------------
   def cleanup_stale_processes
     @logger.info "Cleaning up stale ChromeDriver/Chrome processes..."
     %w[chromedriver chromium-browser chrome google-chrome chromium].each do |bin|
@@ -72,19 +61,16 @@ class ChromeDriverBootstrapper
     end
   end
 
-  # ------------------------------------------
-  # Start selenium-webdriver service
-  # ------------------------------------------
+  #
+  # FIXED: universal ChromeDriver service builder
+  #
   def start_service(port)
-    Selenium::WebDriver::Chrome::Service.builder
-      .with_args("--port=#{port}")
-      .build
-      .tap(&:start)
+    Selenium::WebDriver::Chrome::Service.new(
+      port: port,
+      args: ["--port=#{port}"]
+    ).tap(&:start)
   end
 
-  # ------------------------------------------
-  # Ensure ChromeDriver is actually ready
-  # ------------------------------------------
   def wait_until_ready(port)
     Timeout.timeout(5) do
       loop do
