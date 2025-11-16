@@ -70,6 +70,8 @@ class AcncCharities::FetchSingleCharityPeople
   def setup_selenium_driver
     require 'selenium-webdriver'
 
+    cleanup_chrome_processes  # <-- ensures no old sessions interfere
+
     options = Selenium::WebDriver::Chrome::Options.new
 
     # Common scraping-safe options
@@ -103,6 +105,13 @@ class AcncCharities::FetchSingleCharityPeople
       )
 
       Selenium::WebDriver.for(:chrome, options: options, service: service)
+    end
+  end
+
+  def cleanup_chrome_processes
+    # Kill any leftover ChromeDriver or Chromium processes
+    %w[chromedriver chromium-browser google-chrome].each do |bin|
+      system("pkill -f #{bin} || true")
     end
   end
 
