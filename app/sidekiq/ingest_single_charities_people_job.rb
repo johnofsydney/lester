@@ -4,7 +4,7 @@ require 'sidekiq-scheduler'
 class IngestSingleCharitiesPeopleJob
   include Sidekiq::Job
 
-  sidekiq_options queue: :scraper,
+  sidekiq_options queue: :low,
                   lock: :until_executed,
                   on_conflict: :log,
                   retry: 3

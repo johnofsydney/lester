@@ -1,6 +1,7 @@
-# frozen_string_literal: true
-require 'selenium-webdriver'
+class ResponseFailed < StandardError; end
+class NoResultsFound < StandardError; end
 
+# frozen_string_literal: true
 class AcncCharities::FetchSingleCharityPeople
   def self.perform(charity)
     new(charity).perform
@@ -12,60 +13,38 @@ class AcncCharities::FetchSingleCharityPeople
 
   def perform
     # Part 1 - query API for UUID
-    conn = Faraday.new(url: search_url) do |config|
-      config.headers['User-Agent'] = user_agent
-      config.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-    end
-
-    response = conn.get
-    return { success: false, error: 'Request failed' } unless response.success?
+    response = connection(search_url).get
+    raise ResponseFailed.new("Request failed: #{response.inspect}") unless response.success? && response.body.present?
 
     body = JSON.parse(response.body)
-    if body['results'].blank? || !body['results'].is_a?(Array) || body['results'][0].nil?
-      return { success: false, error: 'No results found' }
-    end
+    raise NoResultsFound.new("No results found: #{response.inspect}") if !body['results'].is_a?(Array) || body['results'][0].nil?
 
     @uuid = body['results'][0]['uuid']
 
-    # Part 2 - Selenium scraping
-    driver = nil
+    #  Part 2 - fetch people page
+    response = connection(people_url).get
+    raise ResponseFailed.new("People request failed: #{response.inspect}") unless response.success? && response.body.present?
+
+    doc = Nokogiri::HTML(response.body)
     people_count = 0
 
-    begin
-      driver = setup_selenium_driver
+    # Part 3 - parse people - they are held in .card-body elements
+    cards = doc.css('.card-body')
+    raise NoResultsFound.new("People not found for charity #{@charity.id} - will retry") if cards.empty?
 
-      driver.get(people_url)
+    cards.each do |card|
+      name = card.at_css('h4')&.text.to_s.strip
+      title = card.at_css('li')&.text.to_s.strip.gsub('Role: ', '')
 
-      wait = Selenium::WebDriver::Wait.new(timeout: 15)
-      wait.until { driver.find_elements(css: '.charity-people').any? }
+      next if name.blank? && title.blank?
 
-      sleep 1 # extra time for client-side rendering
-
-      cards = driver.find_elements(css: '.card-body')
-      cards.each do |card|
-        name = safe_text(card.find_elements(css: 'h4')[0])
-        title = safe_text(card.find_elements(css: 'li')[0]).gsub('Role: ', '')
-
-        person = RecordPerson.call(name)
-        membership = Membership.find_or_create_by(group: @charity, member: person)
-        Position.find_or_create_by(membership:, title:)
-
-        Rails.logger.info("Recorded person: #{name} - #{title} to charity #{@charity.name}")
-        people_count += 1
-      end
-
-      { success: true, people_count: people_count }
-    rescue StandardError => e
-      Rails.logger.error "Error during Selenium scraping for charity_id=#{@charity.id}: #{e.class} - #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-      raise e # let Sidekiq retry according to policy
-    ensure
-      begin
-        driver&.quit
-      rescue StandardError => e
-        Rails.logger.warn "Error while quitting Selenium driver: #{e.class} - #{e.message}"
-      end
+      person = RecordPerson.call(name)
+      membership = Membership.find_or_create_by(group: @charity, member: person)
+      Position.find_or_create_by(membership:, title:)
+      people_count += 1
     end
+
+    {success: true, people_count:}
   end
 
   private
@@ -75,64 +54,25 @@ class AcncCharities::FetchSingleCharityPeople
   end
 
   def people_url
-    "https://www.acnc.gov.au/charity/charities/#{@uuid}/people"
+    # "https://www.acnc.gov.au/charity/charities/#{@uuid}/people"
+    # $ curl 'https://api.crawlbase.com/?token=YNWbIk7nZcjdpfCFOL8beQ&url=https%3A%2F%2Fwww.acnc.gov.au%2Fcharity%2Fcharities%2Fd293f203-39af-e811-a963-000d3ad24077%2Fpeople'
+
+    plain_people_url = "https://www.acnc.gov.au/charity/charities/#{@uuid}/people"
+    encoded_url = URI.encode_www_form_component(plain_people_url)
+    crawlbase_token = Rails.application.credentials.dig(:crawlbase, :api_token)
+    page_wait = 5000
+
+    "https://api.crawlbase.com/?token=#{crawlbase_token}&ajax_wait=true&page_wait=#{page_wait}&url=#{encoded_url}"
   end
 
-  def user_agent
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
-  end
+  def connection(url)
+    Faraday.new(url:) do |config|
+      config.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+      config.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
 
-  def setup_selenium_driver
-    # make sure selenium-webdriver loaded
-    require 'selenium-webdriver'
-
-    # Run cleanup - ChromeDriverBootstrapper also performs cleanup when launching,
-    # but we call this early to reduce leftover processes interfering.
-    cleanup_chrome_processes
-
-    options = Selenium::WebDriver::Chrome::Options.new
-
-    # preserve all your options
-    options.add_argument('--headless=new')
-    options.add_argument('--no-sandbox')
-    options.add_argument('--disable-dev-shm-usage')
-    options.add_argument('--disable-gpu')
-    options.add_argument('--disable-extensions')
-    options.add_argument('--disable-web-security')
-    options.add_argument('--window-size=1920,1080')
-    options.add_argument('--remote-debugging-port=0') # ephemeral port where possible
-    options.add_argument("--user-agent=#{user_agent}")
-    options.add_argument('--disable-software-rasterizer')
-    options.add_argument('--disable-features=VizDisplayCompositor')
-
-    if RUBY_PLATFORM.match?(/darwin/)
-      # Local Mac: Webdrivers gem will manage chromedriver; return driver directly
-      return Selenium::WebDriver.for(:chrome, options: options)
+    # Set timeout values (too big for normal use)
+    config.options.timeout = 90        # 90 seconds for read timeout
+    config.options.open_timeout = 30   # 30 seconds for connection timeout
     end
-
-    # Linux (ARM64/Graviton) branch: use your bootstrapper to start chromedriver reliably
-    service = ChromeDriverBootstrapper.new.launch
-
-    Selenium::WebDriver.for(:chrome, options: options, service: service)
-  end
-
-  def cleanup_chrome_processes
-    # Best-effort kill of any lingering processes (no exceptions raised)
-    %w[chromedriver chromium-browser google-chrome chromium chrome].each do |bin|
-      system("pkill -f #{bin} >/dev/null 2>&1 || true")
-    end
-  end
-
-  def safe_text(element)
-    element&.text.to_s.strip
-  rescue StandardError
-    ''
-  end
-
-  def safe_element_text(parent_element, selector)
-    element = parent_element.find_element(css: selector)
-    element.text.strip
-  rescue Selenium::WebDriver::Error::NoSuchElementError, StandardError
-    ''
   end
 end
