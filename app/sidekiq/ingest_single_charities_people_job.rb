@@ -4,6 +4,11 @@ require 'sidekiq-scheduler'
 class IngestSingleCharitiesPeopleJob
   include Sidekiq::Job
 
+  sidekiq_options queue: :low,
+                  lock: :until_executed,
+                  on_conflict: :log,
+                  retry: 3
+
   def perform(charity_id)
     charity = Group.find(charity_id)
     AcncCharities::FetchSingleCharityPeople.perform(charity)
