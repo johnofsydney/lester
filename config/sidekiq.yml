@@ -1,7 +1,7 @@
-:concurrency: 6
+:concurrency: 6 # delibertely low to preserve CPU and memory on low spec server
 :queues:
-  - [critical, 10]
-  - [default, 3]
+  - [critical, 5]
+  - [default, 2]
   - [low, 1]
 
 :scheduler:
@@ -14,11 +14,11 @@
     ingest_charities_dataset_csv:
       cron: '0 0 1 3 *' # every year on March 1st at midnight
       class: IngestCharitiesDatasetCsv
-    # Every day fetch a slice of the people from the ACNC Charities website (scraping) - reasses after complete
+    # Every day fetch all the people from the ACNC Charities website (scraping)
     ingest_charities_people:
-      cron: '0 4 * * *' # every day at 4am
-        class: IngestCharitiesPeopleJob
-    # Every week fetch the people ofr any charities which have no people (scraping) (there should be no charities missing people)
+      cron: '0 4 * * *' # every day ay 4am
+      class: IngestCharitiesPeopleJob
+    # Every week fetch the people of any charities which have no people (scraping) (there should be no charities missing people)
     ingest_twenty_charities_missing_people:
       cron: '0 3 * * 0' # every week on Sunday at 3am
       class: IngestTwentyCharitiesMissingPeopleJob
