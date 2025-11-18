@@ -17,7 +17,7 @@
     # Every day fetch a slice of the people from the ACNC Charities website (scraping) - reasses after complete
     ingest_charities_people:
       cron: '0 4 * * *' # every day at 4am
-        class: IngestCharitiesPeopleJob
+      class: IngestCharitiesPeopleJob
     # Every week fetch the people ofr any charities which have no people (scraping) (there should be no charities missing people)
     ingest_twenty_charities_missing_people:
       cron: '0 3 * * 0' # every week on Sunday at 3am
