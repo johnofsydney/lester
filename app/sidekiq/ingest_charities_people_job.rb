@@ -4,11 +4,26 @@ require 'sidekiq-scheduler'
 class IngestCharitiesPeopleJob
   include Sidekiq::Job
 
-  def perform
-    Group.find_by(name: 'Charities').groups.find_each do |charity|
-      next unless charity&.business_number
+  SECTIONS = 30
 
-      IngestSingleCharitiesPeopleJob.perform_async(charity.id)
+  def perform
+    scope = Group.where(name: "Charities")
+    total = scope.count
+    section_size = (total.to_f / SECTIONS).ceil
+
+    day = Date.today.day
+    section_number = ((day - 1) % SECTIONS)
+
+    offset = section_number * section_size
+
+    groups_today = scope.offset(offset).limit(section_size)
+
+
+    # Group.find_by(name: 'Charities').groups.find_each do |charity|
+    groups_today.find_each(batch_size: 100) do |group|
+      next unless group&.business_number
+
+      IngestSingleCharitiesPeopleJob.perform_async(group.id)
     end
 
   rescue StandardError => e
