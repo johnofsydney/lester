@@ -30,7 +30,10 @@ class AcncCharities::FetchSingleCharityPeople
 
     # Part 3 - parse people - they are held in .card-body elements
     cards = doc.css('.card-body')
-    raise NoResultsFound.new("People not found for charity #{@charity.id} - will retry") if cards.empty?
+    if cards.empty?
+      Rails.logger.info("People not found for charity #{@charity.id} - will not retry")
+      return {success: false, people_count: 0}
+    end
 
     cards.each do |card|
       name = card.at_css('h4')&.text.to_s.strip
