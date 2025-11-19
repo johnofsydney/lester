@@ -4,27 +4,21 @@ require 'sidekiq-scheduler'
 class IngestCharitiesPeopleJob
   include Sidekiq::Job
 
-  SECTIONS = 30
-
   def perform
-    scope = Group.where(name: "Charities")
-    total = scope.count
-    section_size = (total.to_f / SECTIONS).ceil
+    BATCH_SIZE = 50
+    ONE_YEAR_AGO = 1.year.ago
 
-    day = Date.today.day
-    section_number = ((day - 1) % SECTIONS)
+    charity_groups = Group.find_by(name: "Charities").groups.where.not(business_number: [nil, ''])
+    groups_to_fetch = charity_groups.where(last_refreshed: nil)
+                                    .or(charity_groups.where(last_refreshed: ..ONE_YEAR_AGO))
+                                    .limit(BATCH_SIZE)
 
-    offset = section_number * section_size
-
-    groups_today = scope.offset(offset).limit(section_size)
-
-
-    # Group.find_by(name: 'Charities').groups.find_each do |charity|
-    groups_today.find_each(batch_size: 100) do |group|
-      next unless group&.business_number
-
-      IngestSingleCharitiesPeopleJob.perform_async(group.id)
+    groups_to_fetch.each do |group|
+      AcncCharities::FetchSingleCharityPeople.perform(group)
     end
+
+    # Re-enqueue itself until fully done
+    self.class.perform_async
 
   rescue StandardError => e
     Rails.logger.error "Error processing charities people: #{e.message} - will retry"

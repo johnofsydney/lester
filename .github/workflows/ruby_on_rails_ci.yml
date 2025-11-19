@@ -71,3 +71,9 @@ jobs:
       - name: Security audit dependencies
         run: bundle exec bundler-audit --update
 
+  yaml-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: yaml-lint
+        uses: ibiqlik/action-yamllint@v3

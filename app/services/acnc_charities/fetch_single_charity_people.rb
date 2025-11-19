@@ -42,7 +42,10 @@ class AcncCharities::FetchSingleCharityPeople
       membership = Membership.find_or_create_by(group: @charity, member: person)
       Position.find_or_create_by(membership:, title:)
       people_count += 1
+      @charity.update!(last_refreshed: Time.current.to_date)
     end
+
+    Rails.logger.info "Successfully processed charity #{@charity.name} - #{people_count} people found"
 
     {success: true, people_count:}
   end
