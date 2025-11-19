@@ -5,13 +5,13 @@ class IngestCharitiesPeopleJob
   include Sidekiq::Job
 
   def perform
-    BATCH_SIZE = 50
-    ONE_YEAR_AGO = 1.year.ago
+    batch_size = 50
+    one_year_ago = 1.year.ago
 
     charity_groups = Group.find_by(name: "Charities").groups.where.not(business_number: [nil, ''])
     groups_to_fetch = charity_groups.where(last_refreshed: nil)
-                                    .or(charity_groups.where(last_refreshed: ..ONE_YEAR_AGO))
-                                    .limit(BATCH_SIZE)
+                                    .or(charity_groups.where(last_refreshed: ..one_year_ago))
+                                    .limit(batch_size)
 
     groups_to_fetch.each do |group|
       AcncCharities::FetchSingleCharityPeople.perform(group)
