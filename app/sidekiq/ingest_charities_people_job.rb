@@ -28,7 +28,7 @@ class IngestCharitiesPeopleJob
   end
 
   def charity_groups_to_fetch
-    batch_size = 100
+    batch_size = 200
 
     Group.find_by(name: "Charities").groups
                                     .with_business_number
