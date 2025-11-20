@@ -22,6 +22,9 @@ class AcncCharities::IngestCsv
 
         RecordSingleCharityGroupJob.perform_async(row[:name], row[:abn], category.id)
        end
+
+    # after ingesting the CSV - commence ingestion of people for each charity
+    IngestCharitiesPeopleJob.perform_async
   end
 
   def url

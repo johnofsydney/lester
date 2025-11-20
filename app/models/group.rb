@@ -96,6 +96,10 @@ class Group < ApplicationRecord
     )
   end
 
+  scope :with_business_number, -> { where.not(business_number: [nil, '']) }
+
+  scope :can_refresh, -> { where(last_refreshed: nil).or(where(last_refreshed: ..6.months.ago)) }
+
   def business_number=(value)
     return if value.nil?
 

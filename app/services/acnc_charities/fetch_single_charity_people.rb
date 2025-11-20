@@ -30,7 +30,10 @@ class AcncCharities::FetchSingleCharityPeople
 
     # Part 3 - parse people - they are held in .card-body elements
     cards = doc.css('.card-body')
-    raise NoResultsFound.new("People not found for charity #{@charity.id} - will retry") if cards.empty?
+    if cards.empty?
+      Rails.logger.info("People not found for charity #{@charity.id} - will not retry")
+      return {success: false, people_count: 0}
+    end
 
     cards.each do |card|
       name = card.at_css('h4')&.text.to_s.strip
@@ -42,7 +45,10 @@ class AcncCharities::FetchSingleCharityPeople
       membership = Membership.find_or_create_by(group: @charity, member: person)
       Position.find_or_create_by(membership:, title:)
       people_count += 1
+      @charity.update!(last_refreshed: Time.current.to_date)
     end
+
+    Rails.logger.info "Successfully processed charity #{@charity.name} - #{people_count} people found"
 
     {success: true, people_count:}
   end
@@ -54,9 +60,6 @@ class AcncCharities::FetchSingleCharityPeople
   end
 
   def people_url
-    # "https://www.acnc.gov.au/charity/charities/#{@uuid}/people"
-    # $ curl 'https://api.crawlbase.com/?token=YNWbIk7nZcjdpfCFOL8beQ&url=https%3A%2F%2Fwww.acnc.gov.au%2Fcharity%2Fcharities%2Fd293f203-39af-e811-a963-000d3ad24077%2Fpeople'
-
     plain_people_url = "https://www.acnc.gov.au/charity/charities/#{@uuid}/people"
     encoded_url = URI.encode_www_form_component(plain_people_url)
     crawlbase_token = Rails.application.credentials.dig(:crawlbase, :api_token)
