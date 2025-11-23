@@ -17,6 +17,13 @@
 * {
   /* border: 1px red solid; */
 }
+
+.container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
 button, .badge {
   text-decoration: none;
 }
