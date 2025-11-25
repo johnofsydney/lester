@@ -19,15 +19,22 @@ class GroupsController < ApplicationController
 
   def show
     if @group.nodes_count > Constants::TOO_MANY_CONNECTIONS_THRESHOLD
+      # This is a clumsy protection targeted at groups like category Charities.
+      # should use pagination and limits instead
       render plain: Constants::TOO_MANY_CONNECTIONS_MESSAGE, status: :ok
       return
     end
 
     if @group.cache_fresh?
       render Groups::ShowView.new(group: @group)
+      return
+    end
+
+    if Sidekiq::Queue.new('critical').size >= 25
+      render plain: 'System busy: too many critical background jobs. Please try again later.', status: :too_many_requests
+      return
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
-
       render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
     end
   end

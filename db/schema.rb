@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_19_093415) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_25_220309) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,9 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_19_093415) do
     t.string "business_number"
     t.text "other_names", default: [], array: true
     t.date "last_refreshed"
+    t.index ["business_number"], name: "index_groups_on_business_number", unique: true
+    t.index ["category"], name: "index_groups_on_category"
+    t.index ["name"], name: "index_groups_on_name"
   end
 
   create_table "individual_transactions", force: :cascade do |t|
@@ -100,9 +103,12 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_19_093415) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "evidence"
+    t.index ["end_date"], name: "index_memberships_on_end_date"
     t.index ["group_id"], name: "index_memberships_on_group_id"
     t.index ["id", "group_id", "member_id"], name: "index_memberships_on_id_and_group_id_and_member_id", unique: true
     t.index ["member_type", "member_id"], name: "index_memberships_on_member"
+    t.index ["start_date", "end_date"], name: "index_memberships_on_start_date_and_end_date"
+    t.index ["start_date"], name: "index_memberships_on_start_date"
   end
 
   create_table "people", force: :cascade do |t|
@@ -113,6 +119,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_19_093415) do
     t.text "other_names", default: [], array: true
     t.string "linkedin_url"
     t.date "linkedin_ingested"
+    t.index ["name"], name: "index_people_on_name"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|

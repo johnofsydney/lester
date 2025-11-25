@@ -4,8 +4,11 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  mount Flipper::UI.app(Flipper) => '/flipper'
-  mount Sidekiq::Web => '/sidekiq' # access it at http://localhost:3000/sidekiq
+  authenticate :admin_user do
+    mount Flipper::UI.app(Flipper) => '/flipper'
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   mount Prettytodo::Engine => '/prettytodo' if Rails.env.development?
 
   get 'groups/page=:page' => 'groups#index'
