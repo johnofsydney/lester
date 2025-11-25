@@ -20,10 +20,19 @@ class PeopleController < ApplicationController
   def show
     if @person.cache_fresh?
       render People::ShowView.new(person: @person)
+      return
+    end
+
+    if Sidekiq::Queue.new('critical').size >= 25
+      render plain: 'System busy: too many critical background jobs. Please try again later.', status: :too_many_requests
+      return
     else
       BuildPersonCachedDataJob.perform_async(@person.id)
       render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
     end
+
+
+end
   end
 
   def reload
