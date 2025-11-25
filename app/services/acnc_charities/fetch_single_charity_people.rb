@@ -12,6 +12,9 @@ class AcncCharities::FetchSingleCharityPeople
   end
 
   def perform
+    # First - set last_refreshed to today to avoid repeated retries in short time
+    @charity.update!(last_refreshed: Time.current.to_date)
+
     # Part 1 - query API for UUID
     response = connection(search_url).get
     raise ResponseFailed.new("Request failed: #{response.inspect}") unless response.success? && response.body.present?
@@ -45,7 +48,6 @@ class AcncCharities::FetchSingleCharityPeople
       membership = Membership.find_or_create_by(group: @charity, member: person)
       Position.find_or_create_by(membership:, title:)
       people_count += 1
-      @charity.update!(last_refreshed: Time.current.to_date)
     end
 
     Rails.logger.info "Successfully processed charity #{@charity.name} - #{people_count} people found"
