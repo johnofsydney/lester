@@ -15,6 +15,7 @@ class Membership < ApplicationRecord
   def overlapping
     # return all the memberships that overlap with this one
     # used in BuildQueue
+    # investigate caching
 
     base = Membership.where.not(id: self.id)
                      .where('end_date IS NULL OR end_date >= ?', self.start_date)
