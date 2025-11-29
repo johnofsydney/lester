@@ -51,34 +51,37 @@ module TransferMethods
     end
 
     def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil, with_parents: [] )
-
       current_depth_memberships = []
+
       queue.each do |node|
-        # next  if node.nodes.count > 4
-        return results  if node.nodes_count > 1500
-        return results if results.count > 500
-
-        visited_nodes << node # store the current node as visited
-        current_depth_memberships << node.memberships.to_a
-
-        unless with_parents.empty?
-          parent = with_parents.reverse.find{ |element| element[:child] == node }[:parent]
+        # Skip nodes that are too large to traverse (avoid aborting the whole traversal)
+        if node.nodes_count > 1500 || counter * node.nodes_count > 1500
+          visited_nodes << node
+          next
         end
 
-        # Descendent is probably too big and too memory hungry. TODO: refactor
-        # Can the node simply be augmented? Descendent DOES add a lot though
-        results << Descendent.new(node: node, depth: counter, parent:)
+        visited_nodes << node
+        current_depth_memberships << node.memberships.to_a
+
+        parent = nil
+        unless with_parents.empty?
+          parent_element = with_parents.reverse.find { |element| element[:child] == node }
+          parent = parent_element[:parent] if parent_element
+        end
+
+        results << Descendent.new(node: node, depth: counter, parent: parent)
+
+        # Stop the whole traversal if we've reached the results threshold
+        return results if results.size >= 500
       end
 
       return results if depth == 0
 
       # add current memberships to visited memberships
       visited_membership_ids << current_depth_memberships.flatten.pluck(:id)
-
-      # clean up the visited memberships
       visited_membership_ids = visited_membership_ids.flatten.uniq
 
-      # get the nodes from the current depth. remove the visited nodes. store the rest in the queue (if there are overlapping memberships)
+      # get the nodes for the next depth
       service = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter, transfer)
       queue = service.call
       with_parents = service.with_parents

@@ -6,6 +6,7 @@ module CachedMethods
   end
 
   def cache_fresh?
+    return false unless cached_summary
     return false unless cached_summary_timestamp
 
     cached_summary_timestamp > 1.week.ago

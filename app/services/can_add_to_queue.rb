@@ -26,6 +26,13 @@ class CanAddToQueue
   end
 
   def call
+    if next_node.is_a?(Group)
+      return false if next_node.category
+      return false if next_node.nodes_count > 50
+    end
+    if next_node.is_a?(Person)
+      return false if next_node.nodes_count > 50
+    end
     return true
   end
 end
