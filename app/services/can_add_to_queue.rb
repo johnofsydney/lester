@@ -14,25 +14,23 @@
 # for reasons of size etc. Some false positives are acceptable for now.
 
 class CanAddToQueue
-  def self.call(node, next_node)
-    new(node, next_node).call
+  def self.call(node, next_node, counter)
+    new(node, next_node, counter).call
   end
 
-  attr_reader :node, :next_node
-
-  def initialize(node, next_node)
+  attr_reader :node, :next_node, :counter
+  def initialize(node, next_node, counter)
     @node = node
     @next_node = next_node
+    @counter = counter
   end
 
   def call
-    if next_node.is_a?(Group)
-      return false if next_node.category
-      return false if next_node.nodes_count > 50
-    end
-    if next_node.is_a?(Person)
-      return false if next_node.nodes_count > 50
-    end
-    return true
+    return false if next_node.nodes_count.nil?
+    return false if next_node.nodes_count > Constants::MAX_NODE_COUNT_TO_FOLLOW
+    return false if counter * next_node.nodes_count > Constants::MAX_NODE_COUNT_TO_FOLLOW
+    return false if next_node.is_category?
+
+    true
   end
 end

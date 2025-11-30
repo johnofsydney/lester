@@ -11,4 +11,8 @@ module Constants
 
   PLEASE_REFRESH_MESSAGE = ' Building cached data. Please refresh in a moment.'.freeze
   TOO_MANY_CONNECTIONS_MESSAGE = 'Too many connections. Cannot display.'.freeze
+
+  MAX_NODE_COUNT_FIRST_DEGREE_CONNECTIONS = 200
+  MAX_NODE_COUNT_TO_FOLLOW = 50
+  MAX_DESCENDENTS_RESULTS = 1500
 end
