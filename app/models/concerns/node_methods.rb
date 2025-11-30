@@ -1,13 +1,12 @@
+# The point of this module is to provide methods that will support and populate the .to_h method
+# both Groups and People are nodes, and can draw on these methods.
+# Methods here do not draw on cached data, that is the job of CachedMethods mixin.
+
 module NodeMethods
   extend ActiveSupport::Concern
   include ActionView::Helpers::NumberHelper
 
-  included do
-    store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
-
-    def nodes_count = nodes.count # rubocop:disable Rails/Delegate
-
-    # STUFF TO DO WITH MONEY SUMMARY
+  included do # superfluous - remove later
     def money_in
       amount = inbound_transfers.sum(:amount)
       return unless amount.positive?
@@ -50,10 +49,7 @@ module NodeMethods
         is_category: is_category?,
         money_in:,
         money_out:,
-        nodes_count:,
         direct_connections:, # TODO: Remove from here
-        # transfers_as_taker: transfers_as_taker.map(&:to_h), # used in chartkick graphs
-        # transfers_as_giver: transfers_as_giver.map(&:to_h), # used in chartkick graphs
         top_six_as_giver: top_six_as_giver.to_h, # used in chartkick graphs # TODO: Remove from here
         top_six_as_taker: top_six_as_taker.to_h, # used in chartkick graphs # TODO: Remove from here
         graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}", # used in chartkick graphs
@@ -146,22 +142,6 @@ module NodeMethods
         basic_info
       end
     end
-
-    # def transfers_as_taker
-    #   inbound_transfers.map do |t|
-    #     t.augment(depth: is_category? ? 1 : 0, direction: 'incoming')
-    #   end
-    # end
-
-    # def transfers_as_giver
-    #   outbound_transfers.map do |t|
-    #     t.augment(depth: is_category? ? 1 : 0, direction: 'outgoing')
-    #   end
-    # end
-
-    # def direct_transfers
-    #   transfers_as_taker + transfers_as_giver
-    # end
 
     def fetch_last_position(node)
       membership = if self.is_a?(Group) && node.is_a?(Person)
