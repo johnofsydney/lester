@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_27_110750) do
+ActiveRecord::Schema[7.2].define(version: 2025_11_30_043112) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -72,6 +72,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_27_110750) do
     t.string "business_number"
     t.text "other_names", default: [], array: true
     t.date "last_refreshed"
+    t.integer "nodes_count_cached"
+    t.datetime "nodes_count_cached_at"
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
     t.index ["category"], name: "index_groups_on_category"
     t.index ["name"], name: "index_groups_on_name"
@@ -120,6 +122,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_27_110750) do
     t.text "other_names", default: [], array: true
     t.string "linkedin_url"
     t.date "linkedin_ingested"
+    t.integer "nodes_count_cached"
+    t.datetime "nodes_count_cached_at"
     t.index ["name"], name: "index_people_on_name"
   end
 
