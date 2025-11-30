@@ -53,13 +53,13 @@ module TransferMethods
     def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil, with_parents: [] )
       current_depth_memberships = []
 
-      queue.each do |node|
-        # Skip nodes that are too large to traverse (avoid aborting the whole traversal)
-        if node.nodes_count > 1500 || counter * node.nodes_count > 1500
-          visited_nodes << node
-          next
-        end
+      # sanity check in case of a large number of nodes on [self] for the first iteration
+      # let it return a meaningful collection but not recurse further
+      if counter.zero? && (queue.first.nodes_count > Constants::MAX_NODE_COUNT_FIRST_DEGREE_CONNECTIONS)
+        return queue.first.nodes.map { |node| Descendent.new(node:, depth: 0, parent: nil)}
+      end
 
+      queue.each do |node|
         visited_nodes << node
         current_depth_memberships << node.memberships.to_a
 
@@ -70,12 +70,13 @@ module TransferMethods
         end
 
         results << Descendent.new(node: node, depth: counter, parent: parent)
-
-        # Stop the whole traversal if we've reached the results threshold
-        return results if results.size >= 500
       end
 
+      # once depth has reduced to zero, we are done - this is the natural finish
       return results if depth == 0
+
+      # Stop the whole traversal if we've reached the results threshold
+      return results if results.size >= Constants::MAX_DESCENDENTS_RESULTS
 
       # add current memberships to visited memberships
       visited_membership_ids << current_depth_memberships.flatten.pluck(:id)
