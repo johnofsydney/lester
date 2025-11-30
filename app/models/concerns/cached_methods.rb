@@ -26,7 +26,7 @@ module CachedMethods
     if nodes_count_cached_at && nodes_count_cached_at > 1.week.ago && nodes_count_cached
       nodes_count_cached
     else
-      NodeCountJob.perform_async(self.class.name, id)
+      NodeCountJob.perform_async(self.class.name, id) unless Sidekiq::Queue.new('default').size >= 500
       nodes.count
     end
   end
