@@ -11,6 +11,8 @@ describe Common::MoneyGraphs do
   let(:giving_group_seven) { Group.create(name: 'Giving Group Seven') }
   let(:giving_group_eight) { Group.create(name: 'Giving Group Eight') }
 
+  let(:sidekiq_queue) { instance_double(Sidekiq::Queue, size: 1) }
+
   before do
     Transfer.create(giver: giving_group_one, taker: current_group, amount: 1000, effective_date: '2022-01-01')
     Transfer.create(giver: giving_group_two, taker: current_group, amount: 2000, effective_date: '2022-06-01')
@@ -19,6 +21,8 @@ describe Common::MoneyGraphs do
 
     allow(BuildPersonCachedDataJob).to receive(:perform_async)
     allow(BuildGroupCachedDataJob).to receive(:perform_async)
+
+    allow(Sidekiq::Queue).to receive(:new).and_return(sidekiq_queue)
 
     current_group.update(cached_summary: current_group.to_h, cached_summary_timestamp: Time.zone.now)
   end
