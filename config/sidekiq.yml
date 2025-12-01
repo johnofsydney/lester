@@ -16,6 +16,6 @@
       class: IngestCharitiesDatasetCsv
     # Every hour run the HydrateNodesCountJob
     hydrate_nodes_count_job:
-      cron: '15 * * * *'
+      cron: '*/15 * * * *'
       class: HydrateNodesCountJob
 
