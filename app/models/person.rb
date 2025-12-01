@@ -18,6 +18,8 @@ class Person < ApplicationRecord
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
+  scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
+
   def nodes(include_looser_nodes: false)
     unless include_looser_nodes
       return groups

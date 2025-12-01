@@ -13,12 +13,6 @@ class RefreshNodesCountJob
   def perform
     return unless entities_to_refresh?
 
-    # First set to nil any stale counts
-    Person.where(nodes_count_cached_at: ..STALE_THRESHOLD_TIMESTAMP)
-          .update_all(nodes_count_cached: nil)
-    Group.where(nodes_count_cached_at: ..STALE_THRESHOLD_TIMESTAMP)
-         .update_all(nodes_count_cached: nil)
-
     people_to_refresh.pluck(:id).each do |id|
       NodeCountJob.perform_async('Person', id)
     end
@@ -32,11 +26,11 @@ class RefreshNodesCountJob
   end
 
   def people_to_refresh
-    Person.where(nodes_count_cached: nil).limit(QUANTITY)
+    @people_to_refresh ||= Person.nodes_count_expired.limit(QUANTITY)
   end
 
   def groups_to_refresh
-    Group.where(nodes_count_cached: nil).limit(QUANTITY)
+    @groups_to_refresh ||= Group.nodes_count_expired.limit(QUANTITY)
   end
 
   def entities_to_refresh?
