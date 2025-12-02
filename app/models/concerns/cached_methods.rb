@@ -1,14 +1,34 @@
+# The point of this modules is to provide convenience methods for consuming cached data
+# both Groups and People are nodes, and can draw on these methods.
+# if you call .cached on a Group or Person, you get back a RehydratedNode
+# which uses these methods to provide access to cached data
+# other smaller simpler methods are provided for more specific purposes
+
 module CachedMethods
   extend ActiveSupport::Concern
+
+  included do
+    store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
+  end
 
   def cached
     RehydratedNode.new(self)
   end
 
   def cache_fresh?
+    return false unless cached_summary
     return false unless cached_summary_timestamp
 
     cached_summary_timestamp > 1.week.ago
+  end
+
+  def nodes_count
+    if nodes_count_cached_at && nodes_count_cached_at > 1.week.ago && nodes_count_cached
+      nodes_count_cached
+    else
+      NodeCountJob.perform_async(self.class.name, id) unless Sidekiq::Queue.new('default').size >= 500
+      nodes.count
+    end
   end
 end
 
@@ -20,7 +40,7 @@ class RehydratedNode
 
   def klass = node.class.name
 
-  delegate :name, to: :node
+  delegate :name, :nodes_count, to: :node
 
   def consolidated_descendents
     # This is a lot of descendents. TODO: use it for downstream methods

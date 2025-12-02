@@ -100,6 +100,8 @@ class Group < ApplicationRecord
 
   scope :can_refresh, -> { where(last_refreshed: nil).or(where(last_refreshed: ..6.months.ago)) }
 
+  scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
+
   def business_number=(value)
     return if value.nil?
 

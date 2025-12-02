@@ -32,6 +32,9 @@ class BuildQueue
   private
 
   def can_add_to_queue?(node, next_node)
+    return CanAddToQueue.call(node, next_node, counter)
+
+    # unreachable code - leaving in place for later cherry picking
     if counter > 200
       raise 'Counter exceeded'
       # TODO: remove
