@@ -7,14 +7,21 @@ class Common::Heading < ApplicationView
 
 	def view_template
     div(class:'text-center mb-4') do
-      div(class: 'heading display-6 fw-bold shadow') do
-        entity.is_category? ? button_without_link : button_with_link
-      end
 
-      a(href: network_graph_link, class:'btn btn-primary btn-lg shadow-sm') do
-        strong { 'Explore the Network Graph' }
+      if entity.is_category?
+        div(class: 'heading display-6 fw-bold shadow') do
+          button_without_link
+        end
+      else
+        div(class: 'heading display-6 fw-bold shadow') do
+          button_with_link
+        end
+
+        a(href: network_graph_link, class:'btn btn-primary btn-lg shadow-sm') do
+          strong { 'Explore the Network Graph' }
+        end
+        p(class: 'font-italic mt-1') { "...a visualisation of connections to #{entity.name}..." }
       end
-      p(class: 'font-italic mt-1') { "...a visualisation of connections to #{entity.name}..." }
     end
   end
 
