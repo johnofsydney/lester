@@ -37,18 +37,22 @@ class Common::StatsSummary < ApplicationView
     div(class: column_class) do
       div(class: 'p-3 bg-light rounded shadow-sm equal-height border') do
         if money_in.present? || money_out.present?
-          div(class: 'vertical-centre-value') do
-            table_style = (money_in.present? && money_out.present?) ? 'margin-bottom: 1rem;' : 'margin-bottom: 0;'
-            table(class: 'table table-sm  no-border-table', style: table_style) do
-              tbody do
-                tr do
-                  td(class: 'h5 fw-bold mb-0') { money_in }
-                  td { 'in' }
-                end if money_in.present?
-                tr do
-                  td(class: 'h5 fw-bold mb-0') { money_out }
-                  td { 'out' }
-                end if money_out.present?
+          div(class: 'vertical-centre-value d-flex align-items-center justify-content-center') do
+            if money_in.present?
+              div(class: 'me-3') do
+                p(class: 'h5 mb-0') do
+                  strong { money_in }
+                  plain " in"
+                end
+              end
+            end
+
+            if money_out.present?
+              div(class: (money_in.present? ? 'border-start ps-3' : '')) do
+                p(class: 'h5 mb-0') do
+                  strong { money_out }
+                  plain " out"
+                end
               end
             end
           end
