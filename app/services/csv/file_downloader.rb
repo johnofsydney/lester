@@ -44,5 +44,13 @@ class Csv::FileDownloader
     else
       puts "Error #{response.status}: #{response.body}"
     end
+
+    xlsx = Roo::Excelx.new(path)
+    # Now you can work with the XLSX file using the Roo gem
+    # binding.pry
+    xlsx.sheets.each do |sheet|
+      filename = "tmp/#{sheet}.csv"
+      xlsx.sheet(sheet).to_csv(File.new(filename, "w"))
+    end
   end
 end
