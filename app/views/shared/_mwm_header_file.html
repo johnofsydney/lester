@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MWM Header Section</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+
+<style>
+    :root {
+        --mwm-blue: #081442;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif;
+    }
+
+    .mwm-header-wrapper {
+        width: 100%;
+        border-bottom: 1px solid #d6d6d6;
+    }
+
+    .mwm-header {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 10px 5px 0;
+    }
+
+    .mwm-header-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .mwm-left-controls {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .mwm-hamburger {
+        width: 24px;
+        height: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        cursor: pointer;
+    }
+
+    .mwm-hamburger span {
+        display: block;
+        height: 2px;
+        background: var(--mwm-blue);
+    }
+
+    .mwm-search {
+        width: 22px;
+        height: 22px;
+        position: relative;
+        border: 2px solid var(--mwm-blue);
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .mwm-search::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 2px;
+        background: var(--mwm-blue);
+        right: -6px;
+        bottom: 2px;
+        transform: rotate(45deg);
+        transform-origin: left center;
+    }
+
+    .mwm-logo {
+        text-align: right;
+        line-height: 1.2;
+    }
+
+    /* Updated: use image for logo main */
+    .mwm-logo-main {
+        display: inline-block;
+        width: 300px; /* adjust as needed */
+		max-width:100%;
+        height: auto;
+    }
+
+    .mwm-nav {
+        border-top: 1px solid #d6d6d6;
+    }
+
+    .mwm-nav ul {
+        list-style: none;
+        display: flex;
+        justify-content: center;
+        gap: 75px;
+        padding: 2px 0;
+        font-size: 14px;
+		line-height:1.1em;
+    }
+
+    .mwm-nav a {
+        text-decoration: none;
+        color:#081442;
+        text-transform: uppercase;
+        font-weight: 400;
+        white-space: nowrap;
+    }
+
+    @media (max-width: 768px) {
+        .mwm-header {
+            padding: 10px 15px 0;
+        }
+        .mwm-logo-main {
+            width:100%;
+        }
+        .mwm-nav ul {
+            gap: 25px;
+            overflow-x: auto;
+            padding: 8px 5px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .mwm-header-top {
+            align-items: flex-start;
+        }
+        .mwm-logo {
+            margin-left: 10px;
+        }
+        .mwm-nav ul {
+            font-size: 11px;
+        }
+    }
+</style>
+</head>
+<body>
+
+<section class="mwm-header-wrapper">
+    <header class="mwm-header">
+
+        <div class="mwm-header-top">
+            <div class="mwm-left-controls">
+                <!-- <div class="mwm-hamburger" aria-label="Open menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div> -->
+                <a class="mwm-search" href="/search" aria-label="Search" title="Search" style="display:inline-block;"></a>
+            </div>
+
+            <div class="mwm-logo-main">
+				<img src="https://michaelwest.com.au/wp-content/uploads/2022/03/MWMlogo-un1-1.svg">
+            </div>
+        </div>
+
+        <nav class="mwm-nav">
+            <ul>
+                <li><a href="https://michaelwest.com.au">Home</a></li>
+                <li><a href="https://michaelwest.com.au/aap-news/">Latest News</a></li>
+                <li><a href="https://michaelwest.com.au/category/latest-posts/">Latest Stories</a></li>
+                <li><a href="https://michaelwest.com.au/the-west-report/">West Report</a></li>
+                <li><a href="https://join-the-dots.michaelwest.com.au/">Join The Dots</a></li>
+                <li><a href="https://michaelwest.com.au/about/">About Us</a></li>
+                <li><a href="https://michaelwest.com.au/support-us/">Support Us</a></li>
+            </ul>
+        </nav>
+
+    </header>
+</section>
+
+</body>
+</html>
