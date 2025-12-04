@@ -1,6 +1,3 @@
-require "faraday"
-require "json"
-
 class Csv::FileDownloader
   def perform
 
@@ -11,7 +8,6 @@ class Csv::FileDownloader
         "Accept" => "application/json, text/plain, */*",
         "Origin" => "https://lobbyists.ag.gov.au",
         "Referer" => "https://lobbyists.ag.gov.au/",
-        # User-Agent optional but safest
         "User-Agent" => "Mozilla/5.0"
       }
     )
@@ -40,17 +36,42 @@ class Csv::FileDownloader
         f.write(response.body)
       end
 
-      puts "Downloaded lobbyists.xlsx (#{response.body.bytesize} bytes)"
+      Rails.logger.info "Downloaded lobbyists.xlsx (#{response.body.bytesize} bytes)"
     else
-      puts "Error #{response.status}: #{response.body}"
+      Rails.logger.warn "Error #{response.status}: #{response.body}"
+      return false
     end
 
+    # Work with the XLSX file using the Roo gem
     xlsx = Roo::Excelx.new(path)
-    # Now you can work with the XLSX file using the Roo gem
-    # binding.pry
-    xlsx.sheets.each do |sheet|
-      filename = "tmp/#{sheet}.csv"
-      xlsx.sheet(sheet).to_csv(File.new(filename, "w"))
+
+    xlsx.sheets.each do |sheet_name|
+      sheet = xlsx.sheet(sheet_name)
+      filename = Rails.root.join('tmp', "#{sheet_name.gsub(/\s/, '_').downcase}.csv")
+
+      CSV.open(filename, 'wb') do |csv_out|
+        first_row = sheet.first_row || 1
+        last_row = sheet.last_row || 0
+
+        # Skip the top 7 rows (i.e. start at row index first_row + 7)
+        start_row = first_row + 7
+
+        (start_row..last_row).each do |r|
+          row = sheet.row(r)
+          next unless row && row.any?
+
+          csv_out << row
+        end
+      end
     end
+
+    # Remove temporary xlsx file
+    begin
+      File.delete(path) if path && File.exist?(path)
+    rescue => e
+      Rails.logger.warn "Csv::FileDownloader: failed to delete temp xlsx #{path}: #{e.class} #{e.message}"
+    end
+
+    true
   end
 end
