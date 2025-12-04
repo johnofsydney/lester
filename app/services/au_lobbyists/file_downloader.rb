@@ -1,6 +1,8 @@
-class Csv::FileDownloader
-  def perform
+# This is very specific service to download lobbyist data from the Australian
+# Government Lobbyist Register, and convert it from XLSX to CSV files.
 
+class AuLobbyists::FileDownloader
+  def perform
     conn = Faraday.new(
       url: "https://api.lobbyists.ag.gov.au",
       headers: {
