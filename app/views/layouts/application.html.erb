@@ -37,7 +37,7 @@
 
   </head>
 
-  <body class="container">
+  <body>
     <% if notice.present? %>
       <p class="notice"><%= notice %></p>
     <% end %>
@@ -48,6 +48,11 @@
 
     <%= render MenuComponent.new %>
 
-    <%= yield %>
+    <div class="container">
+      <%= yield %>
+    </div>
+
+    <%= render FooterComponent.new %>
+
   </body>
 </html>
