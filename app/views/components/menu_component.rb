@@ -11,28 +11,34 @@ class MenuComponent < ApplicationView
 
   def view_template
     case Current.host
-    when /localhost/
+    when /localhost|michaelwest/
+      render partial('shared/mwm_header_file')
+    when /staging/
       render partial('shared/mwm_header_file')
     else
-      nav(class: "navbar navbar-expand-lg navbar-light #{background_color}") do
-        div(class: 'container-fluid') do
-          # Hero phrase or logo
-          a(class: "navbar-brand brand-text #{text_color}", href: '/') { title }
+      standard_header
+    end
+  end
 
-          # hamburger for mobile
-          button(
-            class: 'navbar-toggler',
-            type: 'button',
-            data: { bs_toggle: 'collapse', bs_target: '#navbarSupportedContent' },
-            aria: { controls: 'navbarSupportedContent', expanded: 'false', label: 'Toggle navigation' }
-            ) do
-            span(class: 'navbar-toggler-icon')
-          end
+  def standard_header
+    nav(class: "navbar navbar-expand-lg navbar-light #{background_color}") do
+      div(class: 'container-fluid') do
+        # Hero phrase or logo
+        a(class: "navbar-brand brand-text #{text_color}", href: '/') { title }
 
-          # collapsible menu
-          div(class: 'collapse navbar-collapse justify-content-end', id: 'navbarSupportedContent') do
-            menu_items
-          end
+        # hamburger for mobile
+        button(
+          class: 'navbar-toggler',
+          type: 'button',
+          data: { bs_toggle: 'collapse', bs_target: '#navbarSupportedContent' },
+          aria: { controls: 'navbarSupportedContent', expanded: 'false', label: 'Toggle navigation' }
+          ) do
+          span(class: 'navbar-toggler-icon')
+        end
+
+        # collapsible menu
+        div(class: 'collapse navbar-collapse justify-content-end', id: 'navbarSupportedContent') do
+          menu_items
         end
       end
     end
