@@ -10,6 +10,17 @@ class MenuComponent < ApplicationView
   attr_reader :entity, :new_path, :new_text
 
   def view_template
+    case Current.host
+    when /localhost|michaelwest/
+      render partial('shared/mwm_header_file')
+    when /staging/
+      render partial('shared/mwm_header_file')
+    else
+      standard_header
+    end
+  end
+
+  def standard_header
     nav(class: "navbar navbar-expand-lg navbar-light #{background_color}") do
       div(class: 'container-fluid') do
         # Hero phrase or logo

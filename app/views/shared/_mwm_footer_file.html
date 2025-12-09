@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MWM - Join The Dots</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* Footer wrapper sticks to bottom */
+.mwm-footer-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(8, 22, 64, 0.66)!important;
+    color: #ffffff;
+    padding: 5px 0px;
+    z-index: 999;
+    font-family: 'Roboto', Helvetica, Arial, Lucida, sans-serif;
+    font-size: 13px;
+}
+
+/* max width container */
+.mwm-footer {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+}
+
+/* Text alignment */
+.mwm-footer-left,
+.mwm-footer-center,
+.mwm-footer-right {
+    white-space: nowrap;
+}
+
+/* Footer links */
+.mwm-footer-right a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.mwm-footer-right a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive behaviour */
+@media (max-width: 900px) {
+    .mwm-footer {
+        flex-direction: column;
+        gap: 6px;
+        padding: 6px 10px;
+    }
+}
+</style>
+</head>
+<body>
+<footer class="mwm-footer-wrapper">
+    <div class="mwm-footer">
+        <div class="mwm-footer-left">
+          © Michael West Media 2025
+        </div>
+
+        <div class="mwm-footer-center">
+            Westpub Pty Ltd  |  ABN 76 613 202 421
+        </div>
+
+        <div class="mwm-footer-right">
+            <a href="https://michaelwest.com.au/about/">About</a> |
+            <a href="https://michaelwest.com.au/contact-michael-west">Contact</a> |
+            <a href="https://michaelwest.com.au/privacy-policy">Privacy</a>
+        </div>
+    </div>
+</footer>
+</body>
+

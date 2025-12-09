@@ -2,10 +2,6 @@ require 'sidekiq-scheduler'
 
 class RefreshNodesCountJob
   include Sidekiq::Job
-
-  sidekiq_options lock: :until_executed,
-                  on_conflict: :log
-
   # There are ~280k people and ~50k groups,
   # Running 2000 jobs per 5 mins would take ~80 mins to complete a full cycle
 
