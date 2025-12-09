@@ -90,7 +90,5 @@ gem "prettytodo"
 
 gem 'sidekiq-scheduler'
 
-# gem 'selenium-webdriver', '~> 4.38'
-
 # For working with XLSX files
 gem "roo", "~> 3.0.0"
