@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_11_30_043112) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_10_040703) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,6 +45,13 @@ ActiveRecord::Schema[7.2].define(version: 2025_11_30_043112) do
     t.text "message"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "contract_backfills", force: :cascade do |t|
+    t.date "last_processed_date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["last_processed_date"], name: "index_contract_backfills_on_last_processed_date", unique: true
   end
 
   create_table "flipper_features", force: :cascade do |t|
