@@ -49,6 +49,8 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_040703) do
 
   create_table "contract_backfills", force: :cascade do |t|
     t.date "last_processed_date", null: false
+    t.boolean "day_running", default: false, null: false
+    t.datetime "day_started_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["last_processed_date"], name: "index_contract_backfills_on_last_processed_date", unique: true
