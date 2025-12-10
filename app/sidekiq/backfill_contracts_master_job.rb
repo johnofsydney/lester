@@ -6,8 +6,6 @@ class BackfillContractsMasterJob
 
   def perform(date_string)
     target_date = Date.parse(date_string)
-    backfill = ContractBackfill.first
-
     return if target_date > Date.today
 
     # ----- Overload protection (optional but recommended) -------
@@ -34,8 +32,7 @@ class BackfillContractsMasterJob
 
   def queue_overloaded?
     Sidekiq::Queue.new(:critical).size > 50 ||
-    Sidekiq::Queue.new(:default).size > 2_000 ||
-    Sidekiq::Queue.new(:low).size > 2_000 ||
-
+      Sidekiq::Queue.new(:default).size > 2_000 ||
+      Sidekiq::Queue.new(:low).size > 2_000
   end
 end
