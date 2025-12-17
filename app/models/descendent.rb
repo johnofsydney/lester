@@ -46,15 +46,15 @@ class Descendent
     # https://www.schemecolor.com/schemes
     case depth
     when 0
-      'rgba(237, 23, 23,1)'
+      'rgba(237,23,23,1)'
     when 1
-      'rgba(242, 77, 17,0.95)'
+      'rgba(242,77,17,0.95)'
     when 2
-      'rgba(246, 131, 12,0.9)'
+      'rgba(246,131,12,0.9)'
     when 3
-      'rgba(251, 184, 6,0.85)'
+      'rgba(251,184,6,0.85)'
     when 4
-      'rgba(255, 238, 0,0.8)'
+      'rgba(255,238,0,0.8)'
     when 5
       'rgba(180,180,180,1)'
     end
