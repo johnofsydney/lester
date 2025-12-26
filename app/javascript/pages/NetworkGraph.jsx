@@ -1,5 +1,7 @@
 import React from 'react'
 import Graph from 'react-vis-network-graph'
+// https://visjs.github.io/vis-network/docs/network/
+// https://visjs.github.io/vis-network/docs/network/nodes.html
 
 export default function NetworkGraph({ url, name, json_nodes, json_edges }) {
   const nodes = JSON.parse(json_nodes).map((node) => {
@@ -79,7 +81,7 @@ export default function NetworkGraph({ url, name, json_nodes, json_edges }) {
           graph={graph}
           options={options}
           events={events}
-          style={{ height: '95vh', width: '100%' }}
+          style={{ height: '90vh', width: '100%' }}
         />
       </div>
     </>
