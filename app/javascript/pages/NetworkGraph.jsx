@@ -81,7 +81,7 @@ export default function NetworkGraph({ url, name, json_nodes, json_edges }) {
           graph={graph}
           options={options}
           events={events}
-          style={{ height: '95vh', width: '100%' }}
+          style={{ height: '90vh', width: '100%' }}
         />
       </div>
     </>
