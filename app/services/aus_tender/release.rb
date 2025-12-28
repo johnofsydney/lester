@@ -2,24 +2,30 @@
 
 class AusTender::Release
   def initialize(raw_release)
-    @ocid = raw_release['ocid']
-    @date = raw_release['date']
-    @external_id = raw_release['id']
-
     @raw_release = raw_release
   end
 
-  attr_reader :ocid, :date, :external_id, :raw_release
+  attr_reader :raw_release
 
-  def value
-    contract['value']['amount']
+  # def value
+  #   contract['value']['amount']
+  # end
+
+  def release_id
+    # NB This is unique for each release / amendment in the response.
+    # BUT I wonder if it changes when the release is updated?
+    # As the release does seem to reflect the latest Total amount etc, I suspect it does.
+    # Therefore it's useless at identifying the amendment uniquely over time.
+    raw_release['id']
   end
 
   def contract_id
+    # The main parent contract ID - all amendments share this
     contract['id']
   end
 
   def award_id
+    # parent and all amendments share the same award ID
     raw_release['awards'].first['id']
   end
 
@@ -47,25 +53,40 @@ class AusTender::Release
     contract['description']
   end
 
-  def amends_release_id
-    amendments = raw_release['contracts'].first['amendments']
+  def amendment_id
+    return nil if amendments.empty?
 
-    amendments.present? ? amendments.first['amendsReleaseID'] : nil
+    amendments.first['id']
   end
 
-  def amendment_index
-    amendments = raw_release['contracts'].first['amendments']
-    amendment_id = amendments.present? ? amendments.first['id'] : "#{contract_id}-0"
-
-    amendment_id.match(/\d+$/)[0].to_i
+  def item_id
+    # THIS is the unique identifier for each release. There is one for the parent and a unique one for each amendment
+    # The first part seems to relate to the contract scheme, the second is the unique UUID for the release
+    contract['items'].first['id']
   end
 
-  attr_accessor :previous_value
+  def uuid
+    # allow us to fetch the item details page on the tenders website
+    # https://www.tenders.gov.au/Cn/Show/59980167-303c-42ff-bd69-2e72f225c2c1
 
-  def augment(previous_value: 0.0)
-    self.previous_value = previous_value
+    uuid = item_id.split('-')[1]
+    "#{uuid[0..7]}-#{uuid[8..11]}-#{uuid[12..15]}-#{uuid[16..19]}-#{uuid[20..31]}"
+  end
 
-    self
+  def scraped_page_data
+    @scraped_page_data ||= AusTender::ScrapeSingleContractAmendment.new(uuid).perform
+  end
+
+  def amount
+    (scraped_page_data[:amendment_value] || contract['value']['amount']).to_f
+  end
+
+  def effective_date
+    Date.parse(scraped_page_data[:amendment_publish_date] || raw_release['date'])
+  end
+
+  def evidence
+    "https://www.tenders.gov.au/Cn/Show/#{uuid}"
   end
 
   private
@@ -74,4 +95,5 @@ class AusTender::Release
   def supplier = parties.find { |party| party['roles'].include?('supplier')}
   def purchaser = parties.find { |party| party['roles'].include?('procuringEntity')}
   def contract = raw_release['contracts'].first
+  def amendments = contract['amendments'] || []
 end
