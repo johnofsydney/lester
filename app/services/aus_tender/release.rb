@@ -7,10 +7,6 @@ class AusTender::Release
 
   attr_reader :raw_release
 
-  # def value
-  #   contract['value']['amount']
-  # end
-
   def release_id
     # NB This is unique for each release / amendment in the response.
     # BUT I wonder if it changes when the release is updated?
