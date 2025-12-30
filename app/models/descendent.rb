@@ -43,18 +43,17 @@ class Descendent
 
   def color
     # https://chartscss.org/components/colors/
-    # https://www.schemecolor.com/schemes
     case depth
     when 0
-      'rgba(237,23,23,1)'
+      'rgba(240,50,50,1)'
     when 1
-      'rgba(242,77,17,0.95)'
+      'rgba(255,180,50,1)'
     when 2
-      'rgba(246,131,12,0.9)'
+      'rgba(100,210,80,1)'
     when 3
-      'rgba(251,184,6,0.85)'
+      'rgba(90,165,255,1)'
     when 4
-      'rgba(255,238,0,0.8)'
+      'rgba(170,90,240,1)'
     when 5
       'rgba(180,180,180,1)'
     end
