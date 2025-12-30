@@ -10,6 +10,7 @@ class AusTender::IngestSingleContract
 
   def perform
     return if IndividualTransaction.exists?(external_id: @contract_id) && Flipper.enabled?(:backfilling_aus_tender_contracts)
+
     response = AusTender::TenderDownloader.new.download(url)
     return unless response && response[:body] && response[:body]['releases']
 

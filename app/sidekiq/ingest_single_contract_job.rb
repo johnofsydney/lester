@@ -10,11 +10,7 @@ class IngestSingleContractJob
 
   def perform(contract_id, retry_count = 0)
     AusTender::IngestSingleContract.new(contract_id).perform
-  rescue StandardError => e
-    Rails.logger.error "Error ingesting Contract #{contract_id}: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
 
-    raise e
   rescue ObjectMoved => e
     Rails.logger.error "Error ingesting Contract #{contract_id}: Object Moved"
     Rails.logger.error e.backtrace.join("\n")
@@ -32,5 +28,10 @@ class IngestSingleContractJob
       Rails.logger.error e.backtrace.join("\n")
       raise e
     end
+  rescue StandardError => e
+    Rails.logger.error "Error ingesting Contract #{contract_id}: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+
+    raise e
   end
 end
