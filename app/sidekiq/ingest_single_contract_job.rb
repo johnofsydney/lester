@@ -15,6 +15,11 @@ class IngestSingleContractJob
     Rails.logger.error e.backtrace.join("\n")
 
     raise e
+  rescue ObjectMoved => e
+    Rails.logger.error "Error ingesting Contract #{contract_id}: Object Moved"
+    Rails.logger.error e.backtrace.join("\n")
+
+    # Do not retry on Object Moved errors
   rescue TooManyRequests => e
     retry_count += 1
     if retry_count <= 5
