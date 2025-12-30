@@ -1,5 +1,5 @@
 class ResponseFailed < StandardError; end
-class NoResultsFound < StandardError; end
+class TooManyRequests < StandardError; end
 
 # frozen_string_literal: true
 class AusTender::ScrapeSingleContractAmendment
@@ -15,6 +15,7 @@ class AusTender::ScrapeSingleContractAmendment
 
   def perform
     response = connection(url).get
+    raise TooManyRequests.new("Too Many Requests: #{response.inspect}") if response.status == 429
     raise ResponseFailed.new("Request failed: #{response.inspect}") unless response.success? && response.body.present?
 
     doc = Nokogiri::HTML(response.body)
