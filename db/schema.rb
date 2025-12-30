@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2025_12_10_040703) do
+ActiveRecord::Schema[7.2].define(version: 2025_12_29_054156) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -97,6 +97,7 @@ ActiveRecord::Schema[7.2].define(version: 2025_12_10_040703) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "contract_id"
+    t.string "amendment_id"
     t.index ["contract_id"], name: "index_individual_transactions_on_contract_id"
     t.index ["effective_date"], name: "index_individual_transactions_on_effective_date"
     t.index ["external_id"], name: "index_individual_transactions_on_external_id"

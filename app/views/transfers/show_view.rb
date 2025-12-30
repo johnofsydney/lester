@@ -80,7 +80,8 @@ class Transfers::ShowView < ApplicationView
         tr do
           th { 'Payment Type' }
           th { 'Evidence' }
-          th { 'External ID' }
+          th { 'Contract ID' }
+          th { 'Amendment ID' }
           th { 'Description' }
           th(class: 'text-end') { 'Amount' }
           th(class: 'text-end') { 'Date' }
@@ -90,9 +91,10 @@ class Transfers::ShowView < ApplicationView
         tbody do
           td { individual_transaction.transfer_type }
           td do
-            a(href: individual_transaction.evidence) { individual_transaction.evidence }
+            a(href: individual_transaction.evidence, target: :_blank) { individual_transaction.evidence.truncate(50) }
           end
-          td { individual_transaction.external_id }
+          td { individual_transaction.contract_id }
+          td { individual_transaction.amendment_id }
           td { individual_transaction.description }
           td(class: 'text-end') { number_to_currency(individual_transaction.amount, precision: 0) }
           td(class: 'text-end') { individual_transaction.effective_date.strftime('%d %b %Y') }
