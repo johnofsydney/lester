@@ -18,8 +18,9 @@ class IngestSingleContractJob
   rescue TooManyRequests => e
     retry_count += 1
     if retry_count <= 5
-      delay = (2 ** retry_count) * 120  # Exponential backoff: 2, 4, 8, 16, 32 minutes
-      Rails.logger.warn "Too Many Requests for Contract #{contract_id}. Retrying in #{delay} seconds (attempt #{retry_count}/3)"
+      exp = (2 ** retry_count) * 120  # Exponential backoff: 2, 4, 8, 16, 32 minutes
+      delay = 180 + exp + rand(0..60)  # Add 3 minutes and some jitter
+      Rails.logger.warn "Too Many Requests for Contract #{contract_id}. Retrying in #{delay} seconds (attempt #{retry_count}/5)"
       self.class.perform_in(delay, contract_id, retry_count)
     else
       Rails.logger.error "Failed to ingest Contract #{contract_id} after 3 retries due to Too Many Requests: #{e.message}"
