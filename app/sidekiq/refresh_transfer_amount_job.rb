@@ -4,6 +4,7 @@ class RefreshTransferAmountJob
   include Sidekiq::Job
 
   sidekiq_options(
+    queue: :low,
     lock: :until_executed,
     on_conflict: :log,
     retry: 1

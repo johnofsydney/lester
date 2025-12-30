@@ -11,9 +11,7 @@ class MenuComponent < ApplicationView
 
   def view_template
     case Current.host
-    when /localhost|michaelwest/
-      render partial('shared/mwm_header_file')
-    when /staging/
+    when /michaelwest/
       render partial('shared/mwm_header_file')
     else
       standard_header
