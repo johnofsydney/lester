@@ -91,10 +91,22 @@ namespace :lester do
     end
   end
 
-  desc 'CLear Cache for Network Graph and Count'
+  desc 'Clear Cache for Network Graph and Count'
   task clear_cache: :environment do
     Group.update_all(cached_data: {})
     Person.update_all(cached_data: {})
 
+  end
+
+  desc 'Back Fill all the Aus Tender Contracts going back to 2018-01-01'
+  # This task can be deleted when completed
+  task backfill_contracts: :environment do
+    start_date = Date.new(2018, 1, 1)
+
+    backfill = ContractBackfill.first_or_create!(last_processed_date: start_date)
+
+    puts "Backfill starting at #{backfill.last_processed_date}"
+
+    BackfillContractsMasterJob.perform_async(backfill.last_processed_date.to_s)
   end
 end

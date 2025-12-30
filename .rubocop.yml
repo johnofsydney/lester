@@ -41,6 +41,9 @@ Style/FrozenStringLiteralComment:
 Style/OpenStructUse:
   Enabled: false
 
+Style/RaiseArgs:
+  Enabled: false
+
 Style/RedundantBegin:
   Enabled: false
 

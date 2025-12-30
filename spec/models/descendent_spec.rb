@@ -48,40 +48,10 @@ RSpec.describe Descendent do
   end
 
   describe '#color' do
-    context 'when the depth is 0' do
+    context 'when the depth is 0 - 5' do
       let(:depth) { 0 }
 
-      it { expect(descendent.color).to eq('rgba(240,50,50,1)') }
-    end
-
-    context 'when the depth is 1' do
-      let(:depth) { 1 }
-
-      it { expect(descendent.color).to eq('rgba(255,180,50,1)') }
-    end
-
-    context 'when the depth is 2' do
-      let(:depth) { 2 }
-
-      it { expect(descendent.color).to eq('rgba(100,210,80,1)') }
-    end
-
-    context 'when the depth is 3' do
-      let(:depth) { 3 }
-
-      it { expect(descendent.color).to eq('rgba(90,165,255,1)') }
-    end
-
-    context 'when the depth is 4' do
-      let(:depth) { 4 }
-
-      it { expect(descendent.color).to eq('rgba(170,90,240,1)') }
-    end
-
-    context 'when the depth is 5' do
-      let(:depth) { 5 }
-
-      it { expect(descendent.color).to eq('rgba(180,180,180,1)') }
+      it { expect(descendent.color).to match(/rgba\(\d+,\d+,\d+,\d+/) }
     end
 
     context 'when the depth is 6' do

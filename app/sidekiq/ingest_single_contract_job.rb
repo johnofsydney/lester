@@ -1,3 +1,5 @@
+# From the AusTender API, ingest a single contract by its ID
+
 class IngestSingleContractJob
   include Sidekiq::Job
 

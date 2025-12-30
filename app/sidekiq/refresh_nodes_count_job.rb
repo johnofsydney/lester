@@ -43,15 +43,15 @@ class RefreshNodesCountJob
   end
 
   def people_to_refresh
-    Person.nodes_count_expired.limit(QUANTITY)
+    Person.nodes_count_soon_expired.limit(QUANTITY)
   end
 
   def groups_to_refresh
-    Group.nodes_count_expired.limit(QUANTITY)
+    Group.nodes_count_soon_expired.limit(QUANTITY)
   end
 
   def more_remaining?
-    Person.nodes_count_expired.offset(QUANTITY).exists? || Group.nodes_count_expired.offset(QUANTITY).exists?
+    Person.nodes_count_soon_expired.offset(QUANTITY).exists? || Group.nodes_count_soon_expired.offset(QUANTITY).exists?
   end
 end
 
