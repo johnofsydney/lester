@@ -23,7 +23,7 @@ class AusTender::RecordIndividualTransaction
       description: release.description
     )
 
-    RefreshTransferAmountJob.perform_in(30.seconds, transfer.id)
+    RefreshTransferAmountJob.perform_in(6.hours, transfer.id)
   end
 
   def amount
