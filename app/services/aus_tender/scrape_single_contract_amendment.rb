@@ -16,7 +16,19 @@ class AusTender::ScrapeSingleContractAmendment
 
   def perform
     response = connection(url).get
-    raise TooManyRequests.new("Too Many Requests: #{response.inspect}") if response.status == 429
+
+    if response.status == 429
+      if Current.use_crawlbase_for_aus_tender_scraping
+        AusTenderScraperSwitch.use_plain_scraping
+        Rails.logger.info "Switched to plain scraping after receiving 429 Too Many Requests for Amendment #{@uuid}"
+      else
+        AusTenderScraperSwitch.use_crawlbase_scraping
+        Rails.logger.info "Switched to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}"
+      end
+
+      raise TooManyRequests.new("Too Many Requests: #{response.inspect}")
+    end
+
     raise ObjectMoved.new("Object Moved: #{response.inspect}") if response.status == 302
     raise ResponseFailed.new("Request failed: #{response.inspect}") unless response.success? && response.body.present?
 
@@ -29,7 +41,7 @@ class AusTender::ScrapeSingleContractAmendment
       uuid: @uuid,
       amendment_cn_id: data['CN ID'],
       amendment_publish_date: data['Amendment Publish Date'],
-      amendment_execution_date: data['Amendment Execution Date'],
+      amendment_execution_date: data['Execution Date'],
       amendment_start_date: data['Amendment Start Date'],
       amendment_value:
     }
@@ -44,6 +56,7 @@ class AusTender::ScrapeSingleContractAmendment
       crawlbase_url
     else
       original_url
+    end
   end
 
   def crawlbase_url
