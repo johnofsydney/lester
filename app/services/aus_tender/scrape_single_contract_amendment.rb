@@ -35,8 +35,22 @@ class AusTender::ScrapeSingleContractAmendment
     }
   end
 
-  def url
+  def original_url
     "https://www.tenders.gov.au/Cn/Show/#{@uuid}"
+  end
+
+  def url
+    if Current.use_crawlbase_for_aus_tender_scraping
+      crawlbase_url
+    else
+      original_url
+  end
+
+  def crawlbase_url
+    encoded_url = URI.encode_www_form_component(original_url)
+    crawlbase_token = Rails.application.credentials.dig(:crawlbase, :normal_token)
+
+    "https://api.crawlbase.com/?token=#{crawlbase_token}&url=#{encoded_url}"
   end
 
   def amendment_value
