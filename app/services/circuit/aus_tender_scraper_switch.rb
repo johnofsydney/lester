@@ -1,4 +1,4 @@
-class AusTenderScraperSwitch
+class Circuit::AusTenderScraperSwitch
   def self.use_plain_scraping
     Current.use_crawlbase_for_aus_tender_scraping = false
   end
