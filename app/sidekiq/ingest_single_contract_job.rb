@@ -18,13 +18,14 @@ class IngestSingleContractJob
     Rails.logger.info "Rescued TooManyRequests ingesting Contract #{contract_id}: #{e.message}"
     retry_count += 1
 
-    # TODO - add another path here that goes via a different proxy or IP address
+    # TODO: add another path here that goes via a different proxy or IP address
 
-    # don't requeue this job for at least 10 minutes.
+    # don't requeue this job for at least 5 minutes.
     # add jitter to avoid thundering herd - random between 1 and 30 minutes
     # exponential backoff for retries
+    # Cloudflare: Client API per user/account token	1200/5 minutes
     if retry_count <= 5
-      floor = 600 # 10 minutes
+      floor = 300 # 5 minutes
       jitter = rand(60..1800) # 1 to 30 minutes
       multiplier = (2**retry_count) - 1 # Exponential backoff: 1, 2, 4, 8, 16
       delay = (floor + jitter) * multiplier # Add floor, multiplier, and jitter
