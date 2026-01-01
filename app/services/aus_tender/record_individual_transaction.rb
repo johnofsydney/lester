@@ -22,8 +22,6 @@ class AusTender::RecordIndividualTransaction
       amendment_id: release.amendment_id,
       description: release.description
     )
-
-    RefreshTransferAmountJob.perform_in(6.hours, transfer.id)
   end
 
   def amount
