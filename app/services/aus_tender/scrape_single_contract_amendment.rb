@@ -18,8 +18,8 @@ class AusTender::ScrapeSingleContractAmendment
     response = connection(url).get
 
     if response.status == 429
-      Circuit::AusTenderScraperSwitch.use_crawlbase_scraping
-      Rails.logger.info "Switched to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}. use_crawlbase_scraping=#{Current.use_crawlbase_for_aus_tender_scraping}"
+      Rails.logger.info "Switching to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}."
+      Circuit::AusTenderScraperSwitch.use_crawlbase_scraping!
 
       raise TooManyRequests.new("429: Too Many Requests: #{response.inspect}")
     end

@@ -11,6 +11,6 @@ class ResetAusTenderCrawlbaseJob
   )
 
   def perform
-    Circuit::AusTenderScraperSwitch.use_plain_scraping
+    Circuit::AusTenderScraperSwitch.use_plain_scraping!
   end
 end
