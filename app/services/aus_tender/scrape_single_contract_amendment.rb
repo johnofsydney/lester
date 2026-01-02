@@ -18,13 +18,8 @@ class AusTender::ScrapeSingleContractAmendment
     response = connection(url).get
 
     if response.status == 429
-      if Current.use_crawlbase_for_aus_tender_scraping
-        Circuit::AusTenderScraperSwitch.use_plain_scraping
-        Rails.logger.info "Switched to plain scraping after receiving 429 Too Many Requests for Amendment #{@uuid}"
-      else
-        Circuit::AusTenderScraperSwitch.use_crawlbase_scraping
-        Rails.logger.info "Switched to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}. use_crawlbase_scraping=#{Current.use_crawlbase_for_aus_tender_scraping}"
-      end
+      Circuit::AusTenderScraperSwitch.use_crawlbase_scraping
+      Rails.logger.info "Switched to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}. use_crawlbase_scraping=#{Current.use_crawlbase_for_aus_tender_scraping}"
 
       raise TooManyRequests.new("429: Too Many Requests: #{response.inspect}")
     end
@@ -34,8 +29,9 @@ class AusTender::ScrapeSingleContractAmendment
 
     doc = Nokogiri::HTML(response.body)
     list = doc.css('.listInner')[0]
-    @data = list.css('.list-desc').map {|node| element_mapper(node) }
-                                  .inject(:merge)
+    @data = list.css('.list-desc')
+                .map {|node| element_mapper(node) }
+                .inject(:merge)
 
     {
       uuid: @uuid,
