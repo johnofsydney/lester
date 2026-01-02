@@ -48,7 +48,7 @@ class AusTender::ScrapeSingleContractAmendment
   end
 
   def url
-    if Current.use_crawlbase_for_aus_tender_scraping
+    if SidekiqUtils.get_redis_key('aus_tender_use_crawlbase') == 'true'
       crawlbase_url
     else
       original_url
