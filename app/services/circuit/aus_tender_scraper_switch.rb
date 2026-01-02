@@ -4,6 +4,8 @@ class Circuit::AusTenderScraperSwitch
   end
 
   def self.use_crawlbase_scraping
+    return if Current.use_crawlbase_for_aus_tender_scraping
+
     Current.use_crawlbase_for_aus_tender_scraping = true
     ResetAusTenderCrawlbaseJob.perform_in(1.minute)
   end

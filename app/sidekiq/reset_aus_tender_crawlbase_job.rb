@@ -4,6 +4,6 @@ class ResetAusTenderCrawlbaseJob
   include Sidekiq::Job
 
   def perform
-    AusTenderScraperSwitch.use_plain_scraping
+    Circuit::AusTenderScraperSwitch.use_plain_scraping
   end
 end
