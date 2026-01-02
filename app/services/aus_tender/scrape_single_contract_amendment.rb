@@ -23,10 +23,10 @@ class AusTender::ScrapeSingleContractAmendment
         Rails.logger.info "Switched to plain scraping after receiving 429 Too Many Requests for Amendment #{@uuid}"
       else
         Circuit::AusTenderScraperSwitch.use_crawlbase_scraping
-        Rails.logger.info "Switched to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}"
+        Rails.logger.info "Switched to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}. use_crawlbase_scraping=#{Current.use_crawlbase_for_aus_tender_scraping}"
       end
 
-      raise TooManyRequests.new("Too Many Requests: #{response.inspect}")
+      raise TooManyRequests.new("429: Too Many Requests: #{response.inspect}")
     end
 
     raise ObjectMoved.new("Object Moved: #{response.inspect}") if response.status == 302
