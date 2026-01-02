@@ -1,6 +1,6 @@
 # app/models/current.rb
 class Current < ActiveSupport::CurrentAttributes
-  attribute :user, :host, :use_crawlbase_for_aus_tender_scraping
+  attribute :user, :host
 
   def local_host?
     host.match?(/localhost/)

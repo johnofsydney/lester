@@ -1,4 +1,4 @@
-:concurrency: 4
+:concurrency: 5
 :queues:
   - [critical, 10]
   - [default, 2]
@@ -12,13 +12,14 @@
       cron: '0 0 1 3 *' # Every year on March 1st at midnight
       class: IngestCharitiesDatasetCsv
     # Every day fetch all AusTender contracts
-    # ingest_contracts_date:
-    #   cron: '0 2 * * *' # Every day ay 2am
-    #   class: IngestContractsDateJob
-    # Every day run the HydrateNodesCountJob
+    ingest_contracts_date:
+      cron: '0 2 * * *' # Every day ay 2am
+      class: IngestContractsDateJob
+    # Every day run the RefreshNodesCountJob
     refresh_nodes_count_job:
       cron: '0 4 * * *' # Every day at 4am
       class: RefreshNodesCountJob
+    # Every day run the RefreshTransferAmountJob
     refresh_transfer_amount_job:
       cron: '0 5 * * *' # Every day at 5am
       class: RefreshTransferAmountJob
