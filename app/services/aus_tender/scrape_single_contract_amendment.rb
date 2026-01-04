@@ -39,7 +39,8 @@ class AusTender::ScrapeSingleContractAmendment
       amendment_publish_date: data['Amendment Publish Date'],
       amendment_execution_date: data['Execution Date'],
       amendment_start_date: data['Amendment Start Date'],
-      amendment_value:
+      amendment_value:,
+      category: data['Category'],
     }
   end
 
