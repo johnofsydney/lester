@@ -118,15 +118,15 @@ class AuLobbyists::CsvImporter
   end
 
   def clients_csv_path
-    @clients_csv_path ||= Rails.root.join('tmp', 'Clients.csv')
+    @clients_csv_path ||= Rails.root.join('tmp', 'clients.csv')
   end
 
   def lobbyist_people_csv_path
-    @lobbyist_people_csv_path ||= Rails.root.join('tmp', 'Lobbyists.csv')
+    @lobbyist_people_csv_path ||= Rails.root.join('tmp', 'lobbyists.csv')
   end
 
   def lobbyist_organisations_csv_path
-    @lobbyist_organisations_csv_path ||= Rails.root.join('tmp', 'Organisations.csv')
+    @lobbyist_organisations_csv_path ||= Rails.root.join('tmp', 'organisations.csv')
   end
 
   def mapper
