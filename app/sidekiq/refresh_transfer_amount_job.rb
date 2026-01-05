@@ -3,7 +3,7 @@ require 'sidekiq-scheduler'
 class RefreshTransferAmountJob
   include Sidekiq::Job
 
-  QUANTITY = 2000
+  QUANTITY = 10_000
 
   def perform
     transfers_to_refresh.each { |transfer| update_transfer_amount(transfer) }

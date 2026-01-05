@@ -77,6 +77,10 @@ class AusTender::Release
     (scraped_page_data[:amendment_value] || contract['value']['amount']).to_f
   end
 
+  def category
+    scraped_page_data[:category]
+  end
+
   def effective_date
     Date.parse(scraped_page_data[:amendment_publish_date] || raw_release['date'])
   end
