@@ -64,7 +64,7 @@ class AcncCharities::FetchSingleCharityPeople
   def people_url
     plain_people_url = "https://www.acnc.gov.au/charity/charities/#{@uuid}/people"
     encoded_url = URI.encode_www_form_component(plain_people_url)
-    crawlbase_token = Rails.application.credentials.dig(:crawlbase, :api_token)
+    crawlbase_token = Rails.application.credentials.dig(:crawlbase, :javascript_token)
     page_wait = 5000
 
     "https://api.crawlbase.com/?token=#{crawlbase_token}&ajax_wait=true&page_wait=#{page_wait}&url=#{encoded_url}"

@@ -20,10 +20,9 @@ class AusTender::RecordIndividualTransaction
       external_id: release.item_id, # the uniqe identifier from the external system (inc UUID)
       contract_id: release.contract_id, # the contract can include several amendments
       amendment_id: release.amendment_id,
-      description: release.description
+      description: release.description,
+      category: release.category
     )
-
-    RefreshTransferAmountJob.perform_in(30.seconds, transfer.id)
   end
 
   def amount

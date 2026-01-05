@@ -1,5 +1,6 @@
 class ResponseFailed < StandardError; end
-class NoResultsFound < StandardError; end
+class TooManyRequests < StandardError; end
+class ObjectMoved < StandardError; end
 
 # frozen_string_literal: true
 class AusTender::ScrapeSingleContractAmendment
@@ -15,25 +16,53 @@ class AusTender::ScrapeSingleContractAmendment
 
   def perform
     response = connection(url).get
+
+    sleep 1 if use_crawlbase_scraping?
+
+    if response.status == 429
+      Rails.logger.info "Switching to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}."
+      Circuit::AusTenderScraperSwitch.use_crawlbase_scraping!
+
+      raise TooManyRequests.new("429: Too Many Requests: #{response.inspect}")
+    end
+
+    raise ObjectMoved.new("Object Moved: #{response.inspect}") if response.status == 302
     raise ResponseFailed.new("Request failed: #{response.inspect}") unless response.success? && response.body.present?
 
     doc = Nokogiri::HTML(response.body)
     list = doc.css('.listInner')[0]
-    @data = list.css('.list-desc').map {|node| element_mapper(node) }
-                                  .inject(:merge)
+    @data = list.css('.list-desc')
+                .map {|node| element_mapper(node) }
+                .inject(:merge)
 
     {
       uuid: @uuid,
       amendment_cn_id: data['CN ID'],
       amendment_publish_date: data['Amendment Publish Date'],
-      amendment_execution_date: data['Amendment Execution Date'],
+      amendment_execution_date: data['Execution Date'],
       amendment_start_date: data['Amendment Start Date'],
-      amendment_value:
+      amendment_value:,
+      category: data['Category'],
     }
   end
 
-  def url
+  def original_url
     "https://www.tenders.gov.au/Cn/Show/#{@uuid}"
+  end
+
+  def url
+    if use_crawlbase_scraping?
+      crawlbase_url
+    else
+      original_url
+    end
+  end
+
+  def crawlbase_url
+    encoded_url = URI.encode_www_form_component(original_url)
+    crawlbase_token = Rails.application.credentials.dig(:crawlbase, :normal_token)
+
+    "https://api.crawlbase.com/?token=#{crawlbase_token}&url=#{encoded_url}"
   end
 
   def amendment_value
@@ -66,5 +95,10 @@ class AusTender::ScrapeSingleContractAmendment
     value = value.strip
 
     { label => value }
+  end
+
+  def use_crawlbase_scraping?
+    # switch to paid scraping tool when overloaded
+    SidekiqUtils.get_redis_key('aus_tender_use_crawlbase') == 'true'
   end
 end

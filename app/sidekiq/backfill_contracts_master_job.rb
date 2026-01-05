@@ -10,7 +10,7 @@ class BackfillContractsMasterJob
 
     # ----- Overload protection (optional but recommended) -------
     if queue_overloaded?
-      BackfillContractsMasterJob.perform_in(10.minutes, date_string)
+      BackfillContractsMasterJob.perform_in(5.minutes, date_string)
       return
     end
 
@@ -19,8 +19,8 @@ class BackfillContractsMasterJob
     next_date = target_date + 1.day
     return if next_date > Date.today
 
-    # Schedule next day in 1 minute
-    BackfillContractsMasterJob.perform_in(1.minute, next_date.to_s)
+    # Schedule next day in 2 minutes
+    BackfillContractsMasterJob.perform_in(2.minutes, next_date.to_s)
   end
 
   private
@@ -33,6 +33,7 @@ class BackfillContractsMasterJob
   def queue_overloaded?
     Sidekiq::Queue.new(:critical).size > 50 ||
       Sidekiq::Queue.new(:default).size > 2_000 ||
-      Sidekiq::Queue.new(:low).size > 2_000
+      Sidekiq::Queue.new(:low).size > 2_000 ||
+      Sidekiq::Queue.new(:aus_tender_contracts).size > 2_000
   end
 end
