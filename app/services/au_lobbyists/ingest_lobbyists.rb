@@ -1,4 +1,8 @@
 class AuLobbyists::IngestLobbyists
+  def self.call
+    new.call
+  end
+
   def call
     # download the XLSX file and convert to CSVs
     downloader = AuLobbyists::FileDownloader.new
