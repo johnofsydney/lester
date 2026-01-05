@@ -19,8 +19,8 @@ class BackfillContractsMasterJob
     next_date = target_date + 1.day
     return if next_date > Date.today
 
-    # Schedule next day in 1 minute
-    BackfillContractsMasterJob.perform_in(1.minute, next_date.to_s)
+    # Schedule next day in 2 minutes
+    BackfillContractsMasterJob.perform_in(2.minutes, next_date.to_s)
   end
 
   private
