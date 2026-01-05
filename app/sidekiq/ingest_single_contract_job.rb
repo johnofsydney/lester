@@ -15,10 +15,11 @@ class IngestSingleContractJob
     Rails.logger.error e.backtrace.join("\n")
     # Do not retry on Object Moved errors
   rescue TooManyRequests => e
-    Rails.logger.info "Rescued TooManyRequests ingesting Contract #{contract_id}: #{e.message}"
     retry_count += 1
 
-    # TODO: add another path here that goes via a different proxy or IP address
+    # Mostly this clever retry with back off is less important because
+    # when this error is raised we also switch to use Crawlbase service
+    # for scraping for one minute
 
     # don't requeue this job for at least 5 minutes.
     # add jitter to avoid thundering herd - random between 1 and 30 minutes

@@ -2,7 +2,7 @@
 # Government Lobbyist Register, and convert it from XLSX to CSV files.
 
 class AuLobbyists::FileDownloader
-  def perform
+  def call
     conn = Faraday.new(
       url: "https://api.lobbyists.ag.gov.au",
       headers: {

@@ -101,6 +101,14 @@ class RehydratedNode
     @node.cached_summary['direct_connections']
   end
 
+  def people
+    direct_connections.filter { |c| c['klass'] == 'Person' }.sort_by { |c| c['name'] }
+  end
+
+  def affiliated_groups
+    direct_connections.filter { |c| c['klass'] == 'Group' }.sort_by { |c| c['name'] }
+  end
+
   private
 
   attr_reader :node

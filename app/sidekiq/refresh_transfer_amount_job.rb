@@ -13,6 +13,7 @@ class RefreshTransferAmountJob
   end
 
   def transfer_ids_to_refresh
+    # This is ALL transfer ids, without regard to limit by QUANTITY
     IndividualTransaction.where(created_at: (1.day.ago..)).pluck(:transfer_id).uniq
   end
 
