@@ -17,6 +17,8 @@ class AusTender::ScrapeSingleContractAmendment
   def perform
     response = connection(url).get
 
+    sleep 1 if use_crawlbase_scraping?
+
     if response.status == 429
       Rails.logger.info "Switching to Crawlbase scraping after receiving 429 Too Many Requests for Amendment #{@uuid}."
       Circuit::AusTenderScraperSwitch.use_crawlbase_scraping!
@@ -49,7 +51,7 @@ class AusTender::ScrapeSingleContractAmendment
   end
 
   def url
-    if SidekiqUtils.get_redis_key('aus_tender_use_crawlbase') == 'true'
+    if use_crawlbase_scraping?
       crawlbase_url
     else
       original_url
@@ -93,5 +95,10 @@ class AusTender::ScrapeSingleContractAmendment
     value = value.strip
 
     { label => value }
+  end
+
+  def use_crawlbase_scraping?
+    # switch to paid scraping tool when overloaded
+    SidekiqUtils.get_redis_key('aus_tender_use_crawlbase') == 'true'
   end
 end
