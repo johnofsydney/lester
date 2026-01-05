@@ -41,7 +41,7 @@
       class: IngestCharitiesDatasetCsv
     # Every year fetch all ACNC listed charities (CSV Download)
     ingest_lobbyists_job:
-      cron: '0 14 1 4 *' # Every year on April 1st at midnight
+      cron: '0 14 1 4,10 *' # Every year on April 1st and October 1st at midnight
       class: IngestLobbyistsJob
     # Every day fetch all AusTender contracts
     ingest_contracts_date:
