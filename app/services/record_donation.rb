@@ -50,7 +50,7 @@ class RecordDonation
     return 'group' if name.match?(/(nsw|queensland|state|tasmania|south|northern|territory|western)/i)  # Check for states names
     return 'group' if name.match?(/(n\.s\.w|qld|s\.a\.|n\.t\.|w\.a\.)/i)  # Check for states abbreviations
     return 'group' if name.match?(/( pl$|t\/as|trading as| p\/l)/i)  # Check for company endings
-    return 'goup' if name.match?(/[&]/)  # Check for entries with hyphens or ampersands (considered as companies)
+    return 'goup' if name.match?(/&/)  # Check for entries with hyphens or ampersands (considered as companies)
     return 'goup' if name.match?(/\d/)  # Check for entries with numbers (considered as companies)
     return 'couple' if name.include?(' and ')  # Check for couples
     return 'person' if name.match?(/^[A-Z][a-z]+, [A-Z][a-z]+$/)  # Check for names in the format "Lastname, Firstname"

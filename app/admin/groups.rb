@@ -64,7 +64,7 @@ ActiveAdmin.register Group do
   # Custom page for selecting a group to merge into
   member_action :merge_into, method: :get do
     @current_group = resource
-    render 'admin/groups/merge_into'
+    render 'admin/groups/merge_into' # view for this action
   end
 
   # Handle the merge logic
