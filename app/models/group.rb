@@ -115,13 +115,6 @@ class Group < ApplicationRecord
 
   def nodes
     people + affiliated_groups
-    # unless include_looser_nodes # TODO work on includes / bullet
-    #   return people + groups
-    #   # TODO should this be:
-    #   # return people + affilaietd_groups
-    # end
-
-    # [people + affiliated_groups + other_edge_ends].compact.flatten.uniq
   end
 
   def affiliated_groups
@@ -159,16 +152,6 @@ class Group < ApplicationRecord
   end
 
   def is_category? = category?
-
-  def merge_into(replacement_group)
-    Membership.where(member: self).update_all(member_id: replacement_group.id)
-    Membership.where(group: self).update_all(group_id: replacement_group.id)
-    Transfer.where(giver: self).update_all(giver_id: replacement_group.id)
-    Transfer.where(taker: self).update_all(taker_id: replacement_group.id)
-
-    replacement_group.update(cached_data: {})
-    self.destroy
-  end
 
   def display_name
     return "#{name} (#{business_number})" if business_number.present?
