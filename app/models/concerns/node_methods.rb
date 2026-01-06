@@ -171,5 +171,20 @@ module NodeMethods
 
       result
     end
+
+    def merge_into(replacement_entity)
+      raise 'Cannot merge into self' if replacement_entity == self
+      raise 'Cannot merge different types' unless replacement_entity.class == self.class
+
+      Rails.logger.info "Merging #{self.class.name} #{id} into #{replacement_entity.class.name} #{replacement_entity.id}"
+
+      Membership.where(member: self).update_all(member_id: replacement_entity.id)
+      Membership.where(group: self).update_all(group_id: replacement_entity.id)
+      Transfer.where(giver: self).update_all(giver_id: replacement_entity.id)
+      Transfer.where(taker: self).update_all(taker_id: replacement_entity.id)
+
+      replacement_entity.update(cached_data: {})
+      self.destroy
+    end
   end
 end
