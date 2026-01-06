@@ -9,14 +9,6 @@ class Transfers::ShowView < ApplicationView
   end
 
   def view_template
-    div(class: 'heading') do
-      a(
-        href: "/transfers/#{transfer.id}",
-        class: 'btn w-100',
-        style: color_styles(transfer)
-      ) { number_to_currency(transfer.amount, precision: 0) }
-    end
-
     # money summary
     h4 { "Transfer of #{number_to_currency(transfer.amount, precision: 0)} From #{transfer.giver.name} to #{transfer.taker.name}" }
 
