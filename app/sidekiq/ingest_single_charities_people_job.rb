@@ -11,7 +11,7 @@ class IngestSingleCharitiesPeopleJob
 
   def perform(charity_id)
     charity = Group.find(charity_id)
-    AcncCharities::FetchSingleCharityPeople.perform(charity)
+    AcncCharities::FetchSingleCharityPeople.call(charity)
 
   rescue ActiveRecord::RecordNotFound => e
     Rails.logger.error "Charity not found for IngestSingleCharitiesPeopleJob: #{charity_id}"
