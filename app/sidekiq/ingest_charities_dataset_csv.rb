@@ -5,7 +5,7 @@ class IngestCharitiesDatasetCsv
   include Sidekiq::Job
 
   def perform
-    AcncCharities::IngestCsv.perform
+    AcncCharities::IngestCsv.call
 
   rescue StandardError => e
     Rails.logger.error "Error processing IngestCharitiesDatasetCsv: #{e.message} - will retry"

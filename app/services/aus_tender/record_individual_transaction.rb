@@ -1,15 +1,19 @@
 class ValidationError < StandardError; end
 
 class AusTender::RecordIndividualTransaction
+  def self.call(release)
+    new(release).call
+  end
+
   def initialize(release)
     @release = release
   end
 
   attr_reader :release
 
-  def perform
+  def call
     return if IndividualTransaction.exists?(external_id: release.item_id)
-    raise ValidationError unless valid?
+    raise ValidationError("Invalid transaction data: #{release.inspect}") unless valid?
 
     IndividualTransaction.create(
       transfer:,
