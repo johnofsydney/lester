@@ -1,9 +1,9 @@
 class AcncCharities::IngestCsv
-  def self.perform
-    new.perform
+  def self.call
+    new.call
   end
 
-  def perform
+  def call
     response = AcncCharities::CsvDownloader.new.download(url)
     return unless response && response[:body]
 

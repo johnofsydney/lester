@@ -18,8 +18,7 @@ class RecordGroup
     elsif (@group = Group.find_by(name:))
       @group.business_number = business_number if business_number.present?
     else
-      print 'g'
-      @group = Group.create(name:, business_number:)
+      @group = business_number.present? ? Group.create(name:, business_number:) : Group.create(name:)
     end
 
     Group.transaction do

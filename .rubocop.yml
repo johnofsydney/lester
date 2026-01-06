@@ -11,13 +11,20 @@ plugins:
 
 AllCops:
   TargetRubyVersion: 3.3
-  NewCops: enable
+  NewCops: disable
   SuggestExtensions: false
   Exclude:
-    - vendor/**/*
-    - 'db/schema.rb'
-    - 'config/initializers/*.rb' # created by installers - leave them be
-    - 'app/views/application_view.rb' # temporary it is toooo shit
+    - 'Guardfile'
+    - 'Rakefile'
+    - 'bin/**/*'
+    - 'config/**/*'
+    - 'config.ru'
+    - 'db/**/*'
+    - 'vendor/**/*'
+
+Bundler/OrderedGems:
+  Exclude:
+    - 'Gemfile'
 
 Layout/LineLength:
   Max: 400

@@ -9,7 +9,7 @@ class IngestSingleContractJob
                   retry: 3
 
   def perform(contract_id, retry_count = 0)
-    AusTender::IngestSingleContract.new(contract_id).perform
+    AusTender::IngestSingleContract.call(contract_id)
   rescue ObjectMoved => e
     Rails.logger.error "Error ingesting Contract #{contract_id}: Object Moved"
     Rails.logger.error e.backtrace.join("\n")
