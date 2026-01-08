@@ -154,6 +154,8 @@ class Group < ApplicationRecord
   end
 
   def is_category? = category?
+  def is_group? = true
+  def is_person? = false
 
   def display_name
     return "#{name} (#{business_number})" if business_number.present?

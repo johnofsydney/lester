@@ -40,7 +40,12 @@ class RehydratedNode
 
   def klass = node.class.name
 
-  delegate :name, :nodes_count, to: :node
+  delegate :id, :name, :attributes, :nodes_count, to: :node
+  delegate :is_group?, :is_person?, :is_category?, to: :node
+
+  def cached
+    self
+  end
 
   def consolidated_descendents
     # This is a lot of descendents. TODO: use it for downstream methods

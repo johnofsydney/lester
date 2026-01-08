@@ -44,6 +44,6 @@ class Common::Heading < ApplicationView
   end
 
   def network_graph_link
-    entity.is_a?(Group) ? "/groups/#{entity.id}/network_graph" : "/people/#{entity.id}/network_graph"
+    entity.is_group? ? "/groups/#{entity.id}/network_graph" : "/people/#{entity.id}/network_graph"
   end
 end
