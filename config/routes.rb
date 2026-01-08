@@ -1,6 +1,7 @@
 require 'sidekiq/web' # require the web UI
 
 Rails.application.routes.draw do
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
@@ -30,6 +31,7 @@ Rails.application.routes.draw do
   get '/people/:id/post_to_socials' => 'people#post_to_socials' # Person
 
   get '/people/:id/reload' => 'people#reload'
+  get '/tradingnames/:id' => 'trading_names#show'
 
   resources :transfers
   resources :groups
