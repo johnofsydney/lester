@@ -13,16 +13,21 @@ class Abn::FetchBusinessNames
     response = connection.get(url)
     body = response.env.response_body
     business_entity_details = Hash.from_xml(body)['ABRPayloadSearchResults']['response']['businessEntity201205']
+    raise "ABN not found" unless business_entity_details
 
     main_name = business_entity_details['mainName']['organisationName']
-    main_trading_name = business_entity_details['mainTradingName']['organisationName']
+    main_trading_name = if business_entity_details['mainTradingName']
+                          business_entity_details['mainTradingName']['organisationName']
+                        else
+                          nil
+                        end
 
     other_names = [main_trading_name] + other_trading_names(business_entity_details) + other_business_names(business_entity_details)
 
     {
       abn: @abn,
       main_name: capitalize(main_name),
-      trading_names: other_names.map { |name| capitalize(name) }.uniq
+      trading_names: other_names.compact.map { |name| capitalize(name) }.uniq
     }
   end
 

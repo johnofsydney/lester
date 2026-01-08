@@ -342,6 +342,7 @@ GEM
     responders (3.1.1)
       actionpack (>= 5.2)
       railties (>= 5.2)
+    rexml (3.4.4)
     roo (3.0.0)
       base64 (~> 0.2)
       csv (~> 3)
@@ -514,6 +515,7 @@ DEPENDENCIES
   rack (>= 3.1.18)
   rails (~> 7.2)
   redis (~> 4.0)
+  rexml
   roo (~> 3.0.0)
   rspec-rails (~> 6.1.0)
   rubocop
