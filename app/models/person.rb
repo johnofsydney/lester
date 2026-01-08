@@ -47,6 +47,7 @@ class Person < ApplicationRecord
   def is_category? = false
   def is_group? = false
   def is_person? = true
+  def business_number = nil
 
   def tweet_body
     body = <<~SUMMARY.strip
