@@ -9,36 +9,71 @@ class Abn::FetchBusinessNames
     @abn = abn
   end
 
+  attr_reader :business_entity_details
+
   def call
     response = connection.get(url)
+    raise "No Response" unless response
     body = response.env.response_body
-    business_entity_details = Hash.from_xml(body)['ABRPayloadSearchResults']['response']['businessEntity201205']
+    raise "No Body" unless body
+    @business_entity_details = Hash.from_xml(body)['ABRPayloadSearchResults']['response']['businessEntity201205']
     raise "ABN not found" unless business_entity_details
 
-    main_name = business_entity_details['mainName']['organisationName']
-    main_trading_name = if business_entity_details['mainTradingName']
-                          business_entity_details['mainTradingName']['organisationName']
-                        else
-                          nil
-                        end
+    sole_trader = business_entity_details['entityType']['entityDescription'].match?(/Sole Trader/i)
 
-    other_names = [main_trading_name] + other_trading_names(business_entity_details) + other_business_names(business_entity_details)
+    if sole_trader
+      main_name = sole_trader_name
+      other_names = other_trading_names + other_business_names
+    else
+      main_name = main_business_name
+      main_trading_name = if business_entity_details['mainTradingName']
+                            business_entity_details['mainTradingName']['organisationName']
+                          else
+                            nil
+                          end
+
+      other_names = [main_trading_name] + other_trading_names + other_business_names
+    end
 
     {
       abn: @abn,
-      main_name: capitalize(main_name),
+      main_name: main_name,
       trading_names: other_names.compact.map { |name| capitalize(name) }.uniq
     }
   end
 
-  def other_trading_names(business_entity_details)
+  def sole_trader_name
+    legal_name = business_entity_details['legalName']
+
+    first_name = legal_name['givenName']
+    other_given_name = legal_name['otherGivenName']
+    last_name = legal_name['familyName']
+    suffix = "(Sole Trader)"
+
+    parts = []
+    parts << capitalize(first_name) if first_name.present?
+    parts << capitalize(other_given_name) if other_given_name.present?
+    parts << capitalize(last_name) if last_name.present?
+    parts << suffix
+
+    parts.join(' ')
+  end
+
+  def main_business_name
+    name = business_entity_details['mainName']['organisationName']
+    capitalize(name)
+  end
+
+  def other_trading_names
     other_trading_name = business_entity_details['otherTradingName']
+    return [] unless other_trading_name.present?
 
     map_or_extract_from_hash(other_trading_name)
   end
 
-  def other_business_names(business_entity_details)
+  def other_business_names
     business_name = business_entity_details['businessName']
+    return [] unless business_name.present?
 
     map_or_extract_from_hash(business_name)
   end
