@@ -40,3 +40,5 @@ module Sunshine01
     config.log_level = :debug
   end
 end
+
+require 'ostruct' # can remove if open struct usage is removed from the codebase
