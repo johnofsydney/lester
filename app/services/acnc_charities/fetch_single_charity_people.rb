@@ -3,15 +3,15 @@ class NoResultsFound < StandardError; end
 
 # frozen_string_literal: true
 class AcncCharities::FetchSingleCharityPeople
-  def self.perform(charity)
-    new(charity).perform
+  def self.call(charity)
+    new(charity).call
   end
 
   def initialize(charity)
     @charity = charity
   end
 
-  def perform
+  def call
     # First - set last_refreshed to today to avoid repeated retries in short time
     @charity.update!(last_refreshed: Time.current.to_date)
 

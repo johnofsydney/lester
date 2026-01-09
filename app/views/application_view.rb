@@ -1,20 +1,18 @@
 # frozen_string_literal: true
 
+# rubocop:disable Style/StringConcatenation, Style/IfUnlessModifier, Style/SafeNavigation, Naming/MethodParameterName, Style/RedundantCondition
 class ApplicationView < ApplicationComponent
-	# The ApplicationView is an abstract class for all your views.
+  # The ApplicationView is an abstract class for all your views.
 
-	# By default, it inherits from `ApplicationComponent`, but you
-	# can change that to `Phlex::HTML` if you want to keep views and
-	# components independent.
+  # By default, it inherits from `ApplicationComponent`, but you
+  # can change that to `Phlex::HTML` if you want to keep views and
+  # components independent.
 
   register_element :turbo_frame
 
   def color_styles(instance)
-    {
-      'background_color' => background_color(instance),
-      'color' => color(instance),
-    }.map{|key, value| "#{key.to_s.dasherize}: #{value};"}
-     .join('; ') + ';'
+    { 'background_color' => background_color(instance), 'color' => color(instance) }.map { |key, value| "#{key.to_s.dasherize}: #{value};" }
+                                                                                    .join('; ') + ';'
   end
 
   def background_color(item)
@@ -56,9 +54,10 @@ class ApplicationView < ApplicationComponent
                         else
                           class_of(entity)
                         end
+
     id ||= if entity
-            entity.id
-          end
+             entity.id
+           end
 
     link_text ||= entity.respond_to?(:name) ? entity.name : entity.amount
     href = "/#{klass_name_plural}/#{id}"
@@ -75,8 +74,8 @@ class ApplicationView < ApplicationComponent
                           h['klass'].to_s.downcase.pluralize
                         end
     id ||= if h['id']
-            h['id']
-          end
+             h['id']
+           end
 
     link_text ||= h['name'] || h['amount']
     href = "/#{klass_name_plural}/#{id}"
@@ -86,3 +85,4 @@ class ApplicationView < ApplicationComponent
     a(href: href, class:, style:, data_turbo: 'false') { link_text }
   end
 end
+# rubocop:enable Style/StringConcatenation, Style/IfUnlessModifier, Style/SafeNavigation, Naming/MethodParameterName, Style/RedundantCondition

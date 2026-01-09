@@ -6,15 +6,15 @@ class ObjectMoved < StandardError; end
 class AusTender::ScrapeSingleContractAmendment
   attr_reader :data
 
-  def self.perform(uuid)
-    new(uuid).perform
+  def self.call(uuid)
+    new(uuid).call
   end
 
   def initialize(uuid)
     @uuid = uuid
   end
 
-  def perform
+  def call
     response = connection(url).get
 
     sleep 1 if use_crawlbase_scraping?
@@ -75,7 +75,6 @@ class AusTender::ScrapeSingleContractAmendment
     Faraday.new(url:) do |config|
       config.headers['User-Agent'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
       config.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8'
-      config.headers['FYI'] = 'I am only after the "Amendment Value (AUD)" and "Amendment Publish Date" which do not appear to be in the API response (eg https://api.tenders.gov.au/ocds/findById/CN3779137). If this changes, please let me know - mr.john.coote@gmail.com'
 
     # Set timeout values (too big for normal use)
     config.options.timeout = 90        # 90 seconds for read timeout

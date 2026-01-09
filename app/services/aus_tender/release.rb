@@ -70,7 +70,7 @@ class AusTender::Release
   end
 
   def scraped_page_data
-    @scraped_page_data ||= AusTender::ScrapeSingleContractAmendment.new(uuid).perform
+    @scraped_page_data ||= AusTender::ScrapeSingleContractAmendment.call(uuid)
   end
 
   def amount
