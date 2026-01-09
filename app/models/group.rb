@@ -105,6 +105,15 @@ class Group < ApplicationRecord
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ..4.days.ago).or(where(nodes_count_cached: nil)) }
 
+  scope :orphans, -> {
+    # Groups with no members and no transfers. They may be children of parent groups
+    left_outer_joins(:memberships, :incoming_transfers, :outgoing_transfers)
+      .where(memberships: { id: nil })
+      .where(incoming_transfers: { id: nil })
+      .where(outgoing_transfers: { id: nil })
+      .distinct
+  }
+
   def business_number=(value)
     return if value.nil?
 
