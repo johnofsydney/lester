@@ -4,12 +4,12 @@ class People::ShowView < ApplicationView
   attr_reader :person
 
   def initialize(person:)
-    # TODO: push the .cached version further up the stack. stop passing around group
+    # TODO: push the .cached version further up the stack. stop passing around person
     @person = person
   end
 
   def view_template
-    render Common::Heading.new(entity: person)
+    render Common::Heading.new(entity: person.cached)
 
     render Common::StatsSummary.new(
       klass: 'Person',
@@ -17,7 +17,7 @@ class People::ShowView < ApplicationView
       money_in: person.cached.money_in,
       money_out: person.cached.money_out
     )
-    render Common::GraphSummary.new(entity: person)
+    render Common::GraphSummary.new(entity: person.cached)
 
     render People::GroupsTable.new(person:)
 

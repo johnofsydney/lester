@@ -9,8 +9,6 @@ class NodeCountJob
     retry: 1
   )
 
-  include Sidekiq::Job
-
   def perform(klass, id)
     node = klass.constantize.find(id)
     count = node.nodes.count

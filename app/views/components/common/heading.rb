@@ -22,6 +22,8 @@ class Common::Heading < ApplicationView
         end
         p(class: 'font-italic mt-1') { "...a visualisation of connections to #{entity.name}..." }
       end
+
+      p { business_number_and_trading_names } if entity.business_number.present? || entity.trading_names.any?
     end
   end
 
@@ -44,6 +46,13 @@ class Common::Heading < ApplicationView
   end
 
   def network_graph_link
-    entity.is_a?(Group) ? "/groups/#{entity.id}/network_graph" : "/people/#{entity.id}/network_graph"
+    entity.is_group? ? "/groups/#{entity.id}/network_graph" : "/people/#{entity.id}/network_graph"
+  end
+
+  def business_number_and_trading_names
+    parts = []
+    parts << "ABN: #{entity.business_number}" if entity.business_number.present?
+    parts << "Also known as: #{entity.trading_names.map(&:name).join(', ')}" if entity.trading_names.any?
+    parts.join(' | ')
   end
 end

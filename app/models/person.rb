@@ -2,6 +2,7 @@ class Person < ApplicationRecord
   include TransferMethods
   include NodeMethods
   include CachedMethods
+
   include PgSearch::Model
   multisearchable against: [:name]
 
@@ -9,6 +10,7 @@ class Person < ApplicationRecord
 
   include ActionView::Helpers::NumberHelper
 
+  has_many :trading_names, as: :owner, dependent: :destroy
   has_many :memberships, as: :member, dependent: :destroy
   has_many :groups, through: :memberships
   has_many :positions, through: :memberships
@@ -43,6 +45,9 @@ class Person < ApplicationRecord
   end
 
   def is_category? = false
+  def is_group? = false
+  def is_person? = true
+  def business_number = nil
 
   def tweet_body
     body = <<~SUMMARY.strip

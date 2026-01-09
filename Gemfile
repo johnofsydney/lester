@@ -92,3 +92,5 @@ gem 'sidekiq-scheduler'
 
 # For working with XLSX files
 gem "roo", "~> 3.0.0"
+
+gem "rexml"
