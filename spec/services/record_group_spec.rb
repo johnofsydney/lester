@@ -246,6 +246,11 @@ RSpec.describe RecordGroup, type: :service do
 
   describe '.call' do
     context 'when the mapper is AEC Donations' do
+
+      before do
+        allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+      end
+
       let(:mapper) { MapGroupNamesAecDonations.new }
 
       context 'when the group does not already exist' do
