@@ -13,11 +13,13 @@ class Abn::FetchBusinessNames
 
   def call
     response = connection.get(url)
-    raise "No Response" unless response
+    raise 'No Response' unless response
+
     body = response.env.response_body
-    raise "No Body" unless body
+    raise 'No Body' unless body
+
     @business_entity_details = Hash.from_xml(body)['ABRPayloadSearchResults']['response']['businessEntity201205']
-    raise "ABN not found" unless business_entity_details
+    raise 'ABN not found' unless business_entity_details
 
     sole_trader = business_entity_details['entityType']['entityDescription'].match?(/Sole Trader/i)
 
@@ -26,11 +28,7 @@ class Abn::FetchBusinessNames
       other_names = other_trading_names + other_business_names
     else
       main_name = main_business_name
-      main_trading_name = if business_entity_details['mainTradingName']
-                            business_entity_details['mainTradingName']['organisationName']
-                          else
-                            nil
-                          end
+      main_trading_name = (business_entity_details['mainTradingName']['organisationName'] if business_entity_details['mainTradingName'])
 
       other_names = [main_trading_name] + other_trading_names + other_business_names
     end
@@ -48,7 +46,7 @@ class Abn::FetchBusinessNames
     first_name = legal_name['givenName']
     other_given_name = legal_name['otherGivenName']
     last_name = legal_name['familyName']
-    suffix = "(Sole Trader)"
+    suffix = '(Sole Trader)'
 
     parts = []
     parts << capitalize(first_name) if first_name.present?
@@ -66,14 +64,14 @@ class Abn::FetchBusinessNames
 
   def other_trading_names
     other_trading_name = business_entity_details['otherTradingName']
-    return [] unless other_trading_name.present?
+    return [] if other_trading_name.blank?
 
     map_or_extract_from_hash(other_trading_name)
   end
 
   def other_business_names
     business_name = business_entity_details['businessName']
-    return [] unless business_name.present?
+    return [] if business_name.blank?
 
     map_or_extract_from_hash(business_name)
   end
@@ -105,11 +103,11 @@ class Abn::FetchBusinessNames
   end
 
   def connection
-    conn = Faraday.new
+    Faraday.new
   end
 end
 
-
+# rubocop:disable Layout/LineLength
 # eg Hash.from_xml(body) = {
 # {
 #   "ABRPayloadSearchResults"=> {
@@ -158,3 +156,4 @@ end
 #     }
 #   }
 # }
+# rubocop:enable Layout/LineLength

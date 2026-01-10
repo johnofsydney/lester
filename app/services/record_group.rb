@@ -2,8 +2,8 @@ class RecordGroup
   attr_reader :name, :business_number, :group, :mapper
 
   def initialize(name, business_number = nil, mapper = nil)
-    @name = mapper ? mapper.call(name) : name
-    @business_number = business_number&.gsub(/\D/, '')
+    @name = mapper.present? ? mapper.call(name) : name
+    @business_number = business_number.present? ? business_number&.gsub(/\D/, '') : nil
     @mapper = mapper
   end
 
@@ -16,7 +16,7 @@ class RecordGroup
       Group.find_by(business_number:) || create_group_with_business_number
     elsif (group = Group.find_by(name:))
         group
-    elsif (TradingName.where(name:).count > 1)
+    elsif TradingName.where(name:).count > 1
         raise "Cannot Disambiguate Trading name: #{name}"
     elsif (tn = TradingName.find_by(name:))
         tn.owner

@@ -22,7 +22,7 @@ class TradingNamesController < ApplicationController
         render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
       end
     else
-      render plain: "Owner not found", status: :not_found
+      render plain: 'Owner not found', status: :not_found
     end
   end
 end
