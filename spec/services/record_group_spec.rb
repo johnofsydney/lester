@@ -289,6 +289,20 @@ RSpec.describe RecordGroup, type: :service do
           end
         end
       end
+
+      context 'when a group exists with the name' do
+        let(:existing_name) { 'Existing Group' }
+        let(:business_number) { '123' }
+
+        let!(:existing_group) { Group.create(name: existing_name) }
+
+        it 'returns the existing group' do
+          described_class.call(existing_name, business_number:)
+
+          expect(existing_group.reload.business_number).to eq(business_number)
+          expect(Group.count).to eq(1)
+        end
+      end
     end
 
     describe 'when the mapper is General' do

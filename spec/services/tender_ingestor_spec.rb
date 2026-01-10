@@ -48,7 +48,7 @@ RSpec.describe TenderIngestor, type: :service do
                                      .with(
                                         anything,
                                         %r{\Ahttps://api\.tenders\.gov\.au/ocds/findByDates/contractLastModified}
-                                     )
+                                      )
       end
     end
   end

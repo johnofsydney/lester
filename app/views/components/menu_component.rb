@@ -30,7 +30,7 @@ class MenuComponent < ApplicationView
           type: 'button',
           data: { bs_toggle: 'collapse', bs_target: '#navbarSupportedContent' },
           aria: { controls: 'navbarSupportedContent', expanded: 'false', label: 'Toggle navigation' }
-          ) do
+        ) do
           span(class: 'navbar-toggler-icon')
         end
 
