@@ -66,6 +66,7 @@ class Group < ApplicationRecord
             )
           )
 
+  has_many :trading_names, as: :owner, dependent: :destroy
   # TODO: memberships are only working on one direction, need to fix this
   # affiliated groups are not being followed from child to parent to other child
   has_many :memberships, dependent: :destroy
@@ -102,6 +103,15 @@ class Group < ApplicationRecord
 
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ..4.days.ago).or(where(nodes_count_cached: nil)) }
+
+  scope :orphans, -> {
+    # Groups with no members and no transfers. They may be children of parent groups
+    left_outer_joins(:memberships, :incoming_transfers, :outgoing_transfers)
+      .where(memberships: { id: nil })
+      .where(incoming_transfers: { id: nil })
+      .where(outgoing_transfers: { id: nil })
+      .distinct
+  }
 
   def business_number=(value)
     return if value.nil?
@@ -152,6 +162,8 @@ class Group < ApplicationRecord
   end
 
   def is_category? = category?
+  def is_group? = true
+  def is_person? = false
 
   def display_name
     return "#{name} (#{business_number})" if business_number.present?

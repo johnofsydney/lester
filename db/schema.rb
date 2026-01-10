@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_04_095707) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_08_042939) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -77,7 +77,6 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_095707) do
     t.boolean "category", default: false
     t.json "cached_data", default: {}
     t.string "business_number"
-    t.text "other_names", default: [], array: true
     t.date "last_refreshed"
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
@@ -164,6 +163,16 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_04_095707) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "trading_names", force: :cascade do |t|
+    t.string "owner_type"
+    t.bigint "owner_id"
+    t.text "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_trading_names_on_name"
+    t.index ["owner_type", "owner_id"], name: "index_trading_names_on_owner"
   end
 
   create_table "transfers", force: :cascade do |t|

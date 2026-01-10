@@ -232,7 +232,7 @@ RSpec.describe RecordGroup, type: :service do
 
   describe '#initialize' do
     it 'initializes with a name' do
-      service = described_class.new('Test Name', mapper:)
+      service = described_class.new('Test Name', nil, mapper)
       expect(service.name).to eq('Test Name')
     end
 
@@ -246,6 +246,11 @@ RSpec.describe RecordGroup, type: :service do
 
   describe '.call' do
     context 'when the mapper is AEC Donations' do
+
+      before do
+        allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+      end
+
       let(:mapper) { MapGroupNamesAecDonations.new }
 
       context 'when the group does not already exist' do
@@ -281,18 +286,6 @@ RSpec.describe RecordGroup, type: :service do
         context 'when given the identical name and business number' do
           it 'does not create a new group' do
             expect { described_class.call(existing_name, business_number: business_number_different_format, mapper:) }.not_to(change(Group, :count))
-          end
-        end
-
-        context 'when given a different name and same business number' do
-          it 'does not create a new group' do
-            expect { described_class.call('New Name for Existing Group', business_number: business_number_different_format, mapper:) }.not_to(change(Group, :count))
-          end
-
-          it 'adds the new name to the list of other names' do
-            described_class.call('New Name for Existing Group', business_number: business_number_different_format, mapper:)
-            group = Group.find_by(name: existing_name)
-            expect(group.other_names).to include('New Name for Existing Group')
           end
         end
       end

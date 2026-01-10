@@ -467,6 +467,8 @@ Metrics/MethodLength:
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ModuleLength:
   Max: 133
+  Exclude:
+    - 'app/models/concerns/node_methods.rb'
 
 # Offense count: 3
 # Configuration parameters: CountKeywordArgs, MaxOptionalParameters.
@@ -484,7 +486,7 @@ Metrics/PerceivedComplexity:
 # ForbiddenPrefixes: is_, has_, have_, does_
 # AllowedMethods: is_a?
 # MethodDefinitionMacros: define_method, define_singleton_method
-Naming/PredicateName:
+Naming/PredicatePrefix:
   Exclude:
     - 'app/models/concerns/node_methods.rb'
     - 'app/models/group.rb'
@@ -673,6 +675,9 @@ Style/CaseLikeIf:
 # SupportedStylesForClasses: , nested, compact
 # SupportedStylesForModules: , nested, compact
 Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/ClassEqualityComparison:
   Enabled: false
 
 # Offense count: 2

@@ -10,7 +10,7 @@ class Groups::ShowView < ApplicationView
   def view_template
     page_number = 0
 
-    render Common::Heading.new(entity: group)
+    render Common::Heading.new(entity: group.cached)
 
     render Common::StatsSummary.new(
       klass: 'Group',
@@ -18,7 +18,7 @@ class Groups::ShowView < ApplicationView
       money_in: group.cached.money_in,
       money_out: group.cached.money_out
     )
-    render Common::GraphSummary.new(entity: group)
+    render Common::GraphSummary.new(entity: group.cached)
 
     ##################################################
     # TODO: these no longer need to be in turbo frames
