@@ -31,7 +31,6 @@ class GroupsController < ApplicationController
       BuildGroupCachedDataJob.perform_async(@group.id)
       render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
     end
-
   end
 
   def reload

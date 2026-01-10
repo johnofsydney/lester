@@ -8,7 +8,7 @@ class Abn::GroupNameUpdater
   end
 
   def call
-    return unless group.business_number.present?
+    return if group.business_number.blank?
 
     result = Abn::FetchBusinessNames.call(group.business_number)
 

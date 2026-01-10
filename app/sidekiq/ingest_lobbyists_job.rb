@@ -6,7 +6,6 @@ class IngestLobbyistsJob
 
   def perform
     AuLobbyists::IngestLobbyists.call
-
   rescue StandardError => e
     Rails.logger.error "Error processing IngestLobbyistsJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
