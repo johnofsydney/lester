@@ -13,7 +13,7 @@ class BackfillNamesFromAbnJob
   def perform(offset = 0)
     @offset = offset.to_i
 
-    groups_to_update.limit(QUANTITY).find_each do |group|
+    groups_to_update.offset(offset).limit(QUANTITY).find_each do |group|
       UpdateGroupNamesFromAbnJob.perform_async(group.id)
     end
 
@@ -22,10 +22,10 @@ class BackfillNamesFromAbnJob
   end
 
   def groups_to_update
-    Group.where.not(business_number: nil).order(:id).offset(offset)
+    Group.where.not(business_number: nil).order(:id)
   end
 
   def more_remaining?
-    groups_to_update.offset(QUANTITY).exists?
+    groups_to_update.offset(offset + QUANTITY).exists?
   end
 end
