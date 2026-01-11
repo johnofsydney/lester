@@ -1,5 +1,8 @@
 require 'capitalize_names'
 
+class AbnDetailsSuppressed < StandardError; end
+class AbnNotFound < StandardError; end
+
 class Abn::FetchBusinessNames
   def self.call(abn)
     new(abn).call
@@ -19,11 +22,10 @@ class Abn::FetchBusinessNames
     raise 'No Body' unless body
 
     @business_entity_details = Hash.from_xml(body)['ABRPayloadSearchResults']['response']['businessEntity201205']
-    raise 'ABN not found' unless business_entity_details
+    raise AbnNotFound unless business_entity_details
+    raise AbnDetailsSuppressed if business_entity_details['entityType']['entityDescription'].nil?
 
-    sole_trader = business_entity_details['entityType']['entityDescription'].match?(/Sole Trader/i)
-
-    if sole_trader
+    if sole_trader?
       main_name = sole_trader_name
       other_names = other_trading_names + other_business_names
     else
@@ -38,6 +40,10 @@ class Abn::FetchBusinessNames
       main_name: main_name,
       trading_names: other_names.compact.map { |name| capitalize(name) }.uniq
     }
+  end
+
+  def sole_trader?
+    business_entity_details['entityType']['entityDescription'].match?(/Sole Trader/i)
   end
 
   def sole_trader_name
