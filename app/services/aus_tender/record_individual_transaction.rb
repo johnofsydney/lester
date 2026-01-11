@@ -27,6 +27,9 @@ class AusTender::RecordIndividualTransaction
       description: release.description,
       category: release.category
     )
+
+    # wait a moment to allow the lock prevention of running duplicates in quick succession
+    RefreshSingleTransferAmountJob.perform_in(5.minutes, transfer.id)
   end
 
   def amount

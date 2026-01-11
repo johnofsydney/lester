@@ -51,7 +51,3 @@
     refresh_nodes_count_job:
       cron: '0 18 * * *' # Every day at 4am
       class: RefreshNodesCountJob
-    # Every day run the RefreshTransferAmountJob
-    refresh_transfer_amount_job:
-      cron: '0 19 * * *' # Every day at 5am
-      class: RefreshTransferAmountJob
