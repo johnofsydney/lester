@@ -171,20 +171,18 @@ module NodeMethods
     result
   end
 
-  # rubocop:disable Rails/SkipsModelValidations
   def merge_into(replacement_entity)
-    raise 'Cannot merge into self' if replacement_entity == self
-    raise 'Cannot merge different types' unless replacement_entity.class == self.class
-
-    Rails.logger.info "Merging #{self.class.name} #{id} into #{replacement_entity.class.name} #{replacement_entity.id}"
-
-    Membership.where(member: self).update_all(member_id: replacement_entity.id)
-    Membership.where(group: self).update_all(group_id: replacement_entity.id)
-    Transfer.where(giver: self).update_all(giver_id: replacement_entity.id)
-    Transfer.where(taker: self).update_all(taker_id: replacement_entity.id)
-
-    replacement_entity.update(cached_data: {})
-    self.destroy
+    merge!(replacement_entity)
   end
-  # rubocop:enable Rails/SkipsModelValidations
+
+  def merge!(other_entity)
+    raise 'Cannot merge self into self' if other_entity == self
+    raise 'Cannot merge different types' unless other_entity.class == self.class
+
+    Nodes::Merge.call(receiver_node: self, argument_node: other_entity)
+  end
+
+  def ==(other)
+    self.class == other.class && self.id == other.id
+  end
 end
