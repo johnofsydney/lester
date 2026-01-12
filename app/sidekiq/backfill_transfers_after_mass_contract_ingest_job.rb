@@ -20,7 +20,7 @@ class BackfillTransfersAfterMassContractIngestJob
     @offset = offset.to_i
 
     transfers_to_update.offset(offset).limit(QUANTITY).find_each do |transfer|
-      RefreshTransferAmountJob.perform_async(transfer.id)
+      RefreshSingleTransferAmountJob.perform_async(transfer.id)
     end
 
     # Re-enqueue itself until fully done, increasing the offset each time.
