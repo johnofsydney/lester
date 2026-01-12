@@ -11,6 +11,11 @@ RSpec.describe Nodes::Merge, type: :service do
     let!(:person_a)  { Person.create!(name: 'Alice') }
     let!(:person_b)  { Person.create!(name: 'Bob') }
 
+    before do
+      allow(BuildGroupCachedDataJob).to receive(:perform_async)
+      allow(BuildPersonCachedDataJob).to receive(:perform_async)
+    end
+
     it 'raises when merging node into itself' do
       expect {described_class.call(receiver_node: group_a, argument_node: group_a)}.to raise_error('Cannot merge node into itself')
     end
@@ -20,7 +25,6 @@ RSpec.describe Nodes::Merge, type: :service do
     end
 
     it 'clears the cache and calls refresh job on receiver_node' do
-      allow(BuildGroupCachedDataJob).to receive(:perform_async)
       group_a.update!(cached_data: { some: 'data' })
 
       merge
