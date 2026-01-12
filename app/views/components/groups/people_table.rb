@@ -51,7 +51,7 @@ class Groups::PeopleTable < ApplicationView
             a(
               class: 'page-link',
               href: "/groups/group_people/#{exclude_group.id}/page=#{page_number}"
-              ) do
+            ) do
               page_number + 1
             end
           end

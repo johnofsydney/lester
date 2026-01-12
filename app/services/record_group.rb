@@ -13,7 +13,7 @@ class RecordGroup
 
   def call
     if business_number.present?
-      Group.find_by(business_number:) || create_group_with_business_number
+      Group.find_by(business_number:) || find_group_and_append_business_number || create_group_with_business_number
     elsif (group = Group.find_by(name:))
         group
     elsif TradingName.where(name:).count > 1
@@ -23,6 +23,14 @@ class RecordGroup
     else
       create_group_with_name
     end
+  end
+
+  def find_group_and_append_business_number
+    group = Group.find_by(name:)
+    return if group.nil?
+
+    group.update!(business_number:)
+    group
   end
 
   def create_group_with_business_number

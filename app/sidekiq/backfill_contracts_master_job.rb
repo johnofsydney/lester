@@ -8,7 +8,7 @@ class BackfillContractsMasterJob
     target_date = Date.parse(date_string)
     return if target_date > Date.today
 
-    # ----- Overload protection (optional but recommended) -------
+    # ------------------- Overload protection ---------------------
     if queue_overloaded?
       BackfillContractsMasterJob.perform_in(5.minutes, date_string)
       return

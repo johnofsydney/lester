@@ -57,6 +57,9 @@ Style/RedundantBegin:
 RSpec/DescribedClass:
   Enabled: false # temporary
 
+RSpec/IndexedLet:
+  Enabled: false # uses number sometimes - they can be appropriate
+
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
 

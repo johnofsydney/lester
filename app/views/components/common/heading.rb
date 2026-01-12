@@ -42,7 +42,7 @@ class Common::Heading < ApplicationView
     button(
       class: 'btn w-100 btn-lg',
       style: "#{color_styles(entity)}; font-size: 1em;",
-      ) { entity.name }
+    ) { entity.name }
   end
 
   def network_graph_link

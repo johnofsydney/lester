@@ -246,6 +246,11 @@ RSpec.describe RecordGroup, type: :service do
 
   describe '.call' do
     context 'when the mapper is AEC Donations' do
+
+      before do
+        allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+      end
+
       let(:mapper) { MapGroupNamesAecDonations.new }
 
       context 'when the group does not already exist' do
@@ -282,6 +287,20 @@ RSpec.describe RecordGroup, type: :service do
           it 'does not create a new group' do
             expect { described_class.call(existing_name, business_number: business_number_different_format, mapper:) }.not_to(change(Group, :count))
           end
+        end
+      end
+
+      context 'when a group exists with the name' do
+        let(:existing_name) { 'Existing Group' }
+        let(:business_number) { '123' }
+
+        let!(:existing_group) { Group.create(name: existing_name) }
+
+        it 'returns the existing group' do
+          described_class.call(existing_name, business_number:)
+
+          expect(existing_group.reload.business_number).to eq(business_number)
+          expect(Group.count).to eq(1)
         end
       end
     end

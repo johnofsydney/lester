@@ -58,7 +58,7 @@ CSV.open(
   'w',
   write_headers: true,
   headers: ['member_group', 'abn', 'group', 'business_number', 'start_date', 'evidence']
-  ) do |csv|
+) do |csv|
     tsv.each do |row|
       csv << [
         row['name'],
