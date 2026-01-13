@@ -1,13 +1,22 @@
 namespace :lester do
+  # desc 'Find Duplicates'
+  # task find_duplicates: :environment do
+  #   groups = Group.order(:name).pluck(:name).map(&:upcase)
+  #   people = Person.order(:name).pluck(:name).map(&:upcase)
+
+  #   p people.tally.select { |_, count| count > 1 }.keys
+  #   p groups.tally.select { |_, count| count > 1 }.keys
+
+  #   p (groups + people).tally.select { |_, count| count > 1 }.keys
+  # end
+
   desc 'Find Duplicates'
   task find_duplicates: :environment do
-    groups = Group.order(:name).pluck(:name).map(&:upcase)
-    people = Person.order(:name).pluck(:name).map(&:upcase)
+    group_duplicates = Groups::DeleteDuplicates.new.duplicates
+    person_duplicates = People::DeleteDuplicates.new.duplicates
 
-    p people.tally.select { |_, count| count > 1 }.keys
-    p groups.tally.select { |_, count| count > 1 }.keys
-
-    p (groups + people).tally.select { |_, count| count > 1 }.keys
+    p "People duplicates (name => [ids]):", person_duplicates
+    p "Group duplicates (name => [ids]):", group_duplicates
   end
 
   desc 'Potential People in the Groups Table'

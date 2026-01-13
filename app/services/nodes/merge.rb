@@ -13,11 +13,11 @@ class Nodes::Merge
     raise 'Cannot merge different types of node' unless receiver_node.class == argument_node.class
 
     # 1. Move all transfers from argument_node to receiver_node
-    # If there are EQUIVALENT transfers (same giver, taker, effective date) for both nodes,
-    # we need to merge the individual transactions into one transfer, and delete the duplicate transfer.
+      # If there are EQUIVALENT transfers (same giver, taker, effective date) for both nodes,
+      # we need to merge the individual transactions into one transfer, and delete the duplicate transfer.
     # 2. Move all memberships from argument_node to receiver_node
-    # If there are EQUIVALENT memberships (same group, member) for both nodes,
-    # the membership from argument_node can simply be deleted rather than moved.
+      # If there are EQUIVALENT memberships (same group, member) for both nodes,
+      # the membership from argument_node can simply be deleted rather than moved.
     # 3. Destroy argument_node
     # 4. Clear cached data on receiver_node (and call job to refresh counts etc)
     # 5. Return receiver_node
@@ -84,7 +84,7 @@ class Nodes::Merge
 
   def handle_memberships
     handle_memberships_as_member
-    handle_memberships_as_group
+    handle_memberships_as_group if argument_node.is_a?(Group) && receiver_node.is_a?(Group)
   end
 
   def handle_memberships_as_member
