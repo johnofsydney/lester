@@ -62,12 +62,3 @@ class RecordGroup
   end
 end
 
-# to MERGE an entity into another:
-# 1. Move all the memberships across
-# 1. Move all the other_names across
-# 2. Move all the transfers across
-# 3. If there are any duplicated transfers (same giver, taker, amount, date) ## NEW ##
-#   a. Move any individual transactions across
-#   b. Delete the duplicated transfer (the one with no individual transactions)
-#   c. Re-calculate the amount on the remaining transfer
-# 4. Delete the merged entity

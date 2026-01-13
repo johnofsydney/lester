@@ -84,7 +84,7 @@ class Nodes::Merge
 
   def handle_memberships
     handle_memberships_as_member
-    handle_memberships_as_group
+    handle_memberships_as_group if argument_node.is_a?(Group) && receiver_node.is_a?(Group)
   end
 
   def handle_memberships_as_member

@@ -97,22 +97,6 @@ class AuLobbyists::CsvImporter
         Membership.create!(member: lobbyist, group: lobbyists_category, start_date:, evidence:)
       end
     end
-
-    # add in the 'other names' as well
-    csv.reject {|row| row['Trading Name'].blank? }
-       .reject {|row| row['Trading Name'].strip.downcase == row['Legal Name'].strip.downcase }
-       .each do |row|
-         lobbyist_name = row['Legal Name']&.strip
-         trading_name = row['Trading Name']&.strip
-         lobbyist_abn = row['ABN']&.gsub(/\D/, '')
-
-         lobbyist = RecordGroup.call(lobbyist_name, business_number: lobbyist_abn, mapper:)
-
-         if trading_name != lobbyist.name && lobbyist.other_names.exclude?(trading_name)
-           lobbyist.other_names << trading_name
-           lobbyist.save
-         end
-       end
   end
 
   def clients_csv_path
