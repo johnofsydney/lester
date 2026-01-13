@@ -15,8 +15,8 @@ namespace :lester do
     group_duplicates = Groups::DeleteDuplicates.new.duplicates
     person_duplicates = People::DeleteDuplicates.new.duplicates
 
-    p "People duplicates (name => [ids]):", person_duplicates
-    p "Group duplicates (name => [ids]):", group_duplicates
+    p 'People duplicates (name => [ids]):', person_duplicates
+    p 'Group duplicates (name => [ids]):', group_duplicates
   end
 
   desc 'Potential People in the Groups Table'
