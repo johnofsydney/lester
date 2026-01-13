@@ -17,7 +17,8 @@ class RecordGroup
     elsif (group = find_group_by_name)
         group
     elsif TradingName.where(name:).count > 1
-        raise "Cannot Disambiguate Trading name: #{name}"
+        RailsLogger.info("Multiple trading names found for: #{name}")
+        NewRelic::Agent.notice_error("Cannot Disambiguate Trading name: #{name}")
     elsif (tn = TradingName.find_by(name:))
         tn.owner
     else
