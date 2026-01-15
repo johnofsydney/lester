@@ -17,7 +17,7 @@ class AuLobbyists::ImportLobbyistsPeopleRowJob
     evidence = 'https://lobbyists.ag.gov.au/register'
 
     # membership of person with their employer
-    if (membership = Membership.find_sole_by(member: person, group: lobbyist))
+    if (membership = Membership.find_by(member: person, group: lobbyist))
       membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
       membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
@@ -31,7 +31,7 @@ class AuLobbyists::ImportLobbyistsPeopleRowJob
     end
 
     # ensure lobbyist person is added to lobbyists category
-    if (membership = Membership.find_sole_by(member: person, group: lobbyists_category))
+    if (membership = Membership.find_by(member: person, group: lobbyists_category))
       membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
       membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else

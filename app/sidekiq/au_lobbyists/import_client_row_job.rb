@@ -18,7 +18,7 @@ class AuLobbyists::ImportClientRowJob
     evidence = 'https://lobbyists.ag.gov.au/register'
 
     # membership of client with individual lobbyist
-    if (membership = Membership.find_sole_by(member: client, group: lobbyist))
+    if (membership = Membership.find_by(member: client, group: lobbyist))
       membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
       membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
@@ -27,14 +27,14 @@ class AuLobbyists::ImportClientRowJob
 
     # ensure both are added to categories
     # first - lobbyists category
-    if (membership = Membership.find_sole_by(member: lobbyist, group: lobbyists_category))
+    if (membership = Membership.find_by(member: lobbyist, group: lobbyists_category))
       membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
       membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
       Membership.create!(member: lobbyist, group: lobbyists_category, start_date:, evidence:)
     end
     # second - client of lobbyists category
-    if (membership = Membership.find_sole_by(member: client, group: client_of_lobbyists_category))
+    if (membership = Membership.find_by(member: client, group: client_of_lobbyists_category))
       membership.update!(start_date:) if (start_date.present? && membership.start_date.blank?)
       membership.update!(evidence:) if (evidence.present? && membership.evidence.blank?)
     else

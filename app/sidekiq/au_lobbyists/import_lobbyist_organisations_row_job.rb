@@ -16,7 +16,7 @@ class AuLobbyists::ImportLobbyistOrganisationsRowJob
     evidence = 'https://lobbyists.ag.gov.au/register'
 
     # then add this lobbyist to the lobbyists category
-    if (membership = Membership.find_sole_by(member: lobbyist, group: lobbyists_category))
+    if (membership = Membership.find_by(member: lobbyist, group: lobbyists_category))
       membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
       membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
