@@ -5,7 +5,7 @@ class AuLobbyists::CsvImporter
     csv = CSV.read(clients_csv_path, headers: true)
     csv.each do |row|
       client_name = row["Client's Name"]&.strip
-      client_abn = row["Client's ABN"]&.gsub(/\D/, '')
+      client_abn = row["ABN"]&.gsub(/\D/, '')
       start_date = row['Date Published'].strip
       lobbyist_name = row['Parent Organisation']&.strip
       lobbyist_abn = row["Organisation's ABN"]&.gsub(/\D/, '')

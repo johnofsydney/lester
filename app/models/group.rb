@@ -182,10 +182,10 @@ class Group < ApplicationRecord
   end
 
   def self.lobbyists_category
-    Group.find_by(name: 'Lobbyists', category: true)
+    Group.find(1292)
   end
 
   def self.client_of_lobbyists_category
-    Group.find_by(name: 'Clients of Lobbyists', category: true)
+    Group.find(1643)
   end
 end

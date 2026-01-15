@@ -16,11 +16,10 @@ class AuLobbyists::ImportLobbyistsPeopleRowJob
     lobbyists_category = Group.lobbyists_category
     evidence = 'https://lobbyists.ag.gov.au/register'
 
-
     # membership of person with their employer
-    if (membership = Membership.find_by(member: person, group: lobbyist))
-      membership.update(start_date:) if start_date.present? && membership.start_date.blank?
-      membership.update(evidence:) if evidence.present? && membership.evidence.blank?
+    if (membership = Membership.find_sole_by(member: person, group: lobbyist))
+      membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
+      membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
       membership = Membership.create!(member: person, group: lobbyist, start_date:, evidence:)
     end
@@ -32,9 +31,9 @@ class AuLobbyists::ImportLobbyistsPeopleRowJob
     end
 
     # ensure lobbyist person is added to lobbyists category
-    if (membership = Membership.find_by(member: person, group: lobbyists_category))
-      membership.update(start_date:) if start_date.present? && membership.start_date.blank?
-      membership.update(evidence:) if evidence.present? && membership.evidence.blank?
+    if (membership = Membership.find_sole_by(member: person, group: lobbyists_category))
+      membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
+      membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
       Membership.create!(member: person, group: lobbyists_category, start_date:, evidence:)
     end

@@ -8,7 +8,7 @@ class AuLobbyists::ImportLobbyistOrganisationsRowJob
   )
 
   def perform(lobbyist_name, lobbyist_abn, start_date)
-    lobbyist = RecordGroup.call(lobbyist_name, lobbyist_abn, start_date)
+    lobbyist = RecordGroup.call(lobbyist_name, business_number: lobbyist_abn)
     return if lobbyist.nil? or lobbyist.id.nil?
 
     start_date = Date.parse(start_date) if start_date.present?
@@ -16,9 +16,9 @@ class AuLobbyists::ImportLobbyistOrganisationsRowJob
     evidence = 'https://lobbyists.ag.gov.au/register'
 
     # then add this lobbyist to the lobbyists category
-    if (membership = Membership.find_by(member: lobbyist, group: lobbyists_category))
-      membership.update(start_date:) if start_date.present? && membership.start_date.blank?
-      membership.update(evidence:) if evidence.present? && membership.evidence.blank?
+    if (membership = Membership.find_sole_by(member: lobbyist, group: lobbyists_category))
+      membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
+      membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
       Membership.create!(member: lobbyist, group: lobbyists_category, start_date:, evidence:)
     end
