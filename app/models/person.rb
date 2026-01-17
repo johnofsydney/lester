@@ -23,6 +23,8 @@ class Person < ApplicationRecord
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ..4.days.ago).or(where(nodes_count_cached: nil)) }
 
+  validates :name, uniqueness: { case_sensitive: false } # rubocop:disable Rails/UniqueValidationWithoutIndex
+
   def nodes(include_looser_nodes: false)
     unless include_looser_nodes
       return groups
