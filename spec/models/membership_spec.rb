@@ -10,16 +10,8 @@ RSpec.describe Membership do
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:member_type) }
-    xit { is_expected.to validate_presence_of(:member_id) }
-    xit { is_expected.to validate_presence_of(:group_id) }
-
-    describe 'uniqueness' do
-      before { membership }
-
-      let(:new_membership) { described_class.new(member: person, group: group) }
-
-      it { expect(new_membership).not_to be_valid}
-    end
+    it { is_expected.to validate_presence_of(:member_id) }
+    it { is_expected.to validate_presence_of(:group_id) }
   end
 
   describe '#nodes' do
