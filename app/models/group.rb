@@ -177,7 +177,7 @@ class Group < ApplicationRecord
     end.flatten.uniq
   end
 
-  def self.find_by_name(name)
+  def self.find_by_name_i(name)
     Group.where('LOWER(name) = ?', name.downcase).first
   end
 

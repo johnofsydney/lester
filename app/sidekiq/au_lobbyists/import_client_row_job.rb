@@ -17,6 +17,9 @@ class AuLobbyists::ImportClientRowJob
     client_of_lobbyists_category = Group.client_of_lobbyists_category
     evidence = 'https://lobbyists.ag.gov.au/register'
 
+    # For all of these Membership find or create, there could theoretically be a 2nd (or more) valid membership.
+    # However in practice, for membership of lobbyist (and categories) we will assume that there is only one valid membership
+    # IE no one ever ceases to be a lobbyist and then becomes a lobbyist again with a new membership record.
     # membership of client with individual lobbyist
     if (membership = Membership.find_by(member: client, group: lobbyist))
       membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
@@ -35,8 +38,8 @@ class AuLobbyists::ImportClientRowJob
     end
     # second - client of lobbyists category
     if (membership = Membership.find_by(member: client, group: client_of_lobbyists_category))
-      membership.update!(start_date:) if (start_date.present? && membership.start_date.blank?)
-      membership.update!(evidence:) if (evidence.present? && membership.evidence.blank?)
+      membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
+      membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
       Membership.create!(member: client, group: client_of_lobbyists_category, start_date:, evidence:)
     end
