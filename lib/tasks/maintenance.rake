@@ -1,13 +1,22 @@
 namespace :lester do
+  # desc 'Find Duplicates'
+  # task find_duplicates: :environment do
+  #   groups = Group.order(:name).pluck(:name).map(&:upcase)
+  #   people = Person.order(:name).pluck(:name).map(&:upcase)
+
+  #   p people.tally.select { |_, count| count > 1 }.keys
+  #   p groups.tally.select { |_, count| count > 1 }.keys
+
+  #   p (groups + people).tally.select { |_, count| count > 1 }.keys
+  # end
+
   desc 'Find Duplicates'
   task find_duplicates: :environment do
-    groups = Group.order(:name).pluck(:name).map(&:upcase)
-    people = Person.order(:name).pluck(:name).map(&:upcase)
+    group_duplicates = Groups::DeleteDuplicates.new.duplicates
+    person_duplicates = People::DeleteDuplicates.new.duplicates
 
-    p people.tally.select { |_, count| count > 1 }.keys
-    p groups.tally.select { |_, count| count > 1 }.keys
-
-    p (groups + people).tally.select { |_, count| count > 1 }.keys
+    p 'People duplicates (name => [ids]):', person_duplicates
+    p 'Group duplicates (name => [ids]):', group_duplicates
   end
 
   desc 'Potential People in the Groups Table'
@@ -20,93 +29,36 @@ namespace :lester do
     p potential_people
   end
 
-  desc 'Remove Duplicates'
-  task merge_duplicates: :environment do
-    ## MERGING EXAMPLE ##
-    # ey = Group.find_by(name: 'EY')
-    # ernst_and_young = Group.find_by(name: 'Ernst & Young')
-    # ey.merge_into(ernst_and_young)
+  # desc 'Create a group for all sole trader lobbyists'
+  # task create_sole_trader_groups: :environment do
+  #   lobbyist_people = Group.find_by(name: 'Lobbyists').people
+  #   sole_traders  = lobbyist_people.select{|person| person.memberships.count == 1 }
 
-    # # CMAX and Clubs NSW already fixed in map_group_names.rb
-    # low_cmax = Group.find_by(name: 'Cmax Advisory')
-    # caps_cmax = Group.find_by(name: 'CMAX Advisory')
-    # p "Merging #{low_cmax.name} into #{caps_cmax.name}... "
-    # low_cmax.merge_into(caps_cmax)
+  #   sole_traders.each do |person|
+  #     group = RecordGroup.call("#{person.name} Lobbying")
+  #     p "Created group: #{group.name}"
 
-    # low_clubs = Group.find_by(name: 'Registered Clubs Association of NSW (t/as Clubsnsw)')
-    # caps_clubs = Group.find_by(name: 'Registered Clubs Association of NSW (T/As ClubsNSW)')
-    # p "Merging #{low_clubs.name} into #{caps_clubs.name}... "
-    # low_clubs.merge_into(caps_clubs)
+  #     membership = Membership.create(group: group, member: person, member_type: 'Person')
+  #     Position.create(membership: membership, title: 'Sole Trader')
+  #   end
+  # end
 
-    # # was created as group with person name and with lobbying suffix
-    # jannette_group = Group.find_by(name: 'Jannette Cotterell')
-    # jannette_lobbying = Group.find_by(name: 'Jannette Cotterell Lobbying')
-    # p "Merging #{jannette_group.name} into #{jannette_lobbying.name}... "
-    # jannette_group.merge_into(jannette_lobbying)
+  # desc 'Clear Cache for Network Graph and Count'
+  # task clear_cache: :environment do
+  #   Group.update_all(cached_data: {})
+  #   Person.update_all(cached_data: {})
 
-    # # is duplicated in the lobbyists category. fixed memberhip to validate for duplicates
-    # lobbyist_category = Group.find_by(name: 'Lobbyists')
-    # memberships = Membership.where(group: lobbyist_category, member: jannette_lobbying)
-    # if memberships.count > 1
-    #   memberships.last.destroy
-    #   p "Deleted duplicate membership for #{jannette_lobbying.name}"
-    # end
-    # idameno_123_abn = Group.find_by(name: 'Idameneo (No 123) Pty Ltd')
-    # idameno_123_dot = Group.find_by(name: 'Idameneo (No. 123) Pty Ltd')
-    # idameno_123_abn.other_names << 'The Artlu Unit Trust'
-    # idameno_123_abn.save
-    # idameno_123_dot.merge_into(idameno_123_abn)
+  # end
 
-    # smart_short = Group.find_by(name: 'Smart Energy Council')
-    # smart_long = Group.find_by(name: 'Smart Energy Council (previously Australian Solar Council)')
-    # smart_long.merge_into(smart_short)
-    # smart_short.other_names << 'Australian Solar Council'
-    # smart_short.save
+  # desc 'Back Fill all the Aus Tender Contracts going back to 2018-01-01'
+  # # This task can be deleted when completed
+  # task backfill_contracts: :environment do
+  #   start_date = Date.new(2018, 1, 1)
 
-    # union_short = Group.find_by(name: 'The Union Education Foundation')
-    # union_long = Group.find_by(name: 'The Union Education Foundation Limited')
-    # union_long.merge_into(union_short)
+  #   backfill = ContractBackfill.first_or_create!(last_processed_date: start_date)
 
-    tamboran_short = Group.find_by(name: 'Tamboran Resources')
-    tamboran_long = Group.find_by(name: 'Tamboran Resources Limited')
+  #   puts "Backfill starting at #{backfill.last_processed_date}"
 
-    tamboran_long.merge_into(tamboran_short)
-    tamboran_short.other_names << 'Tamboran Resources Limited'
-    tamboran_short.save
-
-    p 'done.'
-  end
-
-  desc 'Create a group for all sole trader lobbyists'
-  task create_sole_trader_groups: :environment do
-    lobbyist_people = Group.find_by(name: 'Lobbyists').people
-    sole_traders  = lobbyist_people.select{|person| person.memberships.count == 1 }
-
-    sole_traders.each do |person|
-      group = RecordGroup.call("#{person.name} Lobbying")
-      p "Created group: #{group.name}"
-
-      membership = Membership.create(group: group, member: person, member_type: 'Person')
-      Position.create(membership: membership, title: 'Sole Trader')
-    end
-  end
-
-  desc 'Clear Cache for Network Graph and Count'
-  task clear_cache: :environment do
-    Group.update_all(cached_data: {})
-    Person.update_all(cached_data: {})
-
-  end
-
-  desc 'Back Fill all the Aus Tender Contracts going back to 2018-01-01'
-  # This task can be deleted when completed
-  task backfill_contracts: :environment do
-    start_date = Date.new(2018, 1, 1)
-
-    backfill = ContractBackfill.first_or_create!(last_processed_date: start_date)
-
-    puts "Backfill starting at #{backfill.last_processed_date}"
-
-    BackfillContractsMasterJob.perform_async(backfill.last_processed_date.to_s)
-  end
+  #   BackfillContractsMasterJob.perform_async(backfill.last_processed_date.to_s)
+  # end
 end

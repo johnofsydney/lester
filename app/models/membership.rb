@@ -3,10 +3,13 @@ class Membership < ApplicationRecord
   belongs_to :group
   has_many :positions, dependent: :destroy
 
-  validates :member_type, :presence => true
-  validates :group_id, :uniqueness => { :scope => [:member_type, :member_id] }
-
-  # validates :person_id, uniqueness: { scope: :group_id, message: "should have one membership per group" }
+  validates :member_id, :member_type, :group_id, presence: true
+  # a member might belong to the same group more than once over time
+  # in that case there would be a membership record for each time period
+  # eg Wayne Rooney
+  # 2002–2004	Everton
+  # 2004–2017	Manchester United
+  # 2017–2018	Everton
 
   def nodes
     [member, group]
@@ -27,5 +30,11 @@ class Membership < ApplicationRecord
 
   def last_position
     positions.order(start_date: :desc).first
+  end
+
+  def self.duplicates
+    Membership.group('member_type', 'member_id', 'group_id')
+              .having('COUNT(*) > 1')
+              .pluck(:member_type, :member_id, :group_id, 'ARRAY_AGG(id)')
   end
 end

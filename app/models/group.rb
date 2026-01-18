@@ -176,4 +176,16 @@ class Group < ApplicationRecord
       NAMES.send(key).to_h.values
     end.flatten.uniq
   end
+
+  def self.find_by_name_i(name)
+    Group.where('LOWER(name) = ?', name.downcase).first
+  end
+
+  def self.lobbyists_category
+    Group.find(1292)
+  end
+
+  def self.client_of_lobbyists_category
+    Group.find(1643)
+  end
 end
