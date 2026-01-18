@@ -14,10 +14,13 @@ class RecordGroup
   def call
     if business_number.present?
       Group.find_by(business_number:) || find_group_and_append_business_number || create_group_with_business_number
-    elsif (group = Group.find_by(name:))
+    elsif (group = Group.find_by_name_i(name)) # rubocop:disable Rails/DynamicFindBy
         group
     elsif TradingName.where(name:).count > 1
-        raise "Cannot Disambiguate Trading name: #{name}"
+        Rails.logger.info("Multiple trading names found for: #{name}")
+        NewRelic::Agent.notice_error("Cannot Disambiguate Trading name: #{name}")
+
+        nil
     elsif (tn = TradingName.find_by(name:))
         tn.owner
     else
@@ -26,7 +29,7 @@ class RecordGroup
   end
 
   def find_group_and_append_business_number
-    group = Group.find_by(name:)
+    group = Group.find_by_name_i(name) # rubocop:disable Rails/DynamicFindBy
     return if group.nil?
 
     group.update!(business_number:)
@@ -43,7 +46,7 @@ class RecordGroup
       group.save!
     end
 
-    UpdateGroupNamesFromAbnJob.perform_async(group.id)
+    UpdateGroupNamesFromAbnJob.perform_async(group.id) if group.id.present?
 
     group
   end

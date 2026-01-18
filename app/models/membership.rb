@@ -31,4 +31,10 @@ class Membership < ApplicationRecord
   def last_position
     positions.order(start_date: :desc).first
   end
+
+  def self.duplicates
+    Membership.group('member_type', 'member_id', 'group_id')
+              .having('COUNT(*) > 1')
+              .pluck(:member_type, :member_id, :group_id, 'ARRAY_AGG(id)')
+  end
 end
