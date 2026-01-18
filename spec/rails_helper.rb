@@ -70,6 +70,8 @@ RSpec.configure do |config|
 
   # Optional: clear jobs between tests, default is each
   config.before { Sidekiq::Worker.clear_all }
+
+  config.example_status_persistence_file_path = 'tmp/spec_examples.txt'
 end
 
 require 'shoulda/matchers'
