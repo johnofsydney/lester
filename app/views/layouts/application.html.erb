@@ -48,8 +48,11 @@
 
     <%= render MenuComponent.new %>
 
-    <div class="container">
-      <%= yield %>
+    <div class="d-flex">
+      <div class="container flex-grow-1">
+        <%= yield %>
+      </div>
+      <%= yield :admin_sidebar %>
     </div>
 
     <%= render FooterComponent.new %>

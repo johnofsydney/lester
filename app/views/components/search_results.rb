@@ -14,7 +14,16 @@ class SearchResults < ApplicationView
 
         href = "/#{result.searchable_type.downcase.pluralize}/#{result.searchable_id}"
         link_text = result.content
-        a(href:) { link_text }
+
+        suffix = if result.searchable_type == "TradingName"
+          result.searchable_type.constantize.find(result.searchable_id).owner.name
+        else
+          nil
+        end
+
+        a(href:) { plain link_text }
+
+        plain " (#{suffix})" if suffix
       end
     end
   end

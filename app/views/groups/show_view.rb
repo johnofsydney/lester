@@ -1,4 +1,5 @@
 class Groups::ShowView < ApplicationView
+  include Phlex::Rails::Helpers::ContentFor
 
   attr_reader :group
 
@@ -39,5 +40,17 @@ class Groups::ShowView < ApplicationView
       heading: "Connected to #{group.name}",
       summarise_for: Group.summarise_for(group)
     )
+
+    if Current.admin_user?
+      content_for :admin_sidebar do
+        div(
+          class: 'admin-links d-none d-lg-flex flex-column align-items-start bg-light ps-4 pe-4',
+          style: 'min-width: 250px; min-height: 100vh;'
+        ) do
+          a(href: "/admin/groups/#{group.id}/edit", class: 'btn btn-sm btn-outline-primary me-2 mb-2') { 'Edit Group in Admin' }
+          a(href: "/admin/groups/merge_into?source_group_id=#{group.id}", class: 'btn btn-sm btn-outline-danger') { 'Merge Group in Admin' }
+        end
+      end
+    end
   end
 end

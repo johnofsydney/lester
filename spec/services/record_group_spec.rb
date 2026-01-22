@@ -223,8 +223,8 @@ RSpec.describe RecordGroup, type: :service do
       'The Pharmacy Guild of Australia' => 'The Pharmacy Guild of Australia',
       'Pharmacy Guild of Australia' => 'The Pharmacy Guild of Australia',
       'The Pharmacy Guild' => 'The Pharmacy Guild of Australia',
-      'Arafura Rare Earths' => 'Arafura Resources',
-      'Arafura Resources' => 'Arafura Resources',
+      'Arafura Rare Earths' => 'Arafura Rare Earths',
+      'Arafura Resources' => 'Arafura Rare Earths',
     }
   end
 
@@ -235,17 +235,17 @@ RSpec.describe RecordGroup, type: :service do
       service = described_class.new('Test Name', nil, mapper)
       expect(service.name).to eq('Test Name')
     end
-
-    xit 'uses the names from the combo', :aggregate_failures do
-      name_combos.each do |name, expected|
-        service = described_class.new(name)
-        expect(service.name).to eq(expected)
-      end
-    end
   end
 
   describe '.call' do
     context 'when the mapper is AEC Donations' do
+
+      it 'uses the names from the combo', :aggregate_failures do
+        name_combos.each do |name, expected|
+          service = described_class.new(name, nil, mapper)
+          expect(service.name).to eq(expected)
+        end
+      end
 
       before do
         allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
