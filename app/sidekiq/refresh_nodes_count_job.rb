@@ -2,8 +2,12 @@ require 'sidekiq-scheduler'
 
 class RefreshNodesCountJob
   include Sidekiq::Job
-  # There are ~280k people and ~50k groups,
-  # Running 2000 jobs per 5 mins would take ~80 mins to complete a full cycle
+  # as of 2026-1-22 these are the counts:
+  # sunshine01(prod)> Group.count
+  # => 123_968
+  # sunshine01(prod)> Person.count
+  # => 231_815
+  # approx 14 hours to run a full cycle at 2000 per 5 mins
 
   QUANTITY = 2000
 
