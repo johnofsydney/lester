@@ -49,5 +49,5 @@
       class: IngestContractsDateJob
     # Every day run the RefreshNodesCountJob
     refresh_nodes_count_job:
-      cron: '0 18 * * *' # Every day at 4am
+      cron: '15 * * * *' # Every hour at 15 mins past the hour
       class: RefreshNodesCountJob

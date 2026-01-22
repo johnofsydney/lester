@@ -23,7 +23,11 @@ module CachedMethods
   end
 
   def nodes_count
-    if nodes_count_cached_at && nodes_count_cached_at > 1.week.ago && nodes_count_cached
+    if nodes_count_cached_at && # cached timestamp exists
+       nodes_count_cached_at > 1.week.ago && # timestamp within last week
+       nodes_count_cached # cached value exists
+
+      # return cached value
       nodes_count_cached
     else
       NodeCountJob.perform_async(self.class.name, id) unless Sidekiq::Queue.new('default').size >= 500
