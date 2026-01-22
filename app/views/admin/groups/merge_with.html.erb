@@ -1,0 +1,62 @@
+<h2>The Group: <%= @current_group.name %> will be merged with another group. This action cannot be undone. The second group will be destroyed</h2>
+
+<div style="margin-top: 20px; padding: 15px; border: 2px solid #28a745; background-color: #e8f5e9;">
+  <h3>Search for Group</h3>
+  <%= form_with url: search_groups_admin_group_path(@current_group), method: :post, local: true do |form| %>
+    <div>
+      <%= form.label :query, "Search by name:" %><br>
+      <%= form.text_field :query, value: @search_query, placeholder: "Enter group name..." %>
+      <%= form.hidden_field :current_group_id, value: @current_group.id %>
+    </div>
+    <div style="margin-top: 10px;">
+      <%= form.submit "Search" %>
+    </div>
+  <% end %>
+</div>
+
+<% if @search_results.present? %>
+  <div style="margin-top: 20px; padding: 15px; border: 2px solid #6c757d; background-color: #f8f9fa;">
+    <h3>Search Results</h3>
+    <% @search_results.each do |result| %>
+      <div style="padding: 10px; margin: 5px 0; border: 1px solid #dee2e6; background-color: white;">
+        <strong><%= result.searchable.name %></strong> (ID: <%= result.searchable_id %>) (ABN: <%= result.searchable.business_number %>)<br>
+        <%= form_with url: preview_merge_admin_group_path(@current_group), method: :post, local: true, style: "display: inline; margin-left: 10px;" do |form| %>
+          <%= form.hidden_field :merge_with_group_id, value: result.searchable_id %>
+          <%= form.hidden_field :current_group_id, value: @current_group.id %>
+          <%= form.submit "Select This Group", style: "padding: 5px 10px;" %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+
+<div style="margin-top: 20px; padding: 15px; border: 2px solid #007bff; background-color: #e7f3ff;">
+  <h3>Group ID</h3>
+  <%= form_with url: preview_merge_admin_group_path(@current_group), method: :post, local: true do |form| %>
+    <div>
+      <%= form.label :merge_with_group_id, "Enter group ID to merge with:" %><br>
+      <%= form.number_field :merge_with_group_id, value: @merge_with_group_id, style: "width: 120px;" %>
+      <%= form.hidden_field :current_group_id, value: @current_group.id %>
+    </div>
+    <div style="margin-top: 10px;">
+      <%= form.submit "Preview Group" %>
+    </div>
+  <% end %>
+</div>
+
+<% if @merge_with_group.present? %>
+  <div style="margin-top: 20px; padding: 15px; border: 2px solid #ffcc00; background-color: #fff9e6;">
+    <h3>Confirmation</h3>
+    <p><strong>Current Group:</strong> <%= @current_group.name %> (ID: <%= @current_group.id %>)</p>
+    <p><strong>Will be merged into:</strong> <%= @merge_with_group.name %> (ID: <%= @merge_with_group.id %>)</p>
+    <p style="color: #cc0000; font-weight: bold;">This action cannot be undone!</p>
+
+    <%= form_with url: perform_merge_admin_group_path(@current_group), method: :post, local: true do |form| %>
+      <%= form.hidden_field :merge_with_group_id, value: @merge_with_group.id %>
+      <%= form.hidden_field :current_group_id, value: @current_group.id %>
+      <div>
+        <%= form.submit "Confirm Merge", data: { confirm: "Are you absolutely sure you want to merge #{@current_group.name} into #{@merge_with_group.name}?" } %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
