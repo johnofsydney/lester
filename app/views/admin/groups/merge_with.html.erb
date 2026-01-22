@@ -1,4 +1,6 @@
-<h2>The Group: <%= @current_group.name %> will be merged with another group. This action cannot be undone. The second group will be destroyed</h2>
+<h3>The Group: <%= @current_group.name %> will be merged with another group. This action cannot be undone. The second group will be destroyed</h3>
+
+<h4><%= link_to "Return to main view", "/groups/#{@current_group.id}" %></h4>
 
 <div style="margin-top: 20px; padding: 15px; border: 2px solid #28a745; background-color: #e8f5e9;">
   <h3>Search for Group</h3>

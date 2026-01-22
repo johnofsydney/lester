@@ -44,11 +44,11 @@ class Groups::ShowView < ApplicationView
     if Current.admin_user?
       content_for :admin_sidebar do
         div(
-          class: 'admin-links d-none d-lg-flex flex-column align-items-start bg-light ps-4 pe-4',
+          class: 'admin-links d-none d-lg-flex flex-column align-items-start bg-light ps-4 pe-4 mt-4',
           style: 'min-width: 250px; min-height: 100vh;'
         ) do
-          a(href: "/admin/groups/#{group.id}/edit", class: 'btn btn-sm btn-outline-primary me-2 mb-2') { 'Edit Group in Admin' }
-          a(href: "/admin/groups/merge_into?source_group_id=#{group.id}", class: 'btn btn-sm btn-outline-danger') { 'Merge Group in Admin' }
+          a(href: "/admin/groups/#{group.id}", class: 'btn btn-sm btn-outline-primary mb-2 w-100') { 'Edit Group in Admin' }
+          a(href: "/admin/groups/#{group.id}/merge_with?source_group_id=#{group.id}", class: 'btn btn-sm btn-outline-danger w-100') { 'Merge Group in Admin' }
         end
       end
     end
