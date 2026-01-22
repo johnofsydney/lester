@@ -24,8 +24,8 @@ module CachedMethods
 
   def nodes_count
     if nodes_count_cached_at && # cached timestamp exists
-        nodes_count_cached_at > 1.week.ago && # timestamp within last week
-        nodes_count_cached # cached value exists
+       nodes_count_cached_at > 1.week.ago && # timestamp within last week
+       nodes_count_cached # cached value exists
 
       # return cached value
       nodes_count_cached
