@@ -41,7 +41,7 @@ class Nodes::Merge
 
   def handle_trading_names
     argument_node.trading_names.find_each do |trading_name|
-      trading_name.update!(node: receiver_node)
+      trading_name.update!(owner: receiver_node)
     end
   end
 
@@ -50,7 +50,9 @@ class Nodes::Merge
     return if argument_node.business_number.blank?
 
     business_number = argument_node.business_number.strip
-    argument_node.update!(business_number: nil)
+    # rubocop:disable Rails/SkipsModelValidations
+    argument_node.update_column(:business_number, nil)
+    # rubocop:enable Rails/SkipsModelValidations
     receiver_node.update!(business_number:)
   end
 
