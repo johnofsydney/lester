@@ -178,11 +178,16 @@ module NodeMethods
   def merge!(other_entity)
     raise 'Cannot merge self into self' if other_entity == self
     raise 'Cannot merge different types' unless other_entity.class == self.class
+    raise 'Cannot merge where both groups have ABN' if both_have_business_number?(other_entity)
 
     Nodes::Merge.call(receiver_node: self, argument_node: other_entity)
   end
 
   def ==(other)
     self.class == other.class && self.id == other.id
+  end
+
+  def both_have_business_number?(other_entity)
+    business_number.present? && other_entity.business_number.present?
   end
 end

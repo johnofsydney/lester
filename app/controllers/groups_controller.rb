@@ -1,4 +1,6 @@
 class GroupsController < ApplicationController
+  rate_limit to: 10, within: 1.minute, with: -> { redirect_to search_path, alert: "Too many requests, Please try in a minute..." }
+
   include Constants
 
   before_action :set_group, only: %i[ show edit update destroy ]
@@ -29,7 +31,7 @@ class GroupsController < ApplicationController
       render Groups::ShowView.new(group: @group)
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
-      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
+      render Common::PleaseRefreshLater.new
     end
   end
 

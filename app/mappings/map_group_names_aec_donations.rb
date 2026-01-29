@@ -8,7 +8,7 @@ class MapGroupNamesAecDonations < MapGroupNamesBase
 
     name = name.gsub(/\s+/, ' ').strip
 
-    return 'Get Up Limited' if name.match?(/(GetUp|Get Up)/i)
+    return 'Get Up Limited' if name.match?(/^(GetUp|Get Up)/i)
     return 'Australian Hotels Association' if name.match?(/Australian Hotels Association/i)
     return 'Advance Australia' if name.match?(/Advance Aus|Advanced Aus|^Advance$/i)
     return "It's Not a Race Limited" if name.match?(/(Not A Race|Note a Race)/i)
