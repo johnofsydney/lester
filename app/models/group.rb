@@ -113,6 +113,27 @@ class Group < ApplicationRecord
       .distinct
   }
 
+  # Scope: has at least one person
+  scope :with_people, -> {
+    joins(:people).distinct
+  }
+  # Scope: has at least one group (as member)
+  scope :with_groups, -> {
+    joins(:groups).distinct
+  }
+
+  scope :created_since, ->(since) {
+    where(created_at: since..Time.current)
+  }
+
+  # Scope: groups that are members of the lobbyists category
+  scope :lobbyist_groups, -> {
+    lobbyist_category = Group.lobbyists_category
+    joins("INNER JOIN memberships ON memberships.member_id = groups.id AND memberships.member_type = 'Group'")
+      .where("memberships.group_id = ?", lobbyist_category.id)
+      .distinct
+  }
+
   def business_number=(value)
     return if value.nil?
 

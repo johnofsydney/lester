@@ -8,6 +8,10 @@ RSpec.describe MapGroupNamesAecDonations, type: :service do
       expect(described_class.new.call('Get Up Limited')).to eq('Get Up Limited')
     end
 
+    it 'is not too greedy on Get Up' do
+      expect(described_class.new.call('Abolish Get Up')).to eq('Abolish Get Up')
+    end
+
     it 'returns "Australian Hotels Association" for names containing "Australian Hotels Association"' do
       expect(described_class.new.call('Australian Hotels Association')).to eq('Australian Hotels Association')
     end
@@ -16,6 +20,12 @@ RSpec.describe MapGroupNamesAecDonations, type: :service do
       expect(described_class.new.call('Advance Aus')).to eq('Advance Australia')
       expect(described_class.new.call('Advanced Aus')).to eq('Advance Australia')
       expect(described_class.new.call('Advance')).to eq('Advance Australia')
+    end
+
+    it 'is not too greedy on Advance' do
+      expect(described_class.new.call('Advance Foobar')).to eq('Advance Foobar')
+      expect(described_class.new.call('Advancing Australia')).to eq('Advancing Australia')
+      expect(described_class.new.call('Widgets, Advance!')).to eq('Widgets, Advance!')
     end
 
     it 'returns "It\'s Not a Race Limited" for names containing "Not A Race"' do

@@ -25,7 +25,10 @@
 	}
 
 	#wrapper #title_bar {
-		max-width: 90%;
+		width: 100%;
+		padding: 10px 0 10px 20px;
+		border: none;
+		box-sizing: border-box;
 	}
 	// Your custom styles here
 	// For example, to change the default status-tag color:
