@@ -49,7 +49,9 @@ class Nodes::Merge
     return if receiver_node.business_number.present?
     return if argument_node.business_number.blank?
 
-    receiver_node.update!(business_number: argument_node.business_number)
+    business_number = argument_node.business_number.strip
+    argument_node.update!(business_number: nil)
+    receiver_node.update!(business_number:)
   end
 
   def handle_transfers
