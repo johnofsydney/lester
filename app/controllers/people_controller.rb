@@ -23,7 +23,7 @@ class PeopleController < ApplicationController
       render People::ShowView.new(person: @person)
     else
       BuildPersonCachedDataJob.perform_async(@person.id)
-      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
+      render Common::PleaseRefreshLater.new
     end
   end
 
