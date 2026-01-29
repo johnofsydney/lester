@@ -130,7 +130,7 @@ class Group < ApplicationRecord
   scope :lobbyist_groups, -> {
     lobbyist_category = Group.lobbyists_category
     joins("INNER JOIN memberships ON memberships.member_id = groups.id AND memberships.member_type = 'Group'")
-      .where("memberships.group_id = ?", lobbyist_category.id)
+      .where('memberships.group_id = ?', lobbyist_category.id)
       .distinct
   }
 
