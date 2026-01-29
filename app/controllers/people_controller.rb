@@ -1,6 +1,7 @@
 class PeopleController < ApplicationController
+  rate_limit to: 10, within: 1.minute, with: -> { redirect_to search_path, alert: "Too many requests, Please try in a minute..." }
+
   before_action :set_person, only: %i[ show edit update destroy post_to_socials]
-  before_action :authenticate_user!, only: %i[ new edit update destroy ]
   before_action :set_page, only: %i[ index ]
 
   # layout -> { ApplicationLayout }
