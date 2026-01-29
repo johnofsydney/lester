@@ -39,17 +39,25 @@
 
   <body>
     <% if notice.present? %>
-      <p class="notice"><%= notice %></p>
+      <div class="notice">
+        <p><%= notice %></p>
+      </div>
     <% end %>
 
     <% if alert.present? %>
-      <p class="alert"><%= alert %></p>
+      <div class="alert">
+        <p><%= alert %></p>
+
+      </div>
     <% end %>
 
     <%= render MenuComponent.new %>
 
-    <div class="container">
-      <%= yield %>
+    <div class="d-flex">
+      <div class="container flex-grow-1">
+        <%= yield %>
+      </div>
+      <%= yield :admin_sidebar %>
     </div>
 
     <%= render FooterComponent.new %>

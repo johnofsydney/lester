@@ -92,7 +92,7 @@ class RecordPersonOrGroup
     return 'group' if name.match?(/Get Up|Getup/i)
     return 'group' if name.match?(/ALP-|ALP -|Alp Bruce Fea/i)
     return 'group' if name.match?(/\bGrn\b/i)
-    return 'group' if name.match?(/\bKap\b/i)
+    return 'group' if name.match?(/^Kap$\b/i)
     return 'group' if name.match?(/\bWa-Alp\b/i)
     return 'group' if name.match?(/\LNP-Fed\b/i)
     return 'group' if name.match?(/ACP-VIC/i)

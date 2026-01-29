@@ -24,6 +24,7 @@ ActiveAdmin.register Group do
     selectable_column
     id_column
     column(:name, sortable: 'name')
+    column(:business_number, sortable: 'business_number')
     column('Memberships (as owning group)') do |group|
       group.memberships.count
     end
@@ -37,7 +38,6 @@ ActiveAdmin.register Group do
       row :id
       row :name
       row :business_number
-      row :other_names
       row :last_cached
       row :created_at
       row :updated_at
@@ -56,24 +56,54 @@ ActiveAdmin.register Group do
     link_to 'View Group', group_path(resource), method: :get
   end
 
-  # Add a "Merge Into" button on the show page
-  action_item :merge_into, only: :show do
-    link_to 'Merge Into', merge_into_admin_group_path(resource), method: :get
+  # Add a "Merge With" button on the show page
+  action_item :merge_with, only: :show do
+    link_to 'Merge With', merge_with_admin_group_path(resource), method: :get
   end
 
-  # Custom page for selecting a group to merge into
-  member_action :merge_into, method: :get do
+  # Custom route#action for the initial view of merging
+  member_action :merge_with, method: :get do
     @current_group = resource
-    render 'admin/groups/merge_into' # view for this action
+    render 'admin/groups/merge_with' # view for this action
   end
 
-  # Handle the merge logic
-  member_action :perform_merge, method: :post do
-    replacement_group = Group.find(params[:merge_into_group_id])
-    source_group = Group.find(params[:current_group_id])
+  # Custom route#action for searching groups by name
+  member_action :search_groups, method: :post do
+    @current_group = Group.find(params[:current_group_id])
+    @search_query = params[:query]
 
-    source_group.merge_into(replacement_group)
-    redirect_to admin_group_path(replacement_group), notice: "Group successfully merged into #{replacement_group.name}."
+    @search_results = PgSearch.multisearch(@search_query).where(searchable_type: 'Group') if @search_query.present?
+
+    render 'admin/groups/merge_with'
+  end
+
+  # Custom route#action for the 2nd view of merging - accept id of group to merge with
+  member_action :preview_merge, method: :post do
+    @current_group = Group.find(params[:current_group_id])
+    @merge_with_group_id = params[:merge_with_group_id]
+
+    if @merge_with_group_id.present?
+      @merge_with_group = Group.find_by(id: @merge_with_group_id)
+
+      if @merge_with_group.nil?
+        flash.now[:error] = "Group with ID #{@merge_with_group_id} not found."
+      elsif @merge_with_group.id == @current_group.id
+        flash.now[:error] = 'Cannot merge a group with itself.'
+        @merge_with_group = nil
+      end
+    end
+
+    render 'admin/groups/merge_with'
+  end
+
+  # Custom route#action for the action of merging - we have the two groups now for the merge
+  member_action :perform_merge, method: :post do
+    source_group = Group.find(params[:current_group_id])
+    replacement_group = Group.find(params[:merge_with_group_id])
+    replacement_group_name = replacement_group.name
+
+    source_group.merge!(replacement_group)
+    redirect_to admin_group_path(source_group), notice: "Group successfully merged with #{replacement_group_name}."
   end
 
   batch_action :add_to_category, form: -> {

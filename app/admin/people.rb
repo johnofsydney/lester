@@ -37,7 +37,6 @@ ActiveAdmin.register Person do
       row :name
       row :created_at
       row :updated_at
-      row :other_names
       row :linkedin_url
       row :linkedin_ingested
     end
