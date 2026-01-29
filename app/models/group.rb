@@ -81,6 +81,8 @@ class Group < ApplicationRecord
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
+  before_validation :strip_business_number
+
   # scopes
   scope :major_political_categories, -> do
     where(category: true).where(name: MAJOR_POLITICAL_CATEGORIES).order(:name)
@@ -133,12 +135,6 @@ class Group < ApplicationRecord
       .where('memberships.group_id = ?', lobbyist_category.id)
       .distinct
   }
-
-  def business_number=(value)
-    return if value.nil?
-
-    super(value.gsub(/\D/, ''))
-  end
 
   def parent_groups
     Group.joins(:memberships).where(memberships: { member: self, member_type: 'Group' }).where.not(id: self.id)
@@ -208,5 +204,13 @@ class Group < ApplicationRecord
 
   def self.client_of_lobbyists_category
     Group.find(1643)
+  end
+
+  private
+
+  def strip_business_number
+    return if business_number.nil?
+
+    self.business_number = business_number.gsub(/\D/, '')
   end
 end
