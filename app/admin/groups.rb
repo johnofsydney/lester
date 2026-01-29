@@ -24,6 +24,7 @@ ActiveAdmin.register Group do
     selectable_column
     id_column
     column(:name, sortable: 'name')
+    column(:business_number, sortable: 'business_number')
     column('Memberships (as owning group)') do |group|
       group.memberships.count
     end
