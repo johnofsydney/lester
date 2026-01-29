@@ -7,6 +7,6 @@ class Current < ActiveSupport::CurrentAttributes
   end
 
   def admin_user?
-    user && user.john?
+    user&.john?
   end
 end

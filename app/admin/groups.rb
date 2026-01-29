@@ -24,6 +24,7 @@ ActiveAdmin.register Group do
     selectable_column
     id_column
     column(:name, sortable: 'name')
+    column(:business_number, sortable: 'business_number')
     column('Memberships (as owning group)') do |group|
       group.memberships.count
     end
@@ -71,9 +72,7 @@ ActiveAdmin.register Group do
     @current_group = Group.find(params[:current_group_id])
     @search_query = params[:query]
 
-    if @search_query.present?
-      @search_results = PgSearch.multisearch(@search_query).where(searchable_type: 'Group')
-    end
+    @search_results = PgSearch.multisearch(@search_query).where(searchable_type: 'Group') if @search_query.present?
 
     render 'admin/groups/merge_with'
   end
@@ -89,7 +88,7 @@ ActiveAdmin.register Group do
       if @merge_with_group.nil?
         flash.now[:error] = "Group with ID #{@merge_with_group_id} not found."
       elsif @merge_with_group.id == @current_group.id
-        flash.now[:error] = "Cannot merge a group with itself."
+        flash.now[:error] = 'Cannot merge a group with itself.'
         @merge_with_group = nil
       end
     end

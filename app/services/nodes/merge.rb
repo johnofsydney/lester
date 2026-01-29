@@ -11,6 +11,7 @@ class Nodes::Merge
   def call
     raise 'Cannot merge node into itself' if receiver_node == argument_node
     raise 'Cannot merge different types of node' unless receiver_node.class == argument_node.class
+    raise 'Cannot merge where both groups have ABN' if both_have_business_number?
 
     # 1. Move all transfers from argument_node to receiver_node
     # If there are EQUIVALENT transfers (same giver, taker, effective date) for both nodes,
@@ -22,8 +23,10 @@ class Nodes::Merge
     # 4. Clear cached data on receiver_node (and call job to refresh counts etc)
     # 5. Return receiver_node
 
+    handle_business_number
     handle_transfers
     handle_memberships
+    handle_trading_names
 
     argument_node.destroy!
     receiver_node.reload
@@ -35,6 +38,19 @@ class Nodes::Merge
   end
 
   private
+
+  def handle_trading_names
+    argument_node.trading_names.find_each do |trading_name|
+      trading_name.update!(node: receiver_node)
+    end
+  end
+
+  def handle_business_number
+    return if receiver_node.business_number.present?
+    return if argument_node.business_number.blank?
+
+    receiver_node.update!(business_number: argument_node.business_number)
+  end
 
   def handle_transfers
     argument_node.outgoing_transfers.find_each do |transfer|
@@ -115,6 +131,10 @@ class Nodes::Merge
     elsif receiver_node.is_a?(Person)
       BuildPersonCachedDataJob.perform_async(receiver_node.id)
     end
+  end
+
+  def both_have_business_number?
+    receiver_node.business_number.present? && argument_node.business_number.present?
   end
 
   attr_reader :receiver_node, :argument_node

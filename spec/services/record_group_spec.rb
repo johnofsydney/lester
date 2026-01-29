@@ -239,6 +239,11 @@ RSpec.describe RecordGroup, type: :service do
 
   describe '.call' do
     context 'when the mapper is AEC Donations' do
+      let(:mapper) { MapGroupNamesAecDonations.new }
+
+      before do
+        allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+      end
 
       it 'uses the names from the combo', :aggregate_failures do
         name_combos.each do |name, expected|
@@ -246,12 +251,6 @@ RSpec.describe RecordGroup, type: :service do
           expect(service.name).to eq(expected)
         end
       end
-
-      before do
-        allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
-      end
-
-      let(:mapper) { MapGroupNamesAecDonations.new }
 
       context 'when the group does not already exist' do
         it 'creates a group with the given name' do
