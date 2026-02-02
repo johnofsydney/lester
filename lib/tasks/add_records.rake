@@ -33,7 +33,7 @@ namespace :lester do
 
     annual_donation_files = [
     #     'csv_data/Annual_Donations_Made_2024.csv',
-        'csv_data/Annual_Donations_Made_2025.csv'
+      'csv_data/Annual_Donations_Made_2025.csv'
     ]
 
     # using data sourced from the AEC
