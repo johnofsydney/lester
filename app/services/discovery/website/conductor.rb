@@ -1,4 +1,4 @@
-class AnyWebsite::Conductor
+class Discovery::Website::Conductor
   def call
     # group_name = 'Club Marconi'
     # group = RecordGroup.call(group_name)
@@ -32,8 +32,8 @@ class AnyWebsite::Conductor
       title_selector: '.lightBoxBlock-item-blurb'
     }
 
-    page = AnyWebsite::PageDownloader.new.call(url)
-    people = AnyWebsite::PageParser.new.call(page:, **args)
+    page = Discovery::Website::PageDownloader.new.call(url)
+    people = Discovery::Website::PageParser.new.call(page:, **args)
 
     people.each do |person_data|
       name = person_data[:name]

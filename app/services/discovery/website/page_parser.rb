@@ -1,4 +1,4 @@
-class AnyWebsite::PageParser
+class Discovery::Website::PageParser
   def call(page:, people_card_selector:, name_selector:, title_selector:)
     doc = Nokogiri::HTML(page)
 

@@ -1,4 +1,4 @@
-class AnyWebsite::PageDownloader
+class Discovery::Website::PageDownloader
 
   def call(url)
     conn = Faraday.new(url:)
