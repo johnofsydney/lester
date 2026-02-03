@@ -1,0 +1,65 @@
+<h2>Leadership Website Preview</h2>
+
+<div style="margin-bottom: 20px; padding: 15px; border: 2px solid #007bff; background-color: #e7f3ff;">
+  <h3>Configuration</h3>
+  <p><strong>URL:</strong> <%= @url %></p>
+  <p><strong>People Card Selector:</strong> <%= @people_card_selector %></p>
+  <p><strong>Name Selector:</strong> <%= @name_selector %></p>
+  <p><strong>Title Selector:</strong> <%= @title_selector %></p>
+</div>
+
+<% if @preview_success %>
+  <div style="margin-bottom: 20px; padding: 15px; border: 2px solid #28a745; background-color: #e8f5e9;">
+    <h3>Preview Results (<%= @results.length %> people found)</h3>
+
+    <% if @results.any? %>
+      <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+        <thead>
+          <tr style="background-color: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+            <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">#</th>
+            <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">Name</th>
+            <th style="padding: 10px; text-align: left; border: 1px solid #dee2e6;">Title</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @results.each_with_index do |person, index| %>
+            <tr style="border-bottom: 1px solid #dee2e6;">
+              <td style="padding: 10px; border: 1px solid #dee2e6;"><%= index + 1 %></td>
+              <td style="padding: 10px; border: 1px solid #dee2e6;"><%= person[:name] %></td>
+              <td style="padding: 10px; border: 1px solid #dee2e6;"><%= person[:title] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+      <div style="margin-top: 20px; padding: 15px; background-color: #fff9e6; border: 2px solid #ffcc00;">
+        <h4>Are these results correct?</h4>
+        <p>If the preview looks good, click "Save Previewed People as Group Members" to save it to the database.</p>
+
+        <%= form_with url: record_people_admin_leadership_website_path(@current_leadership_website), method: :post, local: true do |form| %>
+          <%= form.hidden_field 'leadership_website[url]', value: @url %>
+          <%= form.hidden_field 'leadership_website[people_card_selector]', value: @people_card_selector %>
+          <%= form.hidden_field 'leadership_website[name_selector]', value: @name_selector %>
+          <%= form.hidden_field 'leadership_website[title_selector]', value: @title_selector %>
+          <%= form.submit "Save Previewed People as Group Members", style: "padding: 10px 20px; background-color: #28a745; color: white; border: none; cursor: pointer;" %>
+        <% end %>
+      </div>
+    <% else %>
+      <p style="color: #856404; font-weight: bold;">No people were found with the current selectors.</p>
+    <% end %>
+  </div>
+<% else %>
+  <div style="margin-bottom: 20px; padding: 15px; border: 2px solid #dc3545; background-color: #f8d7da;">
+    <h3>Error</h3>
+    <p style="color: #721c24;"><%= @error_message %></p>
+  </div>
+<% end %>
+
+<div style="margin-top: 20px;">
+  <% if @current_leadership_website.persisted? %>
+    <%= link_to "← Back to Edit", admin_leadership_website_path(@current_leadership_website), style: "padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; display: inline-block;" %>
+  <% else %>
+    <%= link_to "← Back to New", new_admin_leadership_website_path, style: "padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; display: inline-block;" %>
+  <% end %>
+  <%= link_to "← Back to List", admin_leadership_websites_path, style: "padding: 10px 20px; background-color: #6c757d; color: white; text-decoration: none; display: inline-block; margin-left: 10px;" %>
+</div>
