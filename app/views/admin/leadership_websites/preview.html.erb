@@ -2,13 +2,13 @@
 
 <div style="margin-bottom: 20px; padding: 15px; border: 2px solid #007bff; background-color: #e7f3ff;">
   <h3>Configuration</h3>
-  <p><strong>URL:</strong> <%= @url %></p>
-  <p><strong>People Card Selector:</strong> <%= @people_card_selector %></p>
-  <p><strong>Name Selector:</strong> <%= @name_selector %></p>
-  <p><strong>Title Selector:</strong> <%= @title_selector %></p>
+  <p><strong>URL:</strong> <%= @current_leadership_website.url %></p>
+  <p><strong>People Card Selector:</strong> <%= @current_leadership_website.people_card_selector %></p>
+  <p><strong>Name Selector:</strong> <%= @current_leadership_website.name_selector %></p>
+  <p><strong>Title Selector:</strong> <%= @current_leadership_website.title_selector %></p>
 </div>
 
-<% if @preview_success %>
+<% if @results.any? %>
   <div style="margin-bottom: 20px; padding: 15px; border: 2px solid #28a745; background-color: #e8f5e9;">
     <h3>Preview Results (<%= @results.length %> people found)</h3>
 

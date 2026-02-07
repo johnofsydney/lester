@@ -1,24 +1,29 @@
 class Discovery::Website::PageParser
   def self.call(page:, people_card_selector:, name_selector:, title_selector:)
-    new.call(
-      page:,
-      people_card_selector:,
-      name_selector:,
-      title_selector:
-    )
+    new(page:, people_card_selector:, name_selector:, title_selector:).call
   end
 
-  def call(page:, people_card_selector:, name_selector:, title_selector:)
+  def initialize(page:, people_card_selector:, name_selector:, title_selector:)
+    @page = page
+    @people_card_selector = people_card_selector
+    @name_selector = name_selector
+    @title_selector = title_selector
+  end
+
+  def call
     doc = Nokogiri::HTML(page)
 
-    doc.css(people_card_selector).map{ |person| to_h(person, name_selector:, title_selector:)}
-                                  .reject{ |person_data| person_data[:name].blank? && person_data[:title].blank?}
+    doc.css(people_card_selector).map { |person| extract_name_and_title(person) }
   end
 
-  def to_h(person, name_selector:, title_selector:)
-      name = person.css(name_selector).text.strip
-      title = person.css(title_selector).text.strip
+  private
 
-      { name:, title: }
+  attr_reader :page, :people_card_selector, :name_selector, :title_selector
+
+  def extract_name_and_title(person)
+      {
+        name: person.css(name_selector).text.strip,
+        title: person.css(title_selector).text.strip
+      }
   end
 end

@@ -15,8 +15,7 @@ ActiveAdmin.register Group do
   #   permitted
   # end
 
-  permit_params :name
-  permit_params :business_number
+  permit_params :name, :business_number
 
   filter :id
   filter :name
