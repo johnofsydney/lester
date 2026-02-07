@@ -78,10 +78,10 @@ ActiveAdmin.register LeadershipWebsite do
     )
 
     people.each do |person_data|
-      name = person_data[:name]
+      person_name = person_data[:name]
       title = person_data[:title]
 
-      Group::RecordRow.new(group: resource.group, name:, title:).call
+      Group::RecordRow.new(group: resource.group, person_name:, title:).call
     end
 
     redirect_to admin_memberships_path, notice: "People have been recorded to the group #{resource.group.name}."

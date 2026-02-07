@@ -1,7 +1,7 @@
 # Creates or Finds a Membership Record for a Group and Person (and a Position if title given)
 # args
 # group:, Group record
-# name:, String person name
+# person_name:, String person name
 # title: String title -- optional, - Used for Position title
 # evidence: String evidence -- optional, - Used for Membership AND Position evidence
 # start_date: String or Date - used for Membership BUT NOT Position start_date,
@@ -9,9 +9,9 @@
 
 require 'capitalize_names'
 class Group::RecordRow
-  def initialize(group:, name:, title: nil, evidence: nil, start_date: nil, end_date: nil)
+  def initialize(group:, person_name:, title: nil, evidence: nil, start_date: nil, end_date: nil)
     @group = group
-    @name = name
+    @person_name = person_name
     @title = nice_title(title)
     @evidence = evidence
     @start_date = start_date
@@ -19,14 +19,14 @@ class Group::RecordRow
   end
 
   def call
-    person = RecordPerson.call(name)
+    person = RecordPerson.call(person_name)
     membership = Membership.find_or_create_by(group:, member: person)
     Position.find_or_create_by(membership:, title:) if title.present?
   end
 
   private
 
-  attr_reader :group, :name, :title, :evidence, :start_date, :end_date
+  attr_reader :group, :person_name, :title, :evidence, :start_date, :end_date
 
   def nice_title(title)
     return if title.blank?
