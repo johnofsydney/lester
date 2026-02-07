@@ -29,7 +29,7 @@ class Group::RecordRow
   attr_reader :group, :name, :title, :evidence, :start_date, :end_date
 
   def nice_title(title)
-    return unless title.present?
+    return if title.blank?
 
     regex_for_two_and_three_chars = /(\b\w{2,3}\b)|(\b\w{2,3}\d)/
     regex_for_downcase = /\bthe\b|\bof\b|\band\b|\bas\b|\bfor\b|\bis\b/i

@@ -64,7 +64,7 @@ ActiveAdmin.register LeadershipWebsite do
 
   # custom route#action triggered from the preview page to record people to the group
   member_action :record_people, method: :post do
-    raise unless resource.present?
+    raise if resource.blank?
 
     resource.update(reviewed_at: Time.current)
 

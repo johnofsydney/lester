@@ -32,7 +32,7 @@ namespace :lester do
     end
 
     annual_donation_files = [
-    #     'csv_data/Annual_Donations_Made_2024.csv',
+      #     'csv_data/Annual_Donations_Made_2024.csv',
     ]
 
     # using data sourced from the AEC
@@ -53,10 +53,10 @@ namespace :lester do
   #     'csv_data/ministries_turnbull.csv',
   #   ]
 
-    # # using data sourced from the AEC
-    # annual_donation_files.each do |file|
-    #   FileIngestor.annual_donor_ingest(file)
-    # end
+  # # using data sourced from the AEC
+  # annual_donation_files.each do |file|
+  #   FileIngestor.annual_donor_ingest(file)
+  # end
 
   #   # Using data sourced from the AEC
   #   FileIngestor.election_donations_ingest('csv_data/Election_Donations_Made_to_2022.csv')
