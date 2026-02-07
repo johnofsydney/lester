@@ -46,8 +46,8 @@ class FileIngestor
       csv.each do |row|
         donation_date = Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30) # saves bothering about the date format
         financial_year = Dates::FinancialYear.new(donation_date)
-        giver = RecordPersonOrGroup.call(row['Donor Name'])
-        taker = RecordPersonOrGroup.call(row['Donation Made To'])
+        giver = RecordPersonOrGroup.call(row['Donor Name'], mapper: MapGroupNamesAecDonations.new)
+        taker = RecordPersonOrGroup.call(row['Donation Made To'], mapper: MapGroupNamesAecDonations.new)
 
         transfer = Transfer.find_or_create_by(
           giver_id: giver.id,

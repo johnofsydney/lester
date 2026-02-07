@@ -33,14 +33,15 @@ namespace :lester do
 
     annual_donation_files = [
       #     'csv_data/Annual_Donations_Made_2024.csv',
+      'csv_data/Annual_Donations_Made_2025.csv'
     ]
 
     # using data sourced from the AEC
     annual_donation_files.each do |file|
-      # FileIngestor.annual_donor_ingest(file)
+      FileIngestor.annual_donor_ingest(file)
     end
 
-    FileIngestor.election_donations_ingest('csv_data/Election_Donations_published_2025.csv')
+    # FileIngestor.election_donations_ingest('csv_data/Election_Donations_published_2025.csv')
   end
 
   #   federal_parliamentarians = [
