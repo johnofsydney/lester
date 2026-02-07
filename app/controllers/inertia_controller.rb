@@ -25,7 +25,7 @@ class InertiaController < ApplicationController
     else
       BuildPersonCachedDataJob.perform_async(@person.id)
 
-      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
+      render Common::PleaseRefreshLater.new
     end
   end
 
@@ -48,7 +48,7 @@ class InertiaController < ApplicationController
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
 
-      render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
+      render Common::PleaseRefreshLater.new
     end
   end
 

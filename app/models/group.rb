@@ -67,6 +67,7 @@ class Group < ApplicationRecord
           )
 
   has_many :trading_names, as: :owner, dependent: :destroy
+  has_many :leadership_websites, dependent: :destroy
   # TODO: memberships are only working on one direction, need to fix this
   # affiliated groups are not being followed from child to parent to other child
   has_many :memberships, dependent: :destroy
@@ -82,6 +83,7 @@ class Group < ApplicationRecord
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
   before_validation :strip_business_number
+  before_validation :nullify_empty_string_business_number
 
   # scopes
   scope :major_political_categories, -> do
@@ -212,5 +214,9 @@ class Group < ApplicationRecord
     return if business_number.nil?
 
     self.business_number = business_number.gsub(/\D/, '')
+  end
+
+  def nullify_empty_string_business_number
+    self.business_number = nil if business_number.blank?
   end
 end

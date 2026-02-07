@@ -262,20 +262,20 @@ class FileIngestor
             # dont need start and end date because we dont know when they joined the local state party.
             Position.create(membership: state_membership, title: "Party Member (#{state_party.state})")
 
-          # Local Branch membership ==> too hard basket
-          #   # affiliate the branch with the state party
-          #   Membership.find_or_create_by(
-          #     member_type: "Group",
-          #     member_id: branch.id,
-          #     group: state_party,
-          #   ) unless senator || true
-          # else
-          #   # affiliate the branch with the federal party
-          #   Membership.find_or_create_by(
-          #     member_type: "Group",
-          #     member_id: branch.id,
-          #     group: federal_party,
-          #   ) unless senator || true
+            # Local Branch membership ==> too hard basket
+            #   # affiliate the branch with the state party
+            #   Membership.find_or_create_by(
+            #     member_type: "Group",
+            #     member_id: branch.id,
+            #     group: state_party,
+            #   ) unless senator || true
+            # else
+            #   # affiliate the branch with the federal party
+            #   Membership.find_or_create_by(
+            #     member_type: "Group",
+            #     member_id: branch.id,
+            #     group: federal_party,
+            #   ) unless senator || true
           end
         end
       end

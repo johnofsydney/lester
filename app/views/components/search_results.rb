@@ -31,9 +31,9 @@ class SearchResults < ApplicationView
   # rubocop:enable Style/EmptyElse
 end
 
-  # id: 32,
-  # content: "John Kirby",
-  # searchable_type: "Person",
-  # searchable_id: 32,
-  # created_at: Thu, 22 Feb 2024 10:39:14.518121000 UTC +00:00,
-  # updated_at: Thu, 22 Feb 2024 10:39:14.518121000 UTC +00:00>,
+# id: 32,
+# content: "John Kirby",
+# searchable_type: "Person",
+# searchable_id: 32,
+# created_at: Thu, 22 Feb 2024 10:39:14.518121000 UTC +00:00,
+# updated_at: Thu, 22 Feb 2024 10:39:14.518121000 UTC +00:00>,
