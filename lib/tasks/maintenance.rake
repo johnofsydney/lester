@@ -22,13 +22,15 @@ namespace :lester do
   task backfill_recruitment_category: :environment do
     count = 0
 
+    puts "Starting backfill of 'Recruitment and Labour Hire' category for relevant Individual Transactions..."
+
     Transfer.joins(:individual_transactions)
       .where(transfer_type: 'Government Contract(s)')
       .where(individual_transactions: { category: ['Temporary personnel services', 'Personnel recruitment'] })
       .select('DISTINCT ON (transfers.taker_type, transfers.taker_id) transfers.*')
       .each do |transfer|
         taker = transfer.taker
-        category = Group.find_by(name: 'Recruitment and Labour Hire')
+        category = Group.find_or_create_by!(name: 'Recruitment and Labour Hire', category: true)
 
         if taker.is_group? && category.present?
           taker.add_category(category_group: category)
