@@ -15,7 +15,7 @@ class AusTender::RecordIndividualTransaction
     return if IndividualTransaction.exists?(external_id: release.item_id)
     raise ValidationError("Invalid transaction data: #{release.inspect}") unless valid?
 
-    IndividualTransaction.create(
+    individual_transaction = IndividualTransaction.create(
       transfer:,
       amount:,
       effective_date: release.effective_date,
@@ -30,6 +30,9 @@ class AusTender::RecordIndividualTransaction
 
     # wait a moment to allow the lock prevention of running duplicates in quick succession
     RefreshSingleTransferAmountJob.perform_in(5.minutes, transfer.id)
+
+    # Tag the taker with category after a delay to help avoid running duplicates in quick succession
+    AusTender::CategorizeTakerJob.perform_in(10.minutes, individual_transaction.id)
   end
 
   def amount

@@ -1,11 +1,18 @@
-# This file can be deleted when all of the contracts have been ingested
+# When originally written this was to backfill historical data from AusTender contracts master data.
+# Re-purposing to run monthly to ensure any missed days are ingested.
+# As this is a backstop, mostly it won't fetch any new data.
 
 class BackfillContractsMasterJob
   include Sidekiq::Job
   sidekiq_options queue: :low, retry: 5
 
-  def perform(date_string)
-    target_date = Date.parse(date_string)
+  def perform(date_string = nil)
+    target_date = if date_string.present?
+      Date.parse(date_string)
+    else
+      Date.today.last_month.beginning_of_month
+    end
+
     return if target_date > Date.today
 
     # ------------------- Overload protection ---------------------
