@@ -27,7 +27,13 @@ Bundler/OrderedGems:
     - 'Gemfile'
 
 Layout/LineLength:
-  Max: 400
+  Max: 380
+  Exclude:
+    - 'app/views/home/index_view.rb'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'app/mappings/map_transaction_categories.rb'
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc', 'method_call']

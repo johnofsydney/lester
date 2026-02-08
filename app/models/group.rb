@@ -194,10 +194,7 @@ class Group < ApplicationRecord
     raise ArgumentError, 'Either category_group or category_name must be provided' if category_group.blank? && category_name.blank?
     return if self.is_category?
 
-    if category_group.nil?
-      category_group = Group.find_or_create_by!(name: category_name, category: true)
-    end
-
+    category_group = Group.find_or_create_by!(name: category_name, category: true) if category_group.nil?
     Membership.find_or_create_by!(group: category_group, member: self)
   end
 

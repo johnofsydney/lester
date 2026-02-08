@@ -18,17 +18,17 @@ namespace :lester do
     p potential_people
   end
 
-  desc "Backfill missing categories for Aus Tender Individual Transactions : Recruitment and Labour Hire"
+  desc 'Backfill missing categories for Aus Tender Individual Transactions : Recruitment and Labour Hire'
   task backfill_recruitment_category: :environment do
     count = 0
 
     puts "Starting backfill of 'Recruitment and Labour Hire' category for relevant Individual Transactions..."
 
     Transfer.joins(:individual_transactions)
-      .where(transfer_type: 'Government Contract(s)')
-      .where(individual_transactions: { category: ['Temporary personnel services', 'Personnel recruitment'] })
-      .select('DISTINCT ON (transfers.taker_type, transfers.taker_id) transfers.*')
-      .each do |transfer|
+            .where(transfer_type: 'Government Contract(s)')
+            .where(individual_transactions: { category: ['Temporary personnel services', 'Personnel recruitment'] })
+            .select('DISTINCT ON (transfers.taker_type, transfers.taker_id) transfers.*')
+            .each do |transfer|
         taker = transfer.taker
         category = Group.find_or_create_by!(name: 'Recruitment and Labour Hire', category: true)
 
@@ -37,9 +37,8 @@ namespace :lester do
           count += 1
           puts "Added category to Group ID #{taker.id} for Transfer ID #{transfer.id}"
         end
-
-      rescue => e
+    rescue StandardError => e
         puts "Error processing Transfer ID #{transfer.id}: #{e.message}"
-      end
+    end
   end
 end

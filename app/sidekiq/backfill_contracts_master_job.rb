@@ -8,10 +8,10 @@ class BackfillContractsMasterJob
 
   def perform(date_string = nil)
     target_date = if date_string.present?
-      Date.parse(date_string)
-    else
-      Date.today.last_month.beginning_of_month
-    end
+                    Date.parse(date_string)
+                  else
+                    Date.today.last_month.beginning_of_month
+                  end
 
     return if target_date > Date.today
 

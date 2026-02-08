@@ -20,6 +20,6 @@ class AusTender::CategorizeTaker
   end
 
   def category_name
-    @category ||= MapTransactionCategories.new.call(individual_transaction.category)
+    @category_name ||= MapTransactionCategories.new.call(individual_transaction.category)
   end
 end
