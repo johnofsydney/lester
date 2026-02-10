@@ -98,16 +98,7 @@ class Home::IndexView < ApplicationView
                 li { a(href: 'https://transparency.aec.gov.au/Donor', class: 'd-block mb-1') { 'AEC Election Donor Returns since 2007' } }
                 li { a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term', class: 'd-block mb-1') { 'Federal MPs and Senators since 2016' } }
                 li(class: 'fw-bold mt-3') { 'The following Ministries:' }
-                li do
-                  ul(class: 'list-unstyled ms-3') do
-                    li { a(href: 'https://en.wikipedia.org/wiki/First_Rudd_ministry') { 'Rudd Government' } }
-                    li { a(href: 'https://en.wikipedia.org/wiki/Second_Gillard_ministry') { 'Gillard Government' } }
-                    li { a(href: 'https://en.wikipedia.org/wiki/Abbott_ministry') { 'Abbott Government' } }
-                    li { a(href: 'https://en.wikipedia.org/wiki/First_Turnbull_ministry') { 'Turnbull Government' } }
-                    li { a(href: 'https://en.wikipedia.org/wiki/First_Morrison_ministry') { 'Morrison Government' } }
-                    li { a(href: 'https://en.wikipedia.org/wiki/Albanese_ministry') { 'Albanese Government' } }
-                  end
-                end
+
                 li { a(href: 'https://www.parliament.nsw.gov.au/members/pages/all-members.aspx') { 'Current Members of the NSW Parliament (2025)' } }
                 li { a(href: 'https://www.parliament.nsw.gov.au/members/formermembers/Pages/former-members.aspx') { 'Former Members of the NSW Parliament (except deceased members)' } }
                 li { a(href: 'https://lobbyists.ag.gov.au/register') { 'Lobbyists and the Clients Of Lobbyists' } }

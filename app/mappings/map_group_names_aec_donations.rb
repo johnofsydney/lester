@@ -32,7 +32,7 @@ class MapGroupNamesAecDonations < MapGroupNamesBase
     return 'Glencore Australia' if name.match?(/Glencore Australia/i)
     return 'Whitehaven Coal Limited' if name.match?(/Whitehaven Coal/i)
     return 'Woodside Energy' if name.match?(/Woodside Energy/i)
-    return 'Origin Energy' if name.match?(/Origin Energy/i)
+    return 'Origin Energy Pty Ltd' if name.match?(/Origin Energy Pty Ltd/i)
     return 'Sentinel Property Group' if name.match?(/Sentinel Property Group/i)
     return 'Chevron Australia Pty Ltd' if name.match?(/Chevron Australia/i)
     return 'Inpex Corporation' if name.match?(/Inpex/i)
@@ -44,7 +44,6 @@ class MapGroupNamesAecDonations < MapGroupNamesBase
 
     return 'NIB Health Funds Limited' if name.match?(/NIB Health Funds/i)
 
-    return 'Origin Energy' if name.match?(/Origin Energy/i)
     return 'Pricewaterhousecoopers' if name.match?(/Pricewaterhousecoopers/i)
     return 'CMAX Advisory' if name.match?(/CMAX (Advisory|Communications)/i)
     return 'Corporate Affairs Australia Pty Ltd' if name.match?(/Corporate Affairs (Australia Pty Ltd|Advisory)/i)

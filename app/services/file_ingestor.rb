@@ -46,8 +46,8 @@ class FileIngestor
       csv.each do |row|
         donation_date = Date.new( "20#{row['Financial Year'].last(2)}".to_i, 6, 30) # saves bothering about the date format
         financial_year = Dates::FinancialYear.new(donation_date)
-        giver = RecordPersonOrGroup.call(row['Donor Name'])
-        taker = RecordPersonOrGroup.call(row['Donation Made To'])
+        giver = RecordPersonOrGroup.call(row['Donor Name'], mapper: MapGroupNamesAecDonations.new)
+        taker = RecordPersonOrGroup.call(row['Donation Made To'], mapper: MapGroupNamesAecDonations.new)
 
         transfer = Transfer.find_or_create_by(
           giver_id: giver.id,
@@ -262,20 +262,20 @@ class FileIngestor
             # dont need start and end date because we dont know when they joined the local state party.
             Position.create(membership: state_membership, title: "Party Member (#{state_party.state})")
 
-          # Local Branch membership ==> too hard basket
-          #   # affiliate the branch with the state party
-          #   Membership.find_or_create_by(
-          #     member_type: "Group",
-          #     member_id: branch.id,
-          #     group: state_party,
-          #   ) unless senator || true
-          # else
-          #   # affiliate the branch with the federal party
-          #   Membership.find_or_create_by(
-          #     member_type: "Group",
-          #     member_id: branch.id,
-          #     group: federal_party,
-          #   ) unless senator || true
+            # Local Branch membership ==> too hard basket
+            #   # affiliate the branch with the state party
+            #   Membership.find_or_create_by(
+            #     member_type: "Group",
+            #     member_id: branch.id,
+            #     group: state_party,
+            #   ) unless senator || true
+            # else
+            #   # affiliate the branch with the federal party
+            #   Membership.find_or_create_by(
+            #     member_type: "Group",
+            #     member_id: branch.id,
+            #     group: federal_party,
+            #   ) unless senator || true
           end
         end
       end

@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  rate_limit to: 10, within: 1.minute, with: -> { redirect_to search_path, alert: 'Too many requests, Please try in a minute...' }
+  rate_limit to: 10, within: 1.minute, with: -> { redirect_to search_path, alert: 'Too many requests, Please try in a minute...' } unless Rails.env.test? || Rails.env.development?
 
   include Constants
 

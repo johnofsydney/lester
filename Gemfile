@@ -47,7 +47,8 @@ group :development do
 end
 
 gem 'dockerfile-rails', '>= 1.2', :group => :development
-gem 'phlex-rails', '> 2'
+gem 'phlex-rails', '~> 2.0'
+gem 'phlex', '~> 2.3.2'
 
 gem 'pg_search'
 gem 'devise'
