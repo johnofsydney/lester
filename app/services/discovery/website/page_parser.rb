@@ -22,8 +22,15 @@ class Discovery::Website::PageParser
 
   def extract_name_and_title(person)
       {
-        name: person.css(name_selector).text.strip,
+        name: extract_name(person),
         title: person.css(title_selector).text.strip
       }
+  end
+
+  def extract_name(person)
+    text = person.css(name_selector).text.strip
+
+    # handle the case where extra information is included in the name field, e.g. "John Doe, Australia"
+    text.split(',').first
   end
 end
