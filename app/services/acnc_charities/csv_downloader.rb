@@ -23,7 +23,6 @@ class AcncCharities::CsvDownloader
     response&.status || response[:status]
   end
 
-
   def body
     return unless response
 

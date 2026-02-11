@@ -62,7 +62,6 @@ namespace :lester do
   #   # Using data sourced from the AEC
   #   FileIngestor.election_donations_ingest('csv_data/Election_Donations_Made_to_2022.csv')
 
-
   #   FileIngestor.referendum_donor_ingest('csv_data/Referendum_Donations_Made_2023.csv')
 
   #   # using data sourced from wikipedia

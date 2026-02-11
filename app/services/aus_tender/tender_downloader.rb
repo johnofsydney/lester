@@ -38,7 +38,6 @@ class AusTender::TenderDownloader
     response&.status || response[:status]
   end
 
-
   def body
     return unless response
 

@@ -1,11 +1,11 @@
 class Common::Heading < ApplicationView
   attr_reader :entity
 
-	def initialize(entity:)
-		@entity = entity
-	end
+  def initialize(entity:)
+    @entity = entity
+  end
 
-	def view_template
+  def view_template
     div(class:'text-center mb-4') do
 
       if entity.is_category?

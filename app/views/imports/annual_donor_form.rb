@@ -1,6 +1,6 @@
 class Imports::AnnualDonorForm < Phlex::HTML
-	def view_template
-		h1 { 'Imports' }
+  def view_template
+    h1 { 'Imports' }
 
     div do
       h2 { 'Import AEC Annual Donor Data'}
