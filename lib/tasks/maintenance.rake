@@ -61,4 +61,69 @@ namespace :lester do
 
   #   BackfillContractsMasterJob.perform_async(backfill.last_processed_date.to_s)
   # end
+
+  desc 'Find Groups with No People Members'
+  task groups_without_people: :environment do
+    groups_without_people = Group.where.not(
+      id: Membership.where(member_type: 'Person').select(:group_id)
+    )
+
+    puts "Found #{groups_without_people.count} groups with no people members:"
+    puts '=' * 80
+
+    groups_without_people.each do |group|
+      puts "ID: #{group.id} | Name: #{group.name} | Category: #{group.category}"
+    end
+
+    puts '=' * 80
+    puts "Total: #{groups_without_people.count} groups"
+  end
+
+  desc 'Find Groups with No Group Members'
+  task groups_without_groups: :environment do
+    groups_without_groups = Group.where.not(
+      id: Membership.where(member_type: 'Group').select(:group_id)
+    )
+
+    puts "Found #{groups_without_groups.count} groups with no group members:"
+    puts '=' * 80
+
+    groups_without_groups.each do |group|
+      puts "ID: #{group.id} | Name: #{group.name} | Category: #{group.category}"
+    end
+
+    puts '=' * 80
+    puts "Total: #{groups_without_groups.count} groups"
+  end
+
+  desc 'Find Groups with No Transfers'
+  task groups_without_transfers: :environment do
+    groups_without_transfers = Group.left_outer_joins(:incoming_transfers, :outgoing_transfers)
+                                    .where(incoming_transfers: { id: nil })
+                                    .where(outgoing_transfers: { id: nil })
+                                    .distinct
+
+    puts "Found #{groups_without_transfers.count} groups with no incoming or outgoing transfers:"
+    puts '=' * 80
+
+    groups_without_transfers.each do |group|
+      puts "ID: #{group.id} | Name: #{group.name} | Category: #{group.category}"
+    end
+
+    puts '=' * 80
+    puts "Total: #{groups_without_transfers.count} groups"
+  end
+
+  desc 'Backfill Null Data in Transfers'
+  task backfill_transfer_data: :environment do
+    null_count = Transfer.where(data: nil).count
+    puts "Found #{null_count} transfers with null data"
+
+    if null_count.positive?
+      Transfer.where(data: nil).update_all(data: {})
+      puts "Backfilled #{null_count} transfers with empty data hash"
+    else
+      puts 'No transfers need backfilling'
+    end
+  end
 end

@@ -92,8 +92,6 @@ class TransfersTableComponent < ApplicationView
         end
       end
     end
-
-
   end
 
   def row_style(transfer)

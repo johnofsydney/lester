@@ -15,10 +15,11 @@ ActiveAdmin.register Group do
   #   permitted
   # end
 
-  permit_params :name, :business_number
+  permit_params :name, :business_number, :category
 
   filter :id
   filter :name
+  filter :category
 
   index do
     selectable_column
@@ -38,9 +39,13 @@ ActiveAdmin.register Group do
       row :id
       row :name
       row :business_number
-      row :last_cached
+      row :category
       row :created_at
       row :updated_at
+      row('Memberships (as owning group)') { Membership.where(group: resource).count }
+      row('Memberships (as member)') { Membership.where(member: resource).count }
+      row('Direct Transfers In') { number_to_currency resource.incoming_transfers.sum(:amount), precision: 0 }
+      row('Direct Transfers Out') { number_to_currency resource.outgoing_transfers.sum(:amount), precision: 0 }
     end
   end
 
@@ -48,6 +53,7 @@ ActiveAdmin.register Group do
     f.inputs do
       f.input :name
       f.input :business_number
+      f.input :category
     end
     f.actions
   end
@@ -56,9 +62,18 @@ ActiveAdmin.register Group do
     link_to 'View Group', group_path(resource), method: :get
   end
 
+  action_item :refresh_from_abn, only: :show do
+    link_to 'Refresh from ABN', refresh_from_abn_admin_group_path(resource), method: :get
+  end
+
   # Add a "Merge With" button on the show page
   action_item :merge_with, only: :show do
     link_to 'Merge With', merge_with_admin_group_path(resource), method: :get
+  end
+
+  member_action :refresh_from_abn, method: :get do
+    UpdateGroupNamesFromAbnJob.perform_async(resource.id)
+    redirect_to admin_group_path(resource), notice: 'Refresh from ABN Queued.'
   end
 
   # Custom route#action for the initial view of merging
@@ -121,5 +136,25 @@ ActiveAdmin.register Group do
     end
 
     redirect_to collection_path, alert: "Groups added to #{category.name}."
+  end
+
+  controller do
+    def destroy
+      @group = Group.find(params[:id])
+
+      has_memberships_as_owner = @group.memberships.exists?
+      has_memberships_as_member = Membership.where(member: @group).exists?
+      has_incoming_transfers = @group.incoming_transfers.exists?
+      has_outgoing_transfers = @group.outgoing_transfers.exists?
+
+      if has_memberships_as_owner || has_memberships_as_member || has_incoming_transfers || has_outgoing_transfers
+        flash[:error] = 'Cannot delete group with existing memberships or transfers.'
+        redirect_to admin_group_path(@group)
+      else
+        @group.destroy
+        flash[:notice] = 'Group deleted successfully.'
+        redirect_to admin_groups_path
+      end
+    end
   end
 end

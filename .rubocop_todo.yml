@@ -39,15 +39,6 @@ Layout/EmptyLineBetweenDefs:
     - 'app/services/acnc_charities/csv_downloader.rb'
     - 'app/services/aus_tender/tender_downloader.rb'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLines:
-  Exclude:
-    - 'app/services/acnc_charities/csv_downloader.rb'
-    - 'app/services/aus_tender/tender_downloader.rb'
-    - 'app/views/components/transfers_table_component.rb'
-    - 'lib/tasks/add_records.rake'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.

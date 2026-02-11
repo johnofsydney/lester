@@ -1,5 +1,6 @@
 class Transfers::ShowView < ApplicationView
   include ActionView::Helpers::NumberHelper
+  include Phlex::Rails::Helpers::ContentFor
 
   attr_reader :transfer, :depth
 
@@ -57,46 +58,52 @@ class Transfers::ShowView < ApplicationView
       end
     end
 
-    return if transfer.individual_transactions.blank?
+    if transfer.individual_transactions.present?
+      hr
 
-    hr
-
-    p do
-      plain "A single 'transfer' can represent multiple single payments in the same financial year. "
-      i { 'This '}
-      plain 'transfer represents the following payments:'
-    end
-
-    table(class: 'table table-striped') do
-      thead do
-        tr do
-          th { 'Payment Type' }
-          th { 'Evidence' }
-          th { 'Contract ID' }
-          th { 'Amendment ID' }
-          th { 'Description' }
-          th(class: 'text-end') { 'Amount' }
-          th(class: 'text-end') { 'Date' }
-        end
+      p do
+        plain "A single 'transfer' can represent multiple single payments in the same financial year. "
+        i { 'This '}
+        plain 'transfer represents the following payments:'
       end
-      transfer.individual_transactions.each do |individual_transaction|
-        tbody do
-          td { individual_transaction.transfer_type }
-          td do
-            a(href: individual_transaction.evidence, target: :_blank) { individual_transaction.evidence.truncate(50) }
+
+      table(class: 'table table-striped') do
+        thead do
+          tr do
+            th { 'Payment Type' }
+            th { 'Evidence' }
+            th { 'Contract ID' }
+            th { 'Amendment ID' }
+            th { 'Description' }
+            th(class: 'text-end') { 'Amount' }
+            th(class: 'text-end') { 'Date' }
           end
-          td { individual_transaction.contract_id }
-          td { individual_transaction.amendment_id }
-          td { individual_transaction.description }
-          td(class: 'text-end') { number_to_currency(individual_transaction.amount, precision: 0) }
-          td(class: 'text-end') { individual_transaction.effective_date.strftime('%d %b %Y') }
+        end
+        transfer.individual_transactions.each do |individual_transaction|
+          tbody do
+            td { individual_transaction.transfer_type }
+            td do
+              a(href: individual_transaction.evidence, target: :_blank) { individual_transaction.evidence.truncate(50) }
+            end
+            td { individual_transaction.contract_id }
+            td { individual_transaction.amendment_id }
+            td { individual_transaction.description }
+            td(class: 'text-end') { number_to_currency(individual_transaction.amount, precision: 0) }
+            td(class: 'text-end') { individual_transaction.effective_date.strftime('%d %b %Y') }
+          end
         end
       end
     end
 
-    # turbo_frame(id: 'feed', src: lazy_load_transfer_path, loading: :lazy) do
-    #   p(class: 'grey') { 'Fetching More Transfer Records...'}
-    #   hr
-    # end
+    if Current.admin_user? # rubocop:disable Style/GuardClause
+      content_for :admin_sidebar do
+        div(
+          class: 'admin-links d-none d-lg-flex flex-column align-items-start bg-light ps-4 pe-4 mt-4',
+          style: 'min-width: 250px; min-height: 100vh;'
+        ) do
+          a(href: "/admin/transfers/#{transfer.id}", class: 'btn btn-sm btn-outline-primary mb-2 w-100') { 'Edit Transfer in Admin' }
+        end
+      end
+    end
   end
 end
