@@ -50,6 +50,10 @@
     ingest_contracts_date:
       cron: '0 16 * * *' # Every day ay 2am
       class: IngestContractsDateJob
+    # Every day handle any Transfers that are 0 amount
+    handle_zero_value_transfers:
+      cron: '0 17 * * *' # Every day ay 3am
+      class: HandleZeroValueTransfersJob
     # Every day run the RefreshNodesCountJob
     refresh_nodes_count_job:
       cron: '15 * * * *' # Every hour at 15 mins past the hour

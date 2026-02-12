@@ -83,7 +83,7 @@ class Group < ApplicationRecord
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
   normalizes :business_number, with: ->(bn) { bn.presence }
-  normalizes :business_number, with: ->(bn) { bn.gsub(/\D/, '') if bn.present? }
+  normalizes :business_number, with: ->(bn) { bn.presence&.gsub(/\D/, '') }
 
   # scopes
   scope :major_political_categories, -> do
@@ -215,6 +215,4 @@ class Group < ApplicationRecord
   def self.client_of_lobbyists_category
     Group.find(1643)
   end
-
-  private
 end

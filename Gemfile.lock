@@ -128,7 +128,7 @@ GEM
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
-    faraday (2.14.0)
+    faraday (2.14.1)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -259,7 +259,7 @@ GEM
     pg_search (2.3.7)
       activerecord (>= 6.1)
       activesupport (>= 6.1)
-    phlex (2.3.1)
+    phlex (2.3.2)
       zeitwerk (~> 2.7)
     phlex-rails (2.3.1)
       phlex (~> 2.3.0)
@@ -499,7 +499,7 @@ DEPENDENCIES
   debug
   devise
   dockerfile-rails (>= 1.2)
-  faraday
+  faraday (>= 2.14.1)
   flipper
   flipper-active_record
   flipper-ui
@@ -511,7 +511,8 @@ DEPENDENCIES
   newrelic_rpm
   pg (~> 1.1)
   pg_search
-  phlex-rails (> 2)
+  phlex (~> 2.3.2)
+  phlex-rails (~> 2.0)
   prettytodo
   pry
   pry-byebug

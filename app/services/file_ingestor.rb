@@ -348,6 +348,7 @@ class FileIngestor
         end
 
         next if group.nil?
+
         # Create a membership for the named person in the named group
         # the membership may not exist, if so, we need to create it
         membership = Membership.find_or_create_by(
@@ -384,6 +385,7 @@ class FileIngestor
         member_group = RecordGroup.call(row['member_group'], mapper: MapGroupNamesAecDonations.new)
 
         next unless owning_group && member_group
+
         owning_group.update(business_number: row['business_number'].gsub(/\D/, '')) if row['business_number'].present?
         member_group.update(business_number: row['abn'].gsub(/\D/, '')) if row['abn'].present?
 

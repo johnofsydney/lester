@@ -54,6 +54,7 @@ ActiveAdmin.register Membership do
 
   collection_action :general_upload_form, method: :get do
     raise unless current_admin_user
+
     render partial: 'admin/memberships/general_upload_form'
   end
 
@@ -63,6 +64,7 @@ ActiveAdmin.register Membership do
 
   collection_action :ministries_upload_form, method: :get do
     raise unless current_admin_user
+
     render partial: 'admin/memberships/ministries_upload_form'
   end
 end

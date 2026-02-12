@@ -27,9 +27,13 @@ Bundler/OrderedGems:
     - 'Gemfile'
 
 Layout/LineLength:
-  Max: 380
+  Max: 360
   Exclude:
     - 'app/views/home/index_view.rb'
+
+Layout/EmptyLineAfterGuardClause:
+  Exclude:
+    - 'bin/bundle'
 
 Metrics/ClassLength:
   Exclude:
