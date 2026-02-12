@@ -82,8 +82,8 @@ class Group < ApplicationRecord
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
-  before_validation :strip_business_number
-  before_validation :nullify_empty_string_business_number
+  normalizes :business_number, with: ->(bn) { bn.presence }
+  normalizes :business_number, with: ->(bn) { bn.gsub(/\D/, '') if bn.present? }
 
   # scopes
   scope :major_political_categories, -> do
@@ -217,14 +217,4 @@ class Group < ApplicationRecord
   end
 
   private
-
-  def strip_business_number
-    return if business_number.nil?
-
-    self.business_number = business_number.gsub(/\D/, '')
-  end
-
-  def nullify_empty_string_business_number
-    self.business_number = nil if business_number.blank?
-  end
 end
