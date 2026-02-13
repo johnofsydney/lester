@@ -1,41 +1,47 @@
-
-<div class="row graph rounded bg-light mt-3 shadow-sm border">
-  <%= bar_chart(
-    transfers_by_name,
-    # colors:,
-    prefix: "$",
-    thousands: ",",
-    download: true,
-    title: "#{entity.name.upcase}: Top 5 #{giver ? 'recipients' : 'funders' }",
-    dataset: {borderWidth: 2}
-  ) %>
-  <span class="bottom-right text-muted small"><%= entity.cached.data_time_range %></span>
-</div>
-
-<div class="row graph rounded bg-light mt-3 border">
-  <%= pie_chart(
-    transfers_by_name,
-    # colors:,
-    prefix: "$",
-    thousands: ",",
-    download: true,
-    legend: 'left',
-    title: "#{entity.name.upcase}: Top 5 #{giver ? 'recipients' : 'funders' }",
-    donut: true,
+<% if transfers_by_name.present? %>
+  <div class="row graph rounded bg-light mt-3 shadow-sm border">
+    <%= bar_chart(
+      transfers_by_name,
+      # colors:,
+      prefix: "$",
+      thousands: ",",
+      download: true,
+      title: "#{entity.name.upcase}: Top 5 #{giver ? 'recipients' : 'funders' }",
+      dataset: {borderWidth: 2}
     ) %>
     <span class="bottom-right text-muted small"><%= entity.cached.data_time_range %></span>
-</div>
-<div class="row graph rounded bg-light mt-3 mb-3 border">
-  <%= column_chart(
-    transfers_by_year,
-    # colors:,
-    prefix: "$",
-    thousands: ",",
-    download: true,
-    xtitle: 'Financial Year',
-    title: "#{entity.name.upcase}: #{giver ? 'Outgoing' : 'Incoming' } Transfers by Year",
-    stacked: true,
-    dataset: {borderWidth: 2}
-    ) %>
-    <span class="bottom-right text-muted small"><%= entity.cached.data_time_range %></span>
-</div>
+  </div>
+<% end %>
+
+<% if transfers_by_name.present? %>
+  <div class="row graph rounded bg-light mt-3 border">
+    <%= pie_chart(
+      transfers_by_name,
+      # colors:,
+      prefix: "$",
+      thousands: ",",
+      download: true,
+      legend: 'left',
+      title: "#{entity.name.upcase}: Top 5 #{giver ? 'recipients' : 'funders' }",
+      donut: true,
+      ) %>
+      <span class="bottom-right text-muted small"><%= entity.cached.data_time_range %></span>
+  </div>
+<% end %>
+
+<% if transfers_by_year.present? %>
+  <div class="row graph rounded bg-light mt-3 mb-3 border">
+    <%= column_chart(
+      transfers_by_year,
+      # colors:,
+      prefix: "$",
+      thousands: ",",
+      download: true,
+      xtitle: 'Financial Year',
+      title: "#{entity.name.upcase}: #{giver ? 'Outgoing' : 'Incoming' } Transfers by Year",
+      stacked: true,
+      dataset: {borderWidth: 2}
+      ) %>
+      <span class="bottom-right text-muted small"><%= entity.cached.data_time_range %></span>
+  </div>
+<% end %>
