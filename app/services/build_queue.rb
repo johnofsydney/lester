@@ -44,6 +44,7 @@ class BuildQueue
     elsif node.is_a?(Group) && next_node.is_a?(Group)
       # generally always follow affiliated groups. But not categories - they are too big
       return false if next_node.category || node.category
+
       # but if we are tracking a transfer, we only want to follow the affiliated group if the transfer is within the timeframe of the membership of group 1 and group 2
       transfer_date = transfer&.effective_date
       return true unless transfer_date

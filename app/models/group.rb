@@ -18,7 +18,7 @@ class Group < ApplicationRecord
               vic: 'The Coalition (VIC)',
               tas: 'The Coalition (TAS)',
               wa: 'The Coalition (WA)',
-              act: 'The Coalition (ACT)',
+              act: 'The Coalition (ACT)'
             ),
             liberals: OpenStruct.new(
               federal: 'Liberals (Federal)',
@@ -29,7 +29,7 @@ class Group < ApplicationRecord
               tas: 'Liberals (TAS)',
               wa: 'Liberals (WA)',
               act: 'Liberals (ACT)',
-              nt: 'Country Liberal Party (NT)',
+              nt: 'Country Liberal Party (NT)'
             ),
             nationals: OpenStruct.new(
               federal: 'Nationals (Federal)',
@@ -40,7 +40,7 @@ class Group < ApplicationRecord
               tas: 'Nationals (TAS)',
               wa: 'Nationals (WA)',
               act: 'Nationals (ACT)',
-              nt: 'Country Liberal Party (NT)',
+              nt: 'Country Liberal Party (NT)'
             ),
             labor: OpenStruct.new(
               federal: 'ALP (Federal)',
@@ -51,7 +51,7 @@ class Group < ApplicationRecord
               tas: 'ALP (TAS)',
               wa: 'ALP (WA)',
               act: 'ALP (ACT)',
-              nt: 'ALP (NT)',
+              nt: 'ALP (NT)'
             ),
             greens: OpenStruct.new(
               federal: 'The Greens (Federal)',
@@ -62,7 +62,7 @@ class Group < ApplicationRecord
               tas: 'The Greens (TAS)',
               wa: 'The Greens (WA)',
               act: 'The Greens (ACT)',
-              nt: 'The Greens (NT)',
+              nt: 'The Greens (NT)'
             )
           )
 
@@ -82,8 +82,8 @@ class Group < ApplicationRecord
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
-  before_validation :strip_business_number
-  before_validation :nullify_empty_string_business_number
+  normalizes :business_number, with: ->(bn) { bn.presence }
+  normalizes :business_number, with: ->(bn) { bn.presence&.gsub(/\D/, '') }
 
   # scopes
   scope :major_political_categories, -> do
@@ -190,6 +190,14 @@ class Group < ApplicationRecord
     name
   end
 
+  def add_to_category(category_group: nil, category_name: nil)
+    raise ArgumentError, 'Either category_group or category_name must be provided' if category_group.blank? && category_name.blank?
+    return if self.is_category?
+
+    category_group ||= Group.find_or_create_by!(name: category_name, category: true)
+    Category::AddGroupToCategory.call(category: category_group, group: self)
+  end
+
   def self.all_named_parties
     NAMES.to_h.keys.map do |key|
       NAMES.send(key).to_h.values
@@ -208,15 +216,7 @@ class Group < ApplicationRecord
     Group.find(1643)
   end
 
-  private
-
-  def strip_business_number
-    return if business_number.nil?
-
-    self.business_number = business_number.gsub(/\D/, '')
-  end
-
-  def nullify_empty_string_business_number
-    self.business_number = nil if business_number.blank?
+  def self.government_department_category
+    Group.find(124_375)
   end
 end

@@ -13,6 +13,7 @@ class Position < ApplicationRecord
 
   def formatted_end_date
     return unless end_date
+
     formatting = formatting_for_date(end_date)
 
     end_date.strftime(formatting)

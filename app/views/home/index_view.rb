@@ -111,6 +111,7 @@ class Home::IndexView < ApplicationView
 
               p { "It's important to note that everything on our website is backed by publicly available information. We do not conduct any original research; rather, we aggregate, format, and arrange the data to reveal underlying patterns and connections. Join The Dots is committed to transparency, accountability and ensuring access to information." }
 
+              p { "Categorising groups and people isn't always straightforward. A large group may have transfers that are associated with different categories. We will tag the Group with each relevant category to provide a comprehensive view of the group's activities. When you view the Category data, it will show all of the money transfers in and out relating to those Groups in the category. Not all of their transfers will necessarily fall into a single category." }
             end
           end
         end

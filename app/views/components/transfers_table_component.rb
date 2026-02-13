@@ -30,7 +30,7 @@ class TransfersTableComponent < ApplicationView
           amount: transfers.sum(&:amount),
           effective_date: transfers.map(&:effective_date).max,
           depth: combo[2],
-          direction: combo[3],
+          direction: combo[3]
         )
       end
 

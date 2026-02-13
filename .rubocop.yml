@@ -27,7 +27,17 @@ Bundler/OrderedGems:
     - 'Gemfile'
 
 Layout/LineLength:
-  Max: 400
+  Max: 360
+  Exclude:
+    - 'app/views/home/index_view.rb'
+
+Layout/EmptyLineAfterGuardClause:
+  Exclude:
+    - 'bin/bundle'
+
+Metrics/ClassLength:
+  Exclude:
+    - 'app/mappings/map_transaction_categories.rb'
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
@@ -82,3 +92,6 @@ RSpec/ContextWording:
     - for
     - and
 
+Style/WordArray:
+  Exclude:
+    - 'csv_data/**/*'

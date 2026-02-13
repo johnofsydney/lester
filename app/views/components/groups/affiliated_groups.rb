@@ -19,13 +19,14 @@ class Groups::AffiliatedGroups < ApplicationView
             th { 'Category' }
             th { '(Last) Position' } if parent_categories.any? { |g| g['last_position'].present? }
           end
-          parent_categories.each do |category|
+          parent_categories.sort_by(&:name).each do |category|
             render Common::TableRow.new(hentity: category)
           end
         end
       end
 
       if affiliated_groups.present?
+
         h4(class: 'font-italic mt-3') { 'Affiliated Groups' }
 
         table(class: 'table table-striped responsive-table') do
@@ -33,7 +34,7 @@ class Groups::AffiliatedGroups < ApplicationView
             th { 'Group' }
             th { '(Last) Position' } if affiliated_groups.any? { |g| g['last_position'].present? }
           end
-          affiliated_groups.each do |group|
+          affiliated_groups.sort_by(&:name).each do |group|
             render Common::TableRow.new(hentity: group)
           end
         end
