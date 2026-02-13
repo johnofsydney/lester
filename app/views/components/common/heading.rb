@@ -41,7 +41,7 @@ class Common::Heading < ApplicationView
   def button_without_link
     button(
       class: 'btn w-100 btn-lg',
-      style: "#{color_styles(entity)}; font-size: 1em;",
+      style: "#{color_styles(entity)}; font-size: 1em;"
     ) { entity.name }
   end
 

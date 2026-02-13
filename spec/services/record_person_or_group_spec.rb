@@ -31,7 +31,7 @@ RSpec.describe RecordPersonOrGroup, type: :service do
         'Hon Paul Everingham',
         'Spencer Grammer',
         'Ainsworth, Stephen',
-        'Anne Ainsworth',
+        'Anne Ainsworth'
       ]
     end
 

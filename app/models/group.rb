@@ -18,7 +18,7 @@ class Group < ApplicationRecord
               vic: 'The Coalition (VIC)',
               tas: 'The Coalition (TAS)',
               wa: 'The Coalition (WA)',
-              act: 'The Coalition (ACT)',
+              act: 'The Coalition (ACT)'
             ),
             liberals: OpenStruct.new(
               federal: 'Liberals (Federal)',
@@ -29,7 +29,7 @@ class Group < ApplicationRecord
               tas: 'Liberals (TAS)',
               wa: 'Liberals (WA)',
               act: 'Liberals (ACT)',
-              nt: 'Country Liberal Party (NT)',
+              nt: 'Country Liberal Party (NT)'
             ),
             nationals: OpenStruct.new(
               federal: 'Nationals (Federal)',
@@ -40,7 +40,7 @@ class Group < ApplicationRecord
               tas: 'Nationals (TAS)',
               wa: 'Nationals (WA)',
               act: 'Nationals (ACT)',
-              nt: 'Country Liberal Party (NT)',
+              nt: 'Country Liberal Party (NT)'
             ),
             labor: OpenStruct.new(
               federal: 'ALP (Federal)',
@@ -51,7 +51,7 @@ class Group < ApplicationRecord
               tas: 'ALP (TAS)',
               wa: 'ALP (WA)',
               act: 'ALP (ACT)',
-              nt: 'ALP (NT)',
+              nt: 'ALP (NT)'
             ),
             greens: OpenStruct.new(
               federal: 'The Greens (Federal)',
@@ -62,7 +62,7 @@ class Group < ApplicationRecord
               tas: 'The Greens (TAS)',
               wa: 'The Greens (WA)',
               act: 'The Greens (ACT)',
-              nt: 'The Greens (NT)',
+              nt: 'The Greens (NT)'
             )
           )
 

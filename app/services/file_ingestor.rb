@@ -56,7 +56,7 @@ class FileIngestor
           taker_type: taker.class.name,
           effective_date: financial_year.last_day, # group all donations for a financial year. There are too many otherwise.
           transfer_type: 'donations',
-          evidence: 'https://transparency.aec.gov.au/AnnualDonor',
+          evidence: 'https://transparency.aec.gov.au/AnnualDonor'
         )
 
         transfer.data ||= {}
@@ -95,7 +95,7 @@ class FileIngestor
           taker_type: taker.class.name,
           effective_date: financial_year.last_day, # group all donations for a financial year. There are too many otherwise.
           transfer_type: 'donations',
-          evidence: 'https://transparency.aec.gov.au/ReferendumDonor',
+          evidence: 'https://transparency.aec.gov.au/ReferendumDonor'
         )
 
         transfer.data ||= {}
@@ -137,7 +137,7 @@ class FileIngestor
           taker_type: taker.class.name,
           effective_date: financial_year.last_day, # group all donations for a financial year. There are too many otherwise.
           transfer_type: 'donations',
-          evidence: 'https://transparency.aec.gov.au/Donor',
+          evidence: 'https://transparency.aec.gov.au/Donor'
         )
         print 't'
 

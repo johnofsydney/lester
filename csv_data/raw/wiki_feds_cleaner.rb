@@ -13,7 +13,7 @@ class Parser
     '2013' => Date.new(2013, 9, 7),
     '2016' => Date.new(2016, 7, 2),
     '2019' => Date.new(2019, 5, 18),
-    '2022' => Date.new(2022, 5, 22),
+    '2022' => Date.new(2022, 5, 22)
   }
 
   def self.parsed_row(row, level)
@@ -83,7 +83,7 @@ files_to_clean = [
   'wiki_feds_ending_2022',
   'wiki_feds_current_senators',
   'wiki_feds_senators_ending_2022',
-  'wiki_feds_senators_ending_2019',
+  'wiki_feds_senators_ending_2019'
 ]
 
 files_to_clean.each do |filename|

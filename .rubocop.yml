@@ -92,3 +92,6 @@ RSpec/ContextWording:
     - for
     - and
 
+Style/WordArray:
+  Exclude:
+    - 'csv_data/**/*'
