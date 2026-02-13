@@ -190,12 +190,12 @@ class Group < ApplicationRecord
     name
   end
 
-  def add_category(category_group: nil, category_name: nil)
+  def add_to_category(category_group: nil, category_name: nil)
     raise ArgumentError, 'Either category_group or category_name must be provided' if category_group.blank? && category_name.blank?
     return if self.is_category?
 
-    category_group = Group.find_or_create_by!(name: category_name, category: true) if category_group.nil?
-    Membership.find_or_create_by!(group: category_group, member: self)
+    category_group ||= Group.find_or_create_by!(name: category_name, category: true)
+    Category::AddGroupToCategory.call(category: category_group, group: self)
   end
 
   def self.all_named_parties
@@ -214,5 +214,9 @@ class Group < ApplicationRecord
 
   def self.client_of_lobbyists_category
     Group.find(1643)
+  end
+
+  def self.government_department_category
+    Group.find(124_375)
   end
 end

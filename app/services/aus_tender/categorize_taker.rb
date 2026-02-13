@@ -10,16 +10,16 @@ class AusTender::CategorizeTaker
   attr_reader :individual_transaction
 
   def call
-    return unless category.present? && taker.present? && taker.is_group?
+    return unless category_name.present? && taker.present? && taker.is_group?
 
-    taker.add_category(category_name:)
+    taker.add_to_category(category_name:)
   end
 
   def taker
-    @taker ||= individual_transaction.transfer.taker
+    individual_transaction.transfer.taker
   end
 
   def category_name
-    @category_name ||= MapTransactionCategories.new.call(individual_transaction.category)
+    MapTransactionCategories.new.call(individual_transaction.category)
   end
 end

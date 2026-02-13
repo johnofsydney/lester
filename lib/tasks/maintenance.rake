@@ -33,7 +33,7 @@ namespace :lester do
         category = Group.find_or_create_by!(name: 'Recruitment and Labour Hire', category: true)
 
         if taker.is_group? && category.present?
-          taker.add_category(category_group: category)
+          taker.add_to_category(category_group: category)
           count += 1
           puts "Added category to Group ID #{taker.id} for Transfer ID #{transfer.id}"
         end
