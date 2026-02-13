@@ -25,20 +25,6 @@ Layout/EmptyLineAfterGuardClause:
     - 'app/services/tender_ingestor.rb'
     - 'bin/bundle'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLineAfterMagicComment:
-  Exclude:
-    - 'app/admin/dashboard.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EmptyLineBetweenMethodDefs, EmptyLineBetweenClassDefs, EmptyLineBetweenModuleDefs, DefLikeMacros, AllowAdjacentOneLineDefs, NumberOfEmptyLines.
-Layout/EmptyLineBetweenDefs:
-  Exclude:
-    - 'app/services/acnc_charities/csv_downloader.rb'
-    - 'app/services/aus_tender/tender_downloader.rb'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
