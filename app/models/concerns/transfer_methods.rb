@@ -12,9 +12,9 @@ module TransferMethods
         # members and affiliate groups.
         # TODO - move to a method on Group.
         # If the group is too large for it to make sense to follow transfers through it, skip it, eg Charities
-        return results  if node.name == 'Federal Parliament' # TODO: use or discard
-        return results  if node.name == 'Charities' # TODO: use or discard
-        return results if results.count > 500
+        return []  if node.name == 'Federal Parliament' # TODO: use or discard
+        return []  if node.name == 'Charities' # TODO: use or discard
+        return [] if results.count > 500
 
         visited_nodes << node # store the current node as visited
         current_depth_memberships << node.memberships.to_a

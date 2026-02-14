@@ -17,6 +17,7 @@ AllCops:
     - 'Guardfile'
     - 'Rakefile'
     - 'bin/**/*'
+    - 'bin/*'
     - 'config/**/*'
     - 'config.ru'
     - 'db/**/*'
@@ -31,9 +32,9 @@ Layout/LineLength:
   Exclude:
     - 'app/views/home/index_view.rb'
 
-Layout/EmptyLineAfterGuardClause:
+Metrics/BlockLength:
   Exclude:
-    - 'bin/bundle'
+    - 'app/admin/*'
 
 Metrics/ClassLength:
   Exclude:

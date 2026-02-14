@@ -51,8 +51,9 @@ class Common::Heading < ApplicationView
 
   def business_number_and_trading_names
     parts = []
-    parts << "ABN: #{entity.business_number}" if entity.business_number.present?
-    parts << "Also known as: #{entity.trading_names.map(&:name).join(', ')}" if entity.trading_names.any?
+    parts << a(href: "https://abr.business.gov.au/ABN/View?abn=#{entity.business_number}", target: :_blank) { "ABN: #{entity.business_number}" } if entity.business_number.present?
+    parts << plain(" Also known as: #{entity.trading_names.map(&:name).join(', ')}") if entity.trading_names.any?
+
     parts.join(' | ')
   end
 end

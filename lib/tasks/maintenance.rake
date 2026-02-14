@@ -22,15 +22,22 @@ namespace :lester do
   task backfill_recruitment_category: :environment do
     count = 0
 
-    puts "Starting backfill of 'Recruitment and Labour Hire' category for relevant Individual Transactions..."
+    # This is the JTD Category we want to backfill for
+    CATEGORY = 'Recruitment and Labour Hire'.freeze # rubocop:disable Lint/ConstantDefinitionInBlock
+
+    puts "Starting backfill of '#{CATEGORY}' category for relevant Individual Transactions..."
+
+    # This is a list of all of the categories that appear on the Individual Transactions that we want to backfill for.
+    # We need to get the keys for these categories from the MapTransactionCategories class
+    category_list = MapTransactionCategories::ALL_CATEGORIES.select { |_k, v| v == CATEGORY }.keys
 
     Transfer.joins(:individual_transactions)
             .where(transfer_type: 'Government Contract(s)')
-            .where(individual_transactions: { category: ['Temporary personnel services', 'Personnel recruitment'] })
+            .where(individual_transactions: { category: category_list })
             .select('DISTINCT ON (transfers.taker_type, transfers.taker_id) transfers.*')
             .each do |transfer|
         taker = transfer.taker
-        category = Group.find_or_create_by!(name: 'Recruitment and Labour Hire', category: true)
+        category = Group.find_or_create_by!(name: CATEGORY, category: true)
 
         if taker.is_group? && category.present?
           taker.add_to_category(category_group: category)
@@ -40,6 +47,8 @@ namespace :lester do
     rescue StandardError => e
         puts "Error processing Transfer ID #{transfer.id}: #{e.message}"
     end
+
+    puts "Processed #{count} transfers and backfilled '#{CATEGORY}' category for relevant Groups."
   end
 
   # desc 'Clear Cache for Network Graph and Count'

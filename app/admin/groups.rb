@@ -47,6 +47,28 @@ ActiveAdmin.register Group do
       row('Direct Transfers In') { number_to_currency resource.incoming_transfers.sum(:amount), precision: 0 }
       row('Direct Transfers Out') { number_to_currency resource.outgoing_transfers.sum(:amount), precision: 0 }
     end
+
+    panel 'Memberships (as owning group)' do
+      table_for resource.memberships.order(created_at: :desc) do
+        column :id do |membership|
+          link_to membership.id, admin_membership_path(membership)
+        end
+        column :member do |membership|
+          path = if membership.member_type == 'Person'
+                   admin_person_path(membership.member)
+                 elsif membership.member_type == 'Group'
+                   admin_group_path(membership.member)
+                 end
+
+          link_to membership.member.name, path
+        end
+        column :member_type
+        column :position
+        column :start_date
+        column :end_date
+        column :created_at
+      end
+    end
   end
 
   form do |f|

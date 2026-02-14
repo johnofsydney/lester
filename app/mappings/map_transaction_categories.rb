@@ -174,7 +174,7 @@ class MapTransactionCategories
     'Elements and gases' => nil,
     'Emergency and field medical services products' => nil,
     'Employee assistance programs' => nil,
-    'Employment services' => nil,
+    'Employment services' => 'Recruitment and Labour Hire',
     'Energy conservation' => nil,
     'Engineering and Research and Technology Based Services' => nil,
     'Engraving' => nil,

@@ -15,6 +15,10 @@ class Category::AddGroupToCategory
     Membership.find_or_create_by!(group: category, member: group)
   end
 
+  private
+
+  attr_reader :category, :group
+
   def valid?
     # If the group is already a member of the government department category then DO NOT add it to any other category, as this would be misleading
     if group.memberships.exists?(group: Group.government_department_category)
