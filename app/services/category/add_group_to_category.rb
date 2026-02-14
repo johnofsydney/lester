@@ -21,7 +21,7 @@ class Category::AddGroupToCategory
 
   def valid?
     # If the group is already a member of the government department category then DO NOT add it to any other category, as this would be misleading
-    if group.memberships.exists?(group: Group.government_department_category)
+    if Membership.where(group: Group.government_department_category, member: group).exists?
       Rails.logger.info("Group #{group.id} is a member of the government department category, so it will not be added to category #{category.id}")
       return false
     end

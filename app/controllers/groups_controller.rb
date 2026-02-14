@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  rate_limit to: 10, within: 1.minute, with: -> { redirect_to search_path, alert: 'Too many requests, Please try in a minute...' } unless Rails.env.test? || Rails.env.development?
+  rate_limit to: Constants::CONTROLLER_RATE_LIMIT, within: 1.minute, with: -> { redirect_to search_path, alert: 'Too many requests, Please try in a minute...' } # unless Rails.env.test? || Rails.env.development?
 
   include Constants
 
@@ -7,26 +7,14 @@ class GroupsController < ApplicationController
   before_action :set_page, only: %i[ index ]
   before_action :authenticate_user!, only: %i[ new edit update destroy ]
 
-  # layout -> { ApplicationLayout }
-
   def index
-    @groups = Rails.cache.fetch("groups_index_#{params[:page]}", expires_in: 12.seconds) do
-      Group.where.not(category: true).order(:name).limit(page_size).offset(paginate_offset).to_a
-    end
-
+    groups = Group.where.not(category: true).order(:name).limit(page_size).offset(paginate_offset).to_a
     pages = (Group.where.not(category: true).count.to_f / page_size).ceil
 
-    render Groups::IndexView.new(groups: @groups, page: @page, pages: pages)
+    render Groups::IndexView.new(groups:, page: @page, pages:)
   end
 
   def show
-    if @group.nodes_count > Constants::TOO_MANY_CONNECTIONS_THRESHOLD
-      # This is a clumsy protection targeted at groups like category Charities.
-      # should use pagination and limits instead
-      render plain: Constants::TOO_MANY_CONNECTIONS_MESSAGE, status: :ok
-      return
-    end
-
     if @group.cache_fresh?
       render Groups::ShowView.new(group: @group)
     else

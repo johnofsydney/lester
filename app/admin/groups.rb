@@ -69,6 +69,19 @@ ActiveAdmin.register Group do
         column :created_at
       end
     end
+
+    panel 'Memberships (as member group)' do
+      table_for Membership.where(member: resource).order(created_at: :desc) do
+        column :id do |membership|
+          link_to membership.id, admin_membership_path(membership)
+        end
+        column :group
+        column :position
+        column :start_date
+        column :end_date
+        column :created_at
+      end
+    end
   end
 
   form do |f|
