@@ -13,11 +13,13 @@ class Common::Heading < ApplicationView
           button_without_link
         end
         p do
-          plain "This page shows all groups tagged with "
-          strong {"#{entity.name}"}
-          plain ". The values in the graphs and tables relate to the "
-          strong {"groups"}
-          plain ", which may be associated with other tags as well."
+          unless entity.id == Group.government_department_category.id
+            plain "This page shows all groups tagged with "
+            strong {"#{entity.name}"}
+            plain ". The values in the graphs and tables relate to the "
+            strong {"groups"}
+            plain ", which may be associated with other tags as well."
+          end
         end
       else
         div(class: 'heading display-6 fw-bold shadow') do
