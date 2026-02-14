@@ -1,7 +1,9 @@
 ActiveAdmin.register Membership do
   filter :group_name, as: :string, filters: %i[cont eq start end not_eq]
+  filter :member_id, label: 'Member ID'
+  filter :member_type, label: 'Member type'
 
-  permit_params :member_id, :group_id, :start_date, :end_date
+  permit_params :member_id, :group_id, :start_date, :end_date, :member_type
 
   controller do
     def general_upload_action
@@ -42,6 +44,9 @@ ActiveAdmin.register Membership do
 
   form do |f|
     f.inputs 'Membership Details' do
+      f.input :group_id, label: 'Owning Group ID'
+      f.input :member_type, label: 'Member Type', as: :select, collection: %w[Person Group]
+      f.input :member_id, label: 'Member ID'
       f.input :start_date, as: :date_picker
       f.input :end_date, as: :date_picker
     end
