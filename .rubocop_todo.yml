@@ -318,34 +318,6 @@ Lint/UnusedBlockArgument:
   Exclude:
     - 'app/views/components/common/money_graphs.rb'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect, AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods, NotImplementedExceptions.
-# NotImplementedExceptions: NotImplementedError
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'app/models/application_record.rb'
-    - 'app/models/concerns/transfer_methods.rb'
-    - 'app/services/file_ingestor.rb'
-
-# Offense count: 12
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect.
-Lint/UselessAssignment:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
-    - 'app/services/linked_in_profile_getter.rb'
-    - 'app/services/record_person_or_group.rb'
-    - 'app/views/components/homepage_categories.rb'
-    - 'spec/models/group_spec.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect, CheckForMethodsWithNoSideEffects.
-Lint/Void:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
-
 # Offense count: 69
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:

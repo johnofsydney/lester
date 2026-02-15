@@ -12,31 +12,31 @@ RSpec.describe Group do
 
   describe 'validations' do
     it 'does not allow two groups with the same name' do
-      group1 = described_class.create(name:)
+      described_class.create(name:)
       group2 = described_class.new(name:)
       expect(group2).not_to be_valid
     end
 
     it 'does not allow two groups with the same business number' do
-      group1 = described_class.create(name:, business_number: '123456789')
+      described_class.create(name:, business_number: '123456789')
       group2 = described_class.new(name: 'Trading Name', business_number: '123456789')
       expect(group2).not_to be_valid
     end
 
     it 'does not allow two groups with the same business number even if there are spaces' do
-      group1 = described_class.create(name:, business_number: '123 45 6789')
+      described_class.create(name:, business_number: '123 45 6789')
       group2 = described_class.new(name: 'Trading Name', business_number: '12 345 67 89')
       expect(group2).not_to be_valid
     end
 
     it 'does not allow two groups with the same business number even if there are dashes' do
-      group1 = described_class.create(name:, business_number: '123-45-6789')
+      described_class.create(name:, business_number: '123-45-6789')
       group2 = described_class.new(name: 'Trading Name', business_number: '12-345-67-89')
       expect(group2).not_to be_valid
     end
 
     it 'allows two groups with nil business number' do
-      group1 = described_class.create(name: 'foo')
+      described_class.create(name: 'foo')
       group2 = described_class.create(name: 'bar')
       expect(group2).to be_valid
     end

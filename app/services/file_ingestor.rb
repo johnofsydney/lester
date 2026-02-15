@@ -230,7 +230,6 @@ class FileIngestor
           title = major_party ? 'Federal Parliamentary Party Member' : 'Party Member'
 
           if major_party
-            'Federal Parliamentary Party Member'
             # start / end date - for when they a member of the federal parliamentary party (as opposed to any other branch they might also be in)
             Position.create(membership: federal_membership, title:, start_date:, end_date:)
           else
@@ -322,117 +321,6 @@ class FileIngestor
 
     def general_upload(csv: nil, file: nil)
       new(csv:, file:).general_upload
-    end
-
-    def lobbyists_upload(file)
-      lobbyists = Group.find_or_create_by(name: 'Lobbyists', category: true)
-
-      csv = CSV.read(file, headers: true)
-      csv.each do |row|
-
-        person = RecordPerson.call(row['person'])
-
-        evidence = 'https://lobbyists.ag.gov.au/register'
-
-        # Create a membership for the named person and group inthe lobbyists category
-        membership = Membership.find_or_create_by(
-          member: person,
-          group: lobbyists,
-          evidence: evidence
-        )
-
-        group = RecordGroup.call(row['company'], mapper: MapGroupNamesAecDonations.new) if row['company'].present?
-        title = if row['title'].present?
-          CapitalizeNames.capitalize(row['title'].strip)
-                         .gsub(/\bCEO\b/i) { |word| word.titleize }
-        end
-
-        next if group.nil?
-
-        # Create a membership for the named person in the named group
-        # the membership may not exist, if so, we need to create it
-        membership = Membership.find_or_create_by(
-          member: person,
-          group: group
-        )
-        # create position for each row, with unique dates and title
-        position = Position.find_or_create_by(membership:, title:)
-
-        membership.update!(evidence:)
-        position.update!(evidence:)
-
-        Rails.logger.debug 'm'
-
-        membership = Membership.find_or_create_by(
-          member: group,
-          group: lobbyists,
-          evidence: evidence
-        )
-
-        Rails.logger.debug 'l'
-
-        rescue => e
-        Rails.logger.debug { "Lobbyist Upload | Error: #{e} | row#{row.inspect}" }
-      end
-    end
-
-    def affiliations_upload(file)
-      client_category = Group.find_or_create_by(name: 'Client of Lobbyists', category: true)
-
-      csv = CSV.read(file, headers: true)
-      csv.each do |row|
-        owning_group = RecordGroup.call(row['group'], mapper: MapGroupNamesAecDonations.new)
-        member_group = RecordGroup.call(row['member_group'], mapper: MapGroupNamesAecDonations.new)
-
-        next unless owning_group && member_group
-
-        owning_group.update(business_number: row['business_number'].gsub(/\D/, '')) if row['business_number'].present?
-        member_group.update(business_number: row['abn'].gsub(/\D/, '')) if row['abn'].present?
-
-        evidence = row['evidence'].strip if row['evidence'].present?
-
-        membership = Membership.find_or_create_by(
-          member_type: 'Group',
-          member_id: member_group.id,
-          group: owning_group,
-          start_date: parse_date(row['start_date']),
-          end_date: parse_date(row['end_date'])
-        )
-
-        membership.update(evidence:) if evidence
-
-        # # ONE TIME ONLY - FOR LOBBYISTS AND CLIENTS
-        # Membership.find_or_create_by(
-        #   member_type: "Group",
-        #   member_id: member_group.id,
-        #   group: client_category,
-        # )
-
-        Rails.logger.debug 'm'
-      end
-    end
-
-    def transfers_upload(file)
-      csv = CSV.read(file, headers: true)
-      csv.each do |row|
-        giver = RecordPersonOrGroup.call(row['giver'])
-        taker = RecordPersonOrGroup.call(row['taker'])
-
-        transfer = Transfer.find_or_create_by(
-          giver: giver,
-          taker: taker,
-          effective_date: parse_date(row['effective_date']),
-          transfer_type: row['transfer_type'],
-          amount: row['amount'],
-          evidence: row['evidence']
-        )
-
-        Rails.logger.debug 't'
-      end
-    end
-
-    def member_of_parliament_upload(file)
-      raise 'hell'
     end
 
     def parse_date(date)

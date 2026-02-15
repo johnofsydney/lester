@@ -110,7 +110,7 @@ class LinkedInProfileGetter
 
     begin
       Date.new(date_hash['year'], date_hash['month'], date_hash['day'])
-    rescue => exception
+    rescue
       nil
     end
   end
