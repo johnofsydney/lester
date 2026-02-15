@@ -1,6 +1,4 @@
 class Groups::IndexView < ApplicationView
-  HIGHLIGHT_THRESHOLD = 3739
-
   def initialize(groups:, page:, pages:, subheading: nil)
     @groups = groups
     @page = page
@@ -20,13 +18,7 @@ class Groups::IndexView < ApplicationView
 
       div(class: 'list-group') do
         groups.each do |group|
-          highlight = if Flipper.enabled?(:dev_highlighting)
-            group.id > HIGHLIGHT_THRESHOLD ? 'highlight-row' : ''
-          else
-            ''
-          end
-
-          class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
+          class_list = 'list-group-item list-group-item-action flex-normal'
           div(class: class_list) do
             group_name_link(group)
 

@@ -124,10 +124,10 @@ module TransferMethods
 
     def all_transfers
       @all_transfers ||= if self.is_category?
-                            category_outgoing_transfers.or(category_incoming_transfers)
-                          else
-                            self.incoming_transfers.or(self.outgoing_transfers)
-                          end
+                           category_outgoing_transfers.or(category_incoming_transfers)
+                         else
+                           self.incoming_transfers.or(self.outgoing_transfers)
+                         end
     end
   end
 end

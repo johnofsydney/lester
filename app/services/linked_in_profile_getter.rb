@@ -3,6 +3,7 @@ require 'open-uri'
 
 class LinkedInProfileGetter
   attr_reader :person
+
   def initialize(person)
     @person = person
   end
