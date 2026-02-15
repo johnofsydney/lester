@@ -15,7 +15,7 @@ class AusTender::RecordIndividualTransaction
     return if IndividualTransaction.exists?(external_id: release.item_id)
     raise ValidationError("Invalid transaction data: #{release.inspect}") unless valid?
 
-    individual_transaction = IndividualTransaction.create(
+    individual_transaction = IndividualTransaction.create( # rubocop:disable Lint/UselessAssignment
       transfer:,
       amount:,
       effective_date: release.effective_date,
