@@ -30,7 +30,7 @@ class TransfersTableComponent < ApplicationView
           amount: transfers.sum(&:amount),
           effective_date: transfers.map(&:effective_date).max,
           depth: combo[2],
-          direction: combo[3],
+          direction: combo[3]
         )
       end
 
@@ -50,25 +50,23 @@ class TransfersTableComponent < ApplicationView
       p { "#{heading} (#{transfers.count} records)" }
       table(class: 'table responsive-table') do
         tr do
-          th { 'ID' }
           th { 'Amount' }
           th { 'Year' }
           th { 'Giver' }
           th { 'Taker' }
           th(class: 'desktop-only') { 'Depth' }
-          th(class: 'desktop-only') { 'Direction' }
         end
 
         transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
           tr do
             td(style: row_style(transfer)) do
+              value = number_to_currency(transfer.amount.to_s, precision: 0)
               if transfer.id
-                link_for(entity: transfer, link_text: transfer.id, klass: 'Transfer')
+                link_for(entity: transfer, link_text: value, klass: 'Transfer')
               else
-                ''
+                value
               end
             end
-            td(style: row_style(transfer)) { number_to_currency(transfer.amount.to_s, precision: 0) }
             td(style: row_style(transfer)) { transfer.effective_date.to_date.year.to_s }
             if transfer.giver_id
               td(style: row_style(transfer)) { a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { transfer.giver_name } }
@@ -87,7 +85,6 @@ class TransfersTableComponent < ApplicationView
               td(style: row_style(transfer)) { transfer.taker_name }
             end
             td(style: row_style(transfer), class: 'desktop-only') { transfer.depth }
-            td(style: row_style(transfer), class: 'desktop-only') { transfer.direction }
           end
         end
       end

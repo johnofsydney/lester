@@ -14,17 +14,6 @@ Layout/ElseAlignment:
     - 'app/views/groups/index_view.rb'
     - 'app/views/people/index_view.rb'
 
-# Offense count: 13
-# This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLineAfterGuardClause:
-  Exclude:
-    - 'app/admin/memberships.rb'
-    - 'app/models/position.rb'
-    - 'app/services/build_queue.rb'
-    - 'app/services/file_ingestor.rb'
-    - 'app/services/tender_ingestor.rb'
-    - 'bin/bundle'
-
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
@@ -933,42 +922,3 @@ Style/SymbolProc:
 Style/TernaryParentheses:
   Exclude:
     - 'app/views/components/common/page_nav.rb'
-
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, no_comma
-Style/TrailingCommaInArguments:
-  Exclude:
-    - 'app/models/group.rb'
-    - 'app/services/file_ingestor.rb'
-    - 'app/views/components/common/heading.rb'
-    - 'app/views/components/transfers_table_component.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, diff_comma, no_comma
-Style/TrailingCommaInArrayLiteral:
-  Exclude:
-    - 'csv_data/raw/wiki_feds_cleaner.rb'
-    - 'spec/services/record_person_or_group_spec.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyleForMultiline.
-# SupportedStylesForMultiline: comma, consistent_comma, diff_comma, no_comma
-Style/TrailingCommaInHashLiteral:
-  Exclude:
-    - 'app/services/aus_tender/scrape_single_contract_amendment.rb'
-    - 'csv_data/raw/wiki_feds_cleaner.rb'
-    - 'spec/services/record_group_spec.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, MinSize, WordRegex.
-# SupportedStyles: percent, brackets
-Style/WordArray:
-  Exclude:
-    - 'csv_data/raw/lobbyists_and_clients_cleaner.rb'
-    - 'csv_data/raw/wiki_feds_cleaner.rb'

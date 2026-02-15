@@ -3,7 +3,7 @@ ActiveAdmin.register Membership do
   filter :member_id, label: 'Member ID'
   filter :member_type, label: 'Member type'
 
-  permit_params :member_id, :group_id, :start_date, :end_date
+  permit_params :member_id, :group_id, :start_date, :end_date, :member_type
 
   controller do
     def general_upload_action
@@ -44,6 +44,9 @@ ActiveAdmin.register Membership do
 
   form do |f|
     f.inputs 'Membership Details' do
+      f.input :group_id, label: 'Owning Group ID'
+      f.input :member_type, label: 'Member Type', as: :select, collection: %w[Person Group]
+      f.input :member_id, label: 'Member ID'
       f.input :start_date, as: :date_picker
       f.input :end_date, as: :date_picker
     end
@@ -56,6 +59,7 @@ ActiveAdmin.register Membership do
 
   collection_action :general_upload_form, method: :get do
     raise unless current_admin_user
+
     render partial: 'admin/memberships/general_upload_form'
   end
 
@@ -65,6 +69,7 @@ ActiveAdmin.register Membership do
 
   collection_action :ministries_upload_form, method: :get do
     raise unless current_admin_user
+
     render partial: 'admin/memberships/ministries_upload_form'
   end
 end

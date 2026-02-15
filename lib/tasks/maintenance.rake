@@ -1,15 +1,4 @@
 namespace :lester do
-  # desc 'Find Duplicates'
-  # task find_duplicates: :environment do
-  #   groups = Group.order(:name).pluck(:name).map(&:upcase)
-  #   people = Person.order(:name).pluck(:name).map(&:upcase)
-
-  #   p people.tally.select { |_, count| count > 1 }.keys
-  #   p groups.tally.select { |_, count| count > 1 }.keys
-
-  #   p (groups + people).tally.select { |_, count| count > 1 }.keys
-  # end
-
   desc 'Find Duplicates'
   task find_duplicates: :environment do
     group_duplicates = Groups::DeleteDuplicates.new.duplicates
@@ -29,19 +18,38 @@ namespace :lester do
     p potential_people
   end
 
-  # desc 'Create a group for all sole trader lobbyists'
-  # task create_sole_trader_groups: :environment do
-  #   lobbyist_people = Group.find_by(name: 'Lobbyists').people
-  #   sole_traders  = lobbyist_people.select{|person| person.memberships.count == 1 }
+  desc 'Backfill missing categories for Aus Tender Individual Transactions : Recruitment and Labour Hire'
+  task backfill_recruitment_category: :environment do
+    count = 0
 
-  #   sole_traders.each do |person|
-  #     group = RecordGroup.call("#{person.name} Lobbying")
-  #     p "Created group: #{group.name}"
+    # This is the JTD Category we want to backfill for
+    CATEGORY = 'Recruitment and Labour Hire'.freeze # rubocop:disable Lint/ConstantDefinitionInBlock
 
-  #     membership = Membership.create(group: group, member: person, member_type: 'Person')
-  #     Position.create(membership: membership, title: 'Sole Trader')
-  #   end
-  # end
+    puts "Starting backfill of '#{CATEGORY}' category for relevant Individual Transactions..."
+
+    # This is a list of all of the categories that appear on the Individual Transactions that we want to backfill for.
+    # We need to get the keys for these categories from the MapTransactionCategories class
+    category_list = MapTransactionCategories::ALL_CATEGORIES.select { |_k, v| v == CATEGORY }.keys
+
+    Transfer.joins(:individual_transactions)
+            .where(transfer_type: 'Government Contract(s)')
+            .where(individual_transactions: { category: category_list })
+            .select('DISTINCT ON (transfers.taker_type, transfers.taker_id) transfers.*')
+            .each do |transfer|
+        taker = transfer.taker
+        category = Group.find_or_create_by!(name: CATEGORY, category: true)
+
+        if taker.is_group? && category.present?
+          taker.add_to_category(category_group: category)
+          count += 1
+          puts "Added category to Group ID #{taker.id} for Transfer ID #{transfer.id}"
+        end
+    rescue StandardError => e
+        puts "Error processing Transfer ID #{transfer.id}: #{e.message}"
+    end
+
+    puts "Processed #{count} transfers and backfilled '#{CATEGORY}' category for relevant Groups."
+  end
 
   # desc 'Clear Cache for Network Graph and Count'
   # task clear_cache: :environment do
