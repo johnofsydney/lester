@@ -14,11 +14,11 @@ class Common::Heading < ApplicationView
         end
         p do
           unless entity.id == Group.government_department_category.id
-            plain "This page shows all groups tagged with "
-            strong {"#{entity.name}"}
-            plain ". The values in the graphs and tables relate to the "
-            strong {"groups"}
-            plain ", which may be associated with other tags as well."
+            plain 'This page shows all groups tagged with '
+            strong { entity.name }
+            plain '. The values in the graphs and tables relate to the '
+            strong { 'groups' }
+            plain ', which may be associated with other tags as well.'
           end
         end
       else
