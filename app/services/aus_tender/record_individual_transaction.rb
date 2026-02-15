@@ -32,7 +32,7 @@ class AusTender::RecordIndividualTransaction
     RefreshSingleTransferAmountJob.perform_in(5.minutes, transfer.id)
 
     # Tag the taker with category after a delay to help avoid running duplicates in quick succession
-    AusTender::CategorizeTakerJob.perform_in(10.minutes, individual_transaction.id)
+    # AusTender::CategorizeTakerJob.perform_in(10.minutes, individual_transaction.id)
   end
 
   def amount
