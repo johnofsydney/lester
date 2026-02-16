@@ -6,33 +6,6 @@
 # Note that changes in the inspected code, or installation of new
 # versions of RuboCop, may require this file to be generated again.
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-Layout/ElseAlignment:
-  Exclude:
-    - 'app/models/concerns/transfer_methods.rb'
-    - 'app/views/groups/index_view.rb'
-    - 'app/views/people/index_view.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: around, only_before
-Layout/EmptyLinesAroundAccessModifier:
-  Exclude:
-    - 'app/controllers/groups_controller.rb'
-    - 'app/controllers/people_controller.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowAliasSyntax, AllowedMethods.
-# AllowedMethods: alias_method, public, protected, private
-Layout/EmptyLinesAroundAttributeAccessor:
-  Exclude:
-    - 'app/services/can_add_to_queue.rb'
-    - 'app/services/linked_in_profile_getter.rb'
-    - 'app/views/components/groups/affiliated_groups.rb'
-
 # Offense count: 32
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
@@ -345,59 +318,31 @@ Lint/UnusedBlockArgument:
   Exclude:
     - 'app/views/components/common/money_graphs.rb'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect, AllowUnusedKeywordArguments, IgnoreEmptyMethods, IgnoreNotImplementedMethods, NotImplementedExceptions.
-# NotImplementedExceptions: NotImplementedError
-Lint/UnusedMethodArgument:
-  Exclude:
-    - 'app/models/application_record.rb'
-    - 'app/models/concerns/transfer_methods.rb'
-    - 'app/services/file_ingestor.rb'
-
-# Offense count: 12
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect.
-Lint/UselessAssignment:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
-    - 'app/services/linked_in_profile_getter.rb'
-    - 'app/services/record_person_or_group.rb'
-    - 'app/views/components/homepage_categories.rb'
-    - 'spec/models/group_spec.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect, CheckForMethodsWithNoSideEffects.
-Lint/Void:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
-
 # Offense count: 69
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:
-  Max: 629
+  Max: 500
 
 # Offense count: 31
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns, inherit_mode.
 # AllowedMethods: refine
 Metrics/BlockLength:
-  Max: 129
+  Max: 110
 
 # Offense count: 8
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 314
+  Max: 280
 
 # Offense count: 26
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
-  Max: 313
+  Max: 300
 
 # Offense count: 64
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
-  Max: 283
+  Max: 260
 
 # Offense count: 1
 # Configuration parameters: CountComments, CountAsOne.
@@ -414,7 +359,7 @@ Metrics/ParameterLists:
 # Offense count: 24
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/PerceivedComplexity:
-  Max: 313
+  Max: 300
 
 # Offense count: 3
 # Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros, UseSorbetSigs.

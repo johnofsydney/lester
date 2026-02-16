@@ -1,6 +1,7 @@
 class Groups::AffiliatedGroups < ApplicationView
 
   attr_reader :group
+
 	def initialize(group:)
 		@group = group.cached
 	end

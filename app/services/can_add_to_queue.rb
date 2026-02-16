@@ -19,6 +19,7 @@ class CanAddToQueue
   end
 
   attr_reader :node, :next_node, :counter
+
   def initialize(node, next_node, counter)
     @node = node
     @next_node = next_node
