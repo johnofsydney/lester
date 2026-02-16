@@ -321,28 +321,28 @@ Lint/UnusedBlockArgument:
 # Offense count: 69
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:
-  Max: 629
+  Max: 500
 
 # Offense count: 31
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns, inherit_mode.
 # AllowedMethods: refine
 Metrics/BlockLength:
-  Max: 129
+  Max: 110
 
 # Offense count: 8
 # Configuration parameters: CountComments, CountAsOne.
 Metrics/ClassLength:
-  Max: 314
+  Max: 280
 
 # Offense count: 26
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/CyclomaticComplexity:
-  Max: 313
+  Max: 300
 
 # Offense count: 64
 # Configuration parameters: CountComments, CountAsOne, AllowedMethods, AllowedPatterns.
 Metrics/MethodLength:
-  Max: 283
+  Max: 260
 
 # Offense count: 1
 # Configuration parameters: CountComments, CountAsOne.
@@ -359,7 +359,7 @@ Metrics/ParameterLists:
 # Offense count: 24
 # Configuration parameters: AllowedMethods, AllowedPatterns.
 Metrics/PerceivedComplexity:
-  Max: 313
+  Max: 300
 
 # Offense count: 3
 # Configuration parameters: NamePrefix, ForbiddenPrefixes, AllowedMethods, MethodDefinitionMacros, UseSorbetSigs.
