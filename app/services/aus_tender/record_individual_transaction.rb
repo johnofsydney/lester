@@ -69,7 +69,7 @@ class AusTender::RecordIndividualTransaction
   end
 
   def fine_grained_transaction_category
-    @fine_grained_transaction_category ||= FineGrainedCategory.find_by(name: release.fine_grained_transaction_category)
+    @fine_grained_transaction_category ||= FineGrainedTransactionCategory.find_by(name: release.fine_grained_transaction_category)
   end
 
   def mapper
