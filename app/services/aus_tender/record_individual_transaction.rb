@@ -16,16 +16,19 @@ class AusTender::RecordIndividualTransaction
     raise ValidationError("Invalid transaction data: #{release.inspect}") unless valid?
 
     individual_transaction = IndividualTransaction.create( # rubocop:disable Lint/UselessAssignment
+      giver: purchaser,
+      taker: supplier,
       transfer:,
       amount:,
       effective_date: release.effective_date,
-      transfer_type: 'Government Contract',
+      transaction_type: 'Government Contract',
       evidence: release.evidence,
       external_id: release.item_id, # the uniqe identifier from the external system (inc UUID)
       contract_id: release.contract_id, # the contract can include several amendments
       amendment_id: release.amendment_id,
       description: release.description,
-      category: release.category
+      category: release.category, # the text that is supplied in the category field of the release
+      fine_grained_transaction_category:
     )
 
     # wait a moment to allow the lock prevention of running duplicates in quick succession
@@ -63,6 +66,10 @@ class AusTender::RecordIndividualTransaction
 
   def supplier
     @supplier ||= RecordGroup.call(release.supplier_name, business_number: release.supplier_abn, mapper:)
+  end
+
+  def fine_grained_transaction_category
+    @fine_grained_transaction_category ||= FineGrainedCategory.find_by(name: release.fine_grained_transaction_category)
   end
 
   def mapper
