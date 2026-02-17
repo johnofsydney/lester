@@ -27,7 +27,6 @@ class AusTender::RecordIndividualTransaction
       contract_id: release.contract_id, # the contract can include several amendments
       amendment_id: release.amendment_id,
       description: release.description,
-      category: release.category, # the text that is supplied in the category field of the release
       fine_grained_transaction_category:
     )
 
@@ -61,15 +60,15 @@ class AusTender::RecordIndividualTransaction
   end
 
   def purchaser
-    @purchaser ||= RecordGroup.call(release.purchaser_name, business_number: release.purchaser_abn, mapper:)
+    RecordGroup.call(release.purchaser_name, business_number: release.purchaser_abn, mapper:)
   end
 
   def supplier
-    @supplier ||= RecordGroup.call(release.supplier_name, business_number: release.supplier_abn, mapper:)
+    RecordGroup.call(release.supplier_name, business_number: release.supplier_abn, mapper:)
   end
 
   def fine_grained_transaction_category
-    @fine_grained_transaction_category ||= FineGrainedTransactionCategory.find_by(name: release.category)
+    FineGrainedTransactionCategory.find_or_create_by!(name: release.category)
   end
 
   def mapper
