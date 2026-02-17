@@ -138,7 +138,7 @@ class InertiaController < ApplicationController
 
   def reduce_network_depth
     @toast_note = 'The network graph is too large to display. Depth re-adjusted to 1.'
-      @alert = 'The network graph is too large to display. Depth re-adjusted to 1.'
-      @depth = 1
+    @alert = 'The network graph is too large to display. Depth re-adjusted to 1.'
+    @depth = 1
   end
 end

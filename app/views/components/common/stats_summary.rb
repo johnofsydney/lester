@@ -79,7 +79,7 @@ class Common::StatsSummary < ApplicationView
         div(class: 'vertical-centre-value') do
           p(class: 'h5 fw-bold mb-0') { groups_count }
         end
-          p(class: 'text-muted small bottom-text') { "Connected #{'Group'.pluralize(groups_count)}" }
+        p(class: 'text-muted small bottom-text') { "Connected #{'Group'.pluralize(groups_count)}" }
       end
     end
   end

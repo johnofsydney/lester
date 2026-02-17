@@ -1,10 +1,10 @@
 class Transfers::TableOfBothSides < ApplicationView
   attr_reader :transfer, :depth
 
-	def initialize(transfer:)
-		@transfer = transfer
-    @depth = Constants::MAX_SEARCH_DEPTH
-	end
+	 def initialize(transfer:)
+ 		@transfer = transfer
+   @depth = Constants::MAX_SEARCH_DEPTH
+ 	end
 
   def view_template
     div(class: 'row') do
@@ -13,7 +13,7 @@ class Transfers::TableOfBothSides < ApplicationView
 
       div(class: 'col', id: 'descendents-of-giver') do
         p do
-          plain 'Associated People and Groups of '
+          plain 'Associated People and Groups of (TODO)'
           br
           strong {transfer.giver.name}
           plain " (depth: #{depth})"
