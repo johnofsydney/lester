@@ -1,4 +1,6 @@
 class People::IndexView < ApplicationView
+  HIGHLIGHT_THRESHOLD = 1914
+
   def initialize(people:, page:, pages:)
     @people = people
     @page = page

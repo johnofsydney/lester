@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_11_220314) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_17_031145) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,6 +54,14 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_11_220314) do
     t.index ["last_processed_date"], name: "index_contract_backfills_on_last_processed_date", unique: true
   end
 
+  create_table "fine_grained_transaction_categories", force: :cascade do |t|
+    t.string "name"
+    t.bigint "major_transaction_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["major_transaction_category_id"], name: "idx_on_major_transaction_category_id_558fd27f86"
+  end
+
   create_table "flipper_features", force: :cascade do |t|
     t.string "key", null: false
     t.datetime "created_at", null: false
@@ -90,7 +98,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_11_220314) do
     t.bigint "transfer_id"
     t.float "amount"
     t.text "evidence"
-    t.string "transfer_type"
+    t.string "transaction_type"
     t.date "effective_date"
     t.string "external_id"
     t.string "description"
@@ -99,9 +107,17 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_11_220314) do
     t.string "contract_id"
     t.string "amendment_id"
     t.string "category"
+    t.string "giver_type"
+    t.bigint "giver_id"
+    t.string "taker_type"
+    t.bigint "taker_id"
+    t.bigint "fine_grained_transaction_category_id"
     t.index ["contract_id"], name: "index_individual_transactions_on_contract_id"
     t.index ["effective_date"], name: "index_individual_transactions_on_effective_date"
     t.index ["external_id"], name: "index_individual_transactions_on_external_id"
+    t.index ["fine_grained_transaction_category_id"], name: "idx_on_fine_grained_transaction_category_id_662409c654"
+    t.index ["giver_type", "giver_id"], name: "index_individual_transactions_on_giver"
+    t.index ["taker_type", "taker_id"], name: "index_individual_transactions_on_taker"
     t.index ["transfer_id"], name: "index_individual_transactions_on_transfer_id"
   end
 
@@ -115,6 +131,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_11_220314) do
     t.text "people_card_selector"
     t.date "reviewed_at"
     t.index ["group_id"], name: "index_leadership_websites_on_group_id"
+  end
+
+  create_table "major_transaction_categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "memberships", force: :cascade do |t|
@@ -219,6 +241,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_11_220314) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "fine_grained_transaction_categories", "major_transaction_categories"
+  add_foreign_key "individual_transactions", "fine_grained_transaction_categories"
   add_foreign_key "individual_transactions", "transfers"
   add_foreign_key "memberships", "groups"
   add_foreign_key "positions", "memberships"

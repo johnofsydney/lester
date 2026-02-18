@@ -1,13 +1,13 @@
 class Groups::PeopleTable < ApplicationView
   include Constants
 
-	def initialize(people: nil, exclude_group: nil, page: nil, pages: nil)
-    # leaving pagination related args in place for now. exclude_group is better named as current_group
-    @people = people
-    @exclude_group = exclude_group
-    @page = page
-    @pages = pages
-	end
+	 def initialize(people: nil, exclude_group: nil, page: nil, pages: nil)
+     # leaving pagination related args in place for now. exclude_group is better named as current_group
+     @people = people
+     @exclude_group = exclude_group
+     @page = page
+     @pages = pages
+ 	end
 
   attr_reader :people, :exclude_group, :page, :pages
 

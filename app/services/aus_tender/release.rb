@@ -78,7 +78,7 @@ class AusTender::Release
   end
 
   def category
-    scraped_page_data[:category]
+    scraped_page_data[:category].downcase
   end
 
   def effective_date

@@ -85,27 +85,6 @@ Layout/HashAlignment:
   Exclude:
     - 'spec/services/record_group_spec.rb'
 
-# Offense count: 27
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: normal, indented_internal_methods
-Layout/IndentationConsistency:
-  Exclude:
-    - 'app/controllers/inertia_controller.rb'
-    - 'app/services/acnc_charities/fetch_single_charity_people.rb'
-    - 'app/services/aus_tender/scrape_single_contract_amendment.rb'
-    - 'app/views/components/common/heading.rb'
-    - 'app/views/components/common/stats_summary.rb'
-    - 'app/views/components/common/table_row.rb'
-    - 'app/views/components/groups/affiliated_groups.rb'
-    - 'app/views/components/groups/people_table.rb'
-    - 'app/views/components/people/groups_table.rb'
-    - 'app/views/components/transfers/table_of_both_sides.rb'
-    - 'app/views/imports/annual_associated_entity_view.rb'
-    - 'app/views/imports/annual_donor_form.rb'
-    - 'app/views/layouts/application_layout.rb'
-    - 'app/views/people/index_view.rb'
-
 # Offense count: 56
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: IndentationWidth, EnforcedStyle.

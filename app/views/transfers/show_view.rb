@@ -81,7 +81,7 @@ class Transfers::ShowView < ApplicationView
         end
         transfer.individual_transactions.each do |individual_transaction|
           tbody do
-            td { individual_transaction.transfer_type }
+            td { individual_transaction.transaction_type }
             td do
               a(href: individual_transaction.evidence, target: :_blank) { individual_transaction.evidence.truncate(50) }
             end
