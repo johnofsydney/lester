@@ -61,16 +61,4 @@ psql -d $LOCAL_DB < $LOCAL_BACKUP_DIR/$BACKUP_FILE
 echo "Running migrations..."
 rails db:migrate
 
-
-# # Prompt the user to ask if they want to download the backup from the remote server
-# # read -p "Do you want to delete the backup from localhost? (y/n): " delete_choice
-
-# # if [[ "$delete_choice" == "y" || "$delete_choice" == "Y" ]]; then
-#   # # Step 6: Delete the local backup file
-#   echo "Deleting local backup file..."
-#   rm -f "$LOCAL_BACKUP_DIR/$BACKUP_FILE"
-# # else
-#   # echo "skipping delete local..."
-# # fi
-
 echo "Database backup and restore process completed successfully!"
