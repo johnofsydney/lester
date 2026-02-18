@@ -13,7 +13,7 @@ class ApplicationLayout < ApplicationView
 				csp_meta_tag
 				csrf_meta_tags
 
-        link(rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css')
+    link(rel: 'stylesheet', href: 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.1/css/bootstrap.min.css')
 
 				stylesheet_link_tag 'application', data_turbo_track: 'reload'
 				javascript_importmap_tags
@@ -21,7 +21,7 @@ class ApplicationLayout < ApplicationView
 
 			body(class: 'container') do
         render MenuComponent.new
-				main(&block)
+				    main(&block)
 
 			end
 		end

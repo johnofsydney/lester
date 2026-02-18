@@ -1,3 +1,4 @@
+# rubocop:disable Layout/IndentationConsistency
 class Groups::AffiliatedGroups < ApplicationView
 
   attr_reader :group
@@ -43,3 +44,4 @@ class Groups::AffiliatedGroups < ApplicationView
     end
   end
 end
+# rubocop:enable Layout/IndentationConsistency
