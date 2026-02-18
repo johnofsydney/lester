@@ -140,7 +140,7 @@ namespace :lester do
       group.update(name: "#{name} (Category)")
       tag = Tag.find_or_create_by!(name:)
 
-      Membership.where(group:).update_all(group: tag)
+      Membership.where(group:).update_all(group_id: tag.id)
       group.destroy
       count += 1
       puts "Promoted group #{name} to tag and updated memberships for Group ID #{group.id}"
