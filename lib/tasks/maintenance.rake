@@ -51,25 +51,6 @@ namespace :lester do
     puts "Processed #{count} transfers and backfilled '#{CATEGORY}' category for relevant Groups."
   end
 
-  # desc 'Clear Cache for Network Graph and Count'
-  # task clear_cache: :environment do
-  #   Group.update_all(cached_data: {})
-  #   Person.update_all(cached_data: {})
-
-  # end
-
-  # desc 'Back Fill all the Aus Tender Contracts going back to 2018-01-01'
-  # # This task can be deleted when completed
-  # task backfill_contracts: :environment do
-  #   start_date = Date.new(2018, 1, 1)
-
-  #   backfill = ContractBackfill.first_or_create!(last_processed_date: start_date)
-
-  #   puts "Backfill starting at #{backfill.last_processed_date}"
-
-  #   BackfillContractsMasterJob.perform_async(backfill.last_processed_date.to_s)
-  # end
-
   desc 'Find Groups with No People Members'
   task groups_without_people: :environment do
     groups_without_people = Group.where.not(
@@ -133,5 +114,21 @@ namespace :lester do
     else
       puts 'No transfers need backfilling'
     end
+  end
+
+  desc 'Copy category into fine grained category for Individual Transactions'
+  task copy_category_to_fine_grained: :environment do
+    count = 0
+    IndividualTransaction.where.not(category: nil)
+                         .where(fine_grained_transaction_category_id: nil)
+                         .find_each do |transaction|
+      category_name = transaction.category
+      fine_grained_category = FineGrainedTransactionCategory.find_or_create_by!(name: category_name)
+      transaction.update!(fine_grained_transaction_category: fine_grained_category)
+      count += 1
+      puts "Updated Individual Transaction ID #{transaction.id} with fine grained category '#{category_name}'"
+    end
+
+    puts "Updated #{count} Individual Transactions with fine grained categories."
   end
 end
