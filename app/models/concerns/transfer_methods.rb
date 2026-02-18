@@ -5,7 +5,7 @@ module TransferMethods
 
   included do
     # depth is the number of degrees of separation from the invoking node, 0 being the invoking node itself
-    def consolidated_transfers(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, caller: self, visited_membership_ids: [])
+    def consolidated_transfers(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [])
       current_depth_memberships = []
 
       queue.each do |node|
@@ -124,10 +124,10 @@ module TransferMethods
 
     def all_transfers
       @all_transfers ||= if self.is_category?
-                            category_outgoing_transfers.or(category_incoming_transfers)
-                          else
-                            self.incoming_transfers.or(self.outgoing_transfers)
-                          end
+                           category_outgoing_transfers.or(category_incoming_transfers)
+                         else
+                           self.incoming_transfers.or(self.outgoing_transfers)
+                         end
     end
   end
 end

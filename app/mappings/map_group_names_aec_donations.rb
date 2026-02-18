@@ -1,3 +1,8 @@
+# rubocop:disable Metrics/CyclomaticComplexity
+# rubocop:disable Metrics/PerceivedComplexity
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/AbcSize
+
 class MapGroupNamesAecDonations < MapGroupNamesBase
   def call(name)
     map_or_return_name(name)
@@ -321,3 +326,8 @@ class MapGroupNamesAecDonations < MapGroupNamesBase
     Group::NAMES
   end
 end
+
+# rubocop:enable Metrics/CyclomaticComplexity
+# rubocop:enable Metrics/PerceivedComplexity
+# rubocop:enable Metrics/MethodLength
+# rubocop:enable Metrics/AbcSize

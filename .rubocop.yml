@@ -38,7 +38,7 @@ Metrics/BlockLength:
 
 Metrics/ClassLength:
   Exclude:
-    - 'app/mappings/map_transaction_categories.rb'
+    - 'app/mappings/*' # unavoidably large hashes
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
