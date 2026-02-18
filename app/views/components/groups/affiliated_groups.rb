@@ -1,11 +1,10 @@
-# rubocop:disable Layout/IndentationConsistency
 class Groups::AffiliatedGroups < ApplicationView
 
   attr_reader :group
 
-	def initialize(group:)
-		@group = group.cached
-	end
+  def initialize(group:)
+    @group = group.cached
+  end
 
   def view_template
     turbo_frame(id: 'affiliated_groups') do
@@ -44,4 +43,3 @@ class Groups::AffiliatedGroups < ApplicationView
     end
   end
 end
-# rubocop:enable Layout/IndentationConsistency

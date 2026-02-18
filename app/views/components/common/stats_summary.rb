@@ -42,7 +42,7 @@ class Common::StatsSummary < ApplicationView
               div(class: 'me-3') do
                 p(class: 'h5 mb-0') do
                   strong { money_in }
-                  plain " in"
+                  plain ' in'
                 end
               end
             end
@@ -51,7 +51,7 @@ class Common::StatsSummary < ApplicationView
               div(class: (money_in.present? ? 'border-start ps-3' : '')) do
                 p(class: 'h5 mb-0') do
                   strong { money_out }
-                  plain " out"
+                  plain ' out'
                 end
               end
             end
