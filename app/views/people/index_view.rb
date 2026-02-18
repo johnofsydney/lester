@@ -1,6 +1,4 @@
 class People::IndexView < ApplicationView
-  HIGHLIGHT_THRESHOLD = 1914
-
   def initialize(people:, page:, pages:)
     @people = people
     @page = page
@@ -15,13 +13,7 @@ class People::IndexView < ApplicationView
 
       div(class: 'list-group') do
         people.each do |person|
-          highlight = if Flipper.enabled?(:dev_highlighting)
-            person.id > HIGHLIGHT_THRESHOLD ? 'highlight-row' : ''
-          else
-            ''
-          end
-
-          class_list = "list-group-item list-group-item-action flex-normal #{highlight}"
+          class_list = 'list-group-item list-group-item-action flex-normal'
           div(class: class_list) do
             person_name_link(person)
 
