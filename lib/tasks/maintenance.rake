@@ -131,4 +131,21 @@ namespace :lester do
 
     puts "Updated #{count} Individual Transactions with fine grained categories."
   end
+
+  desc 'Copy Category into tags for Groups'
+  task copy_category_to_tags: :environment do
+    count = 0
+    Group.where(category: true).where.not(name: nil).find_each do |group|
+      name = group.name
+      group.update(name: "#{name} (Category)")
+      tag = Tag.find_or_create_by!(name:)
+
+      Membership.where(group:).update_all(group: tag)
+      group.destroy
+      count += 1
+      puts "Promoted group #{name} to tag and updated memberships for Group ID #{group.id}"
+    end
+
+    puts "Updated #{count} Groups with tags based on their category names."
+  end
 end

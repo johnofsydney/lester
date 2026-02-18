@@ -15,7 +15,7 @@ class HomepageCategories < ApplicationView
       div(class: 'row g-3') do
 
         # Maybe temporary - but for now at least, omit charities from homepage categories
-        display_categories = (Group.major_political_categories + Group.other_categories).reject { |group| BLACKLISTED_CATEGORY_NAMES.include?(group.name) }
+        display_categories = Tag.all.reject { |group| BLACKLISTED_CATEGORY_NAMES.include?(group.name) }
 
         display_categories.each do |group|
           div(class: 'col-md-4') do
