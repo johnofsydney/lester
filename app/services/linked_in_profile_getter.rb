@@ -3,6 +3,7 @@ require 'open-uri'
 
 class LinkedInProfileGetter
   attr_reader :person
+
   def initialize(person)
     @person = person
   end
@@ -109,7 +110,7 @@ class LinkedInProfileGetter
 
     begin
       Date.new(date_hash['year'], date_hash['month'], date_hash['day'])
-    rescue => exception
+    rescue
       nil
     end
   end
