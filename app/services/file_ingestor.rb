@@ -300,12 +300,8 @@ class FileIngestor
           group: ministry_group
         )
 
-        if membership.start_date.nil?
-          membership.update!(start_date:)
-        end
-        if membership.end_date.nil?
-          membership.update!(end_date:)
-        end
+        membership.update!(start_date:) if membership.start_date.nil?
+        membership.update!(end_date:) if membership.end_date.nil?
 
         # create position for each row, with unique dates and title
         position = Position.find_or_create_by(membership:, title:, start_date:, end_date:)

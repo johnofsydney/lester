@@ -97,9 +97,7 @@ class LinkedInProfileGetter
       group: group
     )
     # create position for each row, with unique dates and title
-    if (title || start_date || end_date)
-      position = Position.find_or_create_by(membership:, title:, start_date:, end_date:)
-    end
+    position = Position.find_or_create_by(membership:, title:, start_date:, end_date:) if (title || start_date || end_date)
 
     membership.update!(evidence:) if evidence
     position.update!(evidence:) if evidence && position

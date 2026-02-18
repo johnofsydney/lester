@@ -95,7 +95,7 @@ class Transfers::ShowView < ApplicationView
       end
     end
 
-    if Current.admin_user? # rubocop:disable Style/GuardClause
+    if Current.admin_user?
       content_for :admin_sidebar do
         div(
           class: 'admin-links d-none d-lg-flex flex-column align-items-start bg-light ps-4 pe-4 mt-4',

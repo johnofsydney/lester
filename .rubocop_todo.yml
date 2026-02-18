@@ -577,26 +577,12 @@ Style/EmptyElse:
   Exclude:
     - 'app/views/components/footer_component.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/FileWrite:
-  Exclude:
-    - 'app/services/au_lobbyists/file_downloader.rb'
-
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Style/GlobalStdStream:
   Exclude:
     - 'config/environments/production.rb'
     - 'config/environments/staging.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: MinBodyLength, AllowConsecutiveConditionals.
-Style/GuardClause:
-  Exclude:
-    - 'app/views/components/menu_component.rb'
-    - 'app/views/components/people/groups_table.rb'
 
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
@@ -607,23 +593,6 @@ Style/HashSyntax:
   Exclude:
     - 'Gemfile'
     - 'app/models/membership.rb'
-
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/IdenticalConditionalBranches:
-  Exclude:
-    - 'app/admin/memberships.rb'
-
-# Offense count: 8
-# This cop supports safe autocorrection (--autocorrect).
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/models/concerns/transfer_methods.rb'
-    - 'app/models/person.rb'
-    - 'app/services/file_ingestor.rb'
-    - 'app/services/linked_in_profile_getter.rb'
-    - 'app/services/record_person.rb'
-    - 'bin/bundle'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -639,24 +608,6 @@ Style/Lambda:
   Exclude:
     - 'app/admin/groups.rb'
     - 'app/models/group.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMethodComparison, ComparisonsThreshold.
-Style/MultipleComparison:
-  Exclude:
-    - 'app/models/position.rb'
-
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: literals, strict
-Style/MutableConstant:
-  Exclude:
-    - 'app/models/group.rb'
-    - 'app/services/bluesky_service.rb'
-    - 'app/views/components/homepage_categories.rb'
-    - 'csv_data/raw/wiki_feds_cleaner.rb'
 
 # Offense count: 2
 # This cop supports safe autocorrection (--autocorrect).
@@ -780,52 +731,6 @@ Style/Sample:
 Style/SoleNestedConditional:
   Exclude:
     - 'app/sidekiq/ingest_contracts_date_job.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: RequireEnglish.
-# SupportedStyles: use_perl_names, use_english_names, use_builtin_english_names
-Style/SpecialGlobalVars:
-  EnforcedStyle: use_perl_names
-
-# Offense count: 8
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Mode.
-Style/StringConcatenation:
-  Exclude:
-    - 'app/models/person.rb'
-    - 'app/views/components/common/money_graphs.rb'
-    - 'csv_data/raw/wiki_feds_cleaner.rb'
-
-# Offense count: 29
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Exclude:
-    - 'Gemfile'
-    - 'app/services/acnc_charities/ingest_csv.rb'
-    - 'app/services/au_lobbyists/file_downloader.rb'
-    - 'app/services/circuit/aus_tender_scraper_switch.rb'
-    - 'app/sidekiq/ingest_charities_people_job.rb'
-    - 'app/views/components/common/money_graphs.rb'
-    - 'app/views/components/common/stats_summary.rb'
-
-# Offense count: 10
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, MinSize.
-# SupportedStyles: percent, brackets
-Style/SymbolArray:
-  Exclude:
-    - 'app/controllers/groups_controller.rb'
-    - 'app/controllers/people_controller.rb'
-    - 'app/models/concerns/cached_methods.rb'
-    - 'app/models/membership.rb'
-    - 'app/models/transfer.rb'
-    - 'db/migrate/20250116135230_add_compound_index_to_memberships.rb'
-    - 'db/migrate/20250310053615_create_flipper_tables.rb'
-    - 'db/migrate/20251125220309_add_missing_indexes.rb'
-    - 'db/migrate/20251127110750_add_index_to_memberships.rb'
 
 # Offense count: 7
 # This cop supports unsafe autocorrection (--autocorrect-all).
