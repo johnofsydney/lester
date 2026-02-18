@@ -14,6 +14,8 @@ BACKUP_FILE=$LESTER_BACKUP_FILE
 LOCAL_DB=$LESTER_LOCAL_DB
 LOCAL_DB_USER=$LESTER_LOCAL_DB_USER
 
+exit 1
+
 # Step 1: SSH into the remote server and create a backup of the database
 ssh "$REMOTE_USER@$REMOTE_HOST" << EOF
   echo "Creating backup on remote server..."
