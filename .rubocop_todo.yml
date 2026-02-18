@@ -128,7 +128,7 @@ Layout/IndentationStyle:
     - 'app/views/components/transfers/table_of_both_sides.rb'
     - 'app/views/groups/edit_view.rb'
     - 'app/views/imports/annual_associated_entity_view.rb'
-    - 'app/views/imports/annual_donor_form.rb'
+    # - 'app/views/imports/annual_donor_form.rb'
     - 'app/views/layouts/application_layout.rb'
     - 'app/views/people/index_view.rb'
 
