@@ -1,7 +1,7 @@
 # from https://t27duck.com/posts/17-a-bluesky-at-proto-api-example-in-ruby
 
 class BlueskyService
-  BASE_URL = 'https://bsky.social/xrpc'
+  BASE_URL = 'https://bsky.social/xrpc'.freeze
   TOKEN_CACHE_KEY = :bluesky_token_data
 
   def initialize

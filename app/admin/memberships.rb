@@ -12,11 +12,11 @@ ActiveAdmin.register Membership do
         FileIngestor.general_upload(csv:)
 
         flash[:notice] = 'Success!'
-        redirect_to admin_memberships_path
       else
         flash[:alert] = 'Input cannot be blank.'
-        redirect_to admin_memberships_path
       end
+
+      redirect_to admin_memberships_path
     end
 
     def ministries_upload_action
@@ -25,11 +25,11 @@ ActiveAdmin.register Membership do
         FileIngestor.ministries_upload(csv)
 
         flash[:notice] = 'Success!'
-        redirect_to admin_memberships_path
       else
         flash[:alert] = 'Input cannot be blank.'
-        redirect_to admin_memberships_path
       end
+
+      redirect_to admin_memberships_path
     end
   end
 

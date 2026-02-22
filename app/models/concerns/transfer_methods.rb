@@ -55,9 +55,7 @@ module TransferMethods
 
       # sanity check in case of a large number of nodes on [self] for the first iteration
       # let it return a meaningful collection but not recurse further
-      if counter.zero? && (queue.first.nodes_count > Constants::MAX_NODE_COUNT_FIRST_DEGREE_CONNECTIONS)
-        return queue.first.nodes.map { |node| Descendent.new(node:, depth: 0, parent: nil)}
-      end
+      return queue.first.nodes.map { |node| Descendent.new(node:, depth: 0, parent: nil)} if counter.zero? && (queue.first.nodes_count > Constants::MAX_NODE_COUNT_FIRST_DEGREE_CONNECTIONS)
 
       queue.each do |node|
         visited_nodes << node

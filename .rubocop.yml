@@ -20,6 +20,7 @@ AllCops:
     - 'bin/*'
     - 'config/**/*'
     - 'config.ru'
+    - 'csv_data/**/*'
     - 'db/**/*'
     - 'vendor/**/*'
 
@@ -92,6 +93,18 @@ RSpec/ContextWording:
     - unless
     - for
     - and
+
+Style/GuardClause:
+  Exclude:
+    - 'app/views/**/*'
+
+Style/StringLiterals:
+  Exclude:
+    - 'Gemfile'
+
+
+Style/SymbolArray:
+  Enabled: false
 
 Style/WordArray:
   Exclude:

@@ -2,7 +2,7 @@ class HomepageCategories < ApplicationView
   include ActionView::Helpers::NumberHelper
 
   # Categories that we don't want to show on the homepage
-  BLACKLISTED_CATEGORY_NAMES = ['Charities']
+  BLACKLISTED_CATEGORY_NAMES = %w[Charities].freeze
 
   def initialize(records: nil)
     @records = records

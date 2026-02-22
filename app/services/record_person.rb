@@ -26,9 +26,7 @@ class RecordPerson
     regex_for_removal_titles_3 = /^Hon\b|^Hon\.\b/i
     regex_for_removal_normal_titles = /\bMr\b|\bMrs\b|\bMs\b|\bMiss\b/i
 
-    if name.include?(',')
-      name = name.split(',').reverse.join(' ')
-    end
+    name = name.split(',').reverse.join(' ') if name.include?(',')
 
     name = name.strip
                .gsub(regex_for_removal_elected, '')

@@ -1,13 +1,9 @@
 class MenuComponent < ApplicationView
-  def initialize(entity: nil, new: nil)
+  def initialize(entity: nil)
     @entity = entity
-    if new
-      @new_path = new[:path]
-      @new_text = new[:text]
-    end
   end
 
-  attr_reader :entity, :new_path, :new_text
+  attr_reader :entity
 
   def view_template
     case Current.host

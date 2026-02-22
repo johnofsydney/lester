@@ -63,14 +63,6 @@ class Home::TodoView < ApplicationView
               ul do
                 li { 'Add evidence to each model, as an Array' }
 
-                li { 'More Data from Fed Gov Expenditure: https://www.tenders.gov.au/senateorder/list' }
-                li { 'Move search alinker forms to Phlex' }
-
-                li { 'Theme / Color Scheme' }
-                li { 'Bootstrap as an asset' }
-                li { 'D3 JS' }
-                li { 'Shortest Path between any two nodes (include_looser_nodes)' }
-
                 li { 'Tests' }
                 li { 'Get ASX data programatically' }
 

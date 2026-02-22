@@ -4,37 +4,37 @@
 class AuLobbyists::FileDownloader
   def call
     conn = Faraday.new(
-      url: "https://api.lobbyists.ag.gov.au",
+      url: 'https://api.lobbyists.ag.gov.au',
       headers: {
-        "Content-Type" => "application/json",
-        "Accept" => "application/json, text/plain, */*",
-        "Origin" => "https://lobbyists.ag.gov.au",
-        "Referer" => "https://lobbyists.ag.gov.au/",
-        "User-Agent" => "Mozilla/5.0"
+        'Content-Type' => 'application/json',
+        'Accept' => 'application/json, text/plain, */*',
+        'Origin' => 'https://lobbyists.ag.gov.au',
+        'Referer' => 'https://lobbyists.ag.gov.au/',
+        'User-Agent' => 'Mozilla/5.0'
       }
     )
 
     payload = {
-      fileExtension: "csv",
+      fileExtension: 'csv',
       searchCriteria: {
-        entity: "all",
-        query: "",
+        entity: 'all',
+        query: '',
         pageNumber: 1,
         pagingCookie: nil,
         count: 10,
-        sortCriteria: { fieldName: "", sortOrder: 0 },
+        sortCriteria: { fieldName: '', sortOrder: 0 },
         isDeregistered: false
       }
     }
 
-    response = conn.post("/search/download", payload.to_json)
+    response = conn.post('/search/download', payload.to_json)
 
     # Verify it worked
     if response.success?
       # The API returns raw CSV content in the body
-      path = Rails.root.join("tmp", "lobbyists.xlsx")
+      path = Rails.root.join('tmp', 'lobbyists.xlsx')
       # write as binary so Ruby doesn't try to transcode
-      File.open(path, "wb") do |f|
+      File.open(path, 'wb') do |f|
         f.write(response.body)
       end
 

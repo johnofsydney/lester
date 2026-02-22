@@ -25,13 +25,8 @@ class Person < ApplicationRecord
 
   validates :name, uniqueness: { case_sensitive: false }
 
-  def nodes(include_looser_nodes: false)
-    unless include_looser_nodes
-      return groups
-    end
-
-    # this + will still work for relations not just arrays
-    [groups + other_edge_ends].flatten.compact.uniq
+  def nodes
+    groups
   end
 
   def transfers
@@ -51,6 +46,7 @@ class Person < ApplicationRecord
   def is_person? = true
   def business_number = nil
 
+  # rubocop:disable Style/StringConcatenation # feels nicer in this case
   def tweet_body
     body = <<~SUMMARY.strip
       🔍 #{name}
@@ -74,6 +70,7 @@ class Person < ApplicationRecord
 
     body.strip
   end
+  # rubocop:enable Style/StringConcatenation
 
   private
 

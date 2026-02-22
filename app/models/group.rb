@@ -8,7 +8,7 @@ class Group < ApplicationRecord
 
   lazy_columns :cached_data
 
-  MAJOR_POLITICAL_CATEGORIES = ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens']
+  MAJOR_POLITICAL_CATEGORIES = ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'].freeze
 
   NAMES = OpenStruct.new(
             coalition: OpenStruct.new(
