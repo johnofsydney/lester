@@ -41,13 +41,11 @@ if [[ $missing_vars -ne 0 ]]; then
 fi
 
 # Step 1: SSH into the remote server and create a backup of the database
-ssh "$REMOTE_USER@$REMOTE_HOST" << EOF
-  echo "Creating backup on remote server..."
-
-  # Set password for this session
-  export PGPASSWORD='$LESTER_REMOTE_DB_PASSWORD'
-
-  pg_dump "$REMOTE_DB" -U "$REMOTE_DB_USER" -h localhost > "$REMOTE_BACKUP_DIR/$BACKUP_FILE"
+ssh "$REMOTE_USER@$REMOTE_HOST" <<EOF
+    set -e
+    mkdir -p "$REMOTE_BACKUP_DIR"
+    PGPASSWORD="$LESTER_REMOTE_DB_PASSWORD" \
+    pg_dump "$REMOTE_DB" -U "$REMOTE_DB_USER" -h localhost > "$REMOTE_BACKUP_DIR/$BACKUP_FILE"
 EOF
 
 # Check if SSH failed due to permission issues
