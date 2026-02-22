@@ -8,7 +8,7 @@ class AcncCharities::IngestCsv
     return unless response && response[:body]
 
     csv = CSV.parse(response[:body], headers: true)
-    category = Group.find_or_create_by(name: 'Charities')
+    tag = Group.find_or_create_by(name: 'Charities', type: 'Tag')
 
     csv.map{|row| {name: row['Charity_Legal_Name'], abn: row['ABN']} }
        .reject{|row| row[:abn].nil? }
@@ -20,7 +20,7 @@ class AcncCharities::IngestCsv
         break if Rails.env.development? && index > 20
         break if Rails.env.staging? && index > 1000
 
-        RecordSingleCharityGroupJob.perform_async(row[:name], row[:abn], category.id)
+        RecordSingleCharityGroupJob.perform_async(row[:name], row[:abn], tag.id)
        end
 
     # after ingesting the CSV - commence ingestion of people for each charity

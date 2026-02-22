@@ -99,30 +99,30 @@ module TransferMethods
       "#{from_date.year} to #{to_date.year}"
     end
 
-    def category_incoming_transfers
-      return Transfer.none unless self.is_category?
+    def tag_incoming_transfers
+      return Transfer.none unless self.is_tag?
 
-      @category_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: [self.groups.pluck(:id)])
-                                               .where.not(giver_id: [self.groups.pluck(:id)])
-                                               .or(Transfer.where(taker_type: 'Person', taker_id: [self.people.pluck(:id)]))
+      @tag_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: [self.groups.pluck(:id)])
+                                          .where.not(giver_id: [self.groups.pluck(:id)])
+                                          .or(Transfer.where(taker_type: 'Person', taker_id: [self.people.pluck(:id)]))
     end
 
-    def category_outgoing_transfers
-      return Transfer.none unless self.is_category?
+    def tag_outgoing_transfers
+      return Transfer.none unless self.is_tag?
 
       group_ids = self.groups.pluck(:id)
       people_ids = self.people.pluck(:id)
 
-      @category_outgoing_transfers ||= Transfer.where(giver_type: 'Group', giver_id: group_ids)
-                                               .where.not(taker_id: group_ids)
-                                               .or(Transfer.where(giver_type: 'Person', giver_id: people_ids))
+      @tag_outgoing_transfers ||= Transfer.where(giver_type: 'Group', giver_id: group_ids)
+                                          .where.not(taker_id: group_ids)
+                                          .or(Transfer.where(giver_type: 'Person', giver_id: people_ids))
     end
 
     private
 
     def all_transfers
-      @all_transfers ||= if self.is_category?
-                           category_outgoing_transfers.or(category_incoming_transfers)
+      @all_transfers ||= if self.is_tag?
+                           tag_outgoing_transfers.or(tag_incoming_transfers)
                          else
                            self.incoming_transfers.or(self.outgoing_transfers)
                          end

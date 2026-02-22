@@ -41,7 +41,7 @@ class Person < ApplicationRecord
     outgoing_transfers.map(&:taker)
   end
 
-  def is_category? = false
+  def is_tag? = false
   def is_group? = false
   def is_person? = true
   def business_number = nil

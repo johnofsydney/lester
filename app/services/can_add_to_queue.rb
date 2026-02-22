@@ -30,7 +30,7 @@ class CanAddToQueue
     return false if next_node.nodes_count.nil?
     return false if next_node.nodes_count > Constants::MAX_NODE_COUNT_TO_FOLLOW
     return false if counter * next_node.nodes_count > Constants::MAX_NODE_COUNT_TO_FOLLOW
-    return false if next_node.is_category?
+    return false if next_node.is_tag?
 
     true
   end

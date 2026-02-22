@@ -123,8 +123,8 @@ namespace :lester do
                          .where(fine_grained_transaction_category_id: nil)
                          .find_each do |transaction|
       category_name = transaction.category
-      fine_grained_category = FineGrainedTransactionCategory.find_or_create_by!(name: category_name)
-      transaction.update!(fine_grained_transaction_category: fine_grained_category)
+      fine_grained_transaction_category = FineGrainedTransactionCategory.find_or_create_by!(name: category_name)
+      transaction.update!(fine_grained_transaction_category:)
       count += 1
       puts "Updated Individual Transaction ID #{transaction.id} with fine grained category '#{category_name}'"
     end

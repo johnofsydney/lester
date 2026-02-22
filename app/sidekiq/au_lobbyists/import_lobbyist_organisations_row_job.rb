@@ -12,15 +12,15 @@ class AuLobbyists::ImportLobbyistOrganisationsRowJob
     return if lobbyist.nil? || lobbyist.id.nil?
 
     start_date = Date.parse(start_date) if start_date.present?
-    lobbyists_category = Group.lobbyists_category
+    lobbyists_tag = Group.lobbyists_tag
     evidence = 'https://lobbyists.ag.gov.au/register'
 
-    # then add this lobbyist to the lobbyists category
-    if (membership = Membership.find_by(member: lobbyist, group: lobbyists_category))
+    # then add this lobbyist to the lobbyists tag
+    if (membership = Membership.find_by(member: lobbyist, group: lobbyists_tag))
       membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
       membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
     else
-      Membership.create!(member: lobbyist, group: lobbyists_category, start_date:, evidence:)
+      Membership.create!(member: lobbyist, group: lobbyists_tag, start_date:, evidence:)
     end
   end
 end

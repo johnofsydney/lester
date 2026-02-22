@@ -8,7 +8,7 @@ class Group < ApplicationRecord
 
   lazy_columns :cached_data
 
-  MAJOR_POLITICAL_CATEGORIES = ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'].freeze
+  MAJOR_POLITICAL_GROUPS = ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'].freeze
 
   NAMES = OpenStruct.new(
             coalition: OpenStruct.new(
@@ -87,17 +87,17 @@ class Group < ApplicationRecord
   normalizes :business_number, with: ->(bn) { bn.presence&.gsub(/\D/, '') }
 
   # scopes
-  scope :major_political_categories, -> do
-    where(category: true).where(name: MAJOR_POLITICAL_CATEGORIES).order(:name)
+  scope :major_political_tags, -> do
+    where(type: 'Tag').where(name: MAJOR_POLITICAL_GROUPS).order(:name)
   end
-  scope :other_categories, -> do
-    where(category: true).where.not(name: MAJOR_POLITICAL_CATEGORIES).order(:name)
+  scope :other_tags, -> do
+    where(type: 'Tag').where.not(name: MAJOR_POLITICAL_GROUPS).order(:name)
   end
 
   scope :political_parties, -> do
     where(
       id: Membership.joins(:group)
-                    .where(groups: { category: true, name: MAJOR_POLITICAL_CATEGORIES })
+                    .where(groups: { type: 'Tag', name: MAJOR_POLITICAL_GROUPS })
                     .select(:member_id)
     )
   end
@@ -131,11 +131,11 @@ class Group < ApplicationRecord
     where(created_at: since..Time.current)
   }
 
-  # Scope: groups that are members of the lobbyists category
+  # Scope: groups that are members of the lobbyists tag
   scope :lobbyist_groups, -> {
-    lobbyist_category = Group.lobbyists_category
+    lobbyist_tag = Group.lobbyists_tag
     joins("INNER JOIN memberships ON memberships.member_id = groups.id AND memberships.member_type = 'Group'")
-      .where('memberships.group_id = ?', lobbyist_category.id)
+      .where('memberships.group_id = ?', lobbyist_tag.id)
       .distinct
   }
 
@@ -181,10 +181,10 @@ class Group < ApplicationRecord
     end
   end
 
-  # def is_category? = category? # boolean column
-  def is_category?
-    category? || type == 'Tag'
+  def is_tag?
+    type == 'Tag'
   end
+
   def is_group? = true
   def is_person? = false
 
@@ -194,12 +194,12 @@ class Group < ApplicationRecord
     name
   end
 
-  def add_to_category(category_group: nil, category_name: nil)
-    raise ArgumentError, 'Either category_group or category_name must be provided' if category_group.blank? && category_name.blank?
-    return if self.is_category?
+  def add_to_tag(tag_group: nil, tag_name: nil)
+    raise ArgumentError, 'Either tag_group or tag_name must be provided' if tag_group.blank? && tag_name.blank?
+    return if self.is_tag?
 
-    category_group ||= Group.find_or_create_by!(name: category_name, category: true)
-    Category::AddGroupToCategory.call(category: category_group, group: self)
+    tag_group ||= Group.find_or_create_by!(name: tag_name, type: 'Tag')
+    Tag::AddGroupToTag.call(tag: tag_group, group: self)
   end
 
   def self.all_named_parties
@@ -212,15 +212,15 @@ class Group < ApplicationRecord
     Group.where('LOWER(name) = ?', name.downcase).first
   end
 
-  def self.lobbyists_category
+  def self.lobbyists_tag
     Group.find_by(name: 'Lobbyists')
   end
 
-  def self.client_of_lobbyists_category
+  def self.client_of_lobbyists_tag
     Group.find_by(name: 'Client of Lobbyists')
   end
 
-  def self.government_department_category
+  def self.government_department_tag
     Group.find_by(name: 'Government Departments (AU, Federal & State)')
   end
 end

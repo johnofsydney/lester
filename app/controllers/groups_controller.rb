@@ -8,8 +8,8 @@ class GroupsController < ApplicationController
   before_action :authenticate_user!, only: %i[ new edit update destroy ]
 
   def index
-    groups = Group.where.not(category: true).order(:name).limit(page_size).offset(paginate_offset).to_a
-    pages = (Group.where.not(category: true).count.to_f / page_size).ceil
+    groups = Group.order(:name).limit(page_size).offset(paginate_offset).to_a
+    pages = (Group.count.to_f / page_size).ceil
 
     render Groups::IndexView.new(groups:, page: @page, pages:)
   end

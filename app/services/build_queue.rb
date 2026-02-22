@@ -42,8 +42,8 @@ class BuildQueue
       # Don't add the group to the queue if it is so big that not all individuals would know each other
       return next_node.memberships.size < MAX_GROUP_SIZE_TO_FOLLOW
     elsif node.is_a?(Group) && next_node.is_a?(Group)
-      # generally always follow affiliated groups. But not categories - they are too big
-      return false if next_node.category || node.category
+      # generally always follow affiliated groups. But not tags - they are too big
+      return false if next_node.is_tag? || node.is_tag?
 
       # but if we are tracking a transfer, we only want to follow the affiliated group if the transfer is within the timeframe of the membership of group 1 and group 2
       transfer_date = transfer&.effective_date
