@@ -6,7 +6,7 @@ REMOTE_HOST=$LESTER_REMOTE_DB_HOST # "your_remote_host"
 
 REMOTE_DB=$LESTER_REMOTE_DB # "your_database_name"
 REMOTE_DB_USER=$LESTER_REMOTE_DB_USER # "your_database_user"
-# REMOTE_DB_HOST=$LESTER_REMOTE_DB_HOST # "your_database_host"
+REMOTE_DB_HOST=$LESTER_REMOTE_DB_HOST # "your_database_host"
 LESTER_REMOTE_DB_PASSWORD=$LESTER_REMOTE_DB_PASSWORD # "your_database_password"
 
 LOCAL_BACKUP_DIR=$LESTER_LOCAL_BACKUP_DIR  # Use $HOME instead of ~ ## FOR LOCAL ##
