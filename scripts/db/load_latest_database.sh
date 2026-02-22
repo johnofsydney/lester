@@ -40,7 +40,7 @@ read -p "Do you want to download the backup from the remote server? (y/n): " dow
 
 if [[ "$download_choice" == "y" || "$download_choice" == "Y" ]]; then
     echo "Fetching latest backup from remote server..."
-    ./fetch_remote_db_backup.sh
+    fetch_remote_db_backup.sh
     if [[ $? -ne 0 ]]; then
         echo "Error: fetch_remote_db_backup.sh failed. Aborting..."
         exit 1
