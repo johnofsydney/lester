@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REMOTE_USER=$LESTER_REMOTE_USER # "your_remote_user"
-REMOTE_HOST=$LESTER_REMOTE_HOST # "your_remote_host"
+REMOTE_HOST=$LESTER_REMOTE_DB_HOST # "your_remote_host"
 
 REMOTE_DB=$LESTER_REMOTE_DB # "your_database_name"
 REMOTE_DB_USER=$LESTER_REMOTE_DB_USER # "your_database_user"

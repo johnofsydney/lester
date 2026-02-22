@@ -213,14 +213,14 @@ class Group < ApplicationRecord
   end
 
   def self.lobbyists_category
-    Group.find(1292)
+    Group.find_by(name: 'Lobbyists')
   end
 
   def self.client_of_lobbyists_category
-    Group.find(1643)
+    Group.find_by(name: 'Client of Lobbyists')
   end
 
   def self.government_department_category
-    Group.find(124_375)
+    Group.find_by(name: 'Government Departments (AU, Federal & State)')
   end
 end
