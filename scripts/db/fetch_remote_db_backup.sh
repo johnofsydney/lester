@@ -1,44 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
-REMOTE_USER=$LESTER_REMOTE_USER # "your_remote_user"
-REMOTE_HOST=$LESTER_REMOTE_DB_HOST # "your_remote_host"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-REMOTE_DB=$LESTER_REMOTE_DB # "your_database_name"
-REMOTE_DB_USER=$LESTER_REMOTE_DB_USER # "your_database_user"
-REMOTE_DB_HOST=$LESTER_REMOTE_DB_HOST # "your_database_host"
-LESTER_REMOTE_DB_PASSWORD=$LESTER_REMOTE_DB_PASSWORD # "your_database_password"
-
-LOCAL_BACKUP_DIR=$LESTER_LOCAL_BACKUP_DIR  # Use $HOME instead of ~ ## FOR LOCAL ##
-REMOTE_BACKUP_DIR=$LESTER_REMOTE_BACKUP_DIR  # Use $HOME instead of ~
-BACKUP_FILE=$LESTER_BACKUP_FILE
-LOCAL_DB=$LESTER_LOCAL_DB
-LOCAL_DB_USER=$LESTER_LOCAL_DB_USER
-
-required_vars=(
-  LESTER_REMOTE_USER
-  LESTER_REMOTE_DB_HOST
-  LESTER_REMOTE_DB
-  LESTER_REMOTE_DB_USER
-  LESTER_REMOTE_DB_PASSWORD
-  LESTER_LOCAL_BACKUP_DIR
-  LESTER_REMOTE_BACKUP_DIR
-  LESTER_BACKUP_FILE
-  LESTER_LOCAL_DB
-  LESTER_LOCAL_DB_USER
-)
-
-missing_vars=0
-for var_name in "${required_vars[@]}"; do
-  if [[ -z "${!var_name:-}" ]]; then
-    echo "Missing required environment variable: ${var_name}"
-    missing_vars=1
-  fi
-done
-
-if [[ $missing_vars -ne 0 ]]; then
-  exit 1
-fi
+# Load shared database configuration
+source "$SCRIPT_DIR/db_config.sh"
 
 # Step 1: SSH into the remote server and create a backup of the database
 ssh "$REMOTE_USER@$REMOTE_HOST" <<EOF
