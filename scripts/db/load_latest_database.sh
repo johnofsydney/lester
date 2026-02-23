@@ -18,16 +18,6 @@ fi
 # Load shared database configuration
 source "$SCRIPT_DIR/db_config.sh"
 
-echo "REMOTE_USER: $REMOTE_USER"
-echo "REMOTE_HOST: $REMOTE_HOST"
-echo "REMOTE_DB: $REMOTE_DB"
-echo "REMOTE_DB_USER: $REMOTE_DB_USER"
-echo "LOCAL_BACKUP_DIR: $LOCAL_BACKUP_DIR"
-echo "REMOTE_BACKUP_DIR: $REMOTE_BACKUP_DIR"
-echo "BACKUP_FILE: $BACKUP_FILE"
-echo "LOCAL_DB: $LOCAL_DB"
-echo "LOCAL_DB_USER: $LOCAL_DB_USER"
-
 # Fetch remote backup unless --skip-fetch flag is used
 if [[ "$SKIP_FETCH" == true ]]; then
     echo "Skipping remote fetch (--skip-fetch flag provided)..."
