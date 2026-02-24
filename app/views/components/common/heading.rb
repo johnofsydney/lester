@@ -8,12 +8,12 @@ class Common::Heading < ApplicationView
   def view_template
     div(class:'text-center mb-4') do
 
-      if entity.is_category?
+      if entity.is_tag?
         div(class: 'heading display-6 fw-bold shadow') do
           button_without_link
         end
         p do
-          unless entity.id == Group.government_department_category.id
+          unless entity.id == Group.government_department_tag.id
             plain 'This page shows all groups tagged with '
             strong { entity.name }
             plain '. The values in the graphs and tables relate to the '

@@ -15,11 +15,11 @@ ActiveAdmin.register Group do
   #   permitted
   # end
 
-  permit_params :name, :business_number, :category
+  permit_params :name, :business_number
 
   filter :id
   filter :name
-  filter :category
+  filter :type
 
   index do
     selectable_column
@@ -39,7 +39,7 @@ ActiveAdmin.register Group do
       row :id
       row :name
       row :business_number
-      row :category
+      row :type
       row :created_at
       row :updated_at
       row('Memberships (as owning group)') { Membership.where(group: resource).count }
@@ -88,7 +88,7 @@ ActiveAdmin.register Group do
     f.inputs do
       f.input :name
       f.input :business_number
-      f.input :category
+      # f.input :category
     end
     f.actions
   end
@@ -156,21 +156,23 @@ ActiveAdmin.register Group do
     redirect_to admin_group_path(source_group), notice: "Group successfully merged with #{replacement_group_name}."
   end
 
-  batch_action :add_to_category, form: -> {
+  batch_action :add_to_tag, form: -> {
     {
-      category_id: Group.other_categories.map { |c| [c.name, c.id] }
+      tag_id: Group.other_tags.map { |c| [c.name, c.id] }
     }
   } do |ids, inputs|
-    category = Group.find(inputs[:category_id])
+    tag = Group.find(inputs[:tag_id])
+
+    # TODO: use a service
     Group.where(id: ids).find_each do |group|
       Membership.create(
-        group: category,
+        group: tag,
         member: group,
         member_type: 'Group'
       )
     end
 
-    redirect_to collection_path, alert: "Groups added to #{category.name}."
+    redirect_to collection_path, alert: "Groups added to #{tag.name}."
   end
 
   controller do

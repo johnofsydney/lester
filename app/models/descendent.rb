@@ -31,7 +31,7 @@ class Descendent
       size:,
       url:,
       last_position: last_position(parent, entity),
-      is_category: entity.is_a?(Group) ? entity.is_category? : false
+      is_tag: entity.is_a?(Group) ? entity.is_tag? : false
     }
   end
 

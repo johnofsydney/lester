@@ -18,7 +18,7 @@ module NodeMethods
   end
 
   def inbound_transfers
-    @inbound_transfers ||= is_category? ? category_incoming_transfers : incoming_transfers
+    @inbound_transfers ||= is_tag? ? tag_incoming_transfers : incoming_transfers
   end
 
   def money_out
@@ -33,19 +33,19 @@ module NodeMethods
   end
 
   def outbound_transfers
-    # outbound and inbound are convenience methods working for category and non category
-    @outbound_transfers ||= is_category? ? category_outgoing_transfers : outgoing_transfers
+    # outbound and inbound are convenience methods working for tag and non tag
+    @outbound_transfers ||= is_tag? ? tag_outgoing_transfers : outgoing_transfers
   end
 
-  def is_category?
-    is_category?
+  def is_tag?
+    is_tag?
   end
 
   def to_h
     {
       id:,
       name:,
-      is_category: is_category?,
+      is_tag: is_tag?,
       money_in:,
       money_out:,
       direct_connections:, # TODO: Remove from here
@@ -133,7 +133,7 @@ module NodeMethods
         id: n.id,
         name: n.name,
         nodes_count: n.nodes_count,
-        is_category: n.is_category?
+        is_tag: n.is_tag?
       }
 
       basic_info[:last_position] = last_position if last_position.present?

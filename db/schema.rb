@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_17_031145) do
+ActiveRecord::Schema[8.0].define(version: 2026_02_18_095929) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,6 +88,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_17_031145) do
     t.date "last_refreshed"
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
+    t.string "type"
     t.index "lower((name)::text)", name: "index_groups_on_lower_name", unique: true
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
     t.index ["category"], name: "index_groups_on_category"

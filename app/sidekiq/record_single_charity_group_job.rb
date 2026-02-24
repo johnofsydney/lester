@@ -8,9 +8,9 @@ class RecordSingleCharityGroupJob
     retry: 3
   )
 
-  def perform(group_name, business_number, category_id)
+  def perform(group_name, business_number, tag_id)
     group = RecordGroup.call(group_name, business_number:, mapper:)
-    Membership.find_or_create_by(group_id: category_id, member: group)
+    Membership.find_or_create_by(group_id: tag_id, member: group)
   end
 
   def mapper

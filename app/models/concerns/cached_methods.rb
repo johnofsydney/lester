@@ -45,7 +45,7 @@ class RehydratedNode
   def klass = node.class.name
 
   delegate :id, :name, :business_number, :attributes, :nodes_count, to: :node
-  delegate :is_group?, :is_person?, :is_category?, to: :node
+  delegate :is_group?, :is_person?, :is_tag?, to: :node
   delegate :trading_names, to: :node # temporary - needed for heading view
 
   def cached
@@ -67,7 +67,7 @@ class RehydratedNode
   end
 
   def direct_transfers
-    desired_depth = @node.is_category? ? 1 : 0
+    desired_depth = @node.is_tag? ? 1 : 0
 
     # Will require adjusting if/when we use hash instead of open struct in consolidated_transfers
     consolidated_transfers.select { |t| t.depth == desired_depth }
