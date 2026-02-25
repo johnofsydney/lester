@@ -9,19 +9,19 @@ class Groups::AffiliatedGroups < ApplicationView
   def view_template
     turbo_frame(id: 'affiliated_groups') do
 
-      affiliated_groups = group.direct_connections.filter{ |c| (c['klass'] == 'Group') && !c['is_category'] }
-      parent_categories = group.direct_connections.filter{ |c| (c['klass'] == 'Group') && c['is_category'] }
+      affiliated_groups = group.direct_connections.filter{ |c| (c['klass'] == 'Group') && !c['is_tag'] }
+      parent_tags = group.direct_connections.filter{ |c| c['klass'] == 'Tag' }
 
-      if parent_categories.present?
-        h4(class: 'font-italic mt-3') { 'Categories' }
+      if parent_tags.present?
+        h4(class: 'font-italic mt-3') { 'Tags' }
 
         table(class: 'table table-striped responsive-table') do
           tr do
-            th { 'Category' }
-            th { '(Last) Position' } if parent_categories.any? { |g| g['last_position'].present? }
+            th { 'Tags' }
+            th { '(Last) Position' } if parent_tags.any? { |g| g['last_position'].present? }
           end
-          parent_categories.sort_by { |group| group['name'] }.each do |category|
-            render Common::TableRow.new(hentity: category)
+          parent_tags.sort_by { |group| group['name'] }.each do |tag|
+            render Common::TableRow.new(hentity: tag)
           end
         end
       end
