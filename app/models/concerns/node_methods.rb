@@ -66,13 +66,13 @@ module NodeMethods
     @all_the_groups ||= begin
       {
         as_giver: outbound_transfers.group(:taker_id, :taker_type)
-                                    .sum(:amount)
-                                    .transform_keys{ |key| name_for_bar_graph(key) }
-                                    .sort_by{|_k, v| v},
+                  .sum(:amount)
+                  .transform_keys{ |key| name_for_bar_graph(key) }
+                  .sort_by{|_k, v| v},
         as_taker: inbound_transfers.group(:giver_id, :giver_type)
-                                   .sum(:amount)
-                                   .transform_keys{ |key| name_for_bar_graph(key) }
-                                   .sort_by{|_k, v| v}
+                  .sum(:amount)
+                  .transform_keys{ |key| name_for_bar_graph(key) }
+                  .sort_by{|_k, v| v}
       }
     end
   end

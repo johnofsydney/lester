@@ -96,8 +96,8 @@ class Group < ApplicationRecord
   scope :political_parties, -> do
     where(
       id: Membership.joins(:group)
-                    .where(groups: { category: true, name: MAJOR_POLITICAL_CATEGORIES })
-                    .select(:member_id)
+          .where(groups: { category: true, name: MAJOR_POLITICAL_CATEGORIES })
+          .select(:member_id)
     )
   end
 
