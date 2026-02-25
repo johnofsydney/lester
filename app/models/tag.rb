@@ -1,3 +1,2 @@
 class Tag < Group
-
 end

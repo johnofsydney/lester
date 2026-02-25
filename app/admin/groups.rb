@@ -88,7 +88,7 @@ ActiveAdmin.register Group do
     f.inputs do
       f.input :name
       f.input :business_number
-      # f.input :category
+      f.input :type, as: :select, collection: %w[Group Tag], include_blank: false
     end
     f.actions
   end
