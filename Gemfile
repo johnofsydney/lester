@@ -79,7 +79,7 @@ gem 'sidekiq'
 gem 'newrelic_rpm'
 
 # resolving vulnerabilities
-gem 'rack', '>= 3.1.18'
+gem 'rack', '>= 3.2.5'
 gem 'uri', '~> 1.0.4'
 
 gem 'sidekiq-unique-jobs'
