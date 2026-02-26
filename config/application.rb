@@ -20,11 +20,12 @@ Bundler.require(*Rails.groups)
 
 module Sunshine01
   class Application < Rails::Application
-    config.autoload_paths << "#{root}/app/views"
-    config.autoload_paths << "#{root}/app/views/layouts"
-    config.autoload_paths << "#{root}/app/views/components"
-    # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 8.0
+
+    config.eager_load_paths += %W[
+      #{root}/app/views
+      #{root}/app/views/components
+    ]
 
     # Configuration for the application, engines, and railties goes here.
     #
