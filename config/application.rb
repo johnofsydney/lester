@@ -28,7 +28,7 @@ module Sunshine01
     ]
 
     config.active_record.query_log_tags_enabled = true
-    config.active_record.strict_loading_by_default = true
+    # config.active_record.strict_loading_by_default = true
     config.active_record.use_yaml_unsafe_load = false
     config.active_record.yaml_column_permitted_classes = [
       Symbol,
@@ -39,18 +39,7 @@ module Sunshine01
     ]
     config.active_support.to_time_preserves_timezone = :zone
     config.log_formatter = ::Logger::Formatter.new
-
-    # Configuration for the application, engines, and railties goes here.
-    #
-    # These settings can be overridden in specific environments using the files
-    # in config/environments, which are processed later.
-    #
-    # config.time_zone = "Central Time (US & Canada)"
-    # config.eager_load_paths << Rails.root.join("extras")
-
-    # Don't generate system test files.
     config.generators.system_tests = nil
-
     config.log_level = :debug
   end
 end
