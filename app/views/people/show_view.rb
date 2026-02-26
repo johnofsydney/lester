@@ -29,7 +29,6 @@ class People::ShowView < ApplicationView
       # summarise_for: Group.summarise_for
     )
 
-
     if Current.admin_user?
       content_for :admin_sidebar do
         div(

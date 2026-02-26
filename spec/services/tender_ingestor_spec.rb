@@ -1,6 +1,4 @@
 require 'rails_helper'
-require 'spec_helper'
-require 'tender_ingestor'
 
 RSpec.describe TenderIngestor, type: :service do
   subject(:service) { described_class.new }

@@ -36,6 +36,7 @@ Layout/LineLength:
 Metrics/BlockLength:
   Exclude:
     - 'app/admin/*'
+    - 'lib/tasks/maintenance.rake'
 
 Metrics/ClassLength:
   Exclude:

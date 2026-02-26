@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   get '/people/:id/reload' => 'people#reload'
   get '/tradingnames/:id' => 'trading_names#show'
+  get '/tags/:id' => 'groups#show'
 
   resources :transfers
   resources :groups

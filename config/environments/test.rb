@@ -33,6 +33,9 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
 
+  # Raise if a before/after/around action references a missing action.
+  config.action_controller.raise_on_missing_callback_actions = true
+
   # Store uploaded files on the local file system in a temporary directory.
   config.active_storage.service = :test
 
