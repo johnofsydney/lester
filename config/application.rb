@@ -27,6 +27,19 @@ module Sunshine01
       #{root}/app/views/components
     ]
 
+    config.active_record.query_log_tags_enabled = true
+    config.active_record.strict_loading_by_default = true
+    config.active_record.use_yaml_unsafe_load = false
+    config.active_record.yaml_column_permitted_classes = [
+      Symbol,
+      Date,
+      Time,
+      ActiveSupport::TimeWithZone,
+      ActiveSupport::Duration
+    ]
+    config.active_support.to_time_preserves_timezone = :zone
+    config.log_formatter = ::Logger::Formatter.new
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

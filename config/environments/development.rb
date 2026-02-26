@@ -60,6 +60,9 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
+  # Raise if a before/after/around action references a missing action.
+  config.action_controller.raise_on_missing_callback_actions = true
+
   # Raises error for missing translations.
   # config.i18n.raise_on_missing_translations = true
 
