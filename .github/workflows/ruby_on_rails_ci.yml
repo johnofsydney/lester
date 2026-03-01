@@ -31,7 +31,9 @@ jobs:
         with:
           bundler-cache: true
       - name: Set up database schema
-        run: bin/rails db:schema:load
+        run: bin/rails db:prepare
+        env:
+          DISABLE_BOOTSNAP: "1"
       - name: Run tests
         run: bundle exec rspec
 
