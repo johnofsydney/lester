@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_02_18_095929) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_01_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -226,6 +226,7 @@ ActiveRecord::Schema[8.0].define(version: 2026_02_18_095929) do
     t.text "external_id"
     t.index ["effective_date"], name: "index_transfers_on_effective_date"
     t.index ["external_id"], name: "index_transfers_on_external_id"
+    t.index ["giver_type", "giver_id", "taker_type", "taker_id", "effective_date", "transfer_type", "evidence"], name: "index_transfers_on_natural_key", unique: true
     t.index ["giver_type", "giver_id"], name: "index_transfers_on_giver"
     t.index ["taker_type", "taker_id"], name: "index_transfers_on_taker"
   end
