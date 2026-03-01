@@ -196,9 +196,8 @@ namespace :lester do
       next if duplicate_ids.empty?
 
       amount_values = transfers.reorder(nil).distinct.pluck(:amount)
-      if amount_values.size > 1
-        puts "Warning: transfer amount differs in group; keeping amount from Transfer ##{keeper.id}. IDs=#{transfers.pluck(:id).join(',')}"
-      end
+
+      puts "Warning: transfer amount differs in group; keeping amount from Transfer ##{keeper.id}. IDs=#{transfers.pluck(:id).join(',')}" if amount_values.size > 1
 
       group_relinked = IndividualTransaction.where(transfer_id: duplicate_ids).count
 
@@ -220,6 +219,6 @@ namespace :lester do
     puts "Groups processed: #{groups_processed}"
     puts "Transfers deleted#{dry_run ? ' (would delete)' : ''}: #{transfers_deleted}"
     puts "Individual transactions relinked#{dry_run ? ' (would relink)' : ''}: #{transactions_relinked}"
-    puts "Run with DRY_RUN=false to apply changes." if dry_run
+    puts 'Run with DRY_RUN=false to apply changes.' if dry_run
   end
 end
