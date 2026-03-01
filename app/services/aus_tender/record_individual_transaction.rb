@@ -43,11 +43,11 @@ class AusTender::RecordIndividualTransaction
   end
 
   def valid?
-    [purchaser, supplier, effective_date, amount].all?(&:present?)
+    [purchaser, supplier, effective_date, amount, transfer].all?(&:present?)
   end
 
   def transfer
-    @transfer ||= Transfer.find_or_create_by!(
+    Transfer.find_or_create_by!(
       giver: purchaser,
       taker: supplier,
       effective_date: Dates::FinancialYear.new(effective_date).last_day,

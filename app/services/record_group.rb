@@ -37,12 +37,11 @@ class RecordGroup
   end
 
   def create_group_with_business_number
-    group = Group.new(name:, business_number:)
-
     Group.transaction do
-      lock_id = Zlib.crc32(group.name).to_i
+      lock_id = Zlib.crc32(name).to_i
       Group.connection.execute("SELECT pg_advisory_xact_lock(#{lock_id})")
 
+      group = Group.new(name:, business_number:)
       group.save!
     end
 
@@ -52,12 +51,11 @@ class RecordGroup
   end
 
   def create_group_with_name
-    group = Group.new(name:)
-
     Group.transaction do
-      lock_id = Zlib.crc32(group.name).to_i
+      lock_id = Zlib.crc32(name).to_i
       Group.connection.execute("SELECT pg_advisory_xact_lock(#{lock_id})")
 
+      group = Group.new(name:)
       group.save!
     end
 

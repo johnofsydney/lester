@@ -2,6 +2,7 @@ class RecordDonation
   attr_reader :name
 
   def initialize(name)
+    raise
     @name = name.strip
   end
 
@@ -10,6 +11,7 @@ class RecordDonation
   end
 
   def call
+    raise
     return nil unless name
 
     if person_or_group == 'person'
