@@ -30,7 +30,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-      - name: Set up database schema
+      - name: Set up database
         run: bin/rails db:prepare
         env:
           DISABLE_BOOTSNAP: "1"
