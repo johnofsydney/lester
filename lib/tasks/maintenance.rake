@@ -148,4 +148,77 @@ namespace :lester do
 
     puts "Updated #{count} Groups with tags based on their category names."
   end
+
+  desc 'Deduplicate transfers for unique natural key index'
+  task dedupe_transfers_natural_key: :environment do
+    dry_run = ActiveModel::Type::Boolean.new.cast(ENV.fetch('DRY_RUN', 'true'))
+
+    grouped = Transfer.group(
+      :giver_type,
+      :giver_id,
+      :taker_type,
+      :taker_id,
+      :effective_date,
+      :transfer_type,
+      :evidence
+    ).having('COUNT(*) > 1')
+
+    duplicate_groups = grouped.count
+
+    if duplicate_groups.empty?
+      puts 'No duplicate transfers found for natural key.'
+      next
+    end
+
+    puts "Found #{duplicate_groups.size} duplicate transfer key groups."
+    puts "DRY_RUN=#{dry_run}"
+
+    groups_processed = 0
+    transfers_deleted = 0
+    transactions_relinked = 0
+
+    duplicate_groups.each_key do |key|
+      giver_type, giver_id, taker_type, taker_id, effective_date, transfer_type, evidence = key
+
+      transfers = Transfer.where(
+        giver_type:,
+        giver_id:,
+        taker_type:,
+        taker_id:,
+        effective_date:,
+        transfer_type:,
+        evidence:
+      ).order(:id)
+
+      keeper = transfers.first
+      duplicates = transfers.where.not(id: keeper.id)
+      duplicate_ids = duplicates.pluck(:id)
+      next if duplicate_ids.empty?
+
+      amount_values = transfers.reorder(nil).distinct.pluck(:amount)
+
+      puts "Warning: transfer amount differs in group; keeping amount from Transfer ##{keeper.id}. IDs=#{transfers.pluck(:id).join(',')}" if amount_values.size > 1
+
+      group_relinked = IndividualTransaction.where(transfer_id: duplicate_ids).count
+
+      unless dry_run
+        Transfer.transaction do
+          IndividualTransaction.where(transfer_id: duplicate_ids).update_all(transfer_id: keeper.id)
+          Transfer.where(id: duplicate_ids).delete_all
+        end
+      end
+
+      groups_processed += 1
+      transfers_deleted += duplicate_ids.size
+      transactions_relinked += group_relinked
+
+      puts "Processed group #{groups_processed}: keeper=#{keeper.id}, duplicates=#{duplicate_ids.size}, relinked_individual_transactions=#{group_relinked}"
+    end
+
+    puts 'Done.'
+    puts "Groups processed: #{groups_processed}"
+    puts "Transfers deleted#{dry_run ? ' (would delete)' : ''}: #{transfers_deleted}"
+    puts "Individual transactions relinked#{dry_run ? ' (would relink)' : ''}: #{transactions_relinked}"
+    puts 'Run with DRY_RUN=false to apply changes.' if dry_run
+  end
 end
