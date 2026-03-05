@@ -10,7 +10,8 @@ class MenuComponent < ApplicationView
     when /michaelwest/
       render partial('shared/mwm_header_file')
     else
-      standard_header
+      # standard_header
+      render partial('shared/mwm_header_file')
     end
   end
 
