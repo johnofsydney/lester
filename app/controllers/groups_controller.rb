@@ -1,11 +1,10 @@
 class GroupsController < ApplicationController
-  rate_limit to: Constants::CONTROLLER_RATE_LIMIT, within: 1.minute, with: -> { redirect_to search_path, alert: 'Too many requests, Please try in a minute...' } # unless Rails.env.test? || Rails.env.development?
+  rate_limit to: Constants::CONTROLLER_RATE_LIMIT, within: 1.minute, with: -> { redirect_to search_path, alert: 'Too many requests, Please try in a minute...' }  unless Rails.env.test? || Rails.env.development?
 
   include Constants
 
-  before_action :set_group, only: %i[ show edit update destroy ]
+  before_action :set_group, only: %i[ show ]
   before_action :set_page, only: %i[ index ]
-  before_action :authenticate_user!, only: %i[ new edit update destroy ]
 
   def index
     groups = Group.order(:name).limit(page_size).offset(paginate_offset).to_a
@@ -15,6 +14,11 @@ class GroupsController < ApplicationController
   end
 
   def show
+    if @group.nodes_count > Constants::TOO_MANY_CONNECTIONS_THRESHOLD
+      render json: { message: "too many nodes" }
+      return
+    end
+
     if @group.cache_fresh?
       render Groups::ShowView.new(group: @group)
     else
