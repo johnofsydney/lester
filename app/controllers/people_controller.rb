@@ -3,7 +3,7 @@ class PeopleController < ApplicationController
 
   include Constants
 
-  before_action :set_person, only: %i[ show edit update destroy post_to_socials]
+  before_action :set_person, only: %i[ show post_to_socials]
   before_action :set_page, only: %i[ index ]
 
   def index
