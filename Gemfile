@@ -95,3 +95,4 @@ gem 'sidekiq-scheduler'
 gem "roo", "~> 3.0.0"
 
 gem "rexml"
+gem "ostruct"

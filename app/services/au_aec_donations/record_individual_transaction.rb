@@ -1,12 +1,12 @@
 class ValidationError < StandardError; end
 
 class AuAecDonations::RecordIndividualTransaction
-  def self.call(donation)
-    new(donation).call
+  def self.call(row_hash)
+    new(row_hash).call
   end
 
-  def initialize(donation)
-    @donation = donation
+  def initialize(row_hash)
+    @donation = AuAecDonations::Donation.new(row_hash)
   end
 
   attr_reader :donation
@@ -31,11 +31,11 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def valid?
-    [donor, recipient, effective_date, amount, transfer].all?(&:present?)
+    [donation.donor_name, donation.recipient_name, donation.date, donation.amount].all?(&:present?)
   end
 
   def transfer
-    RecordTransfer.call(
+    @transfer ||= RecordTransfer.call(
       giver: donor,
       taker: recipient,
       effective_date: Dates::FinancialYear.new(effective_date).last_day,
@@ -50,11 +50,11 @@ class AuAecDonations::RecordIndividualTransaction
 
 
   def donor
-    RecordPersonOrGroup.call(donation.donor_name, mapper:)
+    @donor ||= RecordPersonOrGroup.call(donation.donor_name, mapper:)
   end
 
   def recipient
-    RecordPersonOrGroup.call(donation.recipient_name, mapper:)
+    @recipient ||= RecordPersonOrGroup.call(donation.recipient_name, mapper:)
   end
 
   def mapper
@@ -66,19 +66,14 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def effective_date
-    # NB the date in the CSV
-    # is in American format (MM/DD/YY)
-    # has only 2 digits for the year, so we need to handle that
-    month, day, year = donation.donation_date.split('/')
-    year = "20#{year}" if year.length == 2
-    Date.new(year.to_i, month.to_i, day.to_i)
+    donation.date
   end
 
   def amount
-    donation.donation_amount.to_f
+    donation.amount.to_f
   end
 
   def description
-    "Donation of $#{amount} from #{donation.donor_name} to #{donation.recipient_name} on #{donation.donation_date}"
+    "Donation of $#{amount} from #{donation.donor_name} to #{donation.recipient_name} on #{donation.date}"
   end
 end

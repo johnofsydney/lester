@@ -12,13 +12,14 @@ class AuAecDonations::DonationsIngestor
   attr_reader :financial_year
 
   def call
-    downloaded_results = AuAecDonations::DonationsDownloader.call(financial_year)
-
-    downloaded_results.each do |donation_data|
+    downloaded_donations.each do |donation_data|
       AuAecDonations::ImportDonationRowJob.perform_async(donation_data)
     end
-    binding.pry
   end
+
+  private
+
+  def downloaded_donations = AuAecDonations::DonationsDownloader.call(financial_year)
 
   def format_financial_year(current_year)
     current_year ||= Time.current.year - 1
