@@ -1,6 +1,5 @@
 # The conductor class, coorinating the entire service of fetching, parsing snd recording donations
 class AuAecDonations::DonationsIngestor
-
   def self.call(year = nil)
     new(year).call
   end
@@ -30,3 +29,4 @@ class AuAecDonations::DonationsIngestor
     "#{start_year}-#{end_year}"
   end
 end
+

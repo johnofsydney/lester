@@ -20,6 +20,8 @@ class RecordPersonOrGroup
   end
 
   def person_or_group
+    return 'person' if name.match?(People::Regexp::PREFIX_TITLES)
+
     regex_for_3_or_4_capitals = /\bHCF\b|\bINPEX\b|\bCMAX\b|\bSDA\b|\bONA\b|\bSPP\b|\bACCI\b|\bACTU\b|\bCEC\b|\bCLP|\bMSD\b|\bUNSW\b|\bAICR\b|\bAFUL\b|\bAGL\b|\bEY\b|\bPESA\b|\bPR\b|\bGHD\b|\bGas\b|\bPty\b|\bKPMG\b|\bRISC\b/i
 
     regex_for_company_words_1 = /Corporation|Transport|Tax Aid|Outcomes|Lifestyle|active super/i

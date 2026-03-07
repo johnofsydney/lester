@@ -18,7 +18,7 @@ class AuAecDonations::RecordIndividualTransaction
     donor
     recipient
 
-    individual_transaction = IndividualTransaction.create( # rubocop:disable Lint/UselessAssignment
+    individual_transaction = IndividualTransaction.find_or_create_by( # rubocop:disable Lint/UselessAssignment
       giver: donor,
       taker: recipient,
       transfer:,
@@ -51,7 +51,6 @@ class AuAecDonations::RecordIndividualTransaction
   def evidence
     'https://transparency.aec.gov.au/AnnualDonor'
   end
-
 
   def donor
     @donor ||= RecordPersonOrGroup.call(donation.donor_name, mapper:, aec_id: donation.donor_aec_id)

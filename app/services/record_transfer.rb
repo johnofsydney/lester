@@ -10,7 +10,7 @@ class RecordTransfer
     @evidence = evidence
   end
 
-  def self.call(giver:, taker:, effective_date:, amount: 0, transfer_type:, evidence:)
+  def self.call(giver:, taker:, effective_date:, transfer_type:, evidence:, amount: 0)
     new(giver, taker, effective_date, amount, transfer_type, evidence).call
   end
 

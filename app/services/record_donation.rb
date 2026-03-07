@@ -3,7 +3,7 @@ class RecordDonation
 
   def initialize(name)
     raise
-    @name = name.strip
+    @name = name.strip # rubocop:disable Lint/UnreachableCode
   end
 
   def self.call(name)
@@ -12,7 +12,7 @@ class RecordDonation
 
   def call
     raise
-    return nil unless name
+    return nil unless name # rubocop:disable Lint/UnreachableCode
 
     if person_or_group == 'person'
       RecordPerson.call(first_name_last_name)
