@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_01_120000) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_07_015035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -89,7 +89,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_01_120000) do
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
     t.string "type"
+    t.string "aec_id"
     t.index "lower((name)::text)", name: "index_groups_on_lower_name", unique: true
+    t.index ["aec_id"], name: "index_groups_on_aec_id", unique: true
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
     t.index ["category"], name: "index_groups_on_category"
     t.index ["name"], name: "index_groups_on_name"
@@ -166,7 +168,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_01_120000) do
     t.date "linkedin_ingested"
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
+    t.string "aec_id"
     t.index "lower((name)::text)", name: "index_people_on_lower_name", unique: true
+    t.index ["aec_id"], name: "index_people_on_aec_id", unique: true
     t.index ["name"], name: "index_people_on_name"
   end
 

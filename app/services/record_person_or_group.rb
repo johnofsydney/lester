@@ -1,21 +1,22 @@
 class RecordPersonOrGroup
-  def self.call(name, mapper: nil)
-    new(name, mapper:).call
+  def self.call(name, mapper: nil, aec_id: nil)
+    new(name, mapper:, aec_id:).call
   end
 
   def call
     return nil unless name
 
     if person_or_group == 'person'
-      RecordPerson.call(first_name_last_name)
+      RecordPerson.call(first_name_last_name, aec_id:)
     else
-      RecordGroup.call(name, mapper:)
+      RecordGroup.call(name, mapper:, aec_id:)
     end
   end
 
-  def initialize(name, mapper: nil)
+  def initialize(name, mapper: nil, aec_id: nil)
     @name = name.strip
     @mapper = mapper
+    @aec_id = aec_id
   end
 
   def person_or_group
@@ -123,7 +124,7 @@ class RecordPersonOrGroup
 
   private
 
-  attr_reader :name, :mapper
+  attr_reader :name, :mapper, :aec_id
 
   def first_name_last_name
     # handle last_name, first_name if in that format

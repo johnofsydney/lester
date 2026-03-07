@@ -14,6 +14,10 @@ class AuAecDonations::RecordIndividualTransaction
   def call
     raise ValidationError, "Invalid transaction data: #{donation.inspect}" unless valid?
 
+    # OK instantiate giver and taker so that they are available for the transfer record creation
+    donor
+    recipient
+
     individual_transaction = IndividualTransaction.create( # rubocop:disable Lint/UselessAssignment
       giver: donor,
       taker: recipient,
@@ -50,11 +54,11 @@ class AuAecDonations::RecordIndividualTransaction
 
 
   def donor
-    @donor ||= RecordPersonOrGroup.call(donation.donor_name, mapper:)
+    @donor ||= RecordPersonOrGroup.call(donation.donor_name, mapper:, aec_id: donation.donor_aec_id)
   end
 
   def recipient
-    @recipient ||= RecordPersonOrGroup.call(donation.recipient_name, mapper:)
+    @recipient ||= RecordPersonOrGroup.call(donation.recipient_name, mapper:, aec_id: donation.recipient_aec_id)
   end
 
   def mapper
