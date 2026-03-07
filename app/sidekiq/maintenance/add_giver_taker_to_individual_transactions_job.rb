@@ -1,11 +1,13 @@
-class AddGiverTakerToIndividualTransactionsJob
+#  can DELETE after running
+
+class Maintenance::AddGiverTakerToIndividualTransactionsJob
   include Sidekiq::Job
   sidekiq_options queue: :low, retry: 5
 
   def perform
     return if none_remaining?
 
-    IndividualTransaction.where(giver_id: nil).limit(100).find_each do |transaction|
+    IndividualTransaction.where(giver_id: nil).limit(5000).find_each do |transaction|
       transfer = transaction.transfer
       next unless transfer
 
@@ -13,7 +15,7 @@ class AddGiverTakerToIndividualTransactionsJob
       transaction.update!(taker: transfer.taker) if transaction.taker_id.blank? && transfer.taker.present?
     end
 
-    IndividualTransaction.where(taker_id: nil).limit(100).find_each do |transaction|
+    IndividualTransaction.where(taker_id: nil).limit(5000).find_each do |transaction|
       transfer = transaction.transfer
       next unless transfer
 
@@ -22,7 +24,7 @@ class AddGiverTakerToIndividualTransactionsJob
     end
 
     # Re-run the job if there are still transactions without giver or taker
-    AddGiverTakerToIndividualTransactionsJob.perform_in(5.minutes) unless none_remaining?
+    Maintenance::AddGiverTakerToIndividualTransactionsJob.perform_in(1.minute) unless none_remaining?
   end
 
   def none_remaining?
