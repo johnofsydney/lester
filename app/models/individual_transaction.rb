@@ -7,4 +7,7 @@ class IndividualTransaction < ApplicationRecord
 
   validates :amount, presence: true
   validates :effective_date, presence: true
+
+  scope :government_contracts, -> { where(transfer_type: 'Government Contract') }
+  scope :donations, -> { where(transfer_type: 'Australian Political Donations') }
 end

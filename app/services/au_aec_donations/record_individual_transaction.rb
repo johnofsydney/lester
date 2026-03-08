@@ -24,7 +24,7 @@ class AuAecDonations::RecordIndividualTransaction
       transfer:,
       amount: donation.amount.to_f,
       effective_date: donation.date,
-      transaction_type: 'Australian Political Donations',
+      transaction_type: 'Australian Political Donation',
       evidence:,
       description: donation.description,
       fine_grained_transaction_category:,
