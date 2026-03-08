@@ -22,12 +22,14 @@ class AuAecDonations::RecordIndividualTransaction
       giver: donor,
       taker: recipient,
       transfer:,
-      amount:,
-      effective_date:,
+      amount: donation.amount.to_f,
+      effective_date: donation.date,
       transaction_type: 'Australian Political Donations',
       evidence:,
-      description:,
-      fine_grained_transaction_category:
+      description: donation.description,
+      fine_grained_transaction_category:,
+      registration_code: donation.registration_code,
+      return_id: donation.return_id
     )
 
     # wait a moment to allow the lock prevention of running duplicates in quick succession
@@ -42,7 +44,7 @@ class AuAecDonations::RecordIndividualTransaction
     @transfer ||= RecordTransfer.call(
       giver: donor,
       taker: recipient,
-      effective_date: Dates::FinancialYear.new(effective_date).last_day,
+      effective_date: Dates::FinancialYear.new(donation.date).last_day,
       transfer_type: 'Australian Political Donations',
       evidence:
     )
@@ -66,17 +68,5 @@ class AuAecDonations::RecordIndividualTransaction
 
   def fine_grained_transaction_category
     FineGrainedTransactionCategory.find_or_create_by!(name: 'Australian Political Donation')
-  end
-
-  def effective_date
-    donation.date
-  end
-
-  def amount
-    donation.amount.to_f
-  end
-
-  def description
-    "Donation of $#{amount} from #{donation.donor_name} to #{donation.recipient_name} on #{donation.date}"
   end
 end

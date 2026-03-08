@@ -42,15 +42,17 @@ RSpec.describe Nodes::Merge, type: :service do
     end
 
     context 'when there are transfers' do
+      let(:fine_grained_transaction_category) { FineGrainedTransactionCategory.create!(name: 'Category') }
+
       let!(:transfer1) { Transfer.create!(giver: group_a, taker: person_a, amount: 100, effective_date: Time.zone.today) }
-      let!(:individual_transaction1) { IndividualTransaction.create!(transfer: transfer1, amount: 100, effective_date: Time.zone.today) }
+      let!(:individual_transaction1) { IndividualTransaction.create!(fine_grained_transaction_category:, transfer: transfer1, amount: 100, effective_date: Time.zone.today, giver: group_a, taker: person_a) }
       let!(:transfer2) { Transfer.create!(giver: group_b, taker: person_b, amount: 200, effective_date: 1.year.ago) }
-      let!(:individual_transaction2) { IndividualTransaction.create!(transfer: transfer2, amount: 200, effective_date: 1.year.ago) }
+      let!(:individual_transaction2) { IndividualTransaction.create!(fine_grained_transaction_category:, transfer: transfer2, amount: 200, effective_date: 1.year.ago, giver: group_b, taker: person_b) }
 
       let(:transfer3) { Transfer.create!(giver: person_a, taker: group_a, amount: 10, effective_date: Time.zone.today) }
-      let(:individual_transaction3) { IndividualTransaction.create!(transfer: transfer3, amount: 10, effective_date: Time.zone.today) }
+      let(:individual_transaction3) { IndividualTransaction.create!(fine_grained_transaction_category:, transfer: transfer3, amount: 10, effective_date: Time.zone.today, giver: person_a, taker: group_a) }
       let(:transfer4) { Transfer.create!(giver: person_b, taker: group_a, amount: 20, effective_date: 1.year.ago) }
-      let(:individual_transaction4) { IndividualTransaction.create!(transfer: transfer4, amount: 20, effective_date: 1.year.ago) }
+      let(:individual_transaction4) { IndividualTransaction.create!(fine_grained_transaction_category:, transfer: transfer4, amount: 20, effective_date: 1.year.ago, giver: person_b, taker: group_a) }
 
       it 'moves transfers to receiver_node and merges equivalent transfers' do
         merge

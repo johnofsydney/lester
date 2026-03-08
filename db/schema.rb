@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_07_015035) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_08_225114) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -115,6 +115,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_07_015035) do
     t.string "taker_type"
     t.bigint "taker_id"
     t.bigint "fine_grained_transaction_category_id"
+    t.integer "return_id"
+    t.string "registration_code"
     t.index ["contract_id"], name: "index_individual_transactions_on_contract_id"
     t.index ["effective_date"], name: "index_individual_transactions_on_effective_date"
     t.index ["external_id"], name: "index_individual_transactions_on_external_id"
