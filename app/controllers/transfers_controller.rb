@@ -1,11 +1,8 @@
 class TransfersController < ApplicationController
   include Constants
 
-  before_action :set_transfer, only: %i[ show edit update destroy ]
-  before_action :authenticate_user!, only: %i[ new edit update destroy ]
+  before_action :set_transfer, only: %i[ show ]
   before_action :set_page, only: %i[ index ]
-
-  # layout -> { ApplicationLayout }
 
   def index
     if params[:duration_start].present?

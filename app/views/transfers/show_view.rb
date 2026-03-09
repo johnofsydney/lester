@@ -31,33 +31,6 @@ class Transfers::ShowView < ApplicationView
       end
     end
 
-    if transfer.data.present? && transfer.data['donations'].present?
-      hr
-
-      p do
-        plain "A single 'transfer' can represent multiple single payments in the same financial year. "
-        i { 'This '}
-        plain 'transfer represents the following payments:'
-      end
-
-      table(class: 'table table-striped') do
-        thead do
-          tr do
-            th { 'Payment Type' }
-            th(class: 'text-end') { 'Amount' }
-            th(class: 'text-end') { 'Date' }
-          end
-        end
-        transfer.data['donations'].each do |donation|
-          tbody do
-            td { donation['transfer_type'] }
-            td(class: 'text-end') { number_to_currency(donation['amount'], precision: 0) }
-            td(class: 'text-end') { donation['donation_date'] }
-          end
-        end
-      end
-    end
-
     if transfer.individual_transactions.present?
       hr
 
@@ -68,28 +41,48 @@ class Transfers::ShowView < ApplicationView
       end
 
       table(class: 'table table-striped') do
+          if transfer.transfer_type == 'Government Contracts'
+            heading_one = 'Contract ID'
+            heading_two = 'Amendment ID'
+          elsif transfer.transfer_type == 'Australian Political Donations'
+            heading_one = 'Return ID'
+            heading_two = 'Registration Code'
+          end
+
+
         thead do
           tr do
             th { 'Payment Type' }
             th { 'Evidence' }
-            th { 'Contract ID' }
-            th { 'Amendment ID' }
+            th { heading_one }
+            th { heading_two }
             th { 'Description' }
             th(class: 'text-end') { 'Amount' }
             th(class: 'text-end') { 'Date' }
+            th(class: 'text-end') { 'Category' } if transfer.transfer_type == 'Government Contract(s)'
           end
         end
         transfer.individual_transactions.each do |individual_transaction|
+          if individual_transaction.transaction_type == 'Government Contract'
+            details_type = 'Government Contract'
+            details_one = individual_transaction.contract_id
+            details_two = individual_transaction.amendment_id
+          elsif individual_transaction.transaction_type == 'Australian Political Donation'
+            details_type = 'Donation'
+            details_one = individual_transaction.return_id
+            details_two = individual_transaction.registration_code
+          end
           tbody do
-            td { individual_transaction.transaction_type }
+            td { details_type }
             td do
-              a(href: individual_transaction.evidence, target: :_blank) { individual_transaction.evidence.truncate(50) }
+              a(href: individual_transaction.evidence, target: :_blank) { individual_transaction.evidence.truncate(40) }
             end
-            td { individual_transaction.contract_id }
-            td { individual_transaction.amendment_id }
-            td { individual_transaction.description }
+            td { details_one }
+            td { details_two }
+            td { individual_transaction.description.truncate(50) }
             td(class: 'text-end') { number_to_currency(individual_transaction.amount, precision: 0) }
             td(class: 'text-end') { individual_transaction.effective_date.strftime('%d %b %Y') }
+            td(class: 'text-end') { individual_transaction.fine_grained_transaction_category.name } if transfer.transfer_type == 'Government Contract(s)'
           end
         end
       end
