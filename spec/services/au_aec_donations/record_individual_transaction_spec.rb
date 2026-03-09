@@ -34,7 +34,7 @@ describe AuAecDonations::RecordIndividualTransaction do
     expect(individual_transaction.amount).to eq(5500)
     expect(individual_transaction.effective_date).to eq(Date.new(2024, 7, 1))
     expect(individual_transaction.description).to eq('Donation of $5500.0 from Australian Energy Producers to Australian Labor Party (Western Australian Branch) on 2024-07-01')
-    expect(individual_transaction.transaction_type).to eq('Australian Political Donations')
+    expect(individual_transaction.transaction_type).to eq('Australian Political Donation')
   end
 
   it 'creates the associated records' do

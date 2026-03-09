@@ -16,5 +16,5 @@ class AuAecDonations::Donation
   def financial_year = row_hash['FinancialYear'].strip
   def return_id = row_hash['ReturnId']
   def registration_code = row_hash['RegistrationCode']
-  def description = "Donation from #{donor_name} to #{recipient_name} on #{date}"
+  def description = "Donation of $#{amount.to_f} from #{donor_name} to #{recipient_name} on #{date}"
 end
