@@ -4,6 +4,6 @@ class Caching::ClearCaching
   end
 
   def call
-    Group.update_all(cached_data: {}) && Person.update_all(cached_data: {})
+    Group.update_all(cached_data: {}) && Person.update_all(cached_data: {}) # rubocop:disable Rails/SkipsModelValidations
   end
 end
