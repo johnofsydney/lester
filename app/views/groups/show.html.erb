@@ -20,7 +20,7 @@
   <%= render TransfersTableComponent.new(
         entity: @group,
         transfers: @group.consolidated_transfers(depth: 0),
-        heading: "Directly Connected to #{@group.name}",
+        heading: "Directly Connected to #{@group.display_name}",
         summarise_for: Group.summarise_for(@group)
       )
     %>

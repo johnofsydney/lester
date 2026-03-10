@@ -42,7 +42,7 @@ RSpec.describe RecordGroup, type: :service do
       'Liberal National Party LNP QLD' => group_names.liberals.qld,
       'Liberal National Party of QLD' => group_names.liberals.qld,
       'Liberal Party (W.A. Division) Inc. (LIB-WA)' => group_names.liberals.wa,
-      'Liberal Party NSW Division' => 'Liberals (NSW)',
+      'Liberal Party NSW Division' => group_names.liberals.nsw,
       'Liberal Party of Australia (LIB-FED)' => group_names.liberals.federal,
       'Liberal Party of Australia (NSW Division)' => group_names.liberals.nsw,
       'Liberal Party of Australia (SA Division)' => group_names.liberals.sa,
@@ -216,8 +216,6 @@ RSpec.describe RecordGroup, type: :service do
       'Actus Services Pty Ltd' => 'Actus Services Pty Ltd',
       'United Australia Party' => 'United Australia Party',
       'United Australia Federal' => 'United Australia Party',
-      'Registered Clubs Association of NSW (T/As ClubsNSW)' => 'Registered Clubs Association of NSW (T/As ClubsNSW)',
-      'Registered Clubs Association of NSW (t/as Clubsnsw)' => 'Registered Clubs Association of NSW (T/As ClubsNSW)',
       'Cmax Advisory' => 'CMAX Advisory',
       'CMAX Advisory' => 'CMAX Advisory',
       'The Pharmacy Guild of Australia' => 'The Pharmacy Guild of Australia',
@@ -239,6 +237,7 @@ RSpec.describe RecordGroup, type: :service do
 
   describe '.call' do
     context 'when the mapper is AEC Donations' do
+      # NB this tests the mapping of names to the canonical group names, but not the formatting (eg downcasing) of the names.
       let(:mapper) { MapGroupNamesAecDonations.new }
 
       before do
@@ -256,13 +255,13 @@ RSpec.describe RecordGroup, type: :service do
         it 'creates a group with the given name' do
           expect { described_class.call('Test Name', mapper:) }.to change(Group, :count).by(1)
 
-          expect(Group.last.name).to eq('Test Name')
+          expect(Group.last.name).to eq('test name')
         end
 
         it 'creates a group with the given name and business number' do
           expect { described_class.call('Test Name', business_number: 'ABN: 123 456 789', mapper:) }.to change(Group, :count).by(1)
 
-          expect(Group.last.name).to eq('Test Name')
+          expect(Group.last.name).to eq('test name')
           expect(Group.last.business_number).to eq('123456789')
         end
       end
@@ -310,7 +309,7 @@ RSpec.describe RecordGroup, type: :service do
       it 'creates a group with the given name' do
         expect { described_class.call('GREENS LIST CLERKING SERVICES', mapper:) }.to change(Group, :count).by(1)
 
-        expect(Group.last.name).to eq('Greens List Clerking Services')
+        expect(Group.last.name).to eq('greens list clerking services')
       end
     end
   end

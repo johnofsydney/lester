@@ -898,7 +898,7 @@ RSpec.describe MapGroupNamesAecDonations, type: :service do
 
     context 'for liberal party' do
       it 'returns lib federal' do
-        expect(described_class.new.call('Liberal Party Menzies Research Centre')).to eq('Liberals (Federal)')
+        expect(described_class.new.call('Liberal Party Menzies Research Centre')).to eq('liberals (federal)')
       end
     end
   end

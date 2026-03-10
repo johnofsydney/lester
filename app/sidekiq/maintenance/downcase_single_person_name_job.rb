@@ -6,6 +6,7 @@ class Maintenance::DowncaseSinglePersonNameJob
 
   def perform(id)
     person = Person.find(id)
+
     person.update!(name: person.name.downcase) if person.name.downcase != person.name
   end
 end

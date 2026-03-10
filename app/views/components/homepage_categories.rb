@@ -2,7 +2,7 @@ class HomepageCategories < ApplicationView
   include ActionView::Helpers::NumberHelper
 
   # Categories that we don't want to show on the homepage
-  BLACKLISTED_TAG_NAMES = %w[Charities].freeze
+  BLACKLISTED_TAG_NAMES = %w[charities].freeze
 
   def initialize(records: nil)
     @records = records
@@ -25,7 +25,7 @@ class HomepageCategories < ApplicationView
                   href: "/groups/#{group.id}",
                   class: 'btn w-100',
                   style: "#{color_styles(group)}; height: 100%"
-                ) { group.name }
+                ) { group.display_name }
               end
             end
           end

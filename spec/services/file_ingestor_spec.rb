@@ -20,11 +20,11 @@ RSpec.describe FileIngestor, type: :service do
         upload
 
         # all of the people and groups should be created
-        john = Person.find_by!(name: 'John Doe')
-        jane = Person.find_by!(name: 'Jane Smith')
-        soccer_team = Group.find_by!(name: 'Soccer Team')
-        rugy_team = Group.find_by!(name: 'Rugy Team')
-        globex = Group.find_by!(name: 'Globex Corporation')
+        john = Person.find_by!(name: 'john doe')
+        jane = Person.find_by!(name: 'jane smith')
+        soccer_team = Group.find_by!(name: 'soccer team')
+        rugy_team = Group.find_by!(name: 'rugy team')
+        globex = Group.find_by!(name: 'globex corporation')
 
         # memberships should be created, with the correct start and end dates and evidence if present
         soccer_john = Membership.find_by!(member: john, group: soccer_team)
