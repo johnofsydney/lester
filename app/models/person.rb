@@ -46,6 +46,8 @@ class Person < ApplicationRecord
   # end
 
   def display_name
+    # This gem is built for people's names, so should be fine to use here
+    # without the exceptions list we had for groups.
     CapitalizeNames.capitalize(name)
   end
 

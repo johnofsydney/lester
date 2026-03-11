@@ -77,7 +77,7 @@ class ApplicationView < ApplicationComponent
              h['id']
            end
 
-    link_text ||= h['name'] || h['amount']
+    link_text ||= h['display_name'] || h['name'] || h['amount']
     href = "/#{klass_name_plural}/#{id}"
 
     href += "/#{action}" if action

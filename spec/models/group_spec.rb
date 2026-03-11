@@ -126,20 +126,20 @@ RSpec.describe Group do
         expect(group.all_the_groups).to eq(
           {
             as_giver: [
-              ['person a', 100.0],
-              ['person b', 200.0],
-              ['group c', 300.0],
-              ['group d', 400.0],
-              ['person e', 500.0],
-              ['person f', 600.0]
+              ['Person A', 100.0],
+              ['Person B', 200.0],
+              ['Group C', 300.0],
+              ['Group D', 400.0],
+              ['Person E', 500.0],
+              ['Person F', 600.0]
             ],
             as_taker: [
-              ['person g', 150.0],
-              ['person h', 250.0],
-              ['group i', 350.0],
-              ['group j', 450.0],
-              ['person k', 550.0],
-              ['person l', 650.0]
+              ['Person G', 150.0],
+              ['Person H', 250.0],
+              ['Group I', 350.0],
+              ['Group J', 450.0],
+              ['Person K', 550.0],
+              ['Person L', 650.0]
             ]
           }
         )

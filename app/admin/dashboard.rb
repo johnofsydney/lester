@@ -3,6 +3,17 @@
 ActiveAdmin.register_page 'Dashboard' do
   menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
 
+  action_item :clear_group_and_people_cache do
+    link_to 'Clear Group and People Cache', admin_dashboard_clear_group_and_people_cache_path
+  end
+
+  page_action :clear_group_and_people_cache, method: :get do
+    raise unless current_admin_user
+
+    Caching::ClearCaching.call
+    redirect_to admin_dashboard_path, notice: 'Group and People cache cleared.'
+  end
+
   content title: proc { I18n.t('active_admin.dashboard') } do
     # div class: "blank_slate_container", id: "dashboard_default_message" do
     #   span class: "blank_slate" do
@@ -22,16 +33,10 @@ ActiveAdmin.register_page 'Dashboard' do
             end
           end
         end
-        panel 'Recent Suggestions' do
+        panel 'Recent Groups' do
           ul do
-            Suggestion.order(created_at: :desc).last(10).map do |suggestion|
-              li link_to(suggestion.headline, admin_suggestion_path(suggestion))
-              ul do
-                li suggestion.description
-                li suggestion.evidence
-                li suggestion.suggested_by
-              end
-
+            Group.order(created_at: :desc).last(10).map do |group|
+              li link_to(group.name, admin_group_path(group))
             end
           end
         end
@@ -42,14 +47,7 @@ ActiveAdmin.register_page 'Dashboard' do
           para 'Welcome to ActiveAdmin.'
           link_to 'Button Name', 'http://example.com', target: '_blank', rel: 'noopener'
         end
-        attributes_table_for '' do
-          row('Import Data') do
-            link_to('Import Data', '/imports')
-          end
-        end
-
       end
     end
   end # content
-
 end

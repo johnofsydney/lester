@@ -1,5 +1,3 @@
-require 'capitalize_names'
-
 class Group < ApplicationRecord
   include TransferMethods
   include NodeMethods
@@ -192,13 +190,7 @@ class Group < ApplicationRecord
   def is_person? = false
 
   def display_name
-    exceptions = %w[The Pty Ltd Inc Co Van Aus Of And For As Is Hire]
-
-    CapitalizeNames.capitalize(name)
-                   .gsub(/\b\w{2,4}\b/) do |acronym|
-                     # for 2, 3 or 4 letter words, upcase if they are not in the exceptions list
-                     exceptions.find { |ex| ex.casecmp?(acronym) } || acronym.upcase
-                   end
+    Nodes::NameCapitalizer.capitalize(name)
   end
 
   def display_name_with_business_number
