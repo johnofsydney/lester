@@ -11,7 +11,7 @@ class Common::TableRow < ApplicationView
        span { link_for_hash(h: hentity) }
      end
      td do
-       span {hentity['last_position'] || ''}
+       span {Nodes::NameCapitalizer.capitalize(hentity['last_position']) || ''}
      end
    end
  end
