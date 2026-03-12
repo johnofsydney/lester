@@ -1,5 +1,5 @@
 class GroupsController < ApplicationController
-  rate_limit to: Constants::CONTROLLER_RATE_LIMIT, within: 1.minute, with: -> { redirect_to search_path, alert: 'Too many requests, Please try in a minute...' }  unless Rails.env.test? || Rails.env.development?
+  rate_limit to: Constants::CONTROLLER_RATE_LIMIT, within: 1.minute, with: -> { redirect_to search_path, alert: 'Too many requests, Please try in a minute...' } unless Rails.env.test? || Rails.env.development?
 
   include Constants
 
@@ -15,7 +15,7 @@ class GroupsController < ApplicationController
 
   def show
     if @group.nodes_count > Constants::TOO_MANY_CONNECTIONS_THRESHOLD
-      render json: { message: "too many nodes" }
+      render json: { message: 'too many nodes' }
       return
     end
 
