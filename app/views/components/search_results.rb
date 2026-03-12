@@ -14,10 +14,11 @@ class SearchResults < ApplicationView
         hr
 
         href = "/#{result.searchable_type.downcase.pluralize}/#{result.searchable_id}"
-        link_text = result.content
+        link_text = Nodes::NameCapitalizer.capitalize(result.content)
 
         suffix = if result.searchable_type == 'TradingName'
-                   result.searchable_type.constantize.find(result.searchable_id).owner.name
+                   owner_name = result.searchable_type.constantize.find(result.searchable_id).owner.name
+                   Nodes::NameCapitalizer.capitalize(owner_name)
                  else
                    nil
                  end

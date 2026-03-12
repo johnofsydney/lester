@@ -42,12 +42,12 @@ class Groups::IndexView < ApplicationView
     link_for(
       entity: group,
       class: 'desktop-only',
-      link_text: group.name.truncate(100)
+      link_text: Nodes::NameCapitalizer.capitalize(group.name.truncate(100))
     )
     link_for(
       entity: group,
       class: 'mobile-only',
-      link_text: group.name.truncate(50)
+      link_text: Nodes::NameCapitalizer.capitalize(group.name.truncate(50))
     )
   end
 
