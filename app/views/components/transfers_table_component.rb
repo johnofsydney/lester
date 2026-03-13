@@ -69,20 +69,20 @@ class TransfersTableComponent < ApplicationView
             end
             td(style: row_style(transfer)) { transfer.effective_date.to_date.year.to_s }
             if transfer.giver_id
-              td(style: row_style(transfer)) { a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { transfer.giver_name } }
+              td(style: row_style(transfer)) { a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { Nodes::NameCapitalizer.capitalize(transfer.giver_name) } }
             elsif transfer.giver_name
               # only for summary rows
               # as it is a summary, there is no id (one giver, multiple records)
               # therefore no link to individual transaction
-              td(style: row_style(transfer)) { transfer.giver_name }
+              td(style: row_style(transfer)) { Nodes::NameCapitalizer.capitalize(transfer.giver_name) }
             end
             if transfer.taker_id && transfer.taker_type
-              td(style: row_style(transfer)) { a(href: "/#{transfer.taker_type.downcase.pluralize}/#{transfer.taker_id}") { transfer.taker_name } }
+              td(style: row_style(transfer)) { a(href: "/#{transfer.taker_type.downcase.pluralize}/#{transfer.taker_id}") { Nodes::NameCapitalizer.capitalize(transfer.taker_name) } }
             elsif transfer.taker_name
               # only for summary rows
               # as it is a summary, there is no id (one giver, multiple records)
               # therefore no link to individual transaction
-              td(style: row_style(transfer)) { transfer.taker_name }
+              td(style: row_style(transfer)) { Nodes::NameCapitalizer.capitalize(transfer.taker_name) }
             end
             td(style: row_style(transfer), class: 'desktop-only') { transfer.depth }
           end

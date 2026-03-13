@@ -18,6 +18,8 @@ class HomepageCategories < ApplicationView
         display_categories = Tag.all.reject { |group| BLACKLISTED_TAG_NAMES.include?(group.name) }
 
         display_categories.each do |group|
+          group_name = Nodes::NameCapitalizer.capitalize(group.name)
+
           div(class: 'col-md-4') do
             div(class: 'card shadow-sm', style: "#{color_styles(group)}; height: 100%") do
               div(class: 'card-body text-center') do
@@ -25,7 +27,7 @@ class HomepageCategories < ApplicationView
                   href: "/groups/#{group.id}",
                   class: 'btn w-100',
                   style: "#{color_styles(group)}; height: 100%"
-                ) { group.name }
+                ) { group_name }
               end
             end
           end

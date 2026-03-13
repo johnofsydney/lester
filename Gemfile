@@ -16,12 +16,12 @@ gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
 # gem "bcrypt", "~> 3.1.7"
 
-gem 'tzinfo-data', platforms: %i[ mingw mswin x64_mingw jruby ]
+gem 'tzinfo-data', platforms: %i[ windows jruby ]
 gem 'bootsnap', require: false
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
-  gem 'debug', platforms: %i[ mri mingw x64_mingw ]
+  gem 'debug', platforms: %i[ mri windows ]
   # gem "bullet"
   gem 'rspec-rails', '~> 6.1.0'
   gem 'shoulda-matchers', '~> 5.0'
@@ -78,10 +78,6 @@ gem 'sidekiq'
 
 gem 'newrelic_rpm'
 
-# resolving vulnerabilities
-gem 'rack', '>= 3.1.18'
-gem 'uri', '~> 1.0.4'
-
 gem 'sidekiq-unique-jobs'
 
 # https://github.com/fatkodima/activerecord_lazy_columns
@@ -96,3 +92,8 @@ gem "roo", "~> 3.0.0"
 
 gem "rexml"
 gem "ostruct"
+
+# resolving vulnerabilities
+gem 'rack', '~> 3.1.20'
+gem 'uri', '~> 1.0.4'
+gem 'nokogiri', '>= 1.19.1'
