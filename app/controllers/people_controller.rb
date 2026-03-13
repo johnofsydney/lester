@@ -5,6 +5,7 @@ class PeopleController < ApplicationController
 
   before_action :set_person, only: %i[ show post_to_socials]
   before_action :set_page, only: %i[ index ]
+  before_action :increment_views, only: %i[ show ]
 
   def index
     people = Person.order(:name)
@@ -19,8 +20,6 @@ class PeopleController < ApplicationController
   end
 
   def show
-    @person.increment!(:views) unless Current.user
-
     if @person.cache_fresh?
       render People::ShowView.new(person: @person)
     else
@@ -63,5 +62,12 @@ class PeopleController < ApplicationController
 
   def set_page
     @page = (params[:page] || 0).to_i
+  end
+
+  def increment_views
+    return if Current.user
+
+    @person.increment(:views)
+    @person.save
   end
 end
