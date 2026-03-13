@@ -6,6 +6,8 @@ class Nodes::NameCapitalizer
   OTHER_WORDS = %w[The To Of And For As Is Home No East West Mind Menu Sub Fund Let Talk Red Man Hat Asia Hive Ping Arts Van Body Gold Wall Air].freeze
 
   def self.capitalize(name)
+    return unless name && name.is_a?(String)
+
     exceptions = PEOPLE_NAMES + BUSINESS_WORDS + OTHER_WORDS
 
     CapitalizeNames.capitalize(name)

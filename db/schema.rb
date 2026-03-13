@@ -89,8 +89,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_13_060212) do
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
     t.string "type"
-    t.string "aec_id"
     t.integer "views", default: 0, null: false
+    t.string "aec_id"
     t.index "lower((name)::text)", name: "index_groups_on_lower_name", unique: true
     t.index ["aec_id"], name: "index_groups_on_aec_id", unique: true
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
@@ -171,8 +171,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_13_060212) do
     t.date "linkedin_ingested"
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
-    t.string "aec_id"
     t.integer "views", default: 0, null: false
+    t.string "aec_id"
     t.index "lower((name)::text)", name: "index_people_on_lower_name", unique: true
     t.index ["aec_id"], name: "index_people_on_aec_id", unique: true
     t.index ["name"], name: "index_people_on_name"
