@@ -37,6 +37,8 @@ class TransfersController < ApplicationController
   end
 
   def show
+    @transfer.increment!(:views) unless Current.user
+
     render Transfers::ShowView.new(transfer: @transfer)
   end
 

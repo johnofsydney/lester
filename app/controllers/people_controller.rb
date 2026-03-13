@@ -19,6 +19,8 @@ class PeopleController < ApplicationController
   end
 
   def show
+    @person.increment!(:views) unless Current.user
+
     if @person.cache_fresh?
       render People::ShowView.new(person: @person)
     else

@@ -14,6 +14,8 @@ class GroupsController < ApplicationController
   end
 
   def show
+    @group.increment!(:views) unless Current.user
+
     if @group.nodes_count > Constants::TOO_MANY_CONNECTIONS_THRESHOLD
       render json: { message: 'too many nodes' }
       return
