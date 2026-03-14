@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe AuAecDonations::DonationsIngestor do
+describe AuAecDonations::Annual::DonationsIngestor do
   before do
-    allow(AuAecDonations::DonationsDownloader).to receive(:call).and_return(downloader_result)
+    allow(AuAecDonations::Downloader::AnnualDonations).to receive(:call).and_return(downloader_result)
     allow(AuAecDonations::ImportDonationRowJob).to receive(:perform_async).and_return(true)
   end
 
@@ -14,7 +14,7 @@ describe AuAecDonations::DonationsIngestor do
   context 'when a financial year is provided' do
     it 'calls the downloader with the correct financial year' do
       described_class.call(2024)
-      expect(AuAecDonations::DonationsDownloader).to have_received(:call).with('2023-24')
+      expect(AuAecDonations::Downloader::AnnualDonations).to have_received(:call).with('2023-24')
     end
   end
 
@@ -24,7 +24,7 @@ describe AuAecDonations::DonationsIngestor do
 
     it 'defaults to the previous financial year' do
       described_class.call
-      expect(AuAecDonations::DonationsDownloader).to have_received(:call).with(expected_financial_year)
+      expect(AuAecDonations::Downloader::AnnualDonations).to have_received(:call).with(expected_financial_year)
     end
   end
 

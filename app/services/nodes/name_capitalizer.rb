@@ -6,7 +6,7 @@ class Nodes::NameCapitalizer
   OTHER_WORDS = %w[The To Of And For As Is Home No East West Mind Menu Sub Fund Let Talk Red Man Hat Asia Hive Ping Arts Van Body Gold Wall Air Hide Seek Dim Gin San].freeze
 
   def self.capitalize(name)
-    raise "Nodes::NameCapitalizer.capitalize backtrace:\n#{caller.join("\n")}" unless name.present?
+    raise "Nodes::NameCapitalizer.capitalize backtrace:\n#{caller.join("\n")}" if name.blank?
 
     return unless name.is_a?(String)
 
