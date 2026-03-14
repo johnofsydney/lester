@@ -8,7 +8,7 @@ class AuAecDonations::Downloader::AnnualDonations
   end
 
   def initialize(financial_year)
-    raise unless financial_year.is_a?(String) && financial_year.match?(/^\d{4}-\d{2}$/)
+    raise unless financial_year.is_a?(String) && financial_year.match?(/^\d{4}-(\d{2}|\d{4})$/)
 
     @financial_year = financial_year
   end

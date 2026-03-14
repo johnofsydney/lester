@@ -33,4 +33,34 @@ describe AuAecDonations::Donation do
     expect(donation.financial_year).to eq('2024-25')
     expect(donation.return_id).to eq(82_589)
   end
+
+  context 'when the name has an apostrophe' do
+    let(:row_hash) do
+      super().merge(
+        'CurrentClientName' => "O'Hara Sullivan, Megan",
+        'ReturnClientName' => "Ms Megan O'Hara Sullivan"
+      )
+    end
+
+
+    it 'has the correct attributes' do
+      expect(donation.amount).to eq(5500)
+      expect(donation.donor_name).to eq('Ms Megan O\'Hara Sullivan')
+      expect(donation.recipient_name).to eq('Australian Labor Party (Western Australian Branch)')
+    end
+
+    context 'when TransactionDate is missing' do
+      let(:row_hash) do
+        super().merge(
+          'TransactionDate' => nil
+        )
+      end
+
+
+      it 'has the correct attributes' do
+        expect(donation.amount).to eq(5500)
+        expect(donation.date).to eq(Date.new(2025, 6, 30))
+      end
+    end
+  end
 end

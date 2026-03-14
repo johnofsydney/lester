@@ -28,7 +28,11 @@ class AuAecDonations::Annual::DonationsIngestor
     raise unless current_year.is_a?(Integer) && current_year.to_s.match?(/^\d{4}$/)
 
     start_year = current_year - 1
-    end_year = current_year.to_s[2..3]
+    end_year = if current_year < 2012
+                 current_year.to_s # eg "2010"
+               else
+                 current_year.to_s[2..3] # eg "24" for 2024
+               end
     "#{start_year}-#{end_year}"
   end
 end

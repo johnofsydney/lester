@@ -8,7 +8,6 @@ class AuAecDonations::Donation
   attr_reader :row_hash
 
   def amount = row_hash['Amount']
-  def date = Date.parse(row_hash['TransactionDate'])
   def donor_name = row_hash['ReturnClientName'].strip
   def recipient_name = row_hash['DonationMadeToName'].strip
   def donor_aec_id = row_hash['ClientFileId']
@@ -17,4 +16,18 @@ class AuAecDonations::Donation
   def return_id = row_hash['ReturnId']
   def registration_code = row_hash['RegistrationCode']
   def description = "Donation of $#{amount.to_f} from #{donor_name} to #{recipient_name} on #{date}"
+
+  def date
+    return Date.parse(row_hash['TransactionDate']) if row_hash['TransactionDate'].present?
+
+    # if TransactionDate is missing, try to infer it from the financial year (use the last day of the financial year)
+    if financial_year.present? && financial_year.match?(/^\d{4}-\d{2}$/)
+      start_year = financial_year[0..3].to_i
+      end_year_suffix = financial_year[5..6]
+      end_year = end_year_suffix.to_i >= 50 ? (1900 + end_year_suffix.to_i) : (2000 + end_year_suffix.to_i)
+      return Date.new(end_year, 6, 30) # use June 30 as the last day of the financial year
+    end
+
+    raise ArgumentError, "Unable to determine date for donation: #{row_hash.inspect}"
+  end
 end
