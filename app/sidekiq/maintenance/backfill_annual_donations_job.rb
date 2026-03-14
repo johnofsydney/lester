@@ -19,6 +19,7 @@ class Maintenance::BackfillAnnualDonationsJob
 
       IndividualTransaction.where(transaction_type: 'Australian Political Donation').delete_all
       Transfer.donations.delete_all
+      Transfer.where(transfer_type: 'Australian Political Donations').delete_all
       Transfer.where(transfer_type: 'donations').delete_all
       Transfer.where(transfer_type: 'Donation AU 2023 Referendum').delete_all
 
