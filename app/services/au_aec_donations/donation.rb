@@ -36,4 +36,12 @@ class AuAecDonations::Donation
 
     raise ArgumentError, "Unable to determine date for donation: #{row_hash.inspect}"
   end
+
+  def donor_name
+    if row_hash['ReturnClientName'].present? && row_hash['ReturnClientName'].match?(/unknown/i)
+      row_hash['CurrentClientName'].strip
+    else
+      row_hash['ReturnClientName'].strip
+    end
+  end
 end
