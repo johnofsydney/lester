@@ -24,7 +24,7 @@ class AuAecDonations::RecordIndividualTransaction
       transfer:,
       amount: donation.amount.to_f,
       effective_date: donation.date,
-      transaction_type: 'Australian Political Donation',
+      transaction_type: 'donation',
       evidence:,
       description: donation.description,
       fine_grained_transaction_category:,
@@ -45,7 +45,7 @@ class AuAecDonations::RecordIndividualTransaction
       giver: donor,
       taker: recipient,
       effective_date: Dates::FinancialYear.new(donation.date).last_day,
-      transfer_type: 'Australian Political Donations',
+      transfer_type: 'donations',
       evidence:
     )
   end
@@ -67,6 +67,6 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def fine_grained_transaction_category
-    FineGrainedTransactionCategory.find_or_create_by!(name: 'au_aec_donation_annual')
+    FineGrainedTransactionCategory.find_or_create_by!(name: 'au_aec_donation.annual')
   end
 end
