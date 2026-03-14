@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe AuAecDonations::RecordIndividualTransaction do
+  before do
+    allow(RefreshSingleTransferAmountJob).to receive(:perform_in).and_return(true)
+  end
+
   let(:row_hash) do
     {
       'ViewName' => 'Annual Donor Donation Made',
