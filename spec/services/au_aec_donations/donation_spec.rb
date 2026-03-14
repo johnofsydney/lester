@@ -42,7 +42,6 @@ describe AuAecDonations::Donation do
       )
     end
 
-
     it 'has the correct attributes' do
       expect(donation.amount).to eq(5500)
       expect(donation.donor_name).to eq('Ms Megan O\'Hara Sullivan')
@@ -55,7 +54,6 @@ describe AuAecDonations::Donation do
           'TransactionDate' => nil
         )
       end
-
 
       it 'has the correct attributes' do
         expect(donation.amount).to eq(5500)
