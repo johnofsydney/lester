@@ -21,11 +21,17 @@ class AuAecDonations::Donation
     return Date.parse(row_hash['TransactionDate']) if row_hash['TransactionDate'].present?
 
     # if TransactionDate is missing, try to infer it from the financial year (use the last day of the financial year)
-    if financial_year.present? && financial_year.match?(/^\d{4}-\d{2}$/)
-      start_year = financial_year[0..3].to_i
-      end_year_suffix = financial_year[5..6]
-      end_year = end_year_suffix.to_i >= 50 ? (1900 + end_year_suffix.to_i) : (2000 + end_year_suffix.to_i)
-      return Date.new(end_year, 6, 30) # use June 30 as the last day of the financial year
+    if financial_year.present?
+      if financial_year.match?(/^\d{4}-\d{2}$/)
+        start_year = financial_year[0..3].to_i
+        end_year_suffix = financial_year[5..6]
+        end_year = end_year_suffix.to_i >= 50 ? (1900 + end_year_suffix.to_i) : (2000 + end_year_suffix.to_i)
+        return Date.new(end_year, 6, 30) # use June 30 as the last day of the financial year
+      elsif financial_year.match?(/^\d{4}-\d{4}$/)
+        start_year = financial_year[0..3].to_i
+        end_year = financial_year[5..8].to_i
+        return Date.new(end_year, 6, 30) # use June 30 as the last day of the financial year
+      end
     end
 
     raise ArgumentError, "Unable to determine date for donation: #{row_hash.inspect}"
