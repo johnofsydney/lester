@@ -18,7 +18,7 @@ class AuAecDonations::RecordIndividualTransaction
     donor
     recipient
 
-    individual_transaction = IndividualTransaction.find_or_create_by( # rubocop:disable Lint/UselessAssignment
+    IndividualTransaction.find_or_create_by(
       giver: donor,
       taker: recipient,
       transfer:,
@@ -67,6 +67,6 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def fine_grained_transaction_category
-    FineGrainedTransactionCategory.find_or_create_by!(name: 'Australian Political Donation')
+    FineGrainedTransactionCategory.find_or_create_by!(name: 'au_aec_donation_annual')
   end
 end

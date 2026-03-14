@@ -1,4 +1,4 @@
-class AuAecDonations::DonationsDownloader
+class AuAecDonations::Downloader::AnnualDonations
   BASE_URL = 'https://transparency.aec.gov.au'.freeze
   ANNUAL_DONOR_PATH = '/AnnualDonor'.freeze
   DONATIONS_MADE_READ_PATH = '/AnnualDonor/DonationsMadeRead'.freeze
@@ -16,6 +16,9 @@ class AuAecDonations::DonationsDownloader
   attr_reader :financial_year
 
   def call
+    # 1. Visit the Annual Donor page to get the __RequestVerificationToken and cookie
+    # 2. Make a POST request to DonationsMadeRead with the financial year filter, including the token and cookie, to get the donations data for that year
+
     conn = Faraday.new(url: BASE_URL, headers: default_headers)
 
     annual_donor_page_response = conn.get(ANNUAL_DONOR_PATH)
@@ -64,22 +67,9 @@ class AuAecDonations::DonationsDownloader
 
   def donations_made_read_params
     {
-      sort: '',
       page: 1,
-      pageSize: 3460,
-      group: '',
-      filter: "FinancialYear~eq~'#{financial_year}'",
-      'columnName.take': 3460,
-      'columnName.skip': 0,
-      'columnName.page': 1,
-      'columnName.pageSize': 3460,
-      'columnName.filter.logic': 'or',
-      'columnName.filter.filters[0].value': financial_year,
-      'columnName.filter.filters[0].operator': 'eq',
-      'columnName.filter.filters[0].field': 'FinancialYear',
-      'columnName.isExcelExportRequest': true,
-      filterSet: "{\"filters\":[{\"value\":\"#{financial_year}\",\"operator\":\"eq\",\"field\":\"FinancialYear\"}],\"logic\":\"or\"}",
-      isExcelExportRequest: true
+      pageSize: 1_000_000, # set a very high page size to attempt to get all donations in one request
+      filter: "FinancialYear~eq~'#{financial_year}'"
     }
   end
 end

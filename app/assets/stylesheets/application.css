@@ -233,6 +233,10 @@ button, .badge {
   font-style: italic;
 }
 
+.font-strikethrough {
+  text-decoration: line-through;
+}
+
 .btn-collection {
   margin-top: 0.15rem;
   margin-bottom: 0.15rem;
