@@ -1,24 +1,27 @@
 class RecordPersonOrGroup
-  def self.call(name, mapper: nil)
-    new(name, mapper:).call
+  def self.call(name, mapper: nil, aec_id: nil)
+    new(name, mapper:, aec_id:).call
   end
 
   def call
     return nil unless name
 
     if person_or_group == 'person'
-      RecordPerson.call(first_name_last_name)
+      RecordPerson.call(first_name_last_name, aec_id:)
     else
-      RecordGroup.call(name, mapper:)
+      RecordGroup.call(name, mapper:, aec_id:)
     end
   end
 
-  def initialize(name, mapper: nil)
+  def initialize(name, mapper: nil, aec_id: nil)
     @name = name.strip
     @mapper = mapper
+    @aec_id = aec_id
   end
 
   def person_or_group
+    return 'person' if name.match?(People::Regexp::PREFIX_TITLES)
+
     regex_for_3_or_4_capitals = /\bHCF\b|\bINPEX\b|\bCMAX\b|\bSDA\b|\bONA\b|\bSPP\b|\bACCI\b|\bACTU\b|\bCEC\b|\bCLP|\bMSD\b|\bUNSW\b|\bAICR\b|\bAFUL\b|\bAGL\b|\bEY\b|\bPESA\b|\bPR\b|\bGHD\b|\bGas\b|\bPty\b|\bKPMG\b|\bRISC\b/i
 
     regex_for_company_words_1 = /Corporation|Transport|Tax Aid|Outcomes|Lifestyle|active super/i
@@ -123,7 +126,7 @@ class RecordPersonOrGroup
 
   private
 
-  attr_reader :name, :mapper
+  attr_reader :name, :mapper, :aec_id
 
   def first_name_last_name
     # handle last_name, first_name if in that format

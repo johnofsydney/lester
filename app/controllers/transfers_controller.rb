@@ -5,8 +5,6 @@ class TransfersController < ApplicationController
   before_action :increment_views, only: %i[ show ]
   before_action :set_page, only: %i[ index ]
 
-  # layout -> { ApplicationLayout }
-
   def index
     if params[:duration_start].present?
       duration_start = Date.new(params[:duration_start].to_i, 1, 1)

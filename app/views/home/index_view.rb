@@ -31,9 +31,26 @@ class Home::IndexView < ApplicationView
               end
 
               ul(class: 'list-unstyled') do
-                li { a(href: 'https://transparency.aec.gov.au/AnnualDonor', class: 'd-block mb-1') { 'AEC Annual Donor records since 2018' } }
-                li { a(href: 'https://transparency.aec.gov.au/ReferendumDonor', class: 'd-block mb-1') { 'AEC 2023 Referendum Donor Returns' } }
-                li { a(href: 'https://transparency.aec.gov.au/Donor', class: 'd-block mb-1') { 'AEC Election Donor Returns since 2007' } }
+                li { a(href: 'https://transparency.aec.gov.au/AnnualDonor', class: 'd-block mb-1') { 'AEC Annual Donor records since 1999' } }
+
+                li do
+                  div(class: 'd-block mb-1') do
+                    a(href: 'https://transparency.aec.gov.au/ReferendumDonor', class: 'font-strikethrough') do
+                      'AEC 2023 Referendum Donor Returns'
+                    end
+                    plain ' (temporarily removed for reformatting, back soon...)'
+                  end
+                end
+
+                li do
+                  div(class: 'd-block mb-1') do
+                    a(href: 'https://transparency.aec.gov.au/Donor', class: 'font-strikethrough') do
+                      'AEC Election Donor Returns Since 2007'
+                    end
+                    plain ' (temporarily removed for reformatting, back soon...)'
+                  end
+                end
+
                 li { a(href: 'https://www.tenders.gov.au/cn/search', class: 'd-block mb-1') { 'Federal Government Contracts since 2018' } }
 
                 li { a(href: 'https://lobbyists.ag.gov.au/register', class: 'd-block mb-1') { 'Lobbyists and the Clients Of Lobbyists' } }
