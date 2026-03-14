@@ -2,9 +2,8 @@ class TransfersController < ApplicationController
   include Constants
 
   before_action :set_transfer, only: %i[ show ]
+  before_action :increment_views, only: %i[ show ]
   before_action :set_page, only: %i[ index ]
-
-  # layout -> { ApplicationLayout }
 
   def index
     if params[:duration_start].present?
@@ -58,5 +57,12 @@ class TransfersController < ApplicationController
     return 250
 
     @page_size ||= Constants::PAGE_LIMIT
+  end
+
+  def increment_views
+    return if Current.user
+
+    @transfer.increment(:views)
+    @transfer.save
   end
 end

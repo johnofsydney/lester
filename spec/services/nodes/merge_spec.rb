@@ -42,15 +42,17 @@ RSpec.describe Nodes::Merge, type: :service do
     end
 
     context 'when there are transfers' do
+      let(:fine_grained_transaction_category) { FineGrainedTransactionCategory.create!(name: 'Category') }
+
       let!(:transfer1) { Transfer.create!(giver: group_a, taker: person_a, amount: 100, effective_date: Time.zone.today) }
-      let!(:individual_transaction1) { IndividualTransaction.create!(transfer: transfer1, amount: 100, effective_date: Time.zone.today) }
+      let!(:individual_transaction1) { IndividualTransaction.create!(fine_grained_transaction_category:, transfer: transfer1, amount: 100, effective_date: Time.zone.today, giver: group_a, taker: person_a) }
       let!(:transfer2) { Transfer.create!(giver: group_b, taker: person_b, amount: 200, effective_date: 1.year.ago) }
-      let!(:individual_transaction2) { IndividualTransaction.create!(transfer: transfer2, amount: 200, effective_date: 1.year.ago) }
+      let!(:individual_transaction2) { IndividualTransaction.create!(fine_grained_transaction_category:, transfer: transfer2, amount: 200, effective_date: 1.year.ago, giver: group_b, taker: person_b) }
 
       let(:transfer3) { Transfer.create!(giver: person_a, taker: group_a, amount: 10, effective_date: Time.zone.today) }
-      let(:individual_transaction3) { IndividualTransaction.create!(transfer: transfer3, amount: 10, effective_date: Time.zone.today) }
+      let(:individual_transaction3) { IndividualTransaction.create!(fine_grained_transaction_category:, transfer: transfer3, amount: 10, effective_date: Time.zone.today, giver: person_a, taker: group_a) }
       let(:transfer4) { Transfer.create!(giver: person_b, taker: group_a, amount: 20, effective_date: 1.year.ago) }
-      let(:individual_transaction4) { IndividualTransaction.create!(transfer: transfer4, amount: 20, effective_date: 1.year.ago) }
+      let(:individual_transaction4) { IndividualTransaction.create!(fine_grained_transaction_category:, transfer: transfer4, amount: 20, effective_date: 1.year.ago, giver: person_b, taker: group_a) }
 
       it 'moves transfers to receiver_node and merges equivalent transfers' do
         merge
@@ -88,15 +90,19 @@ RSpec.describe Nodes::Merge, type: :service do
     end
 
     context 'when there are transfers which are equivalent and have to be merged' do
+      let(:fine_grained_transaction_category) { FineGrainedTransactionCategory.create!(name: 'Category') }
+
       let!(:transfer_a1) { Transfer.create!(giver: group_a, taker: person_a, amount: 150, effective_date: Time.zone.today) }
-      let!(:individual_transaction_a1) { IndividualTransaction.create!(transfer: transfer_a1, amount: 150, effective_date: Time.zone.today) }
+      let!(:individual_transaction_a1) { IndividualTransaction.create!(giver: group_a, taker: person_a, fine_grained_transaction_category:, transfer: transfer_a1, amount: 150, effective_date: Time.zone.today) }
+
       let!(:transfer_b1) { Transfer.create!(giver: group_b, taker: person_a, amount: 250, effective_date: Time.zone.today) }
-      let!(:individual_transaction_b1) { IndividualTransaction.create!(transfer: transfer_b1, amount: 250, effective_date: Time.zone.today) }
+      let!(:individual_transaction_b1) { IndividualTransaction.create!(giver: group_b, taker: person_a, fine_grained_transaction_category:, transfer: transfer_b1, amount: 250, effective_date: Time.zone.today) }
 
       let!(:transfer_c1) { Transfer.create!(giver: person_a, taker: group_a, amount: 50, effective_date: Time.zone.today) }
-      let!(:individual_transaction_c1) { IndividualTransaction.create!(transfer: transfer_c1, amount: 50, effective_date: Time.zone.today) }
+      let!(:individual_transaction_c1) { IndividualTransaction.create!(giver: person_a, taker: group_a, fine_grained_transaction_category:, transfer: transfer_c1, amount: 50, effective_date: Time.zone.today) }
+
       let!(:transfer_d1) { Transfer.create!(giver: person_a, taker: group_b, amount: 75, effective_date: Time.zone.today) }
-      let!(:individual_transaction_d1) { IndividualTransaction.create!(transfer: transfer_d1, amount: 75, effective_date: Time.zone.today) }
+      let!(:individual_transaction_d1) { IndividualTransaction.create!(giver: person_a, taker: group_b, fine_grained_transaction_category:, transfer: transfer_d1, amount: 75, effective_date: Time.zone.today) }
 
       it 'merges equivalent transfers and moves individual transactions' do
         merge

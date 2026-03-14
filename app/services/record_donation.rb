@@ -2,7 +2,8 @@ class RecordDonation
   attr_reader :name
 
   def initialize(name)
-    @name = name.strip
+    raise
+    @name = name.strip # rubocop:disable Lint/UnreachableCode
   end
 
   def self.call(name)
@@ -10,7 +11,8 @@ class RecordDonation
   end
 
   def call
-    return nil unless name
+    raise
+    return nil unless name # rubocop:disable Lint/UnreachableCode
 
     if person_or_group == 'person'
       RecordPerson.call(first_name_last_name)

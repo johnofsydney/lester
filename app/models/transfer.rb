@@ -15,7 +15,7 @@ class Transfer < ApplicationRecord
   validates :giver_id, :taker_id, presence: true
 
   scope :government_contracts, -> { where(transfer_type: 'Government Contract(s)') }
-  scope :donations, -> { where(transfer_type: 'donations') }
+  scope :donations, -> { where(transfer_type: 'Australian Political Donations') }
 
   def self.financial_years
     (Transfer.order(:effective_date).first.effective_date.year..Time.zone.now.year).to_a
