@@ -1,8 +1,9 @@
 class Common::Heading < ApplicationView
-  attr_reader :entity
+  attr_reader :entity, :entity_name
 
   def initialize(entity:)
     @entity = entity
+    @entity_name = Nodes::NameCapitalizer.capitalize(entity.name)
   end
 
   def view_template
@@ -15,7 +16,7 @@ class Common::Heading < ApplicationView
         p do
           unless entity.id == Group.government_department_tag.id
             plain 'This page shows all groups tagged with '
-            strong { entity.display_name }
+            strong { entity_name }
             plain '. The values in the graphs and tables relate to the '
             strong { 'groups' }
             plain ', which may be associated with other tags as well.'
@@ -29,7 +30,7 @@ class Common::Heading < ApplicationView
         a(href: network_graph_link, class:'btn btn-primary btn-lg shadow-sm') do
           strong { 'Explore the Network Graph' }
         end
-        p(class: 'font-italic mt-1') { "...a visualisation of connections to #{entity.display_name}..." }
+        p(class: 'font-italic mt-1') { "...a visualisation of connections to #{entity.name}..." }
       end
 
       p { business_number_and_trading_names } if entity.business_number.present? || entity.trading_names.any?
@@ -37,21 +38,21 @@ class Common::Heading < ApplicationView
   end
 
   def button_with_link
-    href = "https://www.google.com/search?q=#{entity.display_name}"
+    href = "https://www.google.com/search?q=#{entity_name}"
 
     a(
       href:,
       class: 'btn w-100 btn-lg',
       style: "#{color_styles(entity)}; font-size: 1em;",
       target: :_blank
-    ) { entity.display_name }
+    ) { entity_name }
   end
 
   def button_without_link
     button(
       class: 'btn w-100 btn-lg',
       style: "#{color_styles(entity)}; font-size: 1em;"
-    ) { entity.display_name }
+    ) { entity_name }
   end
 
   def network_graph_link

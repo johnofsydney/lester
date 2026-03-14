@@ -20,6 +20,7 @@ ActiveAdmin.register Person do
   filter :id
   filter :name
   filter :name, as: :string, filters: %i[cont eq start end not_eq]
+  filter :views, as: :numeric
   filter :linkedin_url
   filter :linkedin_ingested, as: :date_range
 
@@ -27,6 +28,7 @@ ActiveAdmin.register Person do
     selectable_column
     id_column
     column(:name, sortable: 'person_id')
+    column :views
     column :linkedin_url
     column :linkedin_ingested
   end
@@ -39,6 +41,7 @@ ActiveAdmin.register Person do
       row :updated_at
       row :linkedin_url
       row :linkedin_ingested
+      row :views
     end
   end
 

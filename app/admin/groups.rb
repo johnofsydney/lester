@@ -19,6 +19,7 @@ ActiveAdmin.register Group do
 
   filter :id
   filter :name
+  filter :views, as: :numeric
   filter :type
 
   index do
@@ -26,6 +27,7 @@ ActiveAdmin.register Group do
     id_column
     column(:name, sortable: 'name')
     column(:business_number, sortable: 'business_number')
+    column :views
     column('Memberships (as owning group)') do |group|
       group.memberships.count
     end

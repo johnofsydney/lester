@@ -4,6 +4,7 @@ class GroupsController < ApplicationController
   include Constants
 
   before_action :set_group, only: %i[ show ]
+  before_action :increment_views, only: %i[ show ]
   before_action :set_page, only: %i[ index ]
 
   def index
@@ -91,5 +92,12 @@ class GroupsController < ApplicationController
     return 250
 
     @page_size ||= Constants::PAGE_LIMIT
+  end
+
+  def increment_views
+    return if Current.user
+
+    @group.increment(:views)
+    @group.save
   end
 end

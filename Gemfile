@@ -78,10 +78,6 @@ gem 'sidekiq'
 
 gem 'newrelic_rpm'
 
-# resolving vulnerabilities
-gem 'rack', '>= 3.1.18'
-gem 'uri', '~> 1.0.4'
-
 gem 'sidekiq-unique-jobs'
 
 # https://github.com/fatkodima/activerecord_lazy_columns
@@ -95,3 +91,9 @@ gem 'sidekiq-scheduler'
 gem "roo", "~> 3.0.0"
 
 gem "rexml"
+gem "ostruct"
+
+# resolving vulnerabilities
+gem 'rack', '~> 3.1.20'
+gem 'uri', '~> 1.0.4'
+gem 'nokogiri', '>= 1.19.1'

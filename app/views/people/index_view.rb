@@ -39,13 +39,13 @@ class People::IndexView < ApplicationView
     link_for(
       entity: person,
       class: 'desktop-only',
-      link_text: person.name.truncate(100)
+      link_text: CapitalizeNames.capitalize(person.name).truncate(100)
     )
 
     link_for(
       entity: person,
       class: 'mobile-only',
-      link_text: person.name.truncate(50)
+      link_text: CapitalizeNames.capitalize(person.name).truncate(50)
     )
   end
 end
