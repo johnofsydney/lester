@@ -6,10 +6,22 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def initialize(row_hash)
-    @donation = AuAecDonations::Donation.new(row_hash)
+    @row_hash = row_hash
   end
 
-  attr_reader :donation
+  attr_reader :row_hash
+
+  def donation
+    @donation ||= if row_hash['EventDescription'].present? && row_hash['EventDescription'].match?(/referendum/i)
+      AuAecDonations::DonationObject::ReferendumDonation.new(row_hash)
+    elsif row_hash['EventDescription'].present? && row_hash['EventDescription'].match?(/election/i)
+      AuAecDonations::DonationObject::ElectionDonation.new(row_hash)
+    elsif row_hash['ViewName'] == 'Annual Donor Donation Made'
+      AuAecDonations::DonationObject::AnnualDonation.new(row_hash)
+    else
+      raise "Unable to determine donation type for row: #{row_hash.inspect}"
+    end
+  end
 
   def call
     raise ValidationError, "Invalid transaction data: #{donation.inspect}" unless valid?
