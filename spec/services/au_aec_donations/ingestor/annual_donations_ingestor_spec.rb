@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe AuAecDonations::Annual::DonationsIngestor do
+describe AuAecDonations::Ingestor::AnnualDonationsIngestor do
   before do
     allow(AuAecDonations::Downloader::AnnualDonations).to receive(:call).and_return(downloader_result)
     allow(AuAecDonations::ImportDonationRowJob).to receive(:perform_async).and_return(true)
