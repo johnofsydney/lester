@@ -12,14 +12,16 @@ class AuAecDonations::RecordIndividualTransaction
   attr_reader :row_hash
 
   def donation
-    @donation ||= if row_hash['EventDescription'].present? && row_hash['EventDescription'].match?(/referendum/i)
-      AuAecDonations::DonationObject::ReferendumDonation.new(row_hash)
-    elsif row_hash['EventDescription'].present? && row_hash['EventDescription'].match?(/election/i)
-      AuAecDonations::DonationObject::ElectionDonation.new(row_hash)
-    elsif row_hash['ViewName'] == 'Annual Donor Donation Made'
-      AuAecDonations::DonationObject::AnnualDonation.new(row_hash)
-    else
-      raise "Unable to determine donation type for row: #{row_hash.inspect}"
+    @donation ||= begin
+      if row_hash['EventDescription'].present? && row_hash['EventDescription'].match?(/referendum/i)
+        AuAecDonations::DonationObject::ReferendumDonation.new(row_hash)
+      elsif row_hash['EventDescription'].present? && row_hash['EventDescription'].match?(/election/i)
+        AuAecDonations::DonationObject::ElectionDonation.new(row_hash)
+      elsif row_hash['ViewName'] == 'Annual Donor Donation Made'
+        AuAecDonations::DonationObject::AnnualDonation.new(row_hash)
+      else
+        raise "Unable to determine donation type for row: #{row_hash.inspect}"
+      end
     end
   end
 

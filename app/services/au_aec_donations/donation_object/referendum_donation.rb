@@ -23,7 +23,6 @@ class AuAecDonations::DonationObject::ReferendumDonation
 
   def date = Date.parse(row_hash['TransactionDate'])
 
-
   def donor_name
     if row_hash['ReturnClientName'].present? && row_hash['ReturnClientName'].match?(/unknown/i)
       row_hash['CurrentClientName'].strip

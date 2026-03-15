@@ -6,25 +6,25 @@ describe AuAecDonations::DonationObject::ElectionDonation do
   context 'when the donation is an election donation' do
     let(:row_hash) do
       {
-        "ViewName" => "Donations Made Line Item",
-        "EventId" => 31496,
-        "EventDescription" => "2025 Federal Election",
-        "DisclosurePeriodEndDate" => "2025-06-02T00:00:00",
-        "DonorCode" => "51277",
-        "DonorName" => "ACY Securities Pty Ltd",
-        "DonorClientType" => "organisationdonor",
-        "ReturnId" => 80518,
-        "ReturnTypeCode" => "federaldonorelection",
-        "ClientType" => "candidate",
-        "ReceiverClientId" => "49873",
-        "ReceiverName" => "YIN, Andy",
-        "DonatedToAddress1" => nil,
-        "DonatedToAddress2" => nil,
-        "DonatedToSuburb" => nil,
-        "DonatedToPostCode" => nil,
-        "DonatedToState" => nil,
-        "GiftDate" => "2025-02-18T00:00:00",
-        "GiftValue" => 2400
+        'ViewName' => 'Donations Made Line Item',
+        'EventId' => 31_496,
+        'EventDescription' => '2025 Federal Election',
+        'DisclosurePeriodEndDate' => '2025-06-02T00:00:00',
+        'DonorCode' => '51277',
+        'DonorName' => 'ACY Securities Pty Ltd',
+        'DonorClientType' => 'organisationdonor',
+        'ReturnId' => 80_518,
+        'ReturnTypeCode' => 'federaldonorelection',
+        'ClientType' => 'candidate',
+        'ReceiverClientId' => '49873',
+        'ReceiverName' => 'YIN, Andy',
+        'DonatedToAddress1' => nil,
+        'DonatedToAddress2' => nil,
+        'DonatedToSuburb' => nil,
+        'DonatedToPostCode' => nil,
+        'DonatedToState' => nil,
+        'GiftDate' => '2025-02-18T00:00:00',
+        'GiftValue' => 2400
       }
     end
 

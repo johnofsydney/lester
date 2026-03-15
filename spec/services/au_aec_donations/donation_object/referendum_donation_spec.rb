@@ -6,27 +6,27 @@ describe AuAecDonations::DonationObject::ReferendumDonation do
   context 'when the donation is a referendum donation' do
     let(:row_hash) do
       {
-        "ViewName" => "Referendum Donor Donation Made",
-        "RegistrationCode" => "BIHVR0",
-        "ReturnId" => 67518,
-        "ReturnTypeCode" => "federalrefdonororganisation",
-        "ReturnTypeDescription" => "Referendum Organisation Donor Return",
-        "EventDescription" => "2023 Referendum",
-        "EventId" => "29581",
-        "ClientFileId" => 47503,
-        "CurrentClientName" => "Aarnja Limited",
-        "ReturnClientName" => "Aarnja Limited",
-        "DonationMadeToName" => "Kimberley Land Council",
-        "DonationMadeToClientFileId" => 47209,
-        "DonationMadeToClientType" => "referendumentity",
-        "TransactionDate" => "2023-08-24T00:00:00",
-        "Amount" => 100000,
-        "FinancialRecordType" => "donationmadetoreferendum"
+        'ViewName' => 'Referendum Donor Donation Made',
+        'RegistrationCode' => 'BIHVR0',
+        'ReturnId' => 67_518,
+        'ReturnTypeCode' => 'federalrefdonororganisation',
+        'ReturnTypeDescription' => 'Referendum Organisation Donor Return',
+        'EventDescription' => '2023 Referendum',
+        'EventId' => '29581',
+        'ClientFileId' => 47_503,
+        'CurrentClientName' => 'Aarnja Limited',
+        'ReturnClientName' => 'Aarnja Limited',
+        'DonationMadeToName' => 'Kimberley Land Council',
+        'DonationMadeToClientFileId' => 47_209,
+        'DonationMadeToClientType' => 'referendumentity',
+        'TransactionDate' => '2023-08-24T00:00:00',
+        'Amount' => 100_000,
+        'FinancialRecordType' => 'donationmadetoreferendum'
       }
     end
 
     it 'has the correct attributes' do
-      expect(donation.amount).to eq(100000)
+      expect(donation.amount).to eq(100_000)
       expect(donation.donor_name).to eq('Aarnja Limited')
       expect(donation.recipient_name).to eq('Kimberley Land Council')
       expect(donation.date).to eq(Date.new(2023, 8, 24))
