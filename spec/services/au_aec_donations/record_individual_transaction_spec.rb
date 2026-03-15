@@ -45,10 +45,10 @@ describe AuAecDonations::RecordIndividualTransaction do
     service.call
 
     individual_transaction = IndividualTransaction.last
-    expect(individual_transaction.giver.name).to eq('Australian Energy Producers')
-    expect(individual_transaction.taker.name).to eq('ALP (WA)')
-    expect(individual_transaction.transfer.giver.name).to eq('Australian Energy Producers')
-    expect(individual_transaction.transfer.taker.name).to eq('ALP (WA)')
+    expect(individual_transaction.giver.name).to eq('australian energy producers')
+    expect(individual_transaction.taker.name).to eq('alp (wa)')
+    expect(individual_transaction.transfer.giver.name).to eq('australian energy producers')
+    expect(individual_transaction.transfer.taker.name).to eq('alp (wa)')
     expect(individual_transaction.transfer.effective_date).to eq(Date.new(2025, 6, 30))
   end
 
@@ -70,10 +70,10 @@ describe AuAecDonations::RecordIndividualTransaction do
 
       expect(IndividualTransaction.count).to eq(2)
       expect(IndividualTransaction.distinct.pluck(:taker_id).count).to eq(1)
-      expect(IndividualTransaction.first.taker.name).to eq('ALP (WA)')
-      expect(IndividualTransaction.last.taker.name).to eq('ALP (WA)')
-      expect(IndividualTransaction.first.giver.name).to eq('Australian Energy Producers')
-      expect(IndividualTransaction.last.giver.name).to eq('Rich Donor Ltd')
+      expect(IndividualTransaction.first.taker.name).to eq('alp (wa)')
+      expect(IndividualTransaction.last.taker.name).to eq('alp (wa)')
+      expect(IndividualTransaction.first.giver.name).to eq('australian energy producers')
+      expect(IndividualTransaction.last.giver.name).to eq('rich donor ltd')
     end
   end
 
@@ -95,10 +95,10 @@ describe AuAecDonations::RecordIndividualTransaction do
 
       expect(IndividualTransaction.count).to eq(2)
       expect(IndividualTransaction.distinct.pluck(:giver_id).count).to eq(1)
-      expect(IndividualTransaction.first.taker.name).to eq('ALP (WA)')
-      expect(IndividualTransaction.last.taker.name).to eq('ALP (WA)')
-      expect(IndividualTransaction.first.giver.name).to eq('Australian Energy Producers')
-      expect(IndividualTransaction.last.giver.name).to eq('Australian Energy Producers')
+      expect(IndividualTransaction.first.taker.name).to eq('alp (wa)')
+      expect(IndividualTransaction.last.taker.name).to eq('alp (wa)')
+      expect(IndividualTransaction.first.giver.name).to eq('australian energy producers')
+      expect(IndividualTransaction.last.giver.name).to eq('australian energy producers')
     end
   end
 
@@ -136,9 +136,9 @@ describe AuAecDonations::RecordIndividualTransaction do
       described_class.new(person_donor_row_hash).call
 
       individual_transaction = IndividualTransaction.last
-      expect(individual_transaction.giver.name).to eq('Stephen Whately')
+      expect(individual_transaction.giver.name).to eq('stephen whately')
       expect(individual_transaction.giver_type).to eq('Person')
-      expect(individual_transaction.taker.name).to eq('The Greens (VIC)')
+      expect(individual_transaction.taker.name).to eq('the greens (vic)')
     end
   end
 end

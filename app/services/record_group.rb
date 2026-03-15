@@ -17,7 +17,7 @@ class RecordGroup
       Group.find_by(business_number:) || find_group_and_append_business_number || create_group_with_business_number
     elsif aec_id.present?
       Group.find_by(aec_id:) || find_group_and_append_aec_id || create_group_with_aec_id
-    elsif (group = Group.find_by_name_i(name)) # rubocop:disable Rails/DynamicFindBy
+    elsif (group = Group.find_by(name:))
         group
     elsif TradingName.where(name:).count > 1
         Rails.logger.info("Multiple trading names found for: #{name}")
@@ -32,7 +32,7 @@ class RecordGroup
   end
 
   def find_group_and_append_business_number
-    group = Group.find_by_name_i(name) # rubocop:disable Rails/DynamicFindBy
+    group = Group.find_by(name:)
     return if group.nil?
 
     group.update!(business_number:)
@@ -55,7 +55,7 @@ class RecordGroup
   end
 
   def find_group_and_append_aec_id
-    group = Group.find_by_name_i(name) # rubocop:disable Rails/DynamicFindBy
+    group = Group.find_by(name:)
     return if group.nil?
 
     group.update!(aec_id:)

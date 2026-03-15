@@ -1,33 +1,33 @@
-<div class="col-md-4">
-  <div class="card" style="width: 18rem;">
+# <div class="col-md-4">
+#   <div class="card" style="width: 18rem;">
 
-    <div class="card-body">
-      <%= link_to group.name, group_path(group), class: "btn #{group.name} w-100"  %>
-      <p class="card-text">Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah </p>
-    </div>
-      <% group.people.each do |person| %>
-        <div class="list-group-item flex-normal">
-          <div>
+#     <div class="card-body">
+#       <%= link_to group.name, group_path(group), class: "btn #{group.name} w-100"  %>
+#       <p class="card-text">Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah Blah </p>
+#     </div>
+#       <% group.people.each do |person| %>
+#         <div class="list-group-item flex-normal">
+#           <div>
 
-                        <%= link_to person.name, person_path(person), class: "btn-primary btn #{person.name}"  %>
-          </div>
-          <div>
-          <% person.groups.map(&:name).reject{ |n| n == group.name } .each do |group_name|  %>
-            <button class="btn btn-sm <%= group_name %>"><%= group_name %></button>
-          <% end %>
-          </div>
+#                         <%= link_to person.name, person_path(person), class: "btn-primary btn #{person.name}"  %>
+#           </div>
+#           <div>
+#           <% person.groups.map(&:name).reject{ |n| n == group.name } .each do |group_name|  %>
+#             <button class="btn btn-sm <%= group_name %>"><%= group_name %></button>
+#           <% end %>
+#           </div>
 
 
 
-        </div>
-      <% end %>
+#         </div>
+#       <% end %>
 
-    </ul>
-    <div class="card-body">
+#     </ul>
+#     <div class="card-body">
 
-    </div>
-  </div>
-</div>
+#     </div>
+#   </div>
+# </div>
 
 
 

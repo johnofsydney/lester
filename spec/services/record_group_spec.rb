@@ -224,7 +224,9 @@ RSpec.describe RecordGroup, type: :service do
       'Pharmacy Guild of Australia' => 'The Pharmacy Guild of Australia',
       'The Pharmacy Guild' => 'The Pharmacy Guild of Australia',
       'Arafura Rare Earths' => 'Arafura Rare Earths',
-      'Arafura Resources' => 'Arafura Rare Earths'
+      'Arafura Resources' => 'Arafura Rare Earths',
+      'Carclone Nominees Pty Ltd' => 'Carclone Nominees Pty Ltd',
+      'Cyclone Advertising' => 'Cyclone Advertising'
     }
   end
 
@@ -256,13 +258,13 @@ RSpec.describe RecordGroup, type: :service do
         it 'creates a group with the given name' do
           expect { described_class.call('Test Name', mapper:) }.to change(Group, :count).by(1)
 
-          expect(Group.last.name).to eq('Test Name')
+          expect(Group.last.name).to eq('test name')
         end
 
         it 'creates a group with the given name and business number' do
           expect { described_class.call('Test Name', business_number: 'ABN: 123 456 789', mapper:) }.to change(Group, :count).by(1)
 
-          expect(Group.last.name).to eq('Test Name')
+          expect(Group.last.name).to eq('test name')
           expect(Group.last.business_number).to eq('123456789')
         end
       end
@@ -310,7 +312,7 @@ RSpec.describe RecordGroup, type: :service do
       it 'creates a group with the given name' do
         expect { described_class.call('GREENS LIST CLERKING SERVICES', mapper:) }.to change(Group, :count).by(1)
 
-        expect(Group.last.name).to eq('Greens List Clerking Services')
+        expect(Group.last.name).to eq('greens list clerking services')
       end
     end
   end

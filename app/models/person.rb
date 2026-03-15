@@ -1,3 +1,5 @@
+require 'capitalize_names'
+
 class Person < ApplicationRecord
   include TransferMethods
   include NodeMethods
@@ -25,6 +27,8 @@ class Person < ApplicationRecord
 
   validates :name, uniqueness: { case_sensitive: false }
 
+  normalizes :name, with: ->(name) { name.downcase.strip.delete('.') }
+
   def nodes
     groups
   end
@@ -37,8 +41,14 @@ class Person < ApplicationRecord
     )
   end
 
-  def other_edge_ends
-    outgoing_transfers.map(&:taker)
+  # def other_edge_ends
+  #   outgoing_transfers.map(&:taker)
+  # end
+
+  def display_name
+    # This gem is built for people's names, so should be fine to use here
+    # without the exceptions list we had for groups.
+    CapitalizeNames.capitalize(name)
   end
 
   def is_tag? = false

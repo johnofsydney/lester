@@ -39,10 +39,10 @@ class Transfer < ApplicationRecord
       effective_date:,
       giver_type: giver.class.to_s,
       giver_id: giver.id,
-      giver_name: giver.name,
+      giver_name: giver.display_name,
       taker_type: taker.class.to_s,
       taker_id: taker.id,
-      taker_name: taker.name,
+      taker_name: taker.display_name,
       depth:,
       direction:
     }
@@ -51,8 +51,8 @@ class Transfer < ApplicationRecord
   def augment(depth:, direction:)
     self.depth = depth
     self.direction = direction
-    self.giver_name = giver.name
-    self.taker_name = taker.name
+    self.giver_name = giver.display_name
+    self.taker_name = taker.display_name
 
     self
   rescue StandardError=> e
