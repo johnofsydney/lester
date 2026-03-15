@@ -224,7 +224,9 @@ RSpec.describe RecordGroup, type: :service do
       'Pharmacy Guild of Australia' => 'The Pharmacy Guild of Australia',
       'The Pharmacy Guild' => 'The Pharmacy Guild of Australia',
       'Arafura Rare Earths' => 'Arafura Rare Earths',
-      'Arafura Resources' => 'Arafura Rare Earths'
+      'Arafura Resources' => 'Arafura Rare Earths',
+      'Carclone Nominees Pty Ltd' => 'Carclone Nominees Pty Ltd',
+      'Cyclone Advertising' => 'Cyclone Advertising'
     }
   end
 
