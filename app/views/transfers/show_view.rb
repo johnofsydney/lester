@@ -41,47 +41,45 @@ class Transfers::ShowView < ApplicationView
       end
 
       table(class: 'table table-striped') do
-          if transfer.transfer_type == 'Government Contracts'
-            heading_one = 'Contract ID'
-            heading_two = 'Amendment ID'
-          elsif transfer.transfer_type == 'Australian Political Donations'
-            heading_one = 'Return ID'
-            heading_two = 'Registration Code'
-          end
-
           thead do
             tr do
               th { 'Payment Type' }
-              th { 'Evidence' }
-              th { heading_one }
-              th { heading_two }
+
+              if transfer.government_contracts?
+                th { 'Evidence' }
+                th { 'Contract ID' }
+                th { 'Amendment ID' }
+                th { 'Category' }
+              end
               th { 'Description' }
               th(class: 'text-end') { 'Amount' }
               th(class: 'text-end') { 'Date' }
-              th(class: 'text-end') { 'Category' } if transfer.transfer_type == 'Government Contract(s)'
             end
           end
           transfer.individual_transactions.each do |individual_transaction|
-            if individual_transaction.transaction_type == 'Government Contract'
+            if individual_transaction.government_contract?
               details_type = 'Government Contract'
-              details_one = individual_transaction.contract_id
-              details_two = individual_transaction.amendment_id
-            elsif individual_transaction.transaction_type == 'Australian Political Donation'
+              truncation_value = 50
+            elsif individual_transaction.donation?
               details_type = 'Donation'
-              details_one = individual_transaction.return_id
-              details_two = individual_transaction.registration_code
+              truncation_value = 100
             end
             tbody do
               td { details_type }
-              td do
-                a(href: individual_transaction.evidence, target: :_blank) { individual_transaction.evidence.truncate(40) }
+
+              if individual_transaction.government_contract?
+                td do
+                  a(href: individual_transaction.evidence, target: :_blank) { individual_transaction.evidence.truncate(40) }
+                end
+                td { individual_transaction.contract_id }
+                td { individual_transaction.amendment_id }
+                td { individual_transaction.fine_grained_transaction_category.name }
               end
-              td { details_one }
-              td { details_two }
-              td { individual_transaction.description.truncate(50) }
+              td(data: { bs_toggle: 'tooltip', bs_title: individual_transaction.description }) do
+                individual_transaction.description.truncate(truncation_value)
+              end
               td(class: 'text-end') { number_to_currency(individual_transaction.amount, precision: 0) }
               td(class: 'text-end') { individual_transaction.effective_date.strftime('%d %b %Y') }
-              td(class: 'text-end') { individual_transaction.fine_grained_transaction_category.name } if transfer.transfer_type == 'Government Contract(s)'
             end
           end
       end

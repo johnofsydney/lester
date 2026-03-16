@@ -15,8 +15,6 @@ class Nodes::NameCapitalizer
     CapitalizeNames.capitalize(name)
                    .gsub(/(\()([a-z])/) { "#{::Regexp.last_match(1)}#{::Regexp.last_match(2).upcase}" } # capitalise first letter after an open bracket
                    .gsub(/(\d)([a-z])/) { "#{::Regexp.last_match(1)}#{::Regexp.last_match(2).upcase}" } # capitalise first letter after a number
-                   .gsub(/\b\w{2,4}\b/) do |acronym|
-                     exceptions.include?(acronym) ? acronym : acronym.upcase
-                   end
+                   .gsub(/\b\w{2,4}\b/) { |acronym| exceptions.include?(acronym) ? acronym : acronym.upcase } # upcase any 2-4 letter words, unless they are in the exceptions list
   end
 end
