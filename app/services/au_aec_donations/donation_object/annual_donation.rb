@@ -15,6 +15,8 @@ class AuAecDonations::DonationObject::AnnualDonation
   def return_id = row_hash['ReturnId'].to_s
   def registration_code = row_hash['RegistrationCode']
   def description = "Donation of $#{amount.to_f} from #{donor_name} to #{recipient_name} on #{date}"
+  def evidence = 'https://transparency.aec.gov.au/AnnualDonor'
+  def transaction_category_key = 'au_aec_donation.referendum'
 
   def donation_type
     raise "Unexpected donation type for row: #{row_hash.inspect}" unless row_hash['ViewName'] == 'Annual Donor Donation Made'

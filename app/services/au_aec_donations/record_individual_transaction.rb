@@ -39,7 +39,7 @@ class AuAecDonations::RecordIndividualTransaction
       amount: donation.amount.to_f,
       effective_date: donation.date,
       transaction_type: 'donation',
-      evidence:,
+      evidence: donation.evidence,
       description: donation.description,
       fine_grained_transaction_category:,
       registration_code: donation.registration_code,
@@ -60,12 +60,8 @@ class AuAecDonations::RecordIndividualTransaction
       taker: recipient,
       effective_date: Dates::FinancialYear.new(donation.date).last_day,
       transfer_type: 'donations',
-      evidence:
+      evidence: 'https://transparency.aec.gov.au/'
     )
-  end
-
-  def evidence
-    'https://transparency.aec.gov.au/AnnualDonor'
   end
 
   def donor
@@ -81,6 +77,6 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def fine_grained_transaction_category
-    FineGrainedTransactionCategory.find_or_create_by!(name: 'au_aec_donation.annual')
+    FineGrainedTransactionCategory.find_by(name: donation.transaction_category_key)
   end
 end

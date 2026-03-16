@@ -14,7 +14,12 @@ class Transfer < ApplicationRecord
   }
   validates :giver_id, :taker_id, presence: true
 
-  scope :government_contracts, -> { where(transfer_type: 'Government Contract(s)') }
+  enum :transfer_type, {
+    government_contracts: 'government_contracts',
+    donations: 'donations'
+  }
+
+  scope :government_contracts, -> { where(transfer_type: 'government_contracts') }
   scope :donations, -> { where(transfer_type: 'donations') }
 
   def self.financial_years
