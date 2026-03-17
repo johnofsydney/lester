@@ -1,6 +1,7 @@
 ActiveAdmin.register Membership do
   filter :group_name, as: :string, filters: %i[cont eq start end not_eq]
   filter :member_id, label: 'Member ID'
+  filter :by_ids, as: :string, label: 'Filter by IDs (comma-separated)'
   filter :member_type, label: 'Member type'
 
   permit_params :member_id, :group_id, :start_date, :end_date, :member_type
