@@ -18,6 +18,7 @@ class Maintenance::BackfillAnnualDonationsJob
   #       # and will ingest all years of donations, starting with the oldest, with a delay between each to avoid overwhelming the system
 
   #       IndividualTransaction.where(transaction_type: 'Australian Political Donation').delete_all
+  #       IndividualTransaction.donations.delete_all
   #       Transfer.donations.delete_all
   #       Transfer.where(transfer_type: 'Australian Political Donations').delete_all
   #       Transfer.where(transfer_type: 'donations').delete_all

@@ -63,6 +63,9 @@ class Transfers::ShowView < ApplicationView
             elsif individual_transaction.donation?
               details_type = 'Donation'
               truncation_value = 100
+            else
+              details_type = 'Other'
+              truncation_value = 50
             end
             tbody do
               td { details_type }
