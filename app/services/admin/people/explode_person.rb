@@ -21,6 +21,8 @@ class Admin::People::ExplodePerson
       end
 
       person.destroy!
+      membership.group.update(cached_data: {})
+      BuildGroupCachedDataJob.perform_async(membership.group.id)
     end
 
     membership_ids
