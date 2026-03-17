@@ -11,6 +11,24 @@ class Membership < ApplicationRecord
   # 2004–2017	Manchester United
   # 2017–2018	Everton
 
+  scope :by_ids, lambda { |ids_string|
+    return all if ids_string.blank?
+
+    ids = ids_string
+          .split(',')
+          .map(&:strip)
+          .select { |id| id.match?(/\A\d+\z/) }
+          .map(&:to_i)
+
+    return none if ids.empty?
+
+    where(id: ids)
+  }
+
+  def self.ransackable_scopes(_auth_object = nil)
+    [:by_ids]
+  end
+
   def nodes
     [member, group]
   end

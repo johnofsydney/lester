@@ -43,6 +43,19 @@ ActiveAdmin.register Person do
       row :linkedin_ingested
       row :views
     end
+
+    panel 'Memberships (as member group)' do
+      table_for Membership.where(member: resource).order(created_at: :desc) do
+        column :id do |membership|
+          link_to membership.id, admin_membership_path(membership)
+        end
+        column :group
+        column :position
+        column :start_date
+        column :end_date
+        column :created_at
+      end
+    end
   end
 
   form do |f|
@@ -57,23 +70,38 @@ ActiveAdmin.register Person do
     link_to 'View Person', person_path(resource), method: :get
   end
 
-  batch_action :ingest_linkedin_batch, confirm: 'Are you sure you want to ingest LinkedIn data for these people?' do |ids|
-    ids.each do |id|
-      LinkedinProfileGetterJob.perform_async(id)
+  # batch_action :ingest_linkedin_batch, confirm: 'Are you sure you want to ingest LinkedIn data for these people?' do |ids|
+  #   ids.each do |id|
+  #     LinkedinProfileGetterJob.perform_async(id)
+  #   end
+
+  #   redirect_to collection_path, alert: 'LinkedIn data ingested successfully.'
+  # end
+
+  # # Add a "Get Linked In" button on the show page
+  # action_item :ingest_linkedin, only: :show do
+  #   link_to 'Ingest Linked In', ingest_linkedin_admin_person_path(resource), method: :post
+  # end
+
+  # # Handle the ingestion logic
+  # member_action :ingest_linkedin, method: :post do
+  #   person = resource
+
+  #   LinkedinProfileGetterJob.perform_async(person.id)
+  # end
+
+  action_item :explode_person, only: :show do
+    link_to 'Explode Person', explode_person_admin_person_path(resource), method: :get
+  end
+
+  # Handle the explosion logic
+  member_action :explode_person, method: :get do
+    membership_ids = Admin::People::ExplodePerson.call(resource)
+
+    if membership_ids.any?
+      redirect_to admin_memberships_path(q: { by_ids: membership_ids.join(',') }), notice: 'Person exploded.'
+    else
+      redirect_to admin_memberships_path, alert: 'No memberships were found for this person.'
     end
-
-    redirect_to collection_path, alert: 'LinkedIn data ingested successfully.'
-  end
-
-  # Add a "Get Linked In" button on the show page
-  action_item :ingest_linkedin, only: :show do
-    link_to 'Ingest Linked In', ingest_linkedin_admin_person_path(resource), method: :post
-  end
-
-  # Handle the ingestion logic
-  member_action :ingest_linkedin, method: :post do
-    person = resource
-
-    LinkedinProfileGetterJob.perform_async(person.id)
   end
 end
