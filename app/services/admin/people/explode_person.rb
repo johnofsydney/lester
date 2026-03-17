@@ -14,15 +14,18 @@ class Admin::People::ExplodePerson
 
     Membership.transaction do
       Membership.where(member: person).find_each do |membership|
+        next unless membership
+
         new_person = Person.create!(name: unique_name_for(membership))
         membership.update!(member: new_person)
 
         membership_ids << membership.id
+
+        membership.group.update(cached_data: {})
+        BuildGroupCachedDataJob.perform_async(membership.group.id)
       end
 
       person.destroy!
-      membership.group.update(cached_data: {})
-      BuildGroupCachedDataJob.perform_async(membership.group.id)
     end
 
     membership_ids
