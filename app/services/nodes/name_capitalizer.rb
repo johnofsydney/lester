@@ -3,7 +3,7 @@ require 'capitalize_names'
 class Nodes::NameCapitalizer
   PEOPLE_NAMES = %w[Greg Paul John Pete Jan Troy Lucy Marc Sep Mark Kate Sam Hugh Ann Ross Ian Kain Anna Zoe Luke Holt Zali Ryan Gai Lee Jane Dyer Tony].freeze
   BUSINESS_WORDS = %w[Pty Ltd Inc Co Aus Hire Bank Host Plus Sole Tax Aid Job Sub Fund Toll Root Web Data Corp Hays Rio].freeze
-  OTHER_WORDS = %w[The To Of And For As Is Home No East West Mind Menu Sub Fund Let Talk Red Man Hat Asia Hive Ping Arts Van Body Gold Wall Air Hide Seek Dim Gin San Reef Oh Snow Hook].freeze
+  OTHER_WORDS = %w[The To Of And For As Is Home No East West Mind Menu Sub Fund Let Talk Red Man Hat Asia Hive Ping Arts Van Body Gold Wall Air Hide Seek Dim Gin San Reef Oh Snow Hook Hull Hall Car Park Fair Work Anti Foot Diet Now Are Able].freeze
 
   def self.capitalize(name)
     raise "Nodes::NameCapitalizer.capitalize backtrace:\n#{caller.join("\n")}" if name.blank?
