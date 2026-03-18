@@ -22,6 +22,22 @@ class Person < ApplicationRecord
 
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..7.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ...7.days.ago).or(where(nodes_count_cached: nil)) }
+  scope :in_charities_subgroups, -> {
+    joins(:groups)
+      .joins("INNER JOIN memberships parent_memberships ON parent_memberships.member_type = 'Group' AND parent_memberships.member_id = groups.id")
+      .joins('INNER JOIN groups parent_groups ON parent_groups.id = parent_memberships.group_id')
+      .where(parent_groups: { name: 'Charities' })
+      .distinct
+  }
+
+  scope :only_in_charities, -> {
+    joins(:groups)
+      .joins("LEFT JOIN memberships parent_memberships ON parent_memberships.member_type = 'Group' AND parent_memberships.member_id = groups.id")
+      .joins('LEFT JOIN groups parent_groups ON parent_groups.id = parent_memberships.group_id')
+      .group('people.id')
+      .having('COUNT(DISTINCT groups.id) > 0')
+      .having("COUNT(DISTINCT CASE WHEN parent_groups.name = 'Charities' THEN groups.id END) = COUNT(DISTINCT groups.id)")
+  }
 
   validates :name, uniqueness: { case_sensitive: false }
 

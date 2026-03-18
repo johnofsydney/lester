@@ -1,18 +1,20 @@
 require 'capitalize_names'
 
 class RecordPerson
-  attr_reader :name, :aec_id
+  attr_reader :name, :aec_id, :acnc_id
 
-  def initialize(name, aec_id: nil)
+  def initialize(name, aec_id: nil, acnc_id: nil)
     @name = cleaned_up_name(name)
     @aec_id = aec_id
+    @acnc_id = acnc_id
   end
 
-  def self.call(name, aec_id: nil)
-    new(name, aec_id:).call
+  def self.call(name, aec_id: nil, acnc_id: nil)
+    new(name, aec_id:, acnc_id:).call
   end
 
   def call
+    WIP
     print 'p'
     Person.find_or_create_by(name:)
   end

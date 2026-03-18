@@ -32,23 +32,28 @@ class AcncCharities::FetchSingleCharityPeople
     people_count = 0
 
     # Part 3 - parse people - they are held in .card-body elements
-    cards = doc.css('.card-body')
+    cards = doc.css('.card')
+    # cards = doc.css('.card-body')
     if cards.empty?
       Rails.logger.info("People not found for charity #{@charity.id} - will not retry")
       return {success: false, people_count: 0}
     end
 
+
     cards.each do |card|
       name = card.at_css('h4')&.text.to_s.strip
       title = card.at_css('li')&.text.to_s.strip.gsub('Role: ', '')
+      person_uuid = card.attribute("href").value.split('/').last
+      WIP
 
       next if name.blank? && title.blank?
 
-      person = RecordPerson.call(name)
+      person = RecordPerson.call(name, acnc_id: person_uuid)
       membership = Membership.find_or_create_by(group: @charity, member: person)
       Position.find_or_create_by(membership:, title:)
       people_count += 1
     end
+
 
     Rails.logger.info "Successfully processed charity #{@charity.name} - #{people_count} people found"
 
