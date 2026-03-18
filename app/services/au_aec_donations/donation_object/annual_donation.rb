@@ -1,4 +1,4 @@
-class AuAecDonations::Donation
+class AuAecDonations::DonationObject::AnnualDonation
   # attr_reader :donation_amount, :donation_date, :donor_name, :recipient_name
 
   def initialize(row_hash)
@@ -9,12 +9,20 @@ class AuAecDonations::Donation
 
   def amount = row_hash['Amount']
   def recipient_name = row_hash['DonationMadeToName'].strip
-  def donor_aec_id = row_hash['ClientFileId']
-  def recipient_aec_id = row_hash['DonationMadeToClientFileId']
+  def donor_aec_id = row_hash['ClientFileId'].to_s
+  def recipient_aec_id = row_hash['DonationMadeToClientFileId'].to_s
   def financial_year = row_hash['FinancialYear'].strip
-  def return_id = row_hash['ReturnId']
+  def return_id = row_hash['ReturnId'].to_s
   def registration_code = row_hash['RegistrationCode']
   def description = "Donation of $#{amount.to_f} from #{donor_name} to #{recipient_name} on #{date}"
+  def evidence = 'https://transparency.aec.gov.au/AnnualDonor'
+  def transaction_category_key = 'au_aec_donation.referendum'
+
+  def donation_type
+    raise "Unexpected donation type for row: #{row_hash.inspect}" unless row_hash['ViewName'] == 'Annual Donor Donation Made'
+
+    'annual_donation'
+  end
 
   def date
     return Date.parse(row_hash['TransactionDate']) if row_hash['TransactionDate'].present?

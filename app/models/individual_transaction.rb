@@ -8,6 +8,11 @@ class IndividualTransaction < ApplicationRecord
   validates :amount, presence: true
   validates :effective_date, presence: true
 
-  scope :government_contracts, -> { where(transaction_type: 'Government Contract') }
-  scope :donations, -> { where(transaction_type: 'Australian Political Donation') }
+  enum :transaction_type, {
+    government_contract: 'government_contract',
+    donation: 'donation'
+  }
+
+  scope :government_contracts, -> { where(transaction_type: 'government_contract') }
+  scope :donations, -> { where(transaction_type: 'donation') }
 end

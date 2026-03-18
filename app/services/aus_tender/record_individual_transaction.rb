@@ -21,7 +21,7 @@ class AusTender::RecordIndividualTransaction
       transfer:,
       amount:,
       effective_date: release.effective_date,
-      transaction_type: 'Government Contract',
+      transaction_type: 'government_contract',
       evidence: release.evidence,
       external_id: release.item_id, # the uniqe identifier from the external system (inc UUID)
       contract_id: release.contract_id, # the contract can include several amendments
@@ -51,7 +51,7 @@ class AusTender::RecordIndividualTransaction
       giver: purchaser,
       taker: supplier,
       effective_date: Dates::FinancialYear.new(effective_date).last_day,
-      transfer_type: 'Government Contract(s)',
+      transfer_type: 'government_contracts',
       evidence: 'https://www.tenders.gov.au/cn/search'
     )
   end

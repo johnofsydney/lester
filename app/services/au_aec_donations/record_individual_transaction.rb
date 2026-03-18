@@ -6,10 +6,24 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def initialize(row_hash)
-    @donation = AuAecDonations::Donation.new(row_hash)
+    @row_hash = row_hash
   end
 
-  attr_reader :donation
+  attr_reader :row_hash
+
+  def donation
+    @donation ||= begin
+      if row_hash['EventDescription'].present? && row_hash['EventDescription'].match?(/referendum/i)
+        AuAecDonations::DonationObject::ReferendumDonation.new(row_hash)
+      elsif row_hash['EventDescription'].present? && row_hash['EventDescription'].match?(/election/i)
+        AuAecDonations::DonationObject::ElectionDonation.new(row_hash)
+      elsif row_hash['ViewName'] == 'Annual Donor Donation Made'
+        AuAecDonations::DonationObject::AnnualDonation.new(row_hash)
+      else
+        raise "Unable to determine donation type for row: #{row_hash.inspect}"
+      end
+    end
+  end
 
   def call
     raise ValidationError, "Invalid transaction data: #{donation.inspect}" unless valid?
@@ -25,7 +39,7 @@ class AuAecDonations::RecordIndividualTransaction
       amount: donation.amount.to_f,
       effective_date: donation.date,
       transaction_type: 'donation',
-      evidence:,
+      evidence: donation.evidence,
       description: donation.description,
       fine_grained_transaction_category:,
       registration_code: donation.registration_code,
@@ -46,12 +60,8 @@ class AuAecDonations::RecordIndividualTransaction
       taker: recipient,
       effective_date: Dates::FinancialYear.new(donation.date).last_day,
       transfer_type: 'donations',
-      evidence:
+      evidence: 'https://transparency.aec.gov.au/'
     )
-  end
-
-  def evidence
-    'https://transparency.aec.gov.au/AnnualDonor'
   end
 
   def donor
@@ -67,6 +77,6 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def fine_grained_transaction_category
-    FineGrainedTransactionCategory.find_or_create_by!(name: 'au_aec_donation.annual')
+    FineGrainedTransactionCategory.find_by(name: donation.transaction_category_key)
   end
 end

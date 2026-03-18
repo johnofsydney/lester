@@ -3,6 +3,7 @@ require 'rails_helper'
 describe AuAecDonations::RecordIndividualTransaction do
   before do
     allow(RefreshSingleTransferAmountJob).to receive(:perform_in).and_return(true)
+    allow(FineGrainedTransactionCategory).to receive(:find_by).and_return(FineGrainedTransactionCategory.new(name: 'au_aec_donation.referendum'))
   end
 
   let(:row_hash) do
@@ -28,7 +29,7 @@ describe AuAecDonations::RecordIndividualTransaction do
   let(:service) { described_class.new(row_hash) }
 
   it 'creates a donation object' do
-    expect(described_class.new(row_hash).donation).to be_an_instance_of(AuAecDonations::Donation)
+    expect(described_class.new(row_hash).donation).to be_an_instance_of(AuAecDonations::DonationObject::AnnualDonation)
   end
 
   it 'creates an IndividualTransaction with the correct attributes' do
