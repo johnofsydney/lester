@@ -30,55 +30,45 @@ class Home::IndexView < ApplicationView
                 'At Join The Dots, we track and aggregate publicly available political donations from the Australian Electoral Commission (AEC) website, organizing them by year. We also record all individuals and groups involved in making donations, as well as the recipient groups. We currently store:'
               end
 
-              ul(class: 'list-unstyled') do
-                li { a(href: 'https://transparency.aec.gov.au/AnnualDonor', class: 'd-block mb-1') { 'AEC Annual Donor records since 1999' } }
-
-                li do
-                  div(class: 'd-block mb-1') do
-                    a(href: 'https://transparency.aec.gov.au/ReferendumDonor', class: 'font-strikethrough') do
-                      'AEC 2023 Referendum Donor Returns'
-                    end
-                    plain ' (temporarily removed for reformatting, back soon...)'
+              table(class: 'table table-striped') do
+                thead do
+                  tr do
+                    th { 'Data Source' }
+                    th { 'Notes' }
                   end
                 end
-
-                li do
-                  div(class: 'd-block mb-1') do
-                    a(href: 'https://transparency.aec.gov.au/Donor', class: 'font-strikethrough') do
-                      'AEC Election Donor Returns Since 2007'
-                    end
-                    plain ' (temporarily removed for reformatting, back soon...)'
+                tbody do
+                  tr do
+                    td { a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records since 1999' } }
+                    td { plain 'manual trigger' }
                   end
-                end
-
-                li { a(href: 'https://www.tenders.gov.au/cn/search', class: 'd-block mb-1') { 'Federal Government Contracts since 2018' } }
-
-                li { a(href: 'https://lobbyists.ag.gov.au/register', class: 'd-block mb-1') { 'Lobbyists and the Clients Of Lobbyists' } }
-                li { a(href: 'https://www.acnc.gov.au/', class: 'd-block mb-1') { 'Charities and Not-For-Profit Organisations' } }
-
-                li do
-                  div(class: 'd-block mb-1') do
-                    a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term', class: '') { 'Federal MPs and Senators since 2016' }
-                    plain ' (data for the 2025 election results yet to be collated and added to the database)'
+                  tr do
+                    td { a(href: 'https://transparency.aec.gov.au/ReferendumDonor') { 'AEC 2023 Referendum Donor Returns' } }
+                    td { plain 'manual trigger' }
                   end
-                end
-
-                li do
-                  div(class: 'd-block mb-1') do
-                    a(href: 'https://www.parliament.nsw.gov.au/members/pages/all-members.aspx', class: '') { 'Current Members of the NSW Parliament' }
-                    plain ' (as of 2025)'
+                  tr do
+                    td { a(href: 'https://transparency.aec.gov.au/Donor') {'AEC Election Donor Returns Since 2007'}  }
+                    td { plain 'manual trigger' }
                   end
-                end
-                li do
-                  div(class: 'd-block mb-1') do
-                    a(href: 'https://www.parliament.nsw.gov.au/members/formermembers/Pages/former-members.aspx', class: '') { 'Former Members of the NSW Parliament' }
-                    plain ' (except members deceased as of 2025)'
+                  tr do
+                    td { a(href: 'https://www.tenders.gov.au/cn/search') { 'Federal Government Contracts since 2018' } }
+                    td { plain 'automatically ingested daily'}
                   end
-                end
-
-                li do
-                  div(class: 'd-block mb-1') do
-                    plain 'As well as several other ad-hoc data sources added directly'
+                  tr do
+                    td { a(href: 'https://lobbyists.ag.gov.au/register') { 'Lobbyists and the Clients Of Lobbyists' } }
+                    td { plain 'automatically ingested every 6 months'}
+                  end
+                  tr do
+                    td { a(href: 'https://www.acnc.gov.au/', class: 'd-block mb-1') { 'Charities and Not-For-Profit Organisations' } }
+                    td { plain 'automatically ingested every 6 months' }
+                  end
+                  tr do
+                    td { a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term') { 'Federal MPs and Senators since 2016' } }
+                    td { plain 'manually ingested. (data for the 2025 election results yet to be collated and added to the database)' }
+                  end
+                  tr do
+                    td { plain 'Various Ad-Hoc Data Sources added directly' }
+                    td { plain 'manually ingested as needed' }
                   end
                 end
               end
