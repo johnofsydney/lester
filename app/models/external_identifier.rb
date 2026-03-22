@@ -1,5 +1,5 @@
 class ExternalIdentifier < ApplicationRecord
-  belongs_to :owner, polymorphic: true  # Person or Group
+  belongs_to :owner, polymorphic: true # Person or Group
 
   validates :owner_id, :owner_type, presence: true
   validates :source, presence: true

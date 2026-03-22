@@ -16,7 +16,7 @@ class RecordGroup
     if business_number.present?
       Group.find_by(business_number:) || find_group_and_append_business_number || create_group_with_business_number
     elsif aec_id.present?
-      Group.find_by(aec_id:) || find_group_and_append_aec_id || create_group_with_aec_id
+      find_group_by_aec_id || find_group_and_append_aec_id || create_group_with_aec_id
     elsif (group = Group.find_by_name_i(name)) # rubocop:disable Rails/DynamicFindBy
         group
     elsif TradingName.where(name:).count > 1
@@ -29,6 +29,10 @@ class RecordGroup
     else
       create_group_with_name
     end
+  end
+
+  def find_group_by_aec_id
+    ExternalIdentifier.find_by(source: 'aec', owner_type: 'Group', value: aec_id.to_s)&.owner
   end
 
   def find_group_and_append_business_number
@@ -63,7 +67,7 @@ class RecordGroup
   end
 
   def create_group_with_aec_id
-    group = Group.new(name:, aec_id:)
+    group = Group.new(name:)
 
     Group.transaction do
       lock_id = Zlib.crc32(name).to_i
@@ -72,6 +76,8 @@ class RecordGroup
       group.save!
     end
 
+    group.aec_id = aec_id
+    group.save!
     group
   end
 
