@@ -21,10 +21,9 @@ class BackfillAecIdToExternalIdentifers
         ExternalIdentifer.find_or_create_by!(
           owner_type: klass.name,
           owner_id: record.id,
-          source: 'aec'
-        ) do |ext|
-          ext.value = record.aec_id
-        end
+          source: 'aec',
+          value: record.aec_id
+        )
       rescue ActiveRecord::RecordNotUnique
         # already exists — safe to skip
       end
