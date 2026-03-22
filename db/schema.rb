@@ -10,11 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< Updated upstream
-ActiveRecord::Schema[8.0].define(version: 2026_03_22_000001) do
-=======
 ActiveRecord::Schema[8.0].define(version: 2026_03_22_000003) do
->>>>>>> Stashed changes
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -58,16 +54,16 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_22_000003) do
     t.index ["last_processed_date"], name: "index_contract_backfills_on_last_processed_date", unique: true
   end
 
-  create_table "external_identifers", force: :cascade do |t|
+  create_table "external_identifiers", force: :cascade do |t|
     t.string "owner_type", null: false
     t.bigint "owner_id", null: false
     t.string "source", null: false
     t.string "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_type", "owner_id", "source"], name: "index_external_identifers_on_owner_and_source", unique: true
-    t.index ["owner_type", "owner_id"], name: "index_external_identifers_on_owner"
-    t.index ["source", "value"], name: "index_external_identifers_on_source_and_value", unique: true
+    t.index ["owner_type", "owner_id", "source"], name: "index_external_identifiers_on_owner_and_source", unique: true
+    t.index ["owner_type", "owner_id"], name: "index_external_identifiers_on_owner"
+    t.index ["source", "value"], name: "index_external_identifiers_on_source_and_value", unique: true
   end
 
   create_table "fine_grained_transaction_categories", force: :cascade do |t|
