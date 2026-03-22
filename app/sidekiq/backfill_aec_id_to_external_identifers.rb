@@ -16,13 +16,13 @@ class BackfillAecIdToExternalIdentifers
   private
 
   def backfill(klass)
-    klass.where.not(aec_id: [nil, '']).find_in_batches(batch_size: BATCH_SIZE) do |batch|
+    klass.where.not(aec_id_legacy: [nil, '']).find_in_batches(batch_size: BATCH_SIZE) do |batch|
       batch.each do |record|
         ExternalIdentifer.find_or_create_by!(
           owner_type: klass.name,
           owner_id: record.id,
           source: 'aec',
-          value: record.aec_id
+          value: record.aec_id_legacy
         )
       rescue ActiveRecord::RecordNotUnique
         # already exists — safe to skip
