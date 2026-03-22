@@ -314,4 +314,88 @@ RSpec.describe RecordGroup, type: :service do
       end
     end
   end
+
+  describe 'phase 1 identity coverage' do
+    let(:name) { 'Acme Foundation' }
+
+    before do
+      allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+    end
+
+    context 'when no existing group with a particular name exists' do
+      it 'creates a new record when name only is provided' do
+        expect { described_class.call(name) }.to change(Group, :count).by(1)
+
+        group = Group.find_by(name:)
+        expect(group).to be_present
+        expect(group.trading_names.where(name:).exists?).to be(true)
+      end
+
+      it 'creates a new record when name and aec_id are provided' do
+        expect { described_class.call(name, aec_id: 'AEC-123') }.to change(Group, :count).by(1)
+
+        group = Group.find_by(name:)
+        expect(group).to be_present
+        expect(group.aec_id).to eq('AEC-123')
+        expect(group.trading_names.where(name:).exists?).to be(true)
+      end
+
+      it 'creates a new record when name and acnc_id are provided' do
+        expect { described_class.call(name, acnc_id: 'ACNC-123') }.to change(Group, :count).by(1)
+
+        group = Group.find_by(name:)
+        expect(group).to be_present
+        expect(group.acnc_id).to eq('ACNC-123')
+        expect(group.trading_names.where(name:).exists?).to be(true)
+      end
+    end
+
+    context 'when an existing group with a name exists' do
+      let!(:group) { FactoryBot.create(:group, name:) }
+
+      it 'does not create a new record when name only is provided' do
+        expect { described_class.call(name) }.not_to change(Group, :count)
+      end
+
+      it 'does not create a new record when name and aec_id are provided and updates aec_id' do
+        expect { described_class.call(name, aec_id: 'AEC-200') }.not_to change(Group, :count)
+
+        expect(group.reload.aec_id).to eq('AEC-200')
+      end
+
+      it 'does not create a new record when name and acnc_id are provided and updates acnc_id' do
+        expect { described_class.call(name, acnc_id: 'ACNC-200') }.not_to change(Group, :count)
+
+        expect(group.reload.acnc_id).to eq('ACNC-200')
+      end
+    end
+
+    context 'when an existing group with a name and aec_id exists (no acnc_id)' do
+      let!(:group) { FactoryBot.create(:group, name:, aec_id: 'AEC-300') }
+
+      it 'does not create a new record when name only is provided' do
+        expect { described_class.call(name) }.not_to change(Group, :count)
+      end
+
+      it 'does not create a new record when name and the same aec_id are provided' do
+        expect { described_class.call(name, aec_id: 'AEC-300') }.not_to change(Group, :count)
+      end
+
+      it 'creates a new record when name and a different aec_id are provided' do
+        new_group = nil
+
+        expect do
+          new_group = described_class.call(name, aec_id: 'AEC-301')
+        end.to change(Group, :count).by(1)
+
+        expect(new_group.aec_id).to eq('AEC-301')
+      end
+
+      it 'does not create a new record when name and acnc_id are provided and updates acnc_id' do
+        expect { described_class.call(name, acnc_id: 'ACNC-300') }.not_to change(Group, :count)
+
+        expect(group.reload.acnc_id).to eq('ACNC-300')
+      end
+    end
+  end
 end
