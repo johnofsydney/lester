@@ -47,7 +47,7 @@ class Home::IndexView < ApplicationView
                     td { plain 'manual trigger' }
                   end
                   tr do
-                    td { a(href: 'https://transparency.aec.gov.au/Donor') {'AEC Election Donor Returns Since 2007'}  }
+                    td { a(href: 'https://transparency.aec.gov.au/Donor') {'AEC Election Donor Returns Since 2007'} }
                     td { plain 'manual trigger' }
                   end
                   tr do
