@@ -10,6 +10,8 @@ class Person < ApplicationRecord
 
   include ActionView::Helpers::NumberHelper
 
+  include ExternalIdentifiable
+
   has_many :trading_names, as: :owner, dependent: :destroy
   has_many :memberships, as: :member, dependent: :destroy
   has_many :groups, through: :memberships

@@ -66,6 +66,8 @@ class Group < ApplicationRecord
             )
           )
 
+  include ExternalIdentifiable
+
   has_many :trading_names, as: :owner, dependent: :destroy
   has_many :leadership_websites, dependent: :destroy
 
