@@ -140,5 +140,85 @@ RSpec.describe RecordPerson, type: :service do
         expect(described_class.call('Fraser Anning').name).to eq('Fraser Anning')
       end
     end
+
+    describe 'phase 1 identity coverage' do
+      let(:name) { 'John Smith' }
+
+      context 'when no existing person with a particular name exists' do
+        it 'creates a new record when name only is provided' do
+          expect { described_class.call(name) }.to change(Person, :count).by(1)
+
+          person = Person.find_by(name:)
+          expect(person).to be_present
+          expect(person.trading_names.where(name:).exists?).to be(true)
+        end
+
+        it 'creates a new record when name and aec_id are provided' do
+          expect { described_class.call(name, aec_id: 'AEC-123') }.to change(Person, :count).by(1)
+
+          person = Person.find_by(name:)
+          expect(person).to be_present
+          expect(person.aec_id).to eq('AEC-123')
+          expect(person.trading_names.where(name:).exists?).to be(true)
+        end
+
+        it 'creates a new record when name and acnc_id are provided' do
+          expect { described_class.call(name, acnc_id: 'ACNC-123') }.to change(Person, :count).by(1)
+
+          person = Person.find_by(name:)
+          expect(person).to be_present
+          expect(person.acnc_id).to eq('ACNC-123')
+          expect(person.trading_names.where(name:).exists?).to be(true)
+        end
+      end
+
+      context 'when an existing person with a name exists' do
+        let!(:person) { FactoryBot.create(:person, name:, aec_id: nil) }
+
+        it 'does not create a new record when name only is provided' do
+          expect { described_class.call(name) }.not_to change(Person, :count)
+        end
+
+        it 'does not create a new record when name and aec_id are provided and updates aec_id' do
+          expect { described_class.call(name, aec_id: 'AEC-200') }.not_to change(Person, :count)
+
+          expect(person.reload.aec_id).to eq('AEC-200')
+        end
+
+        it 'does not create a new record when name and acnc_id are provided and updates acnc_id' do
+          expect { described_class.call(name, acnc_id: 'ACNC-200') }.not_to change(Person, :count)
+
+          expect(person.reload.acnc_id).to eq('ACNC-200')
+        end
+      end
+
+      context 'when an existing person with a name and aec_id exists (no acnc_id)' do
+        let!(:person) { FactoryBot.create(:person, name:, aec_id: 'AEC-300') }
+
+        it 'does not create a new record when name only is provided' do
+          expect { described_class.call(name) }.not_to change(Person, :count)
+        end
+
+        it 'does not create a new record when name and the same aec_id are provided' do
+          expect { described_class.call(name, aec_id: 'AEC-300') }.not_to change(Person, :count)
+        end
+
+        it 'creates a new record when name and a different aec_id are provided' do
+          new_person = nil
+
+          expect do
+            new_person = described_class.call(name, aec_id: 'AEC-301')
+          end.to change(Person, :count).by(1)
+
+          expect(new_person.aec_id).to eq('AEC-301')
+        end
+
+        it 'does not create a new record when name and acnc_id are provided and updates acnc_id' do
+          expect { described_class.call(name, acnc_id: 'ACNC-300') }.not_to change(Person, :count)
+
+          expect(person.reload.acnc_id).to eq('ACNC-300')
+        end
+      end
+    end
   end
 end
