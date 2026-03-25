@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-RSpec.describe RecordGroup, type: :service do
+RSpec.describe Groups::RecordGroup, type: :service do
 
   let(:group_names) { Group::NAMES }
 
@@ -116,41 +116,41 @@ RSpec.describe RecordGroup, type: :service do
       'Australian Labor Party (Northern Territory Branch)' => group_names.labor.nt,
       'Australian Labor Party (Victoria Branch) (ALP - VIC)' => group_names.labor.vic,
       'Australian Labor Party (Western Australia Branch) (ALP-WA)' => group_names.labor.wa,
-      'Australian Labor Party (NSW Branch)'  => group_names.labor.nsw,
-      'Australian Labor Party (NSW)'  => group_names.labor.nsw,
-      'Australian Labor Party (Queensland)'  => group_names.labor.qld,
-      'Australian Labor Party (State of Queensland) / ALP-QLD'  => group_names.labor.qld,
-      'Australian Labor Party (Tasmanian Branch)'  => group_names.labor.tas,
-      'Australian Labor Party (Western Australia Branch)'  => group_names.labor.wa,
-      'Australian Labor Party - ALP-FED'  => group_names.labor.federal,
-      'Australian Labor Party - ALP-NSW'  => group_names.labor.nsw,
-      'Australian Labor Party - ALP-QLD'  => group_names.labor.qld,
-      'Australian Labor Party - ALP-SA'  => group_names.labor.sa,
-      'Australian Labor Party - ALP-VIC'  => group_names.labor.vic,
-      'Australian Labor Party Victorian Branch'  => group_names.labor.vic,
-      'ALP - FED'  => group_names.labor.federal,
-      'ALP - SA'  => group_names.labor.sa,
-      'ALP - TAS'  => group_names.labor.tas,
-      'ALP - VIC'  => group_names.labor.vic,
-      'ALP - WA'  => group_names.labor.wa,
-      'ALP NSW BRANCH'  => group_names.labor.nsw,
-      'ALP NSW Branch'  => group_names.labor.nsw,
-      'ALP National Secretaria'  => group_names.labor.federal,
-      'ALP National Secretariat'  => group_names.labor.federal,
-      'ALP National Secretariat/ALP-FED'  => group_names.labor.federal,
-      'ALP New South Wales Branch/ALP-NSW'  => group_names.labor.nsw,
-      'ALP QLD'  => group_names.labor.qld,
-      'ALP QLD - Mulgrave'  => group_names.labor.qld,
-      'ALP QLD - South Brisbane'  => group_names.labor.qld,
-      'ALP VIC Branch'  => group_names.labor.vic,
-      'ALP-ACT'  => group_names.labor.act,
-      'ALP-FED Federal Labor Business Forum'  => group_names.labor.federal,
-      'ALP-SA Australian Labor Party (South Australian Branch)'  => group_names.labor.sa,
-      'ALP-TAS'  => group_names.labor.tas,
-      'ALP-WA'  => group_names.labor.wa,
-      'ALP-WA Australian Labor Party (Western Australian Branch)'  => group_names.labor.wa,
-      'Country Labor Party'  => group_names.labor.federal,
-      'Country Labor Party - CLR-NSW'  => group_names.labor.nsw,
+      'Australian Labor Party (NSW Branch)' => group_names.labor.nsw,
+      'Australian Labor Party (NSW)' => group_names.labor.nsw,
+      'Australian Labor Party (Queensland)' => group_names.labor.qld,
+      'Australian Labor Party (State of Queensland) / ALP-QLD' => group_names.labor.qld,
+      'Australian Labor Party (Tasmanian Branch)' => group_names.labor.tas,
+      'Australian Labor Party (Western Australia Branch)' => group_names.labor.wa,
+      'Australian Labor Party - ALP-FED' => group_names.labor.federal,
+      'Australian Labor Party - ALP-NSW' => group_names.labor.nsw,
+      'Australian Labor Party - ALP-QLD' => group_names.labor.qld,
+      'Australian Labor Party - ALP-SA' => group_names.labor.sa,
+      'Australian Labor Party - ALP-VIC' => group_names.labor.vic,
+      'Australian Labor Party Victorian Branch' => group_names.labor.vic,
+      'ALP - FED' => group_names.labor.federal,
+      'ALP - SA' => group_names.labor.sa,
+      'ALP - TAS' => group_names.labor.tas,
+      'ALP - VIC' => group_names.labor.vic,
+      'ALP - WA' => group_names.labor.wa,
+      'ALP NSW BRANCH' => group_names.labor.nsw,
+      'ALP NSW Branch' => group_names.labor.nsw,
+      'ALP National Secretaria' => group_names.labor.federal,
+      'ALP National Secretariat' => group_names.labor.federal,
+      'ALP National Secretariat/ALP-FED' => group_names.labor.federal,
+      'ALP New South Wales Branch/ALP-NSW' => group_names.labor.nsw,
+      'ALP QLD' => group_names.labor.qld,
+      'ALP QLD - Mulgrave' => group_names.labor.qld,
+      'ALP QLD - South Brisbane' => group_names.labor.qld,
+      'ALP VIC Branch' => group_names.labor.vic,
+      'ALP-ACT' => group_names.labor.act,
+      'ALP-FED Federal Labor Business Forum' => group_names.labor.federal,
+      'ALP-SA Australian Labor Party (South Australian Branch)' => group_names.labor.sa,
+      'ALP-TAS' => group_names.labor.tas,
+      'ALP-WA' => group_names.labor.wa,
+      'ALP-WA Australian Labor Party (Western Australian Branch)' => group_names.labor.wa,
+      'Country Labor Party' => group_names.labor.federal,
+      'Country Labor Party - CLR-NSW' => group_names.labor.nsw,
       # Greens
       'Australian Greens' => group_names.greens.federal,
       'The Greens (WA) Inc' => group_names.greens.wa,
@@ -178,15 +178,15 @@ RSpec.describe RecordGroup, type: :service do
       'CEC' => 'Citizens Party',
       'Sustainable Australia Party - Stop Overdevelopment / Corruption' => 'Sustainable Australia Party',
       'Centre Alliance' => 'Centre Alliance',
-      'The Local Party of Australia'  => 'The Local Party of Australia',
+      'The Local Party of Australia' => 'The Local Party of Australia',
       'KAP' => 'Katter Australia Party',
       'Katter Australia Party' => 'Katter Australia Party',
       "Katter's Australian Party" => 'Katter Australia Party',
-      'Australian Conservatives'  => 'Australian Conservatives',
-      'Australian Conservatives (NSW)'  => 'Australian Conservatives',
-      'Australian Conservatives (Qld)'  => 'Australian Conservatives',
-      'Australian Conservatives (Vic)'  => 'Australian Conservatives',
-      'Australian Conservatives ACP'  => 'Australian Conservatives',
+      'Australian Conservatives' => 'Australian Conservatives',
+      'Australian Conservatives (NSW)' => 'Australian Conservatives',
+      'Australian Conservatives (Qld)' => 'Australian Conservatives',
+      'Australian Conservatives (Vic)' => 'Australian Conservatives',
+      'Australian Conservatives ACP' => 'Australian Conservatives',
       # Other
       'climate 200 Pty Ltd' => 'Climate 200 Pty Ltd',
       'climate 200 pty ltd' => 'Climate 200 Pty Ltd',
@@ -232,7 +232,7 @@ RSpec.describe RecordGroup, type: :service do
 
   describe '#initialize' do
     it 'initializes with a name' do
-      service = described_class.new('Test Name', nil, mapper)
+      service = described_class.new('Test Name', business_number: nil, mapper:)
       expect(service.name).to eq('Test Name')
     end
   end
@@ -247,7 +247,7 @@ RSpec.describe RecordGroup, type: :service do
 
       it 'uses the names from the combo', :aggregate_failures do
         name_combos.each do |name, expected|
-          service = described_class.new(name, nil, mapper)
+          service = described_class.new(name, business_number: nil, mapper:)
           expect(service.name).to eq(expected)
         end
       end
@@ -381,7 +381,7 @@ RSpec.describe RecordGroup, type: :service do
         expect { described_class.call(name, aec_id: 'AEC-300') }.not_to change(Group, :count)
       end
 
-      it 'creates a new record when name and a different aec_id are provided' do
+      it 'creates a new record when existing name and a different aec_id are provided' do
         new_group = nil
 
         expect do
@@ -389,6 +389,7 @@ RSpec.describe RecordGroup, type: :service do
         end.to change(Group, :count).by(1)
 
         expect(new_group.aec_id).to eq('AEC-301')
+        expect(new_group.name).to include('AEC-301') # This is temporary, later we'll remove the constraint
       end
 
       it 'does not create a new record when name and acnc_id are provided and updates acnc_id' do

@@ -3,6 +3,8 @@ class Person < ApplicationRecord
   include NodeMethods
   include CachedMethods
 
+  include ExternalIdentifiable
+
   include PgSearch::Model
   multisearchable against: [:name]
 
@@ -73,6 +75,10 @@ class Person < ApplicationRecord
     body.strip
   end
   # rubocop:enable Style/StringConcatenation
+
+  def self.find_by_name_i(name)
+    Person.where('LOWER(name) = ?', name.downcase).first
+  end
 
   private
 

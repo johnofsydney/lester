@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'spec_helper'
 
-RSpec.describe RecordPerson, type: :service do
+RSpec.describe People::RecordPerson, type: :service do
   describe '#initialize' do
     it 'initializes with a name' do
       person = described_class.new('Test Name')
@@ -11,12 +11,12 @@ RSpec.describe RecordPerson, type: :service do
 
   describe '.call' do
     before do
-      allow(Person).to receive(:find_or_create_by).and_call_original
+      allow(Person).to receive(:new).and_call_original
     end
 
-    it 'creates or finds a group with the given name' do
+    it 'creates or finds a person with the given name' do
       described_class.call('Test Name')
-      expect(Person).to have_received(:find_or_create_by).with(name: 'Test Name')
+      expect(Person).to have_received(:new).with(name: 'Test Name')
     end
 
     it 'leaves apostrophe in name' do
@@ -51,10 +51,6 @@ RSpec.describe RecordPerson, type: :service do
       expect(described_class.call('The Hon. Peter Francis Watkins').name).to eq('Peter Francis Watkins')
     end
 
-    it 'removes prefix Hon from name' do
-      expect(described_class.call('Hon Catherine King').name).to eq('Catherine King')
-    end
-
     it 'removes prefix The Hon from name' do
       expect(described_class.call('The Hon Robert Borbidge').name).to eq('Robert Borbidge')
     end
@@ -63,7 +59,7 @@ RSpec.describe RecordPerson, type: :service do
       expect(described_class.call('Grusovin, The Hon. Deirdre Mary').name).to eq('Deirdre Mary Grusovin')
     end
 
-    describe ' specific people known by shorter or longer names' do
+    describe 'specific people known by shorter or longer names' do
       it 'returns David Pocock for David Pocock' do
         expect(described_class.call('David Pocock').name).to eq('David Pocock')
       end

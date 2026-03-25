@@ -15,11 +15,11 @@ class RecordDonation
     return nil unless name # rubocop:disable Lint/UnreachableCode
 
     if person_or_group == 'person'
-      RecordPerson.call(first_name_last_name)
+      People::RecordPerson.call(first_name_last_name)
     elsif person_or_group == 'group'
-      RecordGroup.call(name)
+      Groups::RecordGroup.call(name)
     elsif person_or_group == 'couple'
-      RecordGroup.call(name)
+      Groups::RecordGroup.call(name)
       # TODO: create memberships for each person in the couple
     end
   end

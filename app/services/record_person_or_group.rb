@@ -7,9 +7,9 @@ class RecordPersonOrGroup
     return nil unless name
 
     if person_or_group == 'person'
-      RecordPerson.call(first_name_last_name, aec_id:)
+      People::RecordPerson.call(first_name_last_name, aec_id:)
     else
-      RecordGroup.call(name, mapper:, aec_id:)
+      Groups::RecordGroup.call(name, mapper:, aec_id:)
     end
   end
 

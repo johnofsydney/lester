@@ -8,8 +8,8 @@ class AuLobbyists::ImportLobbyistsPeopleRowJob
   )
 
   def perform(person_name, title, start_date, lobbyist_name, lobbyist_abn)
-    person = RecordPerson.call(person_name)
-    lobbyist = RecordGroup.call(lobbyist_name, business_number: lobbyist_abn)
+    person = People::RecordPerson.call(person_name)
+    lobbyist = Groups::RecordGroup.call(lobbyist_name, business_number: lobbyist_abn)
     return if person.nil? || lobbyist.nil? || person.id.nil? || lobbyist.id.nil?
 
     start_date = Date.parse(start_date) if start_date.present?

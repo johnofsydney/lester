@@ -3,6 +3,8 @@ class Group < ApplicationRecord
   include NodeMethods
   include CachedMethods
 
+  include ExternalIdentifiable
+
   include PgSearch::Model
   multisearchable against: [:name]
 
@@ -65,8 +67,6 @@ class Group < ApplicationRecord
               nt: 'The Greens (NT)'
             )
           )
-
-  include ExternalIdentifiable
 
   has_many :trading_names, as: :owner, dependent: :destroy
   has_many :leadership_websites, dependent: :destroy
