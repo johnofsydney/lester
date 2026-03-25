@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_22_000003) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_25_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -61,9 +61,9 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_22_000003) do
     t.string "value", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["owner_type", "owner_id", "source"], name: "index_external_identifiers_on_owner_and_source", unique: true
+    t.index ["owner_type", "owner_id", "source", "value"], name: "index_external_identifiers_on_owner_source_and_value", unique: true
     t.index ["owner_type", "owner_id"], name: "index_external_identifiers_on_owner"
-    t.index ["source", "value"], name: "index_external_identifiers_on_source_and_value", unique: true
+    t.index ["source", "value"], name: "index_external_identifiers_on_source_and_value"
   end
 
   create_table "fine_grained_transaction_categories", force: :cascade do |t|
