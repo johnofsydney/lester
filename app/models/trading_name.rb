@@ -6,4 +6,6 @@ class TradingName < ApplicationRecord
 
   validates :owner_id, :owner_type, presence: true
   validates :name, presence: true
+
+  normalizes :name, with: ->(name) { name.downcase.strip.delete('.') }
 end

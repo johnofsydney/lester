@@ -20,10 +20,10 @@ class Person < ApplicationRecord
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
+  normalizes :name, with: ->(name) { name.downcase.strip.delete('.') }
+
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..7.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ...7.days.ago).or(where(nodes_count_cached: nil)) }
-
-  validates :name, uniqueness: { case_sensitive: false }
 
   def nodes
     groups
