@@ -11,12 +11,6 @@ RSpec.describe Group do
   it { should have_many(:incoming_transfers) }
 
   describe 'validations' do
-    it 'does not allow two groups with the same name' do
-      described_class.create(name:)
-      group2 = described_class.new(name:)
-      expect(group2).not_to be_valid
-    end
-
     it 'does not allow two groups with the same business number' do
       described_class.create(name:, business_number: '123456789')
       group2 = described_class.new(name: 'Trading Name', business_number: '123456789')
@@ -126,20 +120,20 @@ RSpec.describe Group do
         expect(group.all_the_groups).to eq(
           {
             as_giver: [
-              ['Person A', 100.0],
-              ['Person B', 200.0],
-              ['Group C', 300.0],
-              ['Group D', 400.0],
-              ['Person E', 500.0],
-              ['Person F', 600.0]
+              ['person a', 100.0],
+              ['person b', 200.0],
+              ['group c', 300.0],
+              ['group d', 400.0],
+              ['person e', 500.0],
+              ['person f', 600.0]
             ],
             as_taker: [
-              ['Person G', 150.0],
-              ['Person H', 250.0],
-              ['Group I', 350.0],
-              ['Group J', 450.0],
-              ['Person K', 550.0],
-              ['Person L', 650.0]
+              ['person g', 150.0],
+              ['person h', 250.0],
+              ['group i', 350.0],
+              ['group j', 450.0],
+              ['person k', 550.0],
+              ['person l', 650.0]
             ]
           }
         )

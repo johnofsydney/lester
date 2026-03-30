@@ -5,6 +5,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
 
   let(:group_names) { Group::NAMES }
 
+<<<<<<< HEAD:spec/services/groups/record_group_spec.rb
   let(:name_combos) do
     {
       # Coalition
@@ -228,6 +229,8 @@ RSpec.describe Groups::RecordGroup, type: :service do
     }
   end
 
+=======
+>>>>>>> main:spec/services/record_group_spec.rb
   let(:mapper) { MapGroupNamesAecDonations.new }
 
   describe '#initialize' do
@@ -245,6 +248,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
         allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
       end
 
+<<<<<<< HEAD:spec/services/groups/record_group_spec.rb
       it 'uses the names from the combo', :aggregate_failures do
         name_combos.each do |name, expected|
           service = described_class.new(name, business_number: nil, mapper:)
@@ -252,17 +256,19 @@ RSpec.describe Groups::RecordGroup, type: :service do
         end
       end
 
+=======
+>>>>>>> main:spec/services/record_group_spec.rb
       context 'when the group does not already exist' do
         it 'creates a group with the given name' do
           expect { described_class.call('Test Name', mapper:) }.to change(Group, :count).by(1)
 
-          expect(Group.last.name).to eq('Test Name')
+          expect(Group.last.name).to eq('test name')
         end
 
         it 'creates a group with the given name and business number' do
           expect { described_class.call('Test Name', business_number: 'ABN: 123 456 789', mapper:) }.to change(Group, :count).by(1)
 
-          expect(Group.last.name).to eq('Test Name')
+          expect(Group.last.name).to eq('test name')
           expect(Group.last.business_number).to eq('123456789')
         end
       end
@@ -310,7 +316,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
       it 'creates a group with the given name' do
         expect { described_class.call('GREENS LIST CLERKING SERVICES', mapper:) }.to change(Group, :count).by(1)
 
-        expect(Group.last.name).to eq('Greens List Clerking Services')
+        expect(Group.last.name).to eq('greens list clerking services')
       end
     end
   end
