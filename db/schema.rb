@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_25_000000) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_29_233440) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -103,7 +103,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_25_000000) do
     t.string "type"
     t.integer "views", default: 0, null: false
     t.string "aec_id_legacy"
-    t.index "lower((name)::text)", name: "index_groups_on_lower_name", unique: true
     t.index ["aec_id_legacy"], name: "index_groups_on_aec_id_legacy", unique: true
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
     t.index ["category"], name: "index_groups_on_category"
@@ -185,7 +184,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_25_000000) do
     t.datetime "nodes_count_cached_at"
     t.integer "views", default: 0, null: false
     t.string "aec_id_legacy"
-    t.index "lower((name)::text)", name: "index_people_on_lower_name", unique: true
     t.index ["aec_id_legacy"], name: "index_people_on_aec_id_legacy", unique: true
     t.index ["name"], name: "index_people_on_name"
   end
