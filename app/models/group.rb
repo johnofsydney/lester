@@ -213,14 +213,14 @@ class Group < ApplicationRecord
   end
 
   def self.lobbyists_tag
-    Group.find_by(name: 'Lobbyists')
+    Group.find_by(name: 'lobbyists') || Group.where('LOWER(name) = ?', 'lobbyists').first
   end
 
   def self.client_of_lobbyists_tag
-    Group.find_by(name: 'Client of Lobbyists')
+    Group.find_by(name: 'client of lobbyists') || Group.where('LOWER(name) = ?', 'client of lobbyists').first
   end
 
   def self.government_department_tag
-    Group.find_by(name: 'Government Departments (AU, Federal & State)')
+    Group.find_by(name: 'government departments (au, federal & state)') || Group.where('LOWER(name) = ?', 'government departments (au, federal & state)').first
   end
 end
