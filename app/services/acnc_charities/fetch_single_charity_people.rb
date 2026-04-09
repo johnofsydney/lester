@@ -44,7 +44,7 @@ class AcncCharities::FetchSingleCharityPeople
 
       next if name.blank? && title.blank?
 
-      person = RecordPerson.call(name)
+      person = People::RecordPerson.call(name)
       membership = Membership.find_or_create_by(group: @charity, member: person)
       Position.find_or_create_by(membership:, title:)
       people_count += 1

@@ -11,11 +11,11 @@ class FileIngestor
   def general_upload
     # general upload does NOT record start and end dates for memberships
     csv.each do |row|
-      group = RecordGroup.call(row['group'], mapper: MapGroupNamesAecDonations.new)
+      group = Groups::RecordGroup.call(row['group'], mapper: MapGroupNamesAecDonations.new)
 
       next if row['person'].blank?
 
-      person = RecordPerson.call(row['person'])
+      person = People::RecordPerson.call(row['person'])
       title = parse_title(row['title'])
 
       evidence = row['evidence'].strip if row['evidence'].present?
@@ -163,11 +163,11 @@ class FileIngestor
     end
 
     def nsw_parliamentarians_upload(file)
-      parliament = RecordGroup.call('NSW Parliament', mapper: MapGroupNamesAecDonations.new)
+      parliament = Groups::RecordGroup.call('NSW Parliament', mapper: MapGroupNamesAecDonations.new)
 
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        person = RecordPerson.call(row['name'])
+        person = People::RecordPerson.call(row['name'])
         Rails.logger.debug 'p'
 
         if Membership.where(member: person, group: parliament).empty?
@@ -180,7 +180,7 @@ class FileIngestor
         # independents are not in a party, so we don't need to create a party membership for them
         next if (row['party'].nil? || row['party'].match?(/independent/i))
 
-        party = RecordGroup.call(row['party'], mapper: MapGroupNamesAecDonations.new)
+        party = Groups::RecordGroup.call(row['party'], mapper: MapGroupNamesAecDonations.new)
         # major_party = party.name.match?(/ALP|Liberals|Greens|Nationals/)
 
         # For MPs who belong to a party, create a membership and position.
@@ -193,11 +193,11 @@ class FileIngestor
     end
 
     def federal_parliamentarians_upload(file)
-      parliament = RecordGroup.call('Australian Federal Parliament', mapper: MapGroupNamesAecDonations.new)
+      parliament = Groups::RecordGroup.call('Australian Federal Parliament', mapper: MapGroupNamesAecDonations.new)
 
       csv = CSV.read(file, headers: true)
       csv.each do |row|
-        person = RecordPerson.call(row['name'])
+        person = People::RecordPerson.call(row['name'])
         Rails.logger.debug 'p'
 
         senator = file.match?(/senator/i)
@@ -220,7 +220,7 @@ class FileIngestor
         # we also don't need to create a branch / electorate membership for them, that's handled independently
         next if independent
 
-        federal_party = RecordGroup.call(row['party'], mapper: MapGroupNamesAecDonations.new)
+        federal_party = Groups::RecordGroup.call(row['party'], mapper: MapGroupNamesAecDonations.new)
         major_party = federal_party.name.match?(/ALP|Liberals|Greens|Nationals/)
 
         # For MPs who belong to a party, create a membership and position.
@@ -247,7 +247,7 @@ class FileIngestor
           # Local Branch membership ==> too hard basket
           # unless senator || true # it is the || true which prevents this from running. remove if needed
           #   branch_name = "#{federal_party.less_level} Branch for #{row['electorate']} Electorate"
-          #   branch = RecordGroup.call(branch_name)
+          #   branch = Groups::RecordGroup.call(branch_name)
 
           #   branch_membership = Membership.find_or_create_by(member: person, group: branch)
           #   Position.create(membership: branch_membership, title: 'Candidate', start_date:, end_date:)
@@ -255,7 +255,7 @@ class FileIngestor
 
           if major_party
             # if the person belongs to a _major_ party, they also belong to the state party too
-            state_party = RecordGroup.call(row['party'].downcase.gsub('federal', row['state']), mapper: MapGroupNamesAecDonations.new)
+            state_party = Groups::RecordGroup.call(row['party'].downcase.gsub('federal', row['state']), mapper: MapGroupNamesAecDonations.new)
             state_membership = Membership.find_or_create_by(member: person, group: state_party)
 
             # dont need start and end date because we dont know when they joined the local state party.
@@ -285,9 +285,9 @@ class FileIngestor
 
       csv ||= CSV.read(file, headers: true)
       csv.each do |row|
-        ministry_group = RecordGroup.call(row['group'])
+        ministry_group = Groups::RecordGroup.call(row['group'])
 
-        person = RecordPerson.call(row['person'])
+        person = People::RecordPerson.call(row['person'])
         title = row['title'].strip if row['title']
         start_date = parse_date(row['start_date'])
         end_date = parse_date(row['end_date'])

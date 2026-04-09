@@ -3,6 +3,8 @@ class Group < ApplicationRecord
   include NodeMethods
   include CachedMethods
 
+  include ExternalIdentifiable
+
   include PgSearch::Model
   multisearchable against: [:name]
 

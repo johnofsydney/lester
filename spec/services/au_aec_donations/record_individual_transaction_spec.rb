@@ -33,7 +33,6 @@ describe AuAecDonations::RecordIndividualTransaction do
   end
 
   it 'creates an IndividualTransaction with the correct attributes' do
-    pending 'failing due to the renaming of aec_id'
     service.call
 
     individual_transaction = IndividualTransaction.last
@@ -61,7 +60,7 @@ describe AuAecDonations::RecordIndividualTransaction do
       row_hash.merge(
         'ClientFileId' => 123,
         'ReturnClientName' => 'Rich Donor Ltd',
-        'DonationMadeToName' => 'Perth Office ALP',
+        'DonationMadeToName' => 'Perth Office ALP', # does not get through the mapper!
         'Amount' => 10_000,
         'TransactionDate' => '2024-08-01T00:00:00'
       )
@@ -76,6 +75,7 @@ describe AuAecDonations::RecordIndividualTransaction do
       expect(IndividualTransaction.distinct.pluck(:taker_id).count).to eq(1)
       expect(IndividualTransaction.first.taker.name).to eq('ALP (WA)')
       expect(IndividualTransaction.last.taker.name).to eq('ALP (WA)')
+      expect(IndividualTransaction.last.taker.trading_names.map(&:name)).to include('Perth Office ALP')
       expect(IndividualTransaction.first.giver.name).to eq('Australian Energy Producers')
       expect(IndividualTransaction.last.giver.name).to eq('Rich Donor Ltd')
     end
@@ -110,7 +110,6 @@ describe AuAecDonations::RecordIndividualTransaction do
 
   context 'when the same donation is processed twice in quick succession' do
     it 'only creates one IndividualTransaction' do
-      pending 'failing due to the renaming of aec_id'
       described_class.new(row_hash).call
       described_class.new(row_hash).call
 

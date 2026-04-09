@@ -1,23 +1,45 @@
 require 'capitalize_names'
 
-class RecordPerson
-  attr_reader :name, :aec_id
+class People::RecordPerson
+  attr_reader :name, :aec_id, :acnc_id
 
-  def initialize(name, aec_id: nil)
+  def initialize(name, aec_id: nil, acnc_id: nil)
     @name = cleaned_up_name(name)
     @aec_id = aec_id
+    @acnc_id = acnc_id
   end
 
-  def self.call(name, aec_id: nil)
-    new(name, aec_id:).call
+  def self.call(name, aec_id: nil, acnc_id: nil)
+    new(name, aec_id: aec_id, acnc_id: acnc_id).call
   end
 
   def call
-    print 'p'
-    Person.find_or_create_by(name:)
+    if external_id
+      People::Record::RecordPersonWithExternalId.new(name:, identifier:, source:, id_attribute:).call
+    elsif (person = Person.find_by_name_i(name)) # rubocop:disable Rails/DynamicFindBy
+        person
+    else
+      People::Record::RecordPersonWithName.new(name:).call
+    end
   end
 
   private
+
+  attr_reader :source, :identifier, :id_attribute
+
+  def external_id
+    return false unless aec_id.present? || acnc_id.present?
+
+    map = if aec_id.present?
+            { source: 'aec', identifier: aec_id.to_s, id_attribute: 'aec_id' }
+          elsif acnc_id.present?
+            { source: 'acnc', identifier: acnc_id.to_s, id_attribute: 'acnc_id' }
+          end
+
+    @source = map[:source]
+    @identifier = map[:identifier]
+    @id_attribute = map[:id_attribute]
+  end
 
   def cleaned_up_name(name)
     regex_for_removal_elected = /\bMP\b|\bSenator\b/i

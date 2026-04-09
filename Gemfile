@@ -32,6 +32,7 @@ group :development, :test do
   gem 'rubocop-rspec_rails', require: false
   gem 'rubocop-performance', require: false
   gem 'bundler-audit', require: false
+  gem 'factory_bot_rails'
 end
 
 group :development do

@@ -78,7 +78,7 @@ class LinkedInProfileGetter
     Rails.logger.debug { "Logo URL: #{experience['logo_url']}" }
     Rails.logger.debug '-' * 40
 
-    group = RecordGroup.call(experience['company'])
+    group = Groups::RecordGroup.call(experience['company'])
     # person
     title = if experience['title'].present?
       CapitalizeNames.capitalize(experience['title'].strip)
