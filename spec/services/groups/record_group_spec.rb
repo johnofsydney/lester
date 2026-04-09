@@ -159,7 +159,6 @@ RSpec.describe Groups::RecordGroup, type: :service do
         end.to change(Group, :count).by(1)
 
         expect(new_group.aec_id).to eq('AEC-301')
-        expect(new_group.name).to include('AEC-301') # This is temporary, later we'll remove the constraint
       end
 
       it 'does not create a new record when name and acnc_id are provided and updates acnc_id' do

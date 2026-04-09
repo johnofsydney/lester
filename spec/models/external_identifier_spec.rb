@@ -4,7 +4,7 @@ RSpec.describe ExternalIdentifier do
   describe 'validations' do
     it 'validates uniqueness of value scoped to owner_type, owner_id, and source' do
       uniqueness_validator = described_class.validators_on(:value)
-                                           .find { |validator| validator.is_a?(ActiveRecord::Validations::UniquenessValidator) }
+                                            .find { |validator| validator.is_a?(ActiveRecord::Validations::UniquenessValidator) }
 
       expect(uniqueness_validator).to be_present
       expect(uniqueness_validator.options[:scope]).to eq(%i[owner_type owner_id source])
