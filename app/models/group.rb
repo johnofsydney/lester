@@ -3,6 +3,8 @@ class Group < ApplicationRecord
   include NodeMethods
   include CachedMethods
 
+  include ExternalIdentifiable
+
   include PgSearch::Model
   multisearchable against: [:name]
 
@@ -12,57 +14,57 @@ class Group < ApplicationRecord
 
   NAMES = OpenStruct.new(
             coalition: OpenStruct.new(
-              federal: 'The Coalition (Federal)',
-              nsw: 'The Coalition (NSW)',
-              sa: 'The Coalition (SA)',
-              vic: 'The Coalition (VIC)',
-              tas: 'The Coalition (TAS)',
-              wa: 'The Coalition (WA)',
-              act: 'The Coalition (ACT)'
+              federal: 'the coalition (federal)',
+              nsw: 'the coalition (nsw)',
+              sa: 'the coalition (sa)',
+              vic: 'the coalition (vic)',
+              tas: 'the coalition (tas)',
+              wa: 'the coalition (wa)',
+              act: 'the coalition (act)'
             ),
             liberals: OpenStruct.new(
-              federal: 'Liberals (Federal)',
-              nsw: 'Liberals (NSW)',
-              qld: 'Liberal National Party (QLD)',
-              sa: 'Liberals (SA)',
-              vic: 'Liberals (VIC)',
-              tas: 'Liberals (TAS)',
-              wa: 'Liberals (WA)',
-              act: 'Liberals (ACT)',
-              nt: 'Country Liberal Party (NT)'
+              federal: 'liberals (federal)',
+              nsw: 'liberals (nsw)',
+              qld: 'liberal national party (qld)',
+              sa: 'liberals (sa)',
+              vic: 'liberals (vic)',
+              tas: 'liberals (tas)',
+              wa: 'liberals (wa)',
+              act: 'liberals (act)',
+              nt: 'country liberal party (nt)'
             ),
             nationals: OpenStruct.new(
-              federal: 'Nationals (Federal)',
-              nsw: 'Nationals (NSW)',
-              qld: 'Liberal National Party (QLD)',
-              sa: 'Nationals (SA)',
-              vic: 'Nationals (VIC)',
-              tas: 'Nationals (TAS)',
-              wa: 'Nationals (WA)',
-              act: 'Nationals (ACT)',
-              nt: 'Country Liberal Party (NT)'
+              federal: 'nationals (federal)',
+              nsw: 'nationals (nsw)',
+              qld: 'liberal national party (qld)',
+              sa: 'nationals (sa)',
+              vic: 'nationals (vic)',
+              tas: 'nationals (tas)',
+              wa: 'nationals (wa)',
+              act: 'nationals (act)',
+              nt: 'country liberal party (nt)'
             ),
             labor: OpenStruct.new(
-              federal: 'ALP (Federal)',
-              nsw: 'ALP (NSW)',
-              qld: 'ALP (QLD)',
-              sa: 'ALP (SA)',
-              vic: 'ALP (VIC)',
-              tas: 'ALP (TAS)',
-              wa: 'ALP (WA)',
-              act: 'ALP (ACT)',
-              nt: 'ALP (NT)'
+              federal: 'alp (federal)',
+              nsw: 'alp (nsw)',
+              qld: 'alp (qld)',
+              sa: 'alp (sa)',
+              vic: 'alp (vic)',
+              tas: 'alp (tas)',
+              wa: 'alp (wa)',
+              act: 'alp (act)',
+              nt: 'alp (nt)'
             ),
             greens: OpenStruct.new(
-              federal: 'The Greens (Federal)',
-              nsw: 'The Greens (NSW)',
-              qld: 'The Greens (QLD)',
-              sa: 'The Greens (SA)',
-              vic: 'The Greens (VIC)',
-              tas: 'The Greens (TAS)',
-              wa: 'The Greens (WA)',
-              act: 'The Greens (ACT)',
-              nt: 'The Greens (NT)'
+              federal: 'the greens (federal)',
+              nsw: 'the greens (nsw)',
+              qld: 'the greens (qld)',
+              sa: 'the greens (sa)',
+              vic: 'the greens (vic)',
+              tas: 'the greens (tas)',
+              wa: 'the greens (wa)',
+              act: 'the greens (act)',
+              nt: 'the greens (nt)'
             )
           )
 
@@ -78,13 +80,13 @@ class Group < ApplicationRecord
   has_many :outgoing_transfers, class_name: 'Transfer', as: :giver, dependent: :destroy
   has_many :incoming_transfers, class_name: 'Transfer', as: :taker, dependent: :destroy
 
-  validates :name, uniqueness: { case_sensitive: false }
   validates :business_number, uniqueness: { case_sensitive: false }, allow_nil: true
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
   normalizes :business_number, with: ->(bn) { bn.presence }
   normalizes :business_number, with: ->(bn) { bn.presence&.gsub(/\D/, '') }
+  normalizes :name, with: ->(name) { name.downcase.strip.delete('.') }
 
   # scopes
   scope :major_political_tags, -> do
@@ -212,15 +214,19 @@ class Group < ApplicationRecord
     Group.where('LOWER(name) = ?', name.downcase).first
   end
 
+  def self.charities_tag
+    Group.find_by(name: 'charities') || Group.where('LOWER(name) = ?', 'charities').first
+  end
+
   def self.lobbyists_tag
-    Group.find_by(name: 'Lobbyists')
+    Group.find_by(name: 'lobbyists') || Group.where('LOWER(name) = ?', 'lobbyists').first
   end
 
   def self.client_of_lobbyists_tag
-    Group.find_by(name: 'Client of Lobbyists')
+    Group.find_by(name: 'client of lobbyists') || Group.where('LOWER(name) = ?', 'client of lobbyists').first
   end
 
   def self.government_department_tag
-    Group.find_by(name: 'Government Departments (AU, Federal & State)')
+    Group.find_by(name: 'government departments (au, federal & state)') || Group.where('LOWER(name) = ?', 'government departments (au, federal & state)').first
   end
 end

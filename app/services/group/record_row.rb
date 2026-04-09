@@ -19,7 +19,7 @@ class Group::RecordRow
   end
 
   def call
-    person = RecordPerson.call(person_name)
+    person = People::RecordPerson.call(person_name)
     membership = Membership.find_or_create_by(group:, member: person)
     Position.find_or_create_by(membership:, title:) if title.present?
   end

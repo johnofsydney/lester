@@ -3,12 +3,16 @@ class Person < ApplicationRecord
   include NodeMethods
   include CachedMethods
 
+  include ExternalIdentifiable
+
   include PgSearch::Model
   multisearchable against: [:name]
 
   lazy_columns :cached_data
 
   include ActionView::Helpers::NumberHelper
+
+  include ExternalIdentifiable
 
   has_many :trading_names, as: :owner, dependent: :destroy
   has_many :memberships, as: :member, dependent: :destroy
@@ -20,26 +24,32 @@ class Person < ApplicationRecord
 
   accepts_nested_attributes_for :memberships, allow_destroy: true
 
+  normalizes :name, with: ->(name) { name.downcase.strip.delete('.') }
+
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..7.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ...7.days.ago).or(where(nodes_count_cached: nil)) }
   scope :in_charities_subgroups, -> {
+    charities_tag = Group.charities_tag
+    next none unless charities_tag
+
+    charity_subgroup_ids = Membership.where(group_id: charities_tag.id, member_type: 'Group').select(:member_id)
+
     joins(:groups)
-      .joins("INNER JOIN memberships parent_memberships ON parent_memberships.member_type = 'Group' AND parent_memberships.member_id = groups.id")
-      .joins('INNER JOIN groups parent_groups ON parent_groups.id = parent_memberships.group_id')
-      .where(parent_groups: { name: 'Charities' })
+      .where(groups: { id: charity_subgroup_ids })
       .distinct
   }
 
   scope :only_in_charities, -> {
+    charities_tag = Group.charities_tag
+    next none unless charities_tag
+
+    charity_subgroup_ids = Membership.where(group_id: charities_tag.id, member_type: 'Group').select(:member_id)
+
     joins(:groups)
-      .joins("LEFT JOIN memberships parent_memberships ON parent_memberships.member_type = 'Group' AND parent_memberships.member_id = groups.id")
-      .joins('LEFT JOIN groups parent_groups ON parent_groups.id = parent_memberships.group_id')
       .group('people.id')
       .having('COUNT(DISTINCT groups.id) > 0')
-      .having("COUNT(DISTINCT CASE WHEN parent_groups.name = 'Charities' THEN groups.id END) = COUNT(DISTINCT groups.id)")
+      .having("COUNT(DISTINCT CASE WHEN groups.id IN (#{charity_subgroup_ids.to_sql}) THEN groups.id END) = COUNT(DISTINCT groups.id)")
   }
-
-  validates :name, uniqueness: { case_sensitive: false }
 
   def nodes
     groups
@@ -87,6 +97,10 @@ class Person < ApplicationRecord
     body.strip
   end
   # rubocop:enable Style/StringConcatenation
+
+  def self.find_by_name_i(name)
+    Person.where('LOWER(name) = ?', name.downcase).first
+  end
 
   private
 

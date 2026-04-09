@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_03_13_060212) do
+ActiveRecord::Schema[8.0].define(version: 2026_03_29_233440) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -54,6 +54,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_13_060212) do
     t.index ["last_processed_date"], name: "index_contract_backfills_on_last_processed_date", unique: true
   end
 
+  create_table "external_identifiers", force: :cascade do |t|
+    t.string "owner_type", null: false
+    t.bigint "owner_id", null: false
+    t.string "source", null: false
+    t.string "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id", "source", "value"], name: "index_external_identifiers_on_owner_source_and_value", unique: true
+    t.index ["owner_type", "owner_id"], name: "index_external_identifiers_on_owner"
+    t.index ["source", "value"], name: "index_external_identifiers_on_source_and_value"
+  end
+
   create_table "fine_grained_transaction_categories", force: :cascade do |t|
     t.string "name"
     t.bigint "major_transaction_category_id"
@@ -90,9 +102,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_13_060212) do
     t.datetime "nodes_count_cached_at"
     t.string "type"
     t.integer "views", default: 0, null: false
-    t.string "aec_id"
-    t.index "lower((name)::text)", name: "index_groups_on_lower_name", unique: true
-    t.index ["aec_id"], name: "index_groups_on_aec_id", unique: true
+    t.string "aec_id_legacy"
+    t.index ["aec_id_legacy"], name: "index_groups_on_aec_id_legacy", unique: true
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
     t.index ["category"], name: "index_groups_on_category"
     t.index ["name"], name: "index_groups_on_name"
@@ -172,9 +183,8 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_13_060212) do
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
     t.integer "views", default: 0, null: false
-    t.string "aec_id"
-    t.index "lower((name)::text)", name: "index_people_on_lower_name", unique: true
-    t.index ["aec_id"], name: "index_people_on_aec_id", unique: true
+    t.string "aec_id_legacy"
+    t.index ["aec_id_legacy"], name: "index_people_on_aec_id_legacy", unique: true
     t.index ["name"], name: "index_people_on_name"
   end
 

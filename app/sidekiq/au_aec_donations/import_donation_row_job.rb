@@ -4,7 +4,7 @@ class AuAecDonations::ImportDonationRowJob
   sidekiq_options(
     lock: :until_executed,
     on_conflict: :log,
-    retry: 1
+    retry: 3
   )
 
   def perform(row_hash)

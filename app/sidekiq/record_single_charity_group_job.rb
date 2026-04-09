@@ -9,7 +9,7 @@ class RecordSingleCharityGroupJob
   )
 
   def perform(group_name, business_number, tag_id)
-    group = RecordGroup.call(group_name, business_number:, mapper:)
+    group = Groups::RecordGroup.call(group_name, business_number:, mapper:)
     Membership.find_or_create_by(group_id: tag_id, member: group)
   end
 
