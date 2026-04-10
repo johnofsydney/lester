@@ -35,16 +35,14 @@ class AcncCharities::FetchSingleCharityPeople
     cards = doc.css('.card')
     # cards = doc.css('.card-body')
     if cards.empty?
-      Rails.logger.info("People not found for charity #{@charity.id} - will not retry")
-      return {success: false, people_count: 0}
+      Rails.logger.info("People not found for charity #{@charity.id} - raise and retry")
+      raise NoResultsFound.new("People not found for charity #{@charity.id}. Response: #{response.inspect}")
     end
-
 
     cards.each do |card|
       name = card.at_css('h4')&.text.to_s.strip
       title = card.at_css('li')&.text.to_s.strip.gsub('Role: ', '')
-      person_uuid = card.attribute("href").value.split('/').last
-      WIP
+      person_uuid = card.attribute('href').value.split('/').last
 
       next if name.blank? && title.blank?
 
@@ -53,7 +51,6 @@ class AcncCharities::FetchSingleCharityPeople
       Position.find_or_create_by(membership:, title:)
       people_count += 1
     end
-
 
     Rails.logger.info "Successfully processed charity #{@charity.name} - #{people_count} people found"
 

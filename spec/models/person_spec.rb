@@ -41,6 +41,10 @@ RSpec.describe Person do
       it 'does not return people who are in any non-charity groups' do
         expect(Person.only_in_charities).not_to include(person2, person3, person4)
       end
+
+      it 'returns an active record relation' do
+        expect(Person.only_in_charities).to be_a(ActiveRecord::Relation)
+      end
     end
   end
 end

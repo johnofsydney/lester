@@ -28,7 +28,7 @@ class Person < ApplicationRecord
 
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..7.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ...7.days.ago).or(where(nodes_count_cached: nil)) }
-  scope :in_charities_subgroups, -> {
+  scope :in_charities_subgroups, lambda {
     charities_tag = Group.charities_tag
     next none unless charities_tag
 
@@ -39,7 +39,7 @@ class Person < ApplicationRecord
       .distinct
   }
 
-  scope :only_in_charities, -> {
+  scope :only_in_charities, lambda {
     charities_tag = Group.charities_tag
     next none unless charities_tag
 
