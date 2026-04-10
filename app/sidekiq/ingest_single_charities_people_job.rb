@@ -23,7 +23,12 @@ class IngestSingleCharitiesPeopleJob
     Rails.logger.error e.backtrace.join("\n")
     ApiLog.create(message: e.message)
     raise e
-  rescue Net::ReadTimeout, StandardError => e
+  rescue Net::ReadTimeout => e
+    Rails.logger.error "Error processing IngestSingleCharitiesPeopleJob: #{e.message} - will retry"
+    Rails.logger.error e.backtrace.join("\n")
+    ApiLog.create(message: e.message)
+    raise e
+  rescue StandardError => e
     Rails.logger.error "Error processing IngestSingleCharitiesPeopleJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
     ApiLog.create(message: e.message)
