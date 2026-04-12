@@ -25,6 +25,9 @@ class Membership < ApplicationRecord
     where(id: ids)
   }
 
+  scope :charity_subgroups, -> { where(group_id: Group.charities_tag.id, member_type: 'Group') }
+  scope :person_in_charity, -> { where(member_type: 'Person', group_id: Membership.charity_subgroups.select(:member_id)) }
+
   def self.ransackable_scopes(_auth_object = nil)
     [:by_ids]
   end

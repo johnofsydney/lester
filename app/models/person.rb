@@ -28,27 +28,16 @@ class Person < ApplicationRecord
 
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..7.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ...7.days.ago).or(where(nodes_count_cached: nil)) }
-  scope :in_charities_subgroups, lambda {
-    charities_tag = Group.charities_tag
-    next none unless charities_tag
-
-    charity_subgroup_ids = Membership.where(group_id: charities_tag.id, member_type: 'Group').select(:member_id)
-
-    joins(:groups)
-      .where(groups: { id: charity_subgroup_ids })
-      .distinct
-  }
+  scope :in_charities_subgroups, -> { where(id: Membership.person_in_charity.select(:member_id)).distinct }
 
   scope :only_in_charities, lambda {
-    charities_tag = Group.charities_tag
-    next none unless charities_tag
-
-    charity_subgroup_ids = Membership.where(group_id: charities_tag.id, member_type: 'Group').select(:member_id)
-
-    joins(:groups)
-      .group('people.id')
-      .having('COUNT(DISTINCT groups.id) > 0')
-      .having("COUNT(DISTINCT CASE WHEN groups.id IN (#{charity_subgroup_ids.to_sql}) THEN groups.id END) = COUNT(DISTINCT groups.id)")
+    where(id: Membership.person_in_charity.select(:member_id))
+      .where.not(
+        id: Membership.where(member_type: 'Person')
+                      .where.not(group_id: Membership.person_in_charity.select(:group_id))
+                      .select(:member_id)
+      )
+      .distinct
   }
 
   def nodes
