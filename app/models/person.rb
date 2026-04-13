@@ -28,6 +28,17 @@ class Person < ApplicationRecord
 
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..7.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ...7.days.ago).or(where(nodes_count_cached: nil)) }
+  scope :in_charities_subgroups, -> { where(id: Membership.person_in_charity.select(:member_id)).distinct }
+
+  scope :only_in_charities, lambda {
+    where(id: Membership.person_in_charity.select(:member_id))
+      .where.not(
+        id: Membership.where(member_type: 'Person')
+                      .where.not(group_id: Membership.person_in_charity.select(:group_id))
+                      .select(:member_id)
+      )
+      .distinct
+  }
 
   def nodes
     groups

@@ -7,6 +7,11 @@ RSpec.describe Membership do
   let(:person) { Person.create(name: 'John Doe') }
   let(:group) { Group.create(name: 'Group 1') }
   let(:membership) { described_class.create(member: person, group: group) }
+  let!(:charities_group) { Group.create(name: 'Charities') }
+
+  before do
+    allow(Group).to receive(:charities_tag).and_return(charities_group)
+  end
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:member_type) }
@@ -17,6 +22,56 @@ RSpec.describe Membership do
   describe '#nodes' do
     it 'returns an array containing the person and group of the membership' do
       expect(membership.nodes).to eq([person, group])
+    end
+  end
+
+  describe '.charity_subgroups' do
+    let!(:charity1) { Group.create(name: 'Charity 1') }
+    let!(:charity2) { Group.create(name: 'Charity 2') }
+    let!(:other_group) { Group.create(name: 'Other Group') }
+    let!(:person1) { Person.create(name: 'Person 1') }
+
+    let!(:charity_link_1) { described_class.create(group: charities_group, member: charity1) }
+    let!(:charity_link_2) { described_class.create(group: charities_group, member: charity2) }
+    let!(:other_link) { described_class.create(group: other_group, member: person1) }
+
+    it 'returns memberships where charities has groups as members' do
+      expect(described_class.charity_subgroups).to include(charity_link_1, charity_link_2)
+    end
+
+    it 'does not include non-charities memberships' do
+      expect(described_class.charity_subgroups).not_to include(other_link)
+    end
+
+    it 'returns an active record relation' do
+      expect(described_class.charity_subgroups).to be_a(ActiveRecord::Relation)
+    end
+  end
+
+  describe '.person_in_charity' do
+    let!(:charities_group) { Group.create(name: 'Charities') }
+    let!(:charity1) { Group.create(name: 'Charity 1') }
+    let!(:charity2) { Group.create(name: 'Charity 2') }
+    let!(:other_group) { Group.create(name: 'Other Group') }
+
+    let!(:person1) { Person.create(name: 'Person 1') }
+    let!(:person2) { Person.create(name: 'Person 2') }
+    let!(:person3) { Person.create(name: 'Person 3') }
+
+    let!(:charity_link_1) { described_class.create(group: charities_group, member: charity1) }
+    let!(:charity_link_2) { described_class.create(group: charities_group, member: charity2) }
+
+    let!(:person1_charity_membership) { described_class.create(group: charity1, member: person1) }
+    let!(:person2_charity_membership) { described_class.create(group: charity2, member: person2) }
+    let!(:person2_other_membership) { described_class.create(group: other_group, member: person2) }
+    let!(:person3_other_membership) { described_class.create(group: other_group, member: person3) }
+
+    it 'returns person memberships where the group is a charities subgroup' do
+      expect(described_class.person_in_charity).to include(person1_charity_membership, person2_charity_membership)
+    end
+
+    it 'does not include non-charity memberships or group-to-group memberships' do
+      expect(described_class.person_in_charity).not_to include(person2_other_membership, person3_other_membership, charity_link_1, charity_link_2)
     end
   end
 

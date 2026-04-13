@@ -105,9 +105,6 @@ class Group < ApplicationRecord
   end
 
   scope :with_business_number, -> { where.not(business_number: [nil, '']) }
-
-  scope :can_refresh, -> { where(last_refreshed: nil).or(where(last_refreshed: ..6.months.ago)) }
-
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ..4.days.ago).or(where(nodes_count_cached: nil)) }
 
@@ -214,15 +211,19 @@ class Group < ApplicationRecord
     Group.where('LOWER(name) = ?', name.downcase).first
   end
 
+  def self.charities_tag
+    Group.find(124_513)
+  end
+
   def self.lobbyists_tag
-    Group.find_by(name: 'lobbyists') || Group.where('LOWER(name) = ?', 'lobbyists').first
+    Group.find(124_509)
   end
 
   def self.client_of_lobbyists_tag
-    Group.find_by(name: 'client of lobbyists') || Group.where('LOWER(name) = ?', 'client of lobbyists').first
+    Group.find(124_510)
   end
 
   def self.government_department_tag
-    Group.find_by(name: 'government departments (au, federal & state)') || Group.where('LOWER(name) = ?', 'government departments (au, federal & state)').first
+    Group.find(124_514)
   end
 end

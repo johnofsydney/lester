@@ -17,7 +17,18 @@ class IngestSingleCharitiesPeopleJob
     Rails.logger.error "Charity not found for IngestSingleCharitiesPeopleJob: #{charity_id}"
     ApiLog.create(message: e.message)
     # Don't re-raise - this won't be fixed by retrying
-  rescue ResponseFailed, NoResultsError, StandardError => e
+  rescue ResponseFailed, NoResultsFound => e
+    # anticipated errors
+    Rails.logger.error "Error processing IngestSingleCharitiesPeopleJob: #{e.message} - will retry"
+    Rails.logger.error e.backtrace.join("\n")
+    ApiLog.create(message: e.message)
+    raise e
+  rescue Net::ReadTimeout => e
+    Rails.logger.error "Error processing IngestSingleCharitiesPeopleJob: #{e.message} - will retry"
+    Rails.logger.error e.backtrace.join("\n")
+    ApiLog.create(message: e.message)
+    raise e
+  rescue StandardError => e
     Rails.logger.error "Error processing IngestSingleCharitiesPeopleJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
     ApiLog.create(message: e.message)

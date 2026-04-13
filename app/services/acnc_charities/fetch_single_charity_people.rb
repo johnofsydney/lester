@@ -12,9 +12,6 @@ class AcncCharities::FetchSingleCharityPeople
   end
 
   def call
-    # First - set last_refreshed to today to avoid repeated retries in short time
-    @charity.update!(last_refreshed: Time.current.to_date)
-
     # Part 1 - query API for UUID
     response = connection(search_url).get
     raise ResponseFailed.new("Request failed: #{response.inspect}") unless response.success? && response.body.present?
@@ -32,19 +29,21 @@ class AcncCharities::FetchSingleCharityPeople
     people_count = 0
 
     # Part 3 - parse people - they are held in .card-body elements
-    cards = doc.css('.card-body')
+    cards = doc.css('.card')
+    # cards = doc.css('.card-body')
     if cards.empty?
-      Rails.logger.info("People not found for charity #{@charity.id} - will not retry")
-      return {success: false, people_count: 0}
+      Rails.logger.info("People not found for charity #{@charity.id} - raise and retry")
+      raise NoResultsFound.new("People not found for charity #{@charity.id}. Response: #{response.inspect}")
     end
 
     cards.each do |card|
       name = card.at_css('h4')&.text.to_s.strip
       title = card.at_css('li')&.text.to_s.strip.gsub('Role: ', '')
+      person_uuid = card.attribute('href').value.split('/').last
 
       next if name.blank? && title.blank?
 
-      person = People::RecordPerson.call(name)
+      person = People::RecordPerson.call(name, acnc_id: person_uuid)
       membership = Membership.find_or_create_by(group: @charity, member: person)
       Position.find_or_create_by(membership:, title:)
       people_count += 1
