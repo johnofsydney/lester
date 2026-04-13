@@ -12,9 +12,6 @@ class AcncCharities::FetchSingleCharityPeople
   end
 
   def call
-    # First - set last_refreshed to today to avoid repeated retries in short time
-    @charity.update!(last_refreshed: Time.current.to_date)
-
     # Part 1 - query API for UUID
     response = connection(search_url).get
     raise ResponseFailed.new("Request failed: #{response.inspect}") unless response.success? && response.body.present?
