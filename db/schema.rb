@@ -100,7 +100,6 @@ ActiveRecord::Schema[8.0].define(version: 2026_04_13_050831) do
     t.boolean "category", default: false
     t.json "cached_data", default: {}
     t.string "business_number"
-    t.date "last_refreshed"
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
     t.string "type"

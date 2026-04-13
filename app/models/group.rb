@@ -105,9 +105,6 @@ class Group < ApplicationRecord
   end
 
   scope :with_business_number, -> { where.not(business_number: [nil, '']) }
-
-  scope :can_refresh, -> { where(last_refreshed: nil).or(where(last_refreshed: ..6.months.ago)) }
-
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ..4.days.ago).or(where(nodes_count_cached: nil)) }
 
@@ -212,6 +209,10 @@ class Group < ApplicationRecord
 
   def self.find_by_name_i(name)
     Group.where('LOWER(name) = ?', name.downcase).first
+  end
+
+  def self.charities_tag
+    Group.find_by(name: 'charities') || Group.where('LOWER(name) = ?', 'charities').first
   end
 
   def self.lobbyists_tag
