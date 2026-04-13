@@ -21,6 +21,8 @@ RSpec.describe Person do
 
       Membership.create(group: other_group, member: person2)
       Membership.create(group: other_group, member: person3)
+
+      allow(Group).to receive(:charities_tag).and_return(charities_group)
     end
 
     describe '.in_charities_subgroups' do

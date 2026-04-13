@@ -7,6 +7,11 @@ RSpec.describe Membership do
   let(:person) { Person.create(name: 'John Doe') }
   let(:group) { Group.create(name: 'Group 1') }
   let(:membership) { described_class.create(member: person, group: group) }
+  let!(:charities_group) { Group.create(name: 'Charities') }
+
+  before do
+    allow(Group).to receive(:charities_tag).and_return(charities_group)
+  end
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:member_type) }
@@ -21,7 +26,6 @@ RSpec.describe Membership do
   end
 
   describe '.charity_subgroups' do
-    let!(:charities_group) { Group.create(name: 'Charities') }
     let!(:charity1) { Group.create(name: 'Charity 1') }
     let!(:charity2) { Group.create(name: 'Charity 2') }
     let!(:other_group) { Group.create(name: 'Other Group') }

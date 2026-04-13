@@ -212,18 +212,18 @@ class Group < ApplicationRecord
   end
 
   def self.charities_tag
-    Group.find(124513)
+    Group.find(124_513)
   end
 
   def self.lobbyists_tag
-    Group.find(124509)
+    Group.find(124_509)
   end
 
   def self.client_of_lobbyists_tag
-    Group.find(124510)
+    Group.find(124_510)
   end
 
   def self.government_department_tag
-    Group.find(124514)
+    Group.find(124_514)
   end
 end
