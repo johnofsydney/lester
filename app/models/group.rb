@@ -105,9 +105,6 @@ class Group < ApplicationRecord
   end
 
   scope :with_business_number, -> { where.not(business_number: [nil, '']) }
-
-  scope :can_refresh, -> { where(last_refreshed: nil).or(where(last_refreshed: ..6.months.ago)) }
-
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ..4.days.ago).or(where(nodes_count_cached: nil)) }
 

@@ -32,7 +32,6 @@ class IngestCharitiesPeopleJob
 
     Group.find_by(name: 'Charities').groups
                                     .with_business_number
-                                    .can_refresh
                                     .limit(batch_size)
   end
 
