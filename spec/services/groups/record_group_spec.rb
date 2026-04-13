@@ -5,6 +5,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
 
   let(:group_names) { Group::NAMES }
 
+<<<<<<< HEAD
 <<<<<<< HEAD:spec/services/groups/record_group_spec.rb
   let(:name_combos) do
     {
@@ -231,6 +232,8 @@ RSpec.describe Groups::RecordGroup, type: :service do
 
 =======
 >>>>>>> main:spec/services/record_group_spec.rb
+=======
+>>>>>>> main
   let(:mapper) { MapGroupNamesAecDonations.new }
 
   describe '#initialize' do
@@ -248,6 +251,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
         allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
       end
 
+<<<<<<< HEAD
 <<<<<<< HEAD:spec/services/groups/record_group_spec.rb
       it 'uses the names from the combo', :aggregate_failures do
         name_combos.each do |name, expected|
@@ -258,6 +262,8 @@ RSpec.describe Groups::RecordGroup, type: :service do
 
 =======
 >>>>>>> main:spec/services/record_group_spec.rb
+=======
+>>>>>>> main
       context 'when the group does not already exist' do
         it 'creates a group with the given name' do
           expect { described_class.call('Test Name', mapper:) }.to change(Group, :count).by(1)
@@ -395,7 +401,6 @@ RSpec.describe Groups::RecordGroup, type: :service do
         end.to change(Group, :count).by(1)
 
         expect(new_group.aec_id).to eq('AEC-301')
-        expect(new_group.name).to include('AEC-301') # This is temporary, later we'll remove the constraint
       end
 
       it 'does not create a new record when name and acnc_id are provided and updates acnc_id' do

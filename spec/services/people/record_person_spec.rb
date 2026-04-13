@@ -51,13 +51,10 @@ RSpec.describe People::RecordPerson, type: :service do
       expect(described_class.call('The Hon. Peter Francis Watkins').name).to eq('peter francis watkins')
     end
 
-<<<<<<< HEAD:spec/services/people/record_person_spec.rb
-=======
     it 'removes prefix Hon from name' do
       expect(described_class.call('Hon Catherine King').name).to eq('catherine king')
     end
 
->>>>>>> main:spec/services/record_person_spec.rb
     it 'removes prefix The Hon from name' do
       expect(described_class.call('The Hon Robert Borbidge').name).to eq('robert borbidge')
     end

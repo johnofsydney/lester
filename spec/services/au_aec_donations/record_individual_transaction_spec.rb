@@ -33,7 +33,6 @@ describe AuAecDonations::RecordIndividualTransaction do
   end
 
   it 'creates an IndividualTransaction with the correct attributes' do
-    pending 'failing due to the renaming of aec_id'
     service.call
 
     individual_transaction = IndividualTransaction.last
@@ -111,7 +110,6 @@ describe AuAecDonations::RecordIndividualTransaction do
 
   context 'when the same donation is processed twice in quick succession' do
     it 'only creates one IndividualTransaction' do
-      pending 'failing due to the renaming of aec_id'
       described_class.new(row_hash).call
       described_class.new(row_hash).call
 

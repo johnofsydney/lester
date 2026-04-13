@@ -4,8 +4,7 @@ class ExternalIdentifier < ApplicationRecord
   validates :owner_id, :owner_type, presence: true
   validates :source, presence: true
   validates :value, presence: true
-  validates :source, uniqueness: { scope: :value, message: 'and value combination already exists' }
-  validates :source, uniqueness: { scope: [:owner_type, :owner_id], message: 'already exists for this owner' }
+  validates :value, uniqueness: { scope: %i[owner_type owner_id source] }
 
   SOURCES = %w[aec acnc open_politics].freeze
 end

@@ -54,6 +54,21 @@ ActiveRecord::Schema[8.0].define(version: 2026_03_29_233440) do
     t.index ["last_processed_date"], name: "index_contract_backfills_on_last_processed_date", unique: true
   end
 
+<<<<<<< HEAD
+=======
+  create_table "external_identifiers", force: :cascade do |t|
+    t.string "owner_type", null: false
+    t.bigint "owner_id", null: false
+    t.string "source", null: false
+    t.string "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id", "source", "value"], name: "index_external_identifiers_on_owner_source_and_value", unique: true
+    t.index ["owner_type", "owner_id"], name: "index_external_identifiers_on_owner"
+    t.index ["source", "value"], name: "index_external_identifiers_on_source_and_value"
+  end
+
+>>>>>>> main
   create_table "fine_grained_transaction_categories", force: :cascade do |t|
     t.string "name"
     t.bigint "major_transaction_category_id"
