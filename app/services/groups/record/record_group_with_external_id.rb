@@ -26,41 +26,40 @@ class Groups::Record::RecordGroupWithExternalId
   end
 
   def find_sole_group_by_name_and_append_external_id
-    group = Group.find_by_name_i(name) # rubocop:disable Rails/DynamicFindBy
-    return if group.nil?
+    groups = Group.where(name:)
 
-    existing_id = group.public_send(id_attribute)
-    return if existing_id.present? && existing_id != identifier
-
-    if Group.where('LOWER(name) = ?', name.downcase).count > 1
-      Rails.logger.info("Multiple groups found with similar name for: #{name}")
+    if groups.empty?
+      nil
+    elsif groups.count > 1
+      Rails.logger.info("Multiple groups found with name: #{name}")
       NewRelic::Agent.notice_error("Cannot Disambiguate Group name: #{name}")
-      return nil
+      nil
+    elsif groups.count == 1
+      group = groups.first
+
+      existing_id = group.public_send(id_attribute)
+
+      if existing_id.present? && existing_id != identifier
+        # there is one group with the name but it has a different external ID.
+        return nil
+      elsif existing_id.blank?
+        # one group exists, but no external ID is set - we can update this group with the external ID
+
+        group.public_send(:"#{id_attribute}=", identifier)
+      end
+
+      add_to_trading_names(group)
+      group
     end
-
-    add_to_trading_names(group)
-
-    group.public_send(:"#{id_attribute}=", identifier)
-    group.save!
-    group
   end
 
   def create_group_with_external_id
     group = Group.new(name:)
 
-    begin
-      save_inside_advisory_lock!(group)
-    rescue ActiveRecord::RecordInvalid => e
-      raise e unless e.message.match?(/Name has already been taken/)
-
-      # Temporary disambiguation until unique name constraint is removed
-      group.name = "#{name}|#{source.upcase} ID: #{identifier}"
-      group.save!
-    end
+    save_inside_advisory_lock!(group)
     add_to_trading_names(group)
 
     group.public_send(:"#{id_attribute}=", identifier)
-    group.save!
     group
   end
 end

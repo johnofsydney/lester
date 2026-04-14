@@ -18,7 +18,7 @@ class Groups::RecordGroup
       Groups::Record::RecordGroupWithBusinessNumber.new(name:, business_number:).call
     elsif external_id
       Groups::Record::RecordGroupWithExternalId.new(name:, identifier:, source:, id_attribute:).call
-    elsif (group = Group.find_by_name_i(name)) # rubocop:disable Rails/DynamicFindBy
+    elsif (group = Group.find_by(name:))
         group
     elsif TradingName.where(name:).count > 1
         Rails.logger.info("Multiple trading names found for: #{name}")

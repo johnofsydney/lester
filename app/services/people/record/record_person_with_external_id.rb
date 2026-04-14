@@ -26,40 +26,40 @@ class People::Record::RecordPersonWithExternalId
   end
 
   def find_sole_person_by_name_and_append_external_id
-    person = Person.find_by_name_i(name) # rubocop:disable Rails/DynamicFindBy
-    return unless person
+    people = Person.where(name:)
 
-    existing_id = person.public_send(id_attribute)
-    return if existing_id.present? && existing_id != identifier
-
-    if Person.where('LOWER(name) = ?', name.downcase).count > 1
-      Rails.logger.info("Multiple people found with similar name for: #{name}")
+    if people.empty?
+      nil
+    elsif people.count > 1
+      Rails.logger.info("Multiple people found with name: #{name}")
       NewRelic::Agent.notice_error("Cannot Disambiguate Person name: #{name}")
-      return nil
-    end
+      nil
+    elsif people.count == 1
+      person = people.first
 
-    person.public_send(:"#{id_attribute}=", identifier)
-    person.save!
-    person
+      existing_id = person.public_send(id_attribute)
+
+      if existing_id.present? && existing_id != identifier
+        # there is one person with the name but it has a different external ID.
+        return nil
+      elsif existing_id.blank?
+        # one person exists, but no external ID is set - we can update this person with the external ID
+
+        person.public_send(:"#{id_attribute}=", identifier)
+      end
+
+      add_to_trading_names(person)
+      person
+    end
   end
 
   def create_person_with_external_id
     person = Person.new(name:)
 
-    begin
-      save_inside_advisory_lock!(person)
-      person.save!
-    rescue ActiveRecord::RecordInvalid => e
-      raise e unless e.message.match?(/Name has already been taken/)
-
-      # Temporary disambiguation until unique name constraint is removed
-      person.name = "#{name}||#{source.upcase} ID: #{identifier}"
-      person.save!
-    end
+    save_inside_advisory_lock!(person)
     add_to_trading_names(person)
 
     person.public_send(:"#{id_attribute}=", identifier)
-    person.save!
     person
   end
 end

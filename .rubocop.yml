@@ -50,6 +50,53 @@ Metrics/MethodLength:
 Naming/VariableNumber:
   Enabled: false
 
+RSpec/AnyInstance:
+  Exclude:
+    - 'spec/services/*/record/**'
+
+RSpec/ContextWording:
+  Prefixes:
+    - when
+    - with
+    - without
+    - if
+    - unless
+    - for
+    - and
+
+RSpec/DescribedClass:
+  Enabled: false # temporary
+
+RSpec/ExampleLength:
+  Enabled: false
+
+RSpec/IndexedLet:
+  Enabled: false # uses number sometimes - they can be appropriate
+
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false
+
+Style/GuardClause:
+  Exclude:
+    - 'app/views/**/*'
+
+Style/StringLiterals:
+  Exclude:
+    - 'Gemfile'
+
+Style/SymbolArray:
+  Enabled: false
+
+Style/WordArray:
+  Exclude:
+    - 'csv_data/**/*'
+
 Style/Documentation:
   Enabled: false
 
@@ -64,47 +111,3 @@ Style/RaiseArgs:
 
 Style/RedundantBegin:
   Enabled: false
-
-RSpec/DescribedClass:
-  Enabled: false # temporary
-
-RSpec/IndexedLet:
-  Enabled: false # uses number sometimes - they can be appropriate
-
-RSpec/MultipleMemoizedHelpers:
-  Enabled: false
-
-RSpec/ExampleLength:
-  Enabled: false
-
-RSpec/MultipleExpectations:
-  Enabled: false
-
-RSpec/NestedGroups:
-  Enabled: false
-
-RSpec/ContextWording:
-  Prefixes:
-    - when
-    - with
-    - without
-    - if
-    - unless
-    - for
-    - and
-
-Style/GuardClause:
-  Exclude:
-    - 'app/views/**/*'
-
-Style/StringLiterals:
-  Exclude:
-    - 'Gemfile'
-
-
-Style/SymbolArray:
-  Enabled: false
-
-Style/WordArray:
-  Exclude:
-    - 'csv_data/**/*'
