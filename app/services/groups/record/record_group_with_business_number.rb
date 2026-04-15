@@ -13,7 +13,7 @@ class Groups::Record::RecordGroupWithBusinessNumber
   end
 
   def find_group_and_append_business_number
-    group = Group.find_by_name_i(name) # rubocop:disable Rails/DynamicFindBy
+    group = Group.find_by(name:)
     return if group.nil?
 
     group.update!(business_number:)

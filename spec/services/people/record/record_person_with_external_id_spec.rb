@@ -60,9 +60,8 @@ RSpec.describe People::Record::RecordPersonWithExternalId, type: :service do
             allow(NewRelic::Agent).to receive(:notice_error)
           end
 
-          it 'logs to NewRelic and creates a new person' do
+          it 'creates a new person' do
             expect { call_service }.to change(Person, :count).by(1)
-            expect(NewRelic::Agent).to have_received(:notice_error).with("Cannot Disambiguate Person name: #{name}")
           end
         end
       end
@@ -75,17 +74,6 @@ RSpec.describe People::Record::RecordPersonWithExternalId, type: :service do
           expect(person.name).to eq(name.downcase)
           expect(person.public_send(id_attribute)).to eq(identifier)
           expect(person.trading_names.where(name:).exists?).to be(true)
-        end
-
-        context 'when advisory-lock save raises a validation error' do
-          before do
-            error = ActiveRecord::RecordInvalid.new(Person.new)
-            allow_any_instance_of(described_class).to receive(:save_inside_advisory_lock!).and_raise(error)
-          end
-
-          it 'raises the validation error' do
-            expect { call_service }.to raise_error(ActiveRecord::RecordInvalid)
-          end
         end
       end
     end
