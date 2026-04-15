@@ -17,7 +17,7 @@ class Groups::RecordGroup
     if business_number.present?
       Groups::Record::RecordGroupWithBusinessNumber.new(name:, business_number:).call
     elsif external_id
-      Groups::Record::RecordGroupWithExternalId.new(name:, identifier:, source:, id_attribute:).call
+      Entity::RecordEntityWithExternalId.new(name:, identifier:, source:, id_attribute:, klass: 'Group').call
     elsif (group = Group.find_by(name:))
         group
     elsif TradingName.where(name:).count > 1
