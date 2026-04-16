@@ -13,8 +13,10 @@ class Groups::Record::RecordGroupWithBusinessNumber
   end
 
   def find_group_and_append_business_number
-    group = Group.find_by(name:)
-    return if group.nil?
+    groups = Group.where(name:)
+    return if groups.empty? || groups.many?
+
+    group = groups.sole
 
     group.update!(business_number:)
     group

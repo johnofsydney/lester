@@ -168,4 +168,31 @@ RSpec.describe Groups::RecordGroup, type: :service do
       end
     end
   end
+
+  context 'when several groups have the same name' do
+    let(:name) { 'Duplicate Name' }
+
+    before do
+      create(:group, name:)
+      create(:group, name:)
+    end
+
+    it 'raises an error when attempting to create a group with the same name' do
+      expect { described_class.call(name) }.to raise_error
+    end
+
+    context 'when the new group has an external identifier' do
+      it 'creates a new group with the external identifier' do
+        expect { described_class.call(name, aec_id: 'AEC-400') }.to change(Group, :count).by(1)
+        expect(Group.last.aec_id).to eq('AEC-400')
+      end
+    end
+
+    context 'when the new group has a business number' do
+      it 'creates a new group with the business number' do
+        expect { described_class.call(name, business_number: '123456789') }.to change(Group, :count).by(1)
+        expect(Group.last.business_number).to eq('123456789')
+      end
+    end
+  end
 end

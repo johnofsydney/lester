@@ -72,6 +72,8 @@ RSpec.configure do |config|
   config.before { Sidekiq::Worker.clear_all }
 
   config.example_status_persistence_file_path = 'tmp/spec_examples.txt'
+
+  config.include FactoryBot::Syntax::Methods
 end
 
 require 'shoulda/matchers'

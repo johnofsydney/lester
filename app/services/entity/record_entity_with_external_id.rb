@@ -30,7 +30,7 @@ class Entity::RecordEntityWithExternalId
     entities = klass.constantize.where(name:)
     return if entities.empty? || entities.many?
 
-    entity = entities.first
+    entity = entities.sole
     existing_id = entity.public_send(id_attribute)
     return if existing_id.present? && existing_id != identifier
 
