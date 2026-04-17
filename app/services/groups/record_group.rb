@@ -17,9 +17,9 @@ class Groups::RecordGroup
     if business_number.present?
       Groups::Record::RecordGroupWithBusinessNumber.new(name:, business_number:).call
     elsif external_id
-      Groups::Record::RecordGroupWithExternalId.new(name:, identifier:, source:, id_attribute:).call
-    elsif (group = Group.find_by_name_i(name)) # rubocop:disable Rails/DynamicFindBy
-        group
+      Entity::RecordEntityWithExternalId.new(name:, identifier:, source:, id_attribute:, klass: 'Group').call
+    elsif one_group_exists?
+        Group.find_sole_by(name:)
     elsif TradingName.where(name:).count > 1
         Rails.logger.info("Multiple trading names found for: #{name}")
         NewRelic::Agent.notice_error("Cannot Disambiguate Trading name: #{name}")
@@ -37,17 +37,23 @@ class Groups::RecordGroup
   attr_reader :source, :identifier, :id_attribute
 
   def external_id
+    # If we have an external identifier, then set all of the relevant instance variables
     return false unless aec_id.present? || acnc_id.present?
 
-    map = if aec_id.present?
-            { source: 'aec', identifier: aec_id.to_s, id_attribute: 'aec_id' }
-          elsif acnc_id.present?
-            { source: 'acnc', identifier: acnc_id.to_s, id_attribute: 'acnc_id' }
-          end
+    @source, @identifier, @id_attribute = if aec_id.present?
+                                            ['aec', aec_id.to_s, 'aec_id']
+                                          elsif acnc_id.present?
+                                            ['acnc', acnc_id.to_s, 'acnc_id']
+                                          end
+  end
 
-    @source = map[:source]
-    @identifier = map[:identifier]
-    @id_attribute = map[:id_attribute]
+  def one_group_exists?
+    groups = Group.where(name:)
+    return false if groups.empty?
+
+    raise ActiveRecord::RecordNotUnique, "Multiple groups exist with the name: #{name}" if groups.many?
+
+    true
   end
 end
 

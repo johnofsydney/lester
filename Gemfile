@@ -70,8 +70,7 @@ gem 'flipper'
 gem 'flipper-active_record'
 gem 'flipper-ui'
 
-# TODO:
-# add bootstrap gem?
+# if ever add bootstrap as a gem...
 # https://dev.to/chmich/setup-bootstrap-on-rails-7-and-vite-g5a
 
 gem 'faraday', '>= 2.14.1'

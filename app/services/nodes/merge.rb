@@ -13,6 +13,8 @@ class Nodes::Merge
     raise 'Cannot merge different types of node' unless receiver_node.class == argument_node.class
     raise 'Cannot merge where both groups have ABN' if both_have_business_number?
 
+    raise 'TODO: handle external ids'
+
     # 1. Move all transfers from argument_node to receiver_node
     # If there are EQUIVALENT transfers (same giver, taker, effective date) for both nodes,
     # we need to merge the individual transactions into one transfer, and delete the duplicate transfer.
