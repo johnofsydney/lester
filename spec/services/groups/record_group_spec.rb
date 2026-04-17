@@ -178,7 +178,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
     end
 
     it 'raises an error when attempting to create a group with the same name' do
-      expect { described_class.call(name) }.to raise_error
+      expect { described_class.call(name) }.to raise_error(ActiveRecord::RecordNotUnique)
     end
 
     context 'when the new group has an external identifier' do
