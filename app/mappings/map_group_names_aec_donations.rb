@@ -243,10 +243,10 @@ class MapGroupNamesAecDonations < MapGroupNamesBase
     return group_names.liberals.nt if /Country Liberal.+(NT|N\.T\.|Northern)/i.match?(name)
 
     # National Party
-    return group_names.nationals.nsw if /(National Party|NAT).+(New South Wales|NSW|N\.S\.W\.)/i.match?(name)
-    return group_names.nationals.wa if /(National Party|NAT).+(Western Australia|WA|W\.A\.)/i.match?(name)
+    return group_names.nationals.nsw if /(National Party).+(New South Wales|NSW|N\.S\.W\.)/i.match?(name)
+    return group_names.nationals.wa if /(National Party).+(Western Australia|WA|W\.A\.)/i.match?(name)
     return group_names.nationals.tas if /National Tasmania/i.match?(name)
-    return group_names.nationals.vic if /(National Party|NAT).+Vic/i.match?(name)
+    return group_names.nationals.vic if /(National Party).+Vic/i.match?(name)
     return group_names.nationals.federal if /National Party.+Fed/i.match?(name)
     return group_names.nationals.federal if /The Nationals.+Fed/i.match?(name)
     return group_names.nationals.federal if /Nationals.+Fed/i.match?(name)

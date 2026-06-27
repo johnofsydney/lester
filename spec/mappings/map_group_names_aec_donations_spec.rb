@@ -537,6 +537,10 @@ RSpec.describe MapGroupNamesAecDonations, type: :service do
       expect(described_class.new.call('KimberlyClark')).to eq('Kimberly-Clark Australia Pty Ltd')
     end
 
+    it 'returns "King International Education Services" for names containing "King International Education Services"' do
+      expect(described_class.new.call('King International Education Services')).to eq('King International Education Services')
+    end
+
     it 'returns "L3 Harris Technologies" for names containing "L3 Harris Technologies" or "L3Harris Technologies"' do
       expect(described_class.new.call('L3 Harris Technologies')).to eq('L3 Harris Technologies')
       expect(described_class.new.call('L3Harris Technologies')).to eq('L3 Harris Technologies')
@@ -569,6 +573,10 @@ RSpec.describe MapGroupNamesAecDonations, type: :service do
 
     it 'returns "National Retail Association Limited" for names containing "National Retail Association"' do
       expect(described_class.new.call('National Retail Association')).to eq('National Retail Association Limited')
+    end
+
+    it 'returns "National Union of Workers - NSW Branch" for names containing "National Union of Workers - NSW Branch"' do
+      expect(described_class.new.call('National Union of Workers - NSW Branch')).to eq('National Union of Workers - NSW Branch')
     end
 
     it 'returns "Nestle Australia" for names containing "Nestle Australia"' do
