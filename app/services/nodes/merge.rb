@@ -12,8 +12,7 @@ class Nodes::Merge
     raise 'Cannot merge node into itself' if receiver_node == argument_node
     raise 'Cannot merge different types of node' unless receiver_node.class == argument_node.class
     raise 'Cannot merge where both groups have ABN' if both_have_business_number?
-
-    raise 'TODO: handle external ids'
+    raise 'Cannot merge - nodes have different External Identifiers with same source' unless no_clashing_identifiers?
 
     # 1. Move all transfers from argument_node to receiver_node
     # If there are EQUIVALENT transfers (same giver, taker, effective date) for both nodes,
@@ -25,7 +24,9 @@ class Nodes::Merge
     # 4. Clear cached data on receiver_node (and call job to refresh counts etc)
     # 5. Return receiver_node
 
-    handle_business_number
+    handle_external_ids
+
+    handle_business_number # TODO: Should be using an external ID
     handle_transfers
     handle_memberships
     handle_trading_names
@@ -47,14 +48,23 @@ class Nodes::Merge
     end
   end
 
+  def handle_external_ids
+    ExternalIdentifier.where(owner: argument_node).update_all(owner_id: receiver_node.id) # rubocop:disable Rails/SkipsModelValidations
+  end
+
+  def no_clashing_identifiers?
+    (
+      ExternalIdentifier.where(owner: argument_node).pluck(:source) &
+      ExternalIdentifier.where(owner: receiver_node).pluck(:source)
+    ).empty?
+  end
+
   def handle_business_number
     return if receiver_node.business_number.present?
     return if argument_node.business_number.blank?
 
     business_number = argument_node.business_number.strip
-    # rubocop:disable Rails/SkipsModelValidations
-    argument_node.update_column(:business_number, nil)
-    # rubocop:enable Rails/SkipsModelValidations
+    argument_node.update_column(:business_number, nil) # rubocop:disable Rails/SkipsModelValidations
     receiver_node.update!(business_number:)
   end
 
