@@ -7,6 +7,10 @@ RSpec.describe Groups::RecordGroup, type: :service do
 
   let(:mapper) { MapGroupNamesAecDonations.new }
 
+  before do
+    allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+  end
+
   describe '#initialize' do
     it 'initializes with a name' do
       service = described_class.new('Test Name', business_number: nil, mapper:)
@@ -17,10 +21,6 @@ RSpec.describe Groups::RecordGroup, type: :service do
   describe '.call' do
     context 'when the mapper is AEC Donations' do
       let(:mapper) { MapGroupNamesAecDonations.new }
-
-      before do
-        allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
-      end
 
       context 'when the group does not already exist' do
         it 'creates a group with the given name' do
