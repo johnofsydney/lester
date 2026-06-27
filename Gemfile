@@ -94,6 +94,6 @@ gem "rexml"
 gem "ostruct"
 
 # resolving vulnerabilities
-gem 'rack', '~> 3.1.20'
+gem 'rack', '~> 3.1.21'
 gem 'uri', '~> 1.0.4'
-gem 'nokogiri', '>= 1.19.1'
+gem 'nokogiri', '>= 1.19.3'
