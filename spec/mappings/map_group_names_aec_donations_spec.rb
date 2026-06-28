@@ -123,6 +123,10 @@ RSpec.describe MapGroupNamesAecDonations, type: :service do
       expect(described_class.new.call('Sentinel Property Group')).to eq('Sentinel Property Group')
     end
 
+    it 'returns "Crone Nation Architects" for names containing "Crone Nation Architects"' do
+      expect(described_class.new.call('Crone Nation Architects')).to eq('Crone Nation Architects')
+    end
+
     it 'returns "Chevron Australia Pty Ltd" for names containing "Chevron Australia"' do
       expect(described_class.new.call('Chevron Australia')).to eq('Chevron Australia Pty Ltd')
     end

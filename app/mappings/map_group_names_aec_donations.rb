@@ -227,7 +227,7 @@ class MapGroupNamesAecDonations < MapGroupNamesBase
     return 'Waringah Independents' if name.match?(/(Warringah|Waringah).+(independent|Independant)/i)
     return 'Lambie Network' if name.match?(/Lambie/i)
     return 'United Australia Party' if name.match?(/United Australia (Party|Federal)/i)
-    return "Pauline Hanson's One Nation" if name.match?(/Pauline Hanson|One Nation/i)
+    return "Pauline Hanson's One Nation" if name.match?(/Pauline Hanson|\bOne Nation\b/i)
 
     # specific exceptions
     return group_names.liberals.federal if /Liberal Party.+Menzies Research Centre/i.match?(name)
