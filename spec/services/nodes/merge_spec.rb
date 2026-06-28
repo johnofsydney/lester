@@ -171,5 +171,36 @@ RSpec.describe Nodes::Merge, type: :service do
         expect(Membership).to exist(group: parent_group2, member: group_a)
       end
     end
+
+    context 'when there are external IDs' do
+      before do
+        ExternalIdentifier.create(owner: group_a, source: 'foo', value: 123)
+        ExternalIdentifier.create(owner: group_b, source: 'bar', value: 123)
+      end
+
+      context 'and some of the external IDs are the same source, different value' do
+        before do
+          ExternalIdentifier.create(owner: group_a, source: 'aec', value: 123)
+          ExternalIdentifier.create(owner: group_b, source: 'aec', value: 234)
+        end
+
+        it 'raises an error' do
+          expect {described_class.call(receiver_node: group_a, argument_node: group_b)}.to raise_error('Cannot merge - nodes have different External Identifiers with same source')
+        end
+      end
+
+      context 'and none of the external IDs clash' do
+        it 'merges the external identifiers' do
+          described_class.call(receiver_node: group_a, argument_node: group_b)
+
+          expect(ExternalIdentifier).to exist(owner: group_a, source: 'foo', value: 123)
+          expect(ExternalIdentifier).to exist(owner: group_a, source: 'bar', value: 123)
+
+          expect(ExternalIdentifier).not_to exist(owner: group_b)
+        end
+
+      end
+
+    end
   end
 end

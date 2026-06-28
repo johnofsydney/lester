@@ -15,8 +15,8 @@ class People::RecordPerson
 
   def call
     if external_id
-      People::Record::RecordPersonWithExternalId.new(name:, identifier:, source:, id_attribute:).call
-    elsif (person = Person.find_by_name_i(name)) # rubocop:disable Rails/DynamicFindBy
+      Entity::RecordEntityWithExternalId.new(name:, identifier:, source:, id_attribute:, klass: 'Person').call
+    elsif (person = Person.find_by(name:))
         person
     else
       People::Record::RecordPersonWithName.new(name:).call

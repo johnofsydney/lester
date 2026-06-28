@@ -7,6 +7,10 @@ RSpec.describe Groups::RecordGroup, type: :service do
 
   let(:mapper) { MapGroupNamesAecDonations.new }
 
+  before do
+    allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+  end
+
   describe '#initialize' do
     it 'initializes with a name' do
       service = described_class.new('Test Name', business_number: nil, mapper:)
@@ -17,10 +21,6 @@ RSpec.describe Groups::RecordGroup, type: :service do
   describe '.call' do
     context 'when the mapper is AEC Donations' do
       let(:mapper) { MapGroupNamesAecDonations.new }
-
-      before do
-        allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
-      end
 
       context 'when the group does not already exist' do
         it 'creates a group with the given name' do
@@ -165,6 +165,33 @@ RSpec.describe Groups::RecordGroup, type: :service do
         expect { described_class.call(name, acnc_id: 'ACNC-300') }.not_to change(Group, :count)
 
         expect(group.reload.acnc_id).to eq('ACNC-300')
+      end
+    end
+  end
+
+  context 'when several groups have the same name' do
+    let(:name) { 'Duplicate Name' }
+
+    before do
+      create(:group, name:)
+      create(:group, name:)
+    end
+
+    it 'raises an error when attempting to create a group with the same name' do
+      expect { described_class.call(name) }.to raise_error(ActiveRecord::RecordNotUnique)
+    end
+
+    context 'when the new group has an external identifier' do
+      it 'creates a new group with the external identifier' do
+        expect { described_class.call(name, aec_id: 'AEC-400') }.to change(Group, :count).by(1)
+        expect(Group.last.aec_id).to eq('AEC-400')
+      end
+    end
+
+    context 'when the new group has a business number' do
+      it 'creates a new group with the business number' do
+        expect { described_class.call(name, business_number: '123456789') }.to change(Group, :count).by(1)
+        expect(Group.last.business_number).to eq('123456789')
       end
     end
   end

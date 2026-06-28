@@ -70,8 +70,7 @@ gem 'flipper'
 gem 'flipper-active_record'
 gem 'flipper-ui'
 
-# TODO:
-# add bootstrap gem?
+# if ever add bootstrap as a gem...
 # https://dev.to/chmich/setup-bootstrap-on-rails-7-and-vite-g5a
 
 gem 'faraday', '>= 2.14.1'
@@ -95,6 +94,6 @@ gem "rexml"
 gem "ostruct"
 
 # resolving vulnerabilities
-gem 'rack', '~> 3.1.20'
+gem 'rack', '~> 3.1.21'
 gem 'uri', '~> 1.0.4'
-gem 'nokogiri', '>= 1.19.1'
+gem 'nokogiri', '>= 1.19.3'

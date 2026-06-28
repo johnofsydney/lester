@@ -247,11 +247,11 @@ GEM
     newrelic_rpm (10.1.0)
       logger
     nio4r (2.7.5)
-    nokogiri (1.19.1-aarch64-linux-gnu)
+    nokogiri (1.19.4-aarch64-linux-gnu)
       racc (~> 1.4)
-    nokogiri (1.19.1-arm64-darwin)
+    nokogiri (1.19.4-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.19.1-x86_64-linux-gnu)
+    nokogiri (1.19.4-x86_64-linux-gnu)
       racc (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.3)
@@ -292,7 +292,7 @@ GEM
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
-    rack (3.1.20)
+    rack (3.1.21)
     rack-protection (4.2.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
@@ -517,7 +517,7 @@ DEPENDENCIES
   jbuilder
   money-rails (~> 1.12)
   newrelic_rpm
-  nokogiri (>= 1.19.1)
+  nokogiri (>= 1.19.3)
   ostruct
   pg (~> 1.1)
   pg_search
@@ -528,7 +528,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma (>= 6.4.3)
-  rack (~> 3.1.20)
+  rack (~> 3.1.21)
   rails (~> 8.0.1)
   redis (~> 4.0)
   rexml
