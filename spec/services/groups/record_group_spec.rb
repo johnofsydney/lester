@@ -5,7 +5,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
 
   let(:group_names) { Group::NAMES }
 
-  let(:mapper) { MapGroupNamesAecDonations.new }
+  let(:mapper) { MapGroupNamesAecDonors.new }
 
   before do
     allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
@@ -19,8 +19,8 @@ RSpec.describe Groups::RecordGroup, type: :service do
   end
 
   describe '.call' do
-    context 'when the mapper is AEC Donations' do
-      let(:mapper) { MapGroupNamesAecDonations.new }
+    context 'when the mapper is AEC Donors' do
+      let(:mapper) { MapGroupNamesAecDonors.new }
 
       context 'when the group does not already exist' do
         it 'creates a group with the given name' do
