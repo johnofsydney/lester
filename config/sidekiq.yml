@@ -35,10 +35,14 @@
 
 :scheduler:
   :schedule:
-    # Every year fetch all ACNC listed charities (CSV Download)
+    # Every year fetch all ACNC listed charities organisations (CSV Download)
     ingest_charities_dataset_csv_job:
       cron: '0 14 1 3 *' # Every year on March 1st at midnight
       class: IngestCharitiesDatasetCsvJob
+    # Every year fetch all people belonging to ACNC listed charities
+    ingest_charities_people_job:
+      cron: '0 14 2 3 *' # Every year on March 2nd at midnight
+      class: IngestCharitiesPeopleJob
     # Twice per year fetch all Federal Lobbyists (CSV Download)
     ingest_lobbyists_job:
       cron: '0 14 1 4,10 *' # Every year on April 1st and October 1st at midnight

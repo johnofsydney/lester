@@ -2,40 +2,30 @@
 require 'sidekiq-scheduler'
 
 class IngestCharitiesPeopleJob
+  # If required, run from console with:
+  # IngestCharitiesPeopleJob.perform_async
   include Sidekiq::Job
 
-  def perform
-    return unless charity_groups_to_fetch.any?
+  QUANTITY = 2_000
 
-    if queue_size > 200
-      Rails.logger.warn "Queue size is too large (#{queue_size}), deferring job"
-      self.class.perform_in(5.minutes)
-      return
-    end
+  attr_reader :offset
 
-    charity_groups_to_fetch.find_each do |group|
+  def perform(offset = 0)
+    @offset = offset.to_i
+
+    groups_to_update.offset(offset).limit(QUANTITY).find_each do |group|
       IngestSingleCharitiesPeopleJob.perform_async(group.id)
     end
 
     # Re-enqueue itself until fully done
-    self.class.perform_in(5.minutes)
-
-  rescue StandardError => e
-    Rails.logger.error "Error processing charities people: #{e.message} - will retry"
-    Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(message: e.message)
-    raise e
+    self.class.perform_in(4.minutes, offset + QUANTITY) if more_remaining?
   end
 
-  def charity_groups_to_fetch
-    batch_size = 1000
-
-    Group.find_by(name: 'Charities').groups
-                                    .with_business_number
-                                    .limit(batch_size)
+  def groups_to_update
+    Group.find_by(name: 'Charities').groups.with_business_number.order(:id)
   end
 
-  def queue_size
-    Sidekiq::Queue.new('low').size
+  def more_remaining?
+    groups_to_update.offset(offset + QUANTITY).exists?
   end
 end
