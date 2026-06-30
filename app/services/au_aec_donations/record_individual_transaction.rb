@@ -65,15 +65,19 @@ class AuAecDonations::RecordIndividualTransaction
   end
 
   def donor
-    @donor ||= RecordPersonOrGroup.call(donation.donor_name, mapper:, aec_id: donation.donor_aec_id)
+    @donor ||= RecordPersonOrGroup.call(donation.donor_name, mapper: donor_mapper, aec_id: donation.donor_aec_id)
   end
 
   def recipient
-    @recipient ||= RecordPersonOrGroup.call(donation.recipient_name, mapper:, aec_id: donation.recipient_aec_id)
+    @recipient ||= RecordPersonOrGroup.call(donation.recipient_name, mapper: recipient_mapper, aec_id: donation.recipient_aec_id)
   end
 
-  def mapper
-    ::MapGroupNamesAecDonations.new
+  def donor_mapper
+    ::MapGroupNamesAecDonors.new
+  end
+
+  def recipient_mapper
+    ::MapGroupNamesAecRecipients.new
   end
 
   def fine_grained_transaction_category
