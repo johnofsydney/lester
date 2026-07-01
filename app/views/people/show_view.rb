@@ -10,6 +10,11 @@ class People::ShowView < ApplicationView
   end
 
   def view_template
+    turbo_cable_stream_source(
+      channel: "Turbo::StreamsChannel",
+      signed_stream_name: Turbo::StreamsChannel.signed_stream_name(person)
+    )
+
     render Common::Heading.new(entity: person.cached)
 
     render Common::StatsSummary.new(

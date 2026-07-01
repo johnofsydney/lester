@@ -11,6 +11,11 @@ class Groups::ShowView < ApplicationView
   def view_template
     page_number = 0
 
+    turbo_cable_stream_source(
+      channel: "Turbo::StreamsChannel",
+      signed_stream_name: Turbo::StreamsChannel.signed_stream_name(group)
+    )
+
     div(id: 'group-show-view') do
       render Common::Heading.new(entity: group.cached)
 
