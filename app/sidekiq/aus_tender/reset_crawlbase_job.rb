@@ -1,6 +1,6 @@
 require 'sidekiq-scheduler'
 
-class ResetAusTenderCrawlbaseJob
+class AusTender::ResetCrawlbaseJob
   include Sidekiq::Job
 
   sidekiq_options(

@@ -1,9 +1,9 @@
-class BackfillAecIdToExternalIdentifiers
+class Maintenance::BackfillAecIdToExternalIdentifiersJob
   # Migrates existing aec_id columns on people and groups into the external_identifiers table.
   # Run after deploying the CreateExternalIdentifiers migration.
   #
   # Trigger from console with:
-  #   BackfillAecIdToExternalIdentifiers.perform_async
+  #   Maintenance::BackfillAecIdToExternalIdentifiersJob.perform_async
   include Sidekiq::Job
 
   BATCH_SIZE = 500

@@ -23,14 +23,14 @@ class PeopleController < ApplicationController
     if @person.cache_fresh?
       render People::ShowView.new(person: @person)
     else
-      BuildPersonCachedDataJob.perform_async(@person.id)
+      Cache::BuildPersonCachedDataJob.perform_async(@person.id)
       render Common::PleaseRefreshLater.new
     end
   end
 
   def reload
     @person = Person.find(params[:id])
-    BuildPersonCachedDataJob.perform_async(@person.id)
+    Cache::BuildPersonCachedDataJob.perform_async(@person.id)
 
     render People::ShowView.new(person: @person.reload)
   end

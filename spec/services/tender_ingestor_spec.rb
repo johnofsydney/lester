@@ -8,8 +8,8 @@ RSpec.describe TenderIngestor, type: :service do
     allow(Faraday).to receive(:new).and_return(double('Faraday::Connection', get: response))
     allow(response).to receive_messages(body: response_body, success?: true)
 
-    allow(IngestContractsUrlJob).to receive(:perform_async).and_return('jid:123')
-    allow(IngestContractsUrlJob).to receive(:perform_in)
+    allow(AusTender::IngestContractsUrlJob).to receive(:perform_async).and_return('jid:123')
+    allow(AusTender::IngestContractsUrlJob).to receive(:perform_in)
   end
 
   let(:response) { double('Faraday::Response', status: 200) }
@@ -31,18 +31,18 @@ RSpec.describe TenderIngestor, type: :service do
       let(:purchaser_name) { 'Services Australia' }
 
       before do
-        allow(IngestSingleContractJob).to receive(:perform_async).and_return('jid:456')
+        allow(AusTender::IngestSingleContractJob).to receive(:perform_async).and_return('jid:456')
       end
 
       it "calls fetch_contracts_for_url and processes each contract's individual transactions" do
         described_class.process_for_url(url: 'url')
-        expect(IngestSingleContractJob).to have_received(:perform_async).at_least(:once)
+        expect(AusTender::IngestSingleContractJob).to have_received(:perform_async).at_least(:once)
       end
 
       it 'queues the next page for processing' do
         described_class.process_for_url(url: 'url')
 
-        expect(IngestContractsUrlJob).to have_received(:perform_in)
+        expect(AusTender::IngestContractsUrlJob).to have_received(:perform_in)
                                      .with(
                                         anything,
                                         %r{\Ahttps://api\.tenders\.gov\.au/ocds/findByDates/contractLastModified}

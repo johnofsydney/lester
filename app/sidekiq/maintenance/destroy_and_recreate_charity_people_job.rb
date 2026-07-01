@@ -17,6 +17,6 @@ class Maintenance::DestroyAndRecreateCharityPeopleJob
       Membership.person_in_charity.destroy_all
 
       # now no one belongs to a charity, run the job and re-ingest all people who belong to charities
-      IngestCharitiesDatasetCsvJob.perform_async
+      Acnc::IngestDatasetCsvJob.perform_async
     end
 end

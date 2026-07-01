@@ -22,7 +22,7 @@ class Admin::People::ExplodePerson
         membership_ids << membership.id
 
         membership.group.update(cached_data: {})
-        BuildGroupCachedDataJob.perform_async(membership.group.id)
+        Cache::BuildGroupCachedDataJob.perform_async(membership.group.id)
       end
 
       person.destroy!

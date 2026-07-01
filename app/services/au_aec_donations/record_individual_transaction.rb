@@ -47,7 +47,7 @@ class AuAecDonations::RecordIndividualTransaction
     )
 
     # wait a moment to allow the lock prevention of running duplicates in quick succession
-    RefreshSingleTransferAmountJob.perform_in(5.minutes, transfer.id)
+    Transfers::RefreshSingleTransferAmountJob.perform_in(5.minutes, transfer.id)
   end
 
   def valid?

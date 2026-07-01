@@ -20,7 +20,7 @@ class AcncCharities::IngestCsv
         break if Rails.env.development? && index > 20
         break if Rails.env.staging? && index > 1000
 
-        RecordSingleCharityGroupJob.perform_async(row[:name], row[:abn], tag.id)
+        Acnc::RecordSingleCharityGroupJob.perform_async(row[:name], row[:abn], tag.id)
        end
   end
 

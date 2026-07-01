@@ -1,6 +1,6 @@
 # From the AusTender API, ingest a single contract by its ID
 
-class IngestSingleContractJob
+class AusTender::IngestSingleContractJob
   include Sidekiq::Job
 
   sidekiq_options queue: :aus_tender_contracts,
@@ -36,7 +36,6 @@ class IngestSingleContractJob
     else
       Rails.logger.error "Failed to ingest Contract #{contract_id} after 5 retries due to Too Many Requests: #{e.message}"
       Rails.logger.error e.backtrace.join("\n")
-      # This will fallback to Sidekiq's default retry mechanism
       raise e
     end
   rescue StandardError => e

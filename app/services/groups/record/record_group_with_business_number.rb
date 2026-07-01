@@ -27,7 +27,7 @@ class Groups::Record::RecordGroupWithBusinessNumber
 
     save_inside_advisory_lock!(group)
 
-    UpdateGroupNamesFromAbnJob.perform_async(group.id) if group.id.present?
+    Abn::UpdateGroupNamesJob.perform_async(group.id) if group.id.present?
 
     group
   end
