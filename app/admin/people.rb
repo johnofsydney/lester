@@ -72,7 +72,7 @@ ActiveAdmin.register Person do
 
   # batch_action :ingest_linkedin_batch, confirm: 'Are you sure you want to ingest LinkedIn data for these people?' do |ids|
   #   ids.each do |id|
-  #     LinkedinProfileGetterJob.perform_async(id)
+  #     Linkedin::ProfileGetterJob.perform_async(id)
   #   end
 
   #   redirect_to collection_path, alert: 'LinkedIn data ingested successfully.'
@@ -87,7 +87,7 @@ ActiveAdmin.register Person do
   # member_action :ingest_linkedin, method: :post do
   #   person = resource
 
-  #   LinkedinProfileGetterJob.perform_async(person.id)
+  #   Linkedin::ProfileGetterJob.perform_async(person.id)
   # end
 
   action_item :explode_person, only: :show do

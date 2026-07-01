@@ -1,16 +1,8 @@
-# The main entry point for ingesting people who are connected to charities
-# As of 1/7/2026 there are 64_897 charity groups.
-# Each IngestSingleCharitiesPeopleJob can take up to a minute
-# Which is about 1100 hours
-# At the standard concurrency of 5, and with perfect efficiency this is about 9 days of continuous working
-# For a real production system, I'd make these jobs land in a queue with much higher concurrency
-# For this project, 9 days is fine really.
-# But it is important not to let 64_897 jobs sit inthe queue waiting to process, which is why the check-queue-size-before-proceeding is implemented.
 require 'sidekiq-scheduler'
 
-class IngestCharitiesPeopleJob
+class Acnc::IngestPeopleJob
   # If required, run from console with:
-  # IngestCharitiesPeopleJob.perform_async
+  # Acnc::IngestPeopleJob.perform_async
   include Sidekiq::Job
 
   QUANTITY = 2_000
@@ -27,7 +19,7 @@ class IngestCharitiesPeopleJob
     end
 
     groups_to_update.offset(offset).limit(QUANTITY).find_each do |group|
-      IngestSingleCharitiesPeopleJob.perform_async(group.id)
+      Acnc::IngestSingleCharityPeopleJob.perform_async(group.id)
     end
 
     # Re-enqueue itself until fully done

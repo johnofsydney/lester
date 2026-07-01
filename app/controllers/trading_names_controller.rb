@@ -9,7 +9,7 @@ class TradingNamesController < ApplicationController
       if owner.cache_fresh?
         render People::ShowView.new(person: owner)
       else
-        BuildPersonCachedDataJob.perform_async(owner.id)
+        Cache::BuildPersonCachedDataJob.perform_async(owner.id)
         render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
       end
     elsif owner.is_a?(Group)
@@ -18,7 +18,7 @@ class TradingNamesController < ApplicationController
       if owner.cache_fresh?
         render Groups::ShowView.new(group: owner)
       else
-        BuildGroupCachedDataJob.perform_async(owner.id)
+        Cache::BuildGroupCachedDataJob.perform_async(owner.id)
         render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
       end
     else

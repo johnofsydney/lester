@@ -1,6 +1,6 @@
 require 'sidekiq-scheduler'
 
-class NodeCountJob
+class Cache::NodeCountJob
   include Sidekiq::Job
 
   sidekiq_options(

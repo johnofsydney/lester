@@ -1,8 +1,6 @@
-require 'sidekiq-scheduler'
-
-class BackfillNamesFromAbnJob
+class Abn::BackfillNamesJob
   # run from console with:
-  # BackfillNamesFromAbnJob.perform_async
+  # Abn::BackfillNamesJob.perform_async
   # Can delete when finished
   include Sidekiq::Job
 
@@ -14,7 +12,7 @@ class BackfillNamesFromAbnJob
     @offset = offset.to_i
 
     groups_to_update.offset(offset).limit(QUANTITY).find_each do |group|
-      UpdateGroupNamesFromAbnJob.perform_async(group.id)
+      Abn::UpdateGroupNamesJob.perform_async(group.id)
     end
 
     # Re-enqueue itself until fully done

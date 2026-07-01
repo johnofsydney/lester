@@ -109,7 +109,7 @@ ActiveAdmin.register Group do
   end
 
   member_action :refresh_from_abn, method: :get do
-    UpdateGroupNamesFromAbnJob.perform_async(resource.id)
+    Abn::UpdateGroupNamesJob.perform_async(resource.id)
     redirect_to admin_group_path(resource), notice: 'Refresh from ABN Queued.'
   end
 

@@ -38,27 +38,27 @@
     # Every year fetch all ACNC listed charities organisations (CSV Download)
     ingest_charities_dataset_csv_job:
       cron: '0 14 1 3 *' # Every year on March 1st at midnight
-      class: IngestCharitiesDatasetCsvJob
+      class: Acnc::IngestDatasetCsvJob
     # Every year fetch all people belonging to ACNC listed charities
     ingest_charities_people_job:
       cron: '0 14 2 3 *' # Every year on March 2nd at midnight
-      class: IngestCharitiesPeopleJob
+      class: Acnc::IngestPeopleJob
     # Twice per year fetch all Federal Lobbyists (CSV Download)
     ingest_lobbyists_job:
       cron: '0 14 1 4,10 *' # Every year on April 1st and October 1st at midnight
-      class: IngestLobbyistsJob
+      class: AuLobbyists::IngestLobbyistsJob
     backfill_contracts_master_job:
       cron: '0 13 2 * *' # On the 2nd of Every Month, at 23:00
-      class: BackfillContractsMasterJob
+      class: AusTender::BackfillContractsMasterJob
     # Every day fetch all AusTender contracts
     ingest_contracts_date:
       cron: '0 16 * * *' # Every day ay 2am
-      class: IngestContractsDateJob
+      class: AusTender::IngestContractsDateJob
     # Every day handle any Transfers that are 0 amount
     handle_zero_value_transfers:
       cron: '0 17 * * *' # Every day ay 3am
-      class: HandleZeroValueTransfersJob
+      class: Transfers::HandleZeroValueTransfersJob
     # Every day run the RefreshNodesCountJob
     refresh_nodes_count_job:
       cron: '15 * * * *' # Every hour at 15 mins past the hour
-      class: RefreshNodesCountJob
+      class: Cache::RefreshNodesCountJob

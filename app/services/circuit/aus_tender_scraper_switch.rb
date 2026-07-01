@@ -10,6 +10,6 @@ class Circuit::AusTenderScraperSwitch
     Rails.logger.info 'Switched to Crawlbase scraping'
 
     SidekiqUtils.set_redis_key('aus_tender_use_crawlbase', 'true')
-    ResetAusTenderCrawlbaseJob.perform_in(1.minute) unless SidekiqUtils.already_scheduled?('ResetAusTenderCrawlbaseJob')
+    AusTender::ResetCrawlbaseJob.perform_in(1.minute) unless SidekiqUtils.already_scheduled?('AusTender::ResetCrawlbaseJob')
   end
 end
