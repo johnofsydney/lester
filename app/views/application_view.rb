@@ -9,6 +9,7 @@ class ApplicationView < ApplicationComponent
   # components independent.
 
   register_element :turbo_frame
+  register_element :"turbo-cable-stream-source"
 
   def color_styles(instance)
     { 'background_color' => background_color(instance), 'color' => color(instance) }.map { |key, value| "#{key.to_s.dasherize}: #{value};" }
