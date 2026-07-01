@@ -3,7 +3,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '3.4.7'
 
-gem 'rails', '~> 8.0.1'
+gem 'rails', '~> 8.1'
 gem 'sprockets-rails'
 gem 'pg', '~> 1.1'
 gem 'puma', '>= 6.4.3'
@@ -48,14 +48,14 @@ group :development do
 end
 
 gem 'dockerfile-rails', '>= 1.2', :group => :development
-gem 'phlex-rails', '~> 2.0'
-gem 'phlex', '~> 2.3.2'
+gem 'phlex-rails', '~> 2.4'
+gem 'phlex', '~> 2.4'
 
 gem 'pg_search'
 gem 'devise'
 
 gem 'sassc-rails'
-gem 'activeadmin', '~> 3.3.0'
+gem 'activeadmin', '~> 3.5'
 
 gem 'money-rails', '~> 1.12'
 gem 'capitalize-names'
@@ -92,8 +92,3 @@ gem "roo", "~> 3.0.0"
 
 gem "rexml"
 gem "ostruct"
-
-# resolving vulnerabilities
-gem 'rack', '~> 3.1.21'
-gem 'uri', '~> 1.0.4'
-gem 'nokogiri', '>= 1.19.3'
