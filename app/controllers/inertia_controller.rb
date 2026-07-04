@@ -25,7 +25,7 @@ class InertiaController < ApplicationController
     else
       BuildPersonCachedDataJob.perform_async(@person.id)
 
-      render Common::PleaseRefreshLater.new
+      render Common::PleaseRefreshLater.new(entity: @person)
     end
   end
 
@@ -48,7 +48,7 @@ class InertiaController < ApplicationController
     else
       BuildGroupCachedDataJob.perform_async(@group.id)
 
-      render Common::PleaseRefreshLater.new
+      render Common::PleaseRefreshLater.new(entity: @group)
     end
   end
 

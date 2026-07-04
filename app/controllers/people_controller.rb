@@ -24,7 +24,7 @@ class PeopleController < ApplicationController
       render People::ShowView.new(person: @person)
     else
       BuildPersonCachedDataJob.perform_async(@person.id)
-      render Common::PleaseRefreshLater.new
+      render Common::PleaseRefreshLater.new(entity: @person)
     end
   end
 
