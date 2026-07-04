@@ -10,7 +10,7 @@ class Common::PleaseRefreshLater < ApplicationView
     # An update to the entity will trigger a turbo stream update to this page, which will cause the whole page to refresh
     # which routes hrough the controller as normal, checking the cache freshness and rendering the appropriate view.
     turbo_cable_stream_source(
-      channel: "Turbo::StreamsChannel",
+      channel: 'Turbo::StreamsChannel',
       signed_stream_name: Turbo::StreamsChannel.signed_stream_name(entity)
     )
 

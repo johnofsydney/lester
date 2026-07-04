@@ -11,7 +11,7 @@ class People::ShowView < ApplicationView
 
   def view_template
     turbo_cable_stream_source(
-      channel: "Turbo::StreamsChannel",
+      channel: 'Turbo::StreamsChannel',
       signed_stream_name: Turbo::StreamsChannel.signed_stream_name(person)
     )
 

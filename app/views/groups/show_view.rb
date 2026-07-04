@@ -12,7 +12,7 @@ class Groups::ShowView < ApplicationView
     page_number = 0
 
     turbo_cable_stream_source(
-      channel: "Turbo::StreamsChannel",
+      channel: 'Turbo::StreamsChannel',
       signed_stream_name: Turbo::StreamsChannel.signed_stream_name(group)
     )
 
