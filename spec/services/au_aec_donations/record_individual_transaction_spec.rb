@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe AuAecDonations::RecordIndividualTransaction do
   before do
-    allow(RefreshSingleTransferAmountJob).to receive(:perform_in).and_return(true)
+    allow(Transfers::RefreshSingleTransferAmountJob).to receive(:perform_in).and_return(true)
     allow(FineGrainedTransactionCategory).to receive(:find_by).and_return(FineGrainedTransactionCategory.new(name: 'au_aec_donation.referendum'))
   end
 

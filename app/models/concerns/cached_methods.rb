@@ -30,7 +30,7 @@ module CachedMethods
       # return cached value
       nodes_count_cached
     else
-      NodeCountJob.perform_async(self.class.name, id) unless Sidekiq::Queue.new('default').size >= 500
+      Cache::NodeCountJob.perform_async(self.class.name, id) unless Sidekiq::Queue.new('default').size >= 500
       nodes.count
     end
   end

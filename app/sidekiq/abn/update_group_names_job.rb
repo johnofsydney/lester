@@ -1,6 +1,6 @@
 require 'sidekiq-scheduler'
 
-class UpdateGroupNamesFromAbnJob
+class Abn::UpdateGroupNamesJob
   include Sidekiq::Job
 
   sidekiq_options(

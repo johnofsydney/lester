@@ -12,8 +12,8 @@ RSpec.describe Nodes::Merge, type: :service do
     let!(:person_b)  { Person.create!(name: 'Bob') }
 
     before do
-      allow(BuildGroupCachedDataJob).to receive(:perform_async)
-      allow(BuildPersonCachedDataJob).to receive(:perform_async)
+      allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async)
+      allow(Cache::BuildPersonCachedDataJob).to receive(:perform_async)
     end
 
     it 'raises when merging node into itself' do
@@ -30,7 +30,7 @@ RSpec.describe Nodes::Merge, type: :service do
       merge
 
       expect(group_a.cached_data).to eq({})
-      expect(BuildGroupCachedDataJob).to have_received(:perform_async).with(group_a.id)
+      expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(group_a.id)
     end
 
     context 'when there are no transfers or memberships' do

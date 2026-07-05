@@ -1,4 +1,4 @@
-class BuildGroupCachedDataJob
+class Cache::BuildGroupCachedDataJob
   include Sidekiq::Job
 
   sidekiq_options queue: :critical, lock: :until_executed, on_conflict: :log
