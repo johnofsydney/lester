@@ -13,7 +13,7 @@ class TenderIngestor
         return
       end
 
-      contracts.each { |contract_id| IngestSingleContractJob.perform_async(contract_id) }
+      contracts.each { |contract_id| AusTender::IngestSingleContractJob.perform_async(contract_id) }
     end
   end
 
@@ -35,7 +35,7 @@ class TenderIngestor
     # If there is a next page, we need to fetch it and handle it asynchronously.
     # By doing it quite a bit later we aim to reduce load on the server.
     delay = rand(30..60)
-    IngestContractsUrlJob.perform_in(delay.seconds, response[:next_page]) if response[:next_page]
+    AusTender::IngestContractsUrlJob.perform_in(delay.seconds, response[:next_page]) if response[:next_page]
 
     # return array of unique contract ids
     response[:body]['releases'].filter_map { |raw_release| raw_release['contracts'].first['id'] }.uniq

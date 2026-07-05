@@ -143,9 +143,9 @@ class Nodes::Merge
 
   def handle_refresh_job
     if receiver_node.is_a?(Group)
-      BuildGroupCachedDataJob.perform_async(receiver_node.id)
+      Cache::BuildGroupCachedDataJob.perform_async(receiver_node.id)
     elsif receiver_node.is_a?(Person)
-      BuildPersonCachedDataJob.perform_async(receiver_node.id)
+      Cache::BuildPersonCachedDataJob.perform_async(receiver_node.id)
     end
   end
 

@@ -1,8 +1,7 @@
-# When originally written this was to backfill historical data from AusTender contracts master data.
-# Re-purposing to run monthly to ensure any missed days are ingested.
-# As this is a backstop, mostly it won't fetch any new data.
+# Re-runs monthly to catch any missed days from AusTender contracts master data.
+# As a backstop, mostly it won't fetch any new data.
 
-class BackfillContractsMasterJob
+class AusTender::BackfillContractsMasterJob
   include Sidekiq::Job
   sidekiq_options queue: :low, retry: 5
 
@@ -15,9 +14,8 @@ class BackfillContractsMasterJob
 
     return if target_date > Date.today
 
-    # ------------------- Overload protection ---------------------
     if queue_overloaded?
-      BackfillContractsMasterJob.perform_in(5.minutes, date_string)
+      AusTender::BackfillContractsMasterJob.perform_in(5.minutes, date_string)
       return
     end
 
@@ -26,15 +24,13 @@ class BackfillContractsMasterJob
     next_date = target_date + 1.day
     return if next_date > Date.today
 
-    # Schedule next day in 2 minutes
-    BackfillContractsMasterJob.perform_in(2.minutes, next_date.to_s)
+    AusTender::BackfillContractsMasterJob.perform_in(2.minutes, next_date.to_s)
   end
 
   private
 
   def ingest_day(date)
-    # Your existing ingest process
-    IngestContractsDateJob.perform_async(date.to_s)
+    AusTender::IngestContractsDateJob.perform_async(date.to_s)
   end
 
   def queue_overloaded?

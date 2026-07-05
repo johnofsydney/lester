@@ -1,6 +1,6 @@
 require 'sidekiq-scheduler'
 
-class RefreshNodesCountJob
+class Cache::RefreshNodesCountJob
   include Sidekiq::Job
   # as of 2026-1-22 these are the counts:
   # sunshine01(prod)> Group.count
@@ -27,23 +27,23 @@ class RefreshNodesCountJob
     pushed = 0
     args.each_slice(slice_size) do |chunk|
       begin
-        Sidekiq::Client.push_bulk('class' => NodeCountJob, 'args' => chunk)
+        Sidekiq::Client.push_bulk('class' => Cache::NodeCountJob, 'args' => chunk)
         pushed += chunk.size
-        Rails.logger.info "RefreshNodesCountJob: pushed #{people_ids.size} people, #{group_ids.size} groups; rescheduled=#{more_remaining?}"
+        Rails.logger.info "Cache::RefreshNodesCountJob: pushed #{people_ids.size} people, #{group_ids.size} groups; rescheduled=#{more_remaining?}"
       rescue => e
-        Rails.logger.warn "RefreshNodesCountJob: push_bulk failed for #{klass_name} chunk (#{e.class}): falling back to individual enqueues"
+        Rails.logger.warn "Cache::RefreshNodesCountJob: push_bulk failed for #{klass_name} chunk (#{e.class}): falling back to individual enqueues"
         chunk.each do |(k, id)|
           begin
-            NodeCountJob.perform_async(k, id)
+            Cache::NodeCountJob.perform_async(k, id)
             pushed += 1
           rescue => inner_e
-            Rails.logger.error "RefreshNodesCountJob enqueue error for #{k} #{id}: #{inner_e.class} #{inner_e.message}"
+            Rails.logger.error "Cache::RefreshNodesCountJob enqueue error for #{k} #{id}: #{inner_e.class} #{inner_e.message}"
           end
         end
       end
     end
 
-    Rails.logger.info "RefreshNodesCountJob: bulk pushed #{pushed} #{klass_name} jobs"
+    Rails.logger.info "Cache::RefreshNodesCountJob: bulk pushed #{pushed} #{klass_name} jobs"
   end
 
   def people_to_refresh
@@ -58,15 +58,3 @@ class RefreshNodesCountJob
     Person.nodes_count_soon_expired.offset(QUANTITY).exists? || Group.nodes_count_soon_expired.offset(QUANTITY).exists?
   end
 end
-
-# Sidekiq::Client.push_bulk expects to be called like this:
-# Sidekiq::Client.push_bulk(
-#   'class' => MyWorker,
-#   'args' => [[arg1_job1, arg2_job1], [arg1_job2, arg2_job2], ...]
-# )
-
-# In our case above this will be:
-# Sidekiq::Client.push_bulk(
-#   'class' => NodeCountJob,
-#   'args' => [['Person', id1], ['Person', id2], ...]
-# )

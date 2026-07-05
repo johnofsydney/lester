@@ -8,7 +8,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
   let(:mapper) { MapGroupNamesAecDonors.new }
 
   before do
-    allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+    allow(Abn::UpdateGroupNamesJob).to receive(:perform_async)
   end
 
   describe '#initialize' do
@@ -89,7 +89,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
     let(:name) { 'Acme Foundation' }
 
     before do
-      allow(UpdateGroupNamesFromAbnJob).to receive(:perform_async)
+      allow(Abn::UpdateGroupNamesJob).to receive(:perform_async)
     end
 
     context 'when no existing group with a particular name exists' do

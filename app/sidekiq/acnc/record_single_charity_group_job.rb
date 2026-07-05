@@ -1,4 +1,4 @@
-class RecordSingleCharityGroupJob
+class Acnc::RecordSingleCharityGroupJob
   include Sidekiq::Job
 
   sidekiq_options(

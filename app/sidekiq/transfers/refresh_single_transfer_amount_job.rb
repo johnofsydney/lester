@@ -1,6 +1,6 @@
 require 'sidekiq-scheduler'
 
-class RefreshSingleTransferAmountJob
+class Transfers::RefreshSingleTransferAmountJob
   include Sidekiq::Job
 
   sidekiq_options queue: :low,
@@ -18,8 +18,8 @@ class RefreshSingleTransferAmountJob
     return if transfer.amount.to_i == amount.to_i
 
     # as well as updating the amount, set the value_confirmed flag to nil - this transfer is still being updated.
-    # Only historical transfers with a confirmed value will be excluded from the HandleZeroValueTransfersJob
+    # Only historical transfers with a confirmed value will be excluded from the Transfers::HandleZeroValueTransfersJob
     transfer.update(amount: amount, data: transfer.data.merge('value_confirmed' => nil))
-    Rails.logger.info "RefreshTransferAmountJob: Updated Transfer #{transfer.id} amount to #{amount}"
+    Rails.logger.info "Transfers::RefreshSingleTransferAmountJob: Updated Transfer #{transfer.id} amount to #{amount}"
   end
 end

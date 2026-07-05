@@ -23,7 +23,7 @@ class InertiaController < ApplicationController
         json_edges: edges.to_json
       }
     else
-      BuildPersonCachedDataJob.perform_async(@person.id)
+      Cache::BuildPersonCachedDataJob.perform_async(@person.id)
 
       render Common::PleaseRefreshLater.new
     end
@@ -46,7 +46,7 @@ class InertiaController < ApplicationController
         json_edges: edges.to_json
       }
     else
-      BuildGroupCachedDataJob.perform_async(@group.id)
+      Cache::BuildGroupCachedDataJob.perform_async(@group.id)
 
       render Common::PleaseRefreshLater.new
     end

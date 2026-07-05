@@ -1,4 +1,4 @@
-class LinkedinProfileGetterJob
+class Linkedin::ProfileGetterJob
   include Sidekiq::Job
 
   def perform(person_id)
