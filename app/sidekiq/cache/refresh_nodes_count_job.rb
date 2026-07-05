@@ -30,13 +30,13 @@ class Cache::RefreshNodesCountJob
         Sidekiq::Client.push_bulk('class' => Cache::NodeCountJob, 'args' => chunk)
         pushed += chunk.size
         Rails.logger.info "Cache::RefreshNodesCountJob: pushed #{people_ids.size} people, #{group_ids.size} groups; rescheduled=#{more_remaining?}"
-      rescue => e
+      rescue StandardError => e
         Rails.logger.warn "Cache::RefreshNodesCountJob: push_bulk failed for #{klass_name} chunk (#{e.class}): falling back to individual enqueues"
         chunk.each do |(k, id)|
           begin
             Cache::NodeCountJob.perform_async(k, id)
             pushed += 1
-          rescue => inner_e
+          rescue StandardError => inner_e
             Rails.logger.error "Cache::RefreshNodesCountJob enqueue error for #{k} #{id}: #{inner_e.class} #{inner_e.message}"
           end
         end

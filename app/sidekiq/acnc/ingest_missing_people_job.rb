@@ -11,7 +11,6 @@ class Acnc::IngestMissingPeopleJob
     charities_without_people.each do |charity|
       Acnc::IngestSingleCharityPeopleJob.perform_async(charity.id)
     end
-
   rescue StandardError => e
     Rails.logger.error "Error processing Acnc::IngestMissingPeopleJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")

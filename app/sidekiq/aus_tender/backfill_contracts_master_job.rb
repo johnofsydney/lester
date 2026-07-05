@@ -9,10 +9,10 @@ class AusTender::BackfillContractsMasterJob
     target_date = if date_string.present?
                     Date.parse(date_string)
                   else
-                    Date.today.last_month.beginning_of_month
+                    Time.zone.today.last_month.beginning_of_month
                   end
 
-    return if target_date > Date.today
+    return if target_date > Time.zone.today
 
     if queue_overloaded?
       AusTender::BackfillContractsMasterJob.perform_in(5.minutes, date_string)
@@ -22,7 +22,7 @@ class AusTender::BackfillContractsMasterJob
     ingest_day(target_date)
 
     next_date = target_date + 1.day
-    return if next_date > Date.today
+    return if next_date > Time.zone.today
 
     AusTender::BackfillContractsMasterJob.perform_in(2.minutes, next_date.to_s)
   end

@@ -80,6 +80,8 @@ class Group < ApplicationRecord
   has_many :outgoing_transfers, class_name: 'Transfer', as: :giver, dependent: :destroy
   has_many :incoming_transfers, class_name: 'Transfer', as: :taker, dependent: :destroy
 
+  after_update_commit { broadcast_refresh_to(self) }
+
   validates :business_number, uniqueness: { case_sensitive: false }, allow_nil: true
 
   accepts_nested_attributes_for :memberships, allow_destroy: true

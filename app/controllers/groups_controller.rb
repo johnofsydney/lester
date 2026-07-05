@@ -24,7 +24,7 @@ class GroupsController < ApplicationController
       render Groups::ShowView.new(group: @group)
     else
       Cache::BuildGroupCachedDataJob.perform_async(@group.id)
-      render Common::PleaseRefreshLater.new
+      render Common::PleaseRefreshLater.new(entity: @group)
     end
   end
 
