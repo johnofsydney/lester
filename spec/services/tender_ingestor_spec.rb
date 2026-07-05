@@ -43,10 +43,10 @@ RSpec.describe TenderIngestor, type: :service do
         described_class.process_for_url(url: 'url')
 
         expect(AusTender::IngestContractsUrlJob).to have_received(:perform_in)
-                                     .with(
-                                        anything,
-                                        %r{\Ahttps://api\.tenders\.gov\.au/ocds/findByDates/contractLastModified}
-                                      )
+                                                .with(
+                                                  anything,
+                                                  %r{\Ahttps://api\.tenders\.gov\.au/ocds/findByDates/contractLastModified}
+                                                )
       end
     end
   end
