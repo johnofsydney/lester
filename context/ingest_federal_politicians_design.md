@@ -125,6 +125,7 @@ State branch resolution:
 - **MPs**: `constituency` is the electorate name, not the state. Requires an electorate → state
   lookup. Options:
   a. Maintain a lookup table in the codebase (all ~151 electorates mapped to states).
+    get info from https://www.aec.gov.au/profiles/ and populate a mapper ruby file
   b. Call `getDivisions` API endpoint which may return state info per electorate.
   c. For Phase 1, fall back to national party Tag for MPs and revisit.
   _Decision: defer electorate→state mapping to Phase 1b. MPs get national party for now._
