@@ -8,108 +8,142 @@ Ingest Australian Commonwealth awarded grants from GrantConnect into the existin
 
 ## Data Source: GrantConnect
 
-**Site:** https://www.grants.gov.au  
+**Site:** https://www.grants.gov.au
 **Coverage:** All Commonwealth grant awards, mandatory reporting since 31 Dec 2017.
 
-### Public XLSX Download (no auth required)
+---
 
-The search page embeds a download link that returns XLSX directly:
+## Download Endpoints
 
+### Primary: `GaPublishedDownload` (preferred)
+
+Two-step process — the download endpoint requires a session cookie established by visiting the show page first:
+
+**Step 1 — establish session (GET, capture cookies):**
 ```
-GET https://www.grants.gov.au/Search/GaAdvancedSearchDownload
-  ?Page=1
-  &ItemsPerPage=0
-  &SearchFrom=AdvancedSearch
-  &Type=Ga
-  &AgencyStatus=0
-  &KeywordTypeSearch=AllWord
+GET https://www.grants.gov.au/Reports/GaPublishedShow
+  ?AgencyStatus=0
   &DateType=Publish%20Date
-  &DateStart=01-Jul-2025
-  &DateEnd=01-Aug-2025
-  &LastedVariation=True
-  &OrderBy=Relevance
+  &DateStart=05-Jan-2026
+  &DateEnd=05-Jan-2026
+```
+
+**Step 2 — download XLSX (GET, send cookies):**
+```
+GET https://www.grants.gov.au/Reports/GaPublishedDownload
+  ?AgencyStatus=0
+  &DateType=Publish%20Date
+  &DateStart=05-Jan-2026
+  &DateEnd=05-Jan-2026
 ```
 
 - Response: `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
-- Content-Disposition: `attachment; filename=GrantConnect-Advanced-Search_<timestamp>.xlsx`
-- No session/cookies required — plain GET with a browser User-Agent header works
+- No user account required — session cookie from step 1 is sufficient
 - `DateType=Publish Date` with `DateStart`/`DateEnd` is the date filter
-- `LastedVariation=True` returns only the latest version of each amended grant (important — avoids duplicate older versions)
+- Date format: `DD-Mon-YYYY` (e.g. `05-Jan-2026`)
+- Single-day queries work fine; range queries also work
 
-The discovery path: `GaAdvancedSearch` (HTML) has a link to `GaAdvancedSearchDownload` (XLSX).
+### Secondary: `GaAdvancedSearchDownload` (simpler, less data)
 
-### XLSX Structure
+```
+GET https://www.grants.gov.au/Search/GaAdvancedSearchDownload
+  ?Page=1&ItemsPerPage=0&SearchFrom=AdvancedSearch&Type=Ga
+  &AgencyStatus=0&KeywordTypeSearch=AllWord
+  &DateType=Publish%20Date
+  &DateStart=01-Jul-2025&DateEnd=01-Aug-2025
+  &LastedVariation=True&OrderBy=Relevance
+```
 
-- Single sheet: `GrantConnect-Advanced-Search`
-- Rows 1–18: metadata/criteria summary (skip)
-- Row 19: column headers
-- Row 20+: data rows (~12,988 rows for one month)
+- Single GET, no session required
+- Returns 15 columns — **no Recipient ABN**
+- `LastedVariation=True` returns only the latest version of each amended grant
+- Discovery: the `GaAdvancedSearch` HTML page contains an href to `GaAdvancedSearchDownload`
 
-**Columns (row 19):**
+**Use `GaPublishedDownload` as the primary path** — it includes ABN and richer fields.
 
-| Col | Field | Notes |
-|-----|-------|-------|
-| 1 | GA ID | Unique grant award ID. Versioned: `GA484157`, `GA484157-V1`, `GA484157-V2` |
-| 2 | Grant Activity | Program/scheme name |
-| 3 | Agency | Granting department → **giver** |
-| 4 | Publish Date | Date grant was published |
-| 5 | Category | Grant category (Aged Care, Child Care, Trade, etc.) |
-| 6 | Start Date | Grant term start |
-| 7 | End Date | Grant term end |
-| 8 | Value (AUD) | Amount as decimal |
-| 9 | GO ID | Grant Opportunity ID (links to the original opportunity) |
-| 10 | Recipient Name | Organisation or person name → **taker** |
-| 11 | One-off/Ad hoc | Yes/No |
-| 12 | Aggregate Grant Award | Yes/No |
+---
+
+## XLSX Structure: `GaPublishedDownload`
+
+Sheet name: `GrantConnect-Grant-Award-Publis`
+
+- Rows 1–22: metadata/criteria summary — **skip**
+- Row 23: column headers
+- Row 24+: data rows
+
+### Columns (row 23, all 32)
+
+| # | Column | Notes |
+|---|--------|-------|
+| 1 | Agency | Granting department → **giver** |
+| 2 | GA ID | Unique grant award ID → `external_id`. No version suffix here (unlike Advanced Search) |
+| 3 | Internal Reference ID | Agency's internal ref — may be useful as secondary key |
+| 4 | GO ID | Grant Opportunity ID (links to the original opportunity) |
+| 5 | Recipient Name | Organisation or person name → **taker** |
+| 6 | **Recipient ABN** | ABN string (e.g. `79 145 583 099`) or `"ABN Exempt"` |
+| 7 | PBS Program Name | Budget program classification |
+| 8 | Grant Program | Funding program name |
+| 9 | Grant Activity | Specific activity/scheme name |
+| 10 | Purpose | Full description (can be multi-line) |
+| 11 | One-off/Ad hoc | `"Y"` / `"N"` |
+| 12 | Aggregate | `"Y"` / `"N"` |
 | 13 | Aggregate Reason | Text if aggregated |
-| 14 | Number of Awards Aggregated | Integer |
-| 15 | Last Updated | Timestamp string |
+| 14 | Aggregate Number | Integer (nil if not aggregate) |
+| 15 | Selection Process | e.g. `"Open Competitive"`, `"Demand Driven"` |
+| 16 | Category | e.g. `"Legal Services"`, `"Broadcasting and Telecommunications"` |
+| 17 | Confidentiality - Contract | `"Y"` / `"N"` |
+| 18 | Confidentiality - Outputs | `"Y"` / `"N"` |
+| 19 | Publish Date | Ruby Date object |
+| 20 | Approval Date | Ruby Date object |
+| 21 | Start Date | Ruby Date object |
+| 22 | End Date | Ruby Date object |
+| 23 | **Value (AUD)** | Decimal float (e.g. `5341639.0`) — see note on cumulative vs per-grant below |
+| 24 | Recipient Suburb | |
+| 25 | Recipient Town/City | |
+| 26 | Recipient Postcode | |
+| 27 | Recipient State/Territory | |
+| 28 | Recipient Country | |
+| 29 | Delivery State/Territory | |
+| 30 | Delivery Postcode | |
+| 31 | Delivery Country | |
+| 32 | Contact Name | Agency contact |
 
-**No ABN column** in the public download (see ABN strategy below).
+### Observed data examples
 
-### Detail Page
+```
+Agency:         Attorney-General's Department
+GA ID:          GA523939
+Recipient Name: n/a
+Recipient ABN:  ABN Exempt
+Value (AUD):    20000.0
+Publish Date:   2026-01-05
 
-Each grant has a detail view at:  
-`https://www.grants.gov.au/Ga/Show/{UUID}`  
-This likely contains ABN — worth checking once the basic pipeline works.
-
-### Versioned GA IDs (Amendments)
-
-GA IDs can have version suffixes: `GA484157`, `GA484157-V1`, `GA484157-V2`.  
-Same pattern as AusTender contract amendments. The full versioned ID (e.g. `GA484157-V2`) is the unique key per award revision.
-
-`LastedVariation=True` in the download URL means the XLSX only includes the **latest** version per grant, not the full amendment history. This simplifies ingestion but means older versions aren't captured.
+Agency:         Dept of Infrastructure, Transport, Regional Development...
+GA ID:          GA523941
+Recipient Name: Easyweb Digital Pty Ltd
+Recipient ABN:  79 145 583 099
+Value (AUD):    5341639.0
+Publish Date:   2026-01-05
+```
 
 ---
 
-## ABN Strategy
+## Open Question: VALUE — Cumulative or Per-Grant?
 
-The public XLSX has recipient name only — no ABN column. Options:
+**This is the critical unknown before implementation.**
 
-1. **ABN Lookup enrichment (immediate):** The existing `AbnLookupJob` fires when a Group is created without ABN, looking up by name. This will cover most recipients automatically.
+In AusTender, the API returns a cumulative contract value across all amendments — the actual value per amendment must be scraped from the detail page (`/Cn/Show/{uuid}`). That scraping step is the most complex part of the AusTender pipeline.
 
-2. **Detail page scraping (`/Ga/Show/{UUID}`):** The detail page likely has ABN. Could scrape on create, similar to AusTender's `ScrapeSingleContractAmendment`. UUID is not in the XLSX but could be retrieved via a separate request.
+For GrantConnect, we don't yet know if `Value (AUD)` is:
 
-3. **Data Hub (registered user, free):** GrantConnect's `Reporting > Data Hub > Awards` section offers CSV/Excel exports that reportedly include ABN. Requires a free account. May expose a POST endpoint we can call with session cookies — worth investigating after the basic pipeline works. This is probably the ABN-enriched spreadsheet recalled from prior research.
+- **Per-grant (ideal):** The value of this specific grant award as published — no additional scraping needed
+- **Cumulative (pain):** The total value across all versions/amendments — would need to scrape the detail page (`/Ga/Show/{uuid}`) for the per-version value, similar to AusTender
 
-Between Dec 2017 and Jun 2021: ~103,561 awards had ABN recorded; ~4.5% were ABN-exempt or aggregate.
+**How to resolve:** Compare a known amended grant (one with a `-V2` or later GA ID in the Advanced Search) against what appears in `GaPublishedDownload` for its original and amendment publish dates. If the value changes between versions, it's per-version (good). If it's always the running total, it's cumulative (needs scraping).
 
-**Recommended starting approach:** Build pipeline without ABN; rely on `AbnLookupJob` for enrichment.
+Also check: does `GaPublishedDownload` ever return versioned IDs (e.g. `GA484157-V1`)? In the sample (3 rows for 5-Jan-2026), all IDs were bare with no suffix. The Advanced Search with `LastedVariation=True` showed versioned suffixes. This suggests the Published report may only ever show original awards, not amendments — in which case the value question may not arise.
 
----
-
-## ARC Grants (Secondary Source)
-
-The Australian Research Council has a separate public REST API:
-
-```
-GET https://dataportal.arc.gov.au/NCGP/API/grants?page[number]=1&page[size]=1000
-```
-
-- Public, no auth, JSON API spec
-- Covers research grants only (academic/university funding)
-- Fields: grant code, scheme, lead investigator, administering org, funding amounts, status
-- Lower political-transparency value than GrantConnect — consider later
+**Until resolved:** Build the pipeline treating Value as per-grant. Flag for verification during testing against known amended grants.
 
 ---
 
@@ -119,96 +153,138 @@ GET https://dataportal.arc.gov.au/NCGP/API/grants?page[number]=1&page[size]=1000
 |---------------|-----------|
 | Granting agency | `Group` (giver) |
 | Recipient | `Group` (taker) — treat all as Group initially |
-| Grant award (latest version) | `IndividualTransaction` |
+| Grant award (per publish date) | `IndividualTransaction` |
 | Rollup per agency→recipient per FY | `Transfer` |
-| GA ID (full versioned) | `IndividualTransaction.external_id` |
+| GA ID | `IndividualTransaction.external_id` |
+| Value (AUD) × 100 | `IndividualTransaction.amount` (integer cents) |
 
 ### New enum values needed
 
 - `Transfer.transfer_type`: add `'government_grants'`
 - `IndividualTransaction.transaction_type`: add `'government_grant'`
 
-### Transfer date
+### Transfer effective_date
 
-Use `Dates::FinancialYear.new(publish_date).last_day` — consistent with AusTender's effective_date approach.
+Use `Dates::FinancialYear.new(publish_date).last_day` — consistent with AusTender.
+
+### ABN handling
+
+- Clean ABN: strip spaces and non-digits (same as AusTender's business number cleaning)
+- `"ABN Exempt"` → treat as nil ABN, create Group by name only
+- `nil` ABN → same as above
+- Valid ABN → pass to `Groups::RecordGroup` which will match existing Group or create + trigger `AbnLookupJob`
 
 ### Recipient as Person vs Group
 
-In practice, the vast majority of politically interesting grants go to organisations. Treat all recipients as `Group` initially. The existing `Groups::RecordGroup` service handles name-only creation (no ABN) fine. Revisit if individual-person grants become relevant.
+Treat all recipients as `Group` initially. The existing `Groups::RecordGroup` handles name-only and ABN-first matching. Revisit if individual-person grants become relevant (arts grants, fellowships, etc.).
+
+### Aggregate grants
+
+`Aggregate: Y` rows represent a single XLSX row covering N individual awards (to protect recipient privacy, typically). Options:
+- **Skip for now** — aggregate rows have reduced transparency value and no individual recipient
+- **Ingest as-is** — record the aggregated amount against a group named something like "Aggregated Recipients"
+
+Recommendation: skip aggregate grants in v1 (`next if row['Aggregate'] == 'Y'`), revisit later.
+
+### Confidential grants
+
+`Confidentiality - Contract: Y` rows have redacted recipient details (name shown as `n/a`, ABN as `ABN Exempt`). These are valid but low-value for transparency. Ingest as-is — the agency (giver) is still recorded, amount is real.
 
 ---
 
 ## Proposed Pipeline Architecture
 
-Mirrors the AusTender pipeline closely.
-
 ### Jobs (Sidekiq)
 
 ```
-IngestGrantsByDateJob          # daily: fetches previous day's publish_date range
-  → GrantsDownloader           # GET GaAdvancedSearchDownload → save XLSX
-  → GrantsXlsxParser           # roo: skip 18 header rows, yield row hashes
-  → IngestSingleGrantJob (×N)  # one per row, queued async
+IngestGrantsByDateJob            # daily: previous day's publish date
+  → AuGrants::GrantsDownloader   # two-step GET → save XLSX to tmp/
+  → AuGrants::XlsxParser         # roo: skip rows 1–23, yield row hashes
+  → IngestSingleGrantJob (×N)    # one per row, queued async
+  → (delete tmp XLSX)
 
-BackfillGrantsMasterJob        # monthly: queues IngestGrantsByDateJob for each day of prev month
+BackfillGrantsMasterJob          # monthly + manual trigger
+  # queues IngestGrantsByDateJob for each day of target month
+  # checks queue depth before proceeding (mirrors BackfillContractsMasterJob)
 ```
 
 ### Services
 
 ```
-GrantsDownloader
-  - GET request with date params + User-Agent header
-  - Save binary to tmp/grants_{date}.xlsx
+AuGrants::GrantsDownloader
+  - GET GaPublishedShow (capture Set-Cookie)
+  - GET GaPublishedDownload (send cookie) → binary XLSX
+  - Save to tmp/grants_{date}.xlsx
   - Return file path
 
-GrantsXlsxParser
+AuGrants::XlsxParser
   - Roo::Excelx.new(path)
-  - Skip rows 1–19 (header is row 19, data starts row 20)
-  - Yield row hash keyed by column name
-  - Delete tmp file after
+  - Skip rows 1–23 (header is row 23, data from row 24)
+  - Yield each row as hash keyed by column name
+  - Delete tmp file after iteration
 
-RecordIndividualGrant          # mirrors AusTender::RecordIndividualTransaction
-  - Dedup check: IndividualTransaction.exists?(external_id: ga_id)
-  - RecordGroup for agency (giver) — name only initially
-  - RecordGroup for recipient (taker) — name only, ABN lookup fires async
+AuGrants::RecordIndividualGrant  # mirrors AusTender::RecordIndividualTransaction
+  - Dedup: IndividualTransaction.exists?(external_id: ga_id) → return if exists
+  - Skip if aggregate (Aggregate == 'Y') — v1
+  - RecordGroup for agency (giver) — name only
+  - RecordGroup for recipient (taker) — ABN if present, else name only
   - Transfer.find_or_create_by!(giver, taker, effective_date, transfer_type: 'government_grants')
-  - IndividualTransaction.create(...)
-  - RefreshSingleTransferAmountJob (5 min delay)
+  - IndividualTransaction.create!(...)
+  - RefreshSingleTransferAmountJob.perform_in(5.minutes, transfer.id)
 ```
+
+### Rate limiting / resilience
+
+Unknown whether GrantConnect throttles repeated requests — not tested. AusTender does (429 responses trigger the circuit breaker + Crawlbase fallback). As a precaution, `IngestSingleGrantJob` should mirror `IngestSingleContractJob`'s retry strategy: Sidekiq exponential backoff on 429/5xx, with a cap on retries. If throttling proves to be a real problem, add a circuit breaker similar to `Circuit::AusTenderScraperSwitch`.
+
+### `evidence` URL
+
+`IndividualTransaction.evidence` should point to the source record. Use the grant detail page:
+```
+https://www.grants.gov.au/Ga/Show/{GA_ID}
+```
+e.g. `https://www.grants.gov.au/Ga/Show/GA523941`. This gives a direct link to the published grant award, consistent with AusTender's contract-level evidence URLs.
+
+### `fine_grained_transaction_category`
+
+The XLSX `Category` column (e.g. `"Aged Care"`, `"Legal Services"`, `"Broadcasting and Telecommunications"`) maps naturally to `FineGrainedTransactionCategory`. In v1, leave this nil and treat it as a future enhancement — populate once a category seeding strategy is agreed (either auto-create from XLSX values or map to a pre-seeded list).
 
 ### Key differences from AusTender
 
 | AusTender | Grants |
 |-----------|--------|
 | Fetches by contract modification date | Fetches by publish date |
-| Scrapes detail page for amount + category | Amount is in XLSX; no scrape needed initially |
-| Circuit breaker for scraper (429 handling) | No scraping needed initially — simpler |
-| `IndividualTransaction.transaction_type: 'government_contract'` | `'government_grant'` |
-| Amount in cents (integer) | Amount in AUD decimal — convert to cents on ingest |
-
----
-
-## Open Questions
-
-1. **`LastedVariation=True`** — does this mean we miss intermediate versions? Or is that fine since we only want current state? Confirm intent.
-2. **Amount units** — XLSX shows decimal AUD (e.g. `76452.81`). Transfer.amount is integer (cents). Need to confirm multiply by 100.
-3. **Data Hub ABN export** — can we get a session-authenticated POST endpoint after registering? Investigate after v1.
-4. **Aggregate grants** — `Aggregate Grant Award: Yes` rows have a single row representing N awards. How should these be handled? Skip initially, or ingest as-is?
-5. **`LastedVariation=False`** — would give the full amendment history. Do we want that?
-6. **Date range for backfill** — how far back to go? Data exists from Dec 2017.
-7. **Volume** — ~13K rows/month × ~8.5 years of history = ~1.3M rows total for full backfill. Sidekiq queue strategy needed.
+| Two-step: API list → individual contract fetch | One-step: single XLSX contains all data |
+| Scrapes detail page for amount + category | Amount in XLSX; no scrape needed (pending VALUE resolution) |
+| Circuit breaker for scraper | No scraping in v1 — simpler |
+| No ABN in API; relies on supplier field | Recipient ABN in XLSX directly |
+| Amount from web scrape (not cumulative API value) | Amount from XLSX (per-grant — to be verified) |
+| `transaction_type: 'government_contract'` | `transaction_type: 'government_grant'` |
+| Amount stored as integer (cents) from web scrape | Convert `Value (AUD)` float × 100 → integer cents |
 
 ---
 
 ## Implementation Order
 
-1. Migrations: add `government_grants` to Transfer enum, `government_grant` to IndividualTransaction enum
-2. `GrantsDownloader` service
-3. `GrantsXlsxParser` service  
-4. `RecordIndividualGrant` service
-5. `IngestSingleGrantJob`
-6. `IngestGrantsByDateJob` (daily)
-7. `BackfillGrantsMasterJob` (monthly + manual trigger for historical backfill)
-8. Admin UI / Flipper flag to gate rollout
-9. (Later) Data Hub ABN enrichment
-10. (Later) ARC grants as secondary source
+1. **Resolve VALUE question** — manually inspect an amended grant before writing any amount logic
+2. Migrations: add `government_grants` to Transfer `transfer_type` enum; add `government_grant` to IndividualTransaction `transaction_type` enum
+3. `AuGrants::GrantsDownloader` service (two-step cookie + download)
+4. `AuGrants::XlsxParser` service (roo, row 24+ data)
+5. `AuGrants::RecordIndividualGrant` service
+6. `IngestSingleGrantJob`
+7. `IngestGrantsByDateJob` (daily)
+8. `BackfillGrantsMasterJob` (monthly + manual trigger for historical backfill)
+9. Flipper flag to gate rollout, admin trigger for manual backfill
+10. (Later) Detail page scraping for VALUE if needed
+11. (Later) ARC grants as secondary source (separate pipeline, different model — lead investigator is a Person)
+
+---
+
+## Open Questions
+
+1. **VALUE cumulative or per-grant?** — resolve before writing amount logic (see above)
+2. **Does `GaPublishedDownload` ever return versioned GA IDs (`-V1`, `-V2`)?** — observed bare IDs only in the sample; needs confirmation across busier dates
+3. **How far back to backfill?** — data exists from Dec 2017. At ~13K rows/month × 8.5 years ≈ 1.3M rows. Consider starting from a more recent year (e.g. FY2021) and expanding
+4. **Aggregate grants** — skip in v1 or ingest with a placeholder recipient?
+5. **Agency ABN** — the XLSX has no agency ABN column. Agencies are government departments and unlikely to need ABN matching, but worth noting. Use name-only matching for givers.
+6. **`GaPublishedDownload` vs `GaAdvancedSearchDownload`** — confirm the Published endpoint is strictly superior (has ABN, richer fields) and retire the Advanced Search URL from the plan

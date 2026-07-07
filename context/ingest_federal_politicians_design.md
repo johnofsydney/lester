@@ -2,98 +2,195 @@
 
 ## Goal
 
-Fetch all current (and eventually historical) Australian federal politicians from the
-OpenAustralia API and record them in the Lester graph as `Person` nodes, linked to their
-party, chamber, and electorate/state.
+Fetch all current and historical Australian federal politicians from the OpenAustralia API
+and record them in the Lester graph as `Person` nodes, connected to their chamber, party,
+and (in later phases) their ministerial offices and Cabinet.
 
 ---
 
 ## API: OpenAustralia
 
 - Base URL: `https://www.openaustralia.org.au/api/`
-- Auth: `key=<OPENAUSTRALIA_API_KEY>` query param on every request
-- Output format: `output=js` returns JSON
-- API key: stored in Rails credentials (key not yet wired up)
+- Auth: `key=VALUE` query param on every request
+- Output: `output=js` returns JSON
 - Docs: https://www.openaustralia.org.au/api/
+- Credentials: `Rails.application.credentials.open_australia.api_key`
+  (key may already be present — confirm once master.key is available on current machine)
 
-### Relevant endpoints
+### Endpoints used
 
-#### `getRepresentatives`
-Returns all current House of Representatives members.
+#### `getRepresentatives` / `getSenators`  (list)
+Returns all members as of a given date (or today if no date given).
 
-Optional params: `postcode`, `date`, `party`, `search`
+| Param | Notes |
+|---|---|
+| `date` | ISO date — returns parliament as it stood on that date. Key for historical ingestion. |
+| `party` | Optional filter |
+| `search` | Optional filter |
+| `state` | Senators only |
 
-Response fields per member:
-- `member_id` — term-specific ID (changes if member is re-elected after a gap)
-- `person_id` — stable cross-term ID (use this as the external identifier)
-- `name` — full name string
-- `party` — party affiliation string
-- `constituency` — electorate name
+Response fields per row:
+- `member_id` — term-specific (changes if re-elected after a gap)
+- `person_id` — **stable cross-term integer ID** — use as ExternalIdentifier value
+- `name` — full name string (may include titles)
+- `party` — party string e.g. `"Australian Labor Party"`
+- `constituency` — electorate name for MPs; state abbreviation (NSW, VIC…) for Senators
 
-#### `getSenators`
-Returns all current Senators.
+#### `getRepresentative` / `getSenator`  (singular, by person_id)
+Called inside each row job to get enriched detail.
 
-Optional params: `date`, `party`, `state`, `search`
-
-Response fields: same shape as above; `constituency` is a state abbreviation (NSW, VIC, etc.)
-
-#### `getRepresentative` (singular)
-Returns enriched detail for one member, looked up by `person_id`.
-
-Additional fields over the list response:
+Additional fields:
 - `first_name`, `last_name`, `full_name`
-- `entered_house`, `left_house` — ISO date strings for current/past term
-- `entered_reason`, `left_reason` — e.g. "general_election", "dissolution"
-- `title` — e.g. "Mr", "Dr"
-- `image` — path to photo (`/images/mpsL/{person_id}.jpg`)
-- `office` — array of ministerial/shadow positions with `from_date`, `to_date`, `dept`
+- `entered_house` / `left_house` — ISO date strings for this term (`left_house` is blank if currently serving)
+- `entered_reason` / `left_reason` — e.g. `"general_election"`, `"dissolution"`, `"died"`
+- `title` — e.g. `"Mr"`, `"Dr"`
+- `image` — `/images/mpsL/{person_id}.jpg`
+- `house` — `"representatives"` or `"senate"` — used as ExternalIdentifier value on the chamber Group
+- `office` — array of ministerial/shadow positions:
+  `[{ position, from_date, to_date, dept, person, source }, ...]`
 - `lastupdate` — timestamp
 
-#### `getSenator` (singular)
-Same enriched shape as `getRepresentative`.
+---
+
+## Pre-import: deletion scope
+
+Before re-running the import we delete "pure politician" Person records — those whose only
+graph connections are to a chamber (House of Reps / Senate) and/or a party Tag.
+
+Anyone who also appears in other contexts (lobbyist org, charity, government contractor, etc.)
+is **excluded from deletion** — their political memberships get rebuilt but the Person record
+is preserved.
+
+This mirrors the ACNC people import pattern.
+
+Implement as a scope (or class method) on `Person`, e.g.:
+
+```ruby
+Person.only_parliamentary_connections
+# → people whose membership groups are ALL in: chamber Tags + party Tags
+# → excludes anyone with a membership in any other Group type
+```
+
+Exact implementation TBD when writing the model code — likely uses a NOT EXISTS subquery
+checking for memberships outside the permitted Tag set.
 
 ---
 
-## HTTP client
+## Phase 1: Politicians, chambers, parties
 
-Use **Faraday** (already in Gemfile, `>= 2.14.1`). No external gem for the API wrapper.
-Thin `OpenAustralia::ApiClient` service wrapping Faraday — one method per endpoint.
+### What gets created
 
----
+#### Person
+- Name cleaned via `People::RecordPerson#cleaned_up_name` (strips Hon, Dr, Senator, MP, etc.)
+- `ExternalIdentifier`: `source: 'open_australia'`, `value: person_id.to_s`
 
-## Data captured per politician
+#### Chamber Groups  (find-or-create once, not per politician)
+Two Groups exist for the chambers:
+- `"House of Representatives"` — `ExternalIdentifier` source `'open_australia'`, value `'representatives'`
+- `"Senate"` — `ExternalIdentifier` source `'open_australia'`, value `'senate'`
 
-| Data | How stored |
+Using ExternalIdentifiers on the Groups (not hardcoded IDs) means we can look them up
+reliably without the hardcoded-ID antipattern already flagged in `improvement_candidates.md`.
+
+#### Chamber Membership  (one per term)
+Each term = one `Membership` record between the Person and the chamber Group.
+
+| Field | Value |
 |---|---|
-| Name | `Person#name` (cleaned via `People::RecordPerson` / `cleaned_up_name`) |
-| Stable API identity | `ExternalIdentifier` — `source: 'open_australia'`, `value: person_id` |
-| Party | `Membership` → existing or new party `Tag` |
-| Chamber | `Membership` → "House of Representatives" or "Senate" `Tag` |
-| Electorate / State | `Membership` → electorate or state `Group` (TBD — see open questions) |
+| `start_date` | `entered_house` from API |
+| `end_date` | `left_house` from API (nil if currently serving) |
+| `evidence` | `'https://www.openaustralia.org.au'` |
 
-### Source name decision
-Use `'open_australia'` (not `'open_politics'`). The existing value in
-`ExternalIdentifier::SOURCES` is `'open_politics'` but that's a placeholder;
-the actual source is OpenAustralia. Add `'open_australia'` to `SOURCES` and
-migrate `'open_politics'` entries if any exist (currently zero).
+A politician who served two non-consecutive terms in the same chamber gets two Membership
+records. The model explicitly supports this ("multiple memberships in the same group over time").
+
+Deduplication on re-import: find existing Membership by `(member: person, group: chamber,
+start_date: entered_house)` — update `end_date` if changed, otherwise skip.
+
+#### Party membership
+
+Three cases based on the `party` field from the API:
+
+**Independents** — party string is blank, `"Independent"`, or similar.
+→ No party Membership created.
+
+**Minor parties** (One Nation, Lambie Network, United Australia Party, Katter's Australian Party, etc.)
+→ Membership in the national party Tag only. No state.
+
+**Major parties** (Labor, Liberals, Nationals, Greens)
+→ Membership in the **state branch** Tag.
+
+State branch resolution:
+- **Senators**: `constituency` from the API IS the state (NSW, VIC, QLD, WA, SA, TAS, ACT, NT). Straightforward.
+- **MPs**: `constituency` is the electorate name, not the state. Requires an electorate → state
+  lookup. Options:
+  a. Maintain a lookup table in the codebase (all ~151 electorates mapped to states).
+  b. Call `getDivisions` API endpoint which may return state info per electorate.
+  c. For Phase 1, fall back to national party Tag for MPs and revisit.
+  _Decision: defer electorate→state mapping to Phase 1b. MPs get national party for now._
+
+State branch Tag naming convention (to align with AEC data — audit needed):
+- `"Australian Labor Party (NSW)"` / `"Australian Labor Party (VIC)"` etc.
+- `"Liberal Party of Australia (NSW Division)"` etc.
+- Exact strings TBD pending audit of existing Tags in DB vs OpenAustralia party strings.
+
+**Determining major vs minor**: use a constant list of major party strings in the service.
+Anything not in the list and not independent → minor party → national Tag only.
+
+```ruby
+MAJOR_PARTIES = [
+  /Australian Labor Party/i,
+  /Liberal Party/i,
+  /The Nationals/i,
+  /Australian Greens/i,
+].freeze
+```
+
+Note: Queensland has the "Liberal National Party of Queensland" (LNP) — a merged entity.
+Treat as major (state branch). Will surface in audit.
+
+---
+
+## Phase 2: Offices and Ministries  (not in scope yet — design only)
+
+OpenAustralia's `office` array contains ministerial and shadow ministerial positions with
+date ranges. Phase 2 will:
+
+### Ministerial offices
+
+For each entry in `office`:
+- Create a `Membership` between the Person and a **Department** Group
+  (find-or-create by `dept` string, e.g. `"Department of Defence"`)
+- Create a `Position` on that Membership with `title` = `position` string,
+  `start_date` / `end_date` from `from_date` / `to_date`
+
+### Ministries / Cabinets
+
+A **Ministry** is the collective cabinet of a PM (e.g. "Morrison Ministry", "Albanese Ministry").
+Each Ministry is a `Group`. Ministers have `Membership` in the Ministry Group with their
+portfolio `Position`.
+
+Identifying which Ministry a given office stint belongs to requires a lookup of PM tenure date
+ranges (not provided by OpenAustralia directly — needs a separate lookup table or seed data).
+
+This is complex enough to design separately when Phase 1 is complete.
 
 ---
 
 ## Implementation structure
 
-Following the lobbyist ingestion pattern exactly:
+Pattern: lobbyist ingestion (`app/sidekiq/au_lobbyists/`, `app/services/au_lobbyists/`).
 
 ```
 app/sidekiq/open_australia/
-  ingest_politicians_job.rb         # Sidekiq entry point, calls service
-  import_politician_row_job.rb      # Per-person job, sidekiq_options lock: :until_executed
+  ingest_politicians_job.rb           # weekly Sidekiq job — current parliament only
+  backfill_historical_politicians_job.rb  # one-shot — walks all election dates
+  import_politician_row_job.rb        # per-person job (lock: :until_executed)
 
 app/services/open_australia/
-  ingest_politicians.rb             # Calls API for both chambers, dispatches row jobs
-  api_client.rb                     # Faraday wrapper — get_representatives, get_senators,
-                                    #   get_representative(person_id), get_senator(person_id)
-  import_politician_row.rb          # Records one politician: Person + ExternalIdentifier
-                                    #   + party/chamber/electorate memberships
+  ingest_politicians.rb               # calls API for both chambers, dispatches row jobs
+  api_client.rb                       # Faraday wrapper
+  import_politician_row.rb            # records one politician (Person + memberships)
 ```
 
 ---
@@ -101,123 +198,64 @@ app/services/open_australia/
 ## Job flow
 
 ```
-IngestPoliticiansJob                        # weekly, current parliament only
+IngestPoliticiansJob  (weekly)
   └─ OpenAustralia::IngestPoliticians.call(date: nil)
-       ├─ ApiClient#get_representatives  → each row → ImportPoliticianRowJob.perform_async(...)
-       └─ ApiClient#get_senators         → each row → ImportPoliticianRowJob.perform_async(...)
+       ├─ ApiClient#get_representatives → ImportPoliticianRowJob.perform_async per row
+       └─ ApiClient#get_senators        → ImportPoliticianRowJob.perform_async per row
 
-BackfillHistoricalPoliticiansJob            # one-shot, walks election dates
-  └─ OpenAustralia::IngestPoliticians.call(date: "2022-05-21")
-     OpenAustralia::IngestPoliticians.call(date: "2019-05-18")
-     ... (each election date)
+BackfillHistoricalPoliticiansJob  (one-shot)
+  └─ calls IngestPoliticians.call for each election date:
+       2025-05-03, 2022-05-21, 2019-05-18, 2016-07-02, 2013-09-07,
+       2010-08-21, 2007-11-24, 2004-10-09, 2001-11-10, 1998-10-03, 1996-03-02
 
 ImportPoliticianRowJob
-  └─ OpenAustralia::ImportPoliticianRow.call(person_id:, member_id:, name:, party:, chamber:)
-       ├─ ApiClient#get_representative(person_id) OR get_senator(person_id)
-       │    → enriched: first_name, last_name, entered_house, left_house, office[]
-       ├─ Entity::RecordEntityWithExternalId (source: 'open_australia', value: person_id)
-       ├─ find-or-create party Tag → Membership
-       ├─ find-or-create chamber Tag → Membership (with start_date / end_date from API)
-       └─ (office positions — deferred, see open questions)
+  └─ OpenAustralia::ImportPoliticianRow.call(
+         person_id:, name:, party:, constituency:, chamber:)
+       ├─ ApiClient#get_representative(person_id) or get_senator(person_id)
+       │    → enriched detail: entered_house, left_house, office[], etc.
+       ├─ Clean name via People::RecordPerson.new(name).send(:cleaned_up_name)
+       ├─ Entity::RecordEntityWithExternalId.call(
+       │    name:, identifier: person_id, source: 'open_australia',
+       │    id_attribute: nil [see gotcha below], klass: 'Person')
+       ├─ Find-or-create chamber Group (via ExternalIdentifier on Group)
+       ├─ Find-or-create chamber Membership (matched on person + group + start_date)
+       ├─ Resolve party Tag (major/minor/independent logic)
+       └─ Find-or-create party Membership
 ```
 
-`person_id` is stable across terms, so re-processing a politician from an earlier election
-date will hit the `find_entity_by_external_id` path and update rather than duplicate.
-
----
-
-## Decisions made
-
-1. **Enriched detail call** — YES. `ImportPoliticianRowJob` will call the singular endpoint
-   (`getRepresentative` / `getSenator`) for every person to capture `entered_house`,
-   `left_house`, `entered_reason`, `left_reason`, and `office` positions. Dates are
-   important because we want ex-politicians too (see historical ingestion below).
-
-2. **Electorates as Groups** — NO for now. The only exception would be if we can source
-   electorate branch membership data for major parties (which would make the electorate
-   node genuinely useful for traversal). Not pursued in this phase.
-
-3. **Historical politicians** — YES. We want as many ex-politicians as possible.
-   Strategy: query the API with the `date` parameter set to each federal election date,
-   walking back through election cycles. The API returns the parliament as it stood on
-   that date, so we accumulate members across terms.
-   Known federal election dates to walk (add more as needed):
-   - 2025-05-03
-   - 2022-05-21
-   - 2019-05-18
-   - 2016-07-02
-   - 2013-09-07
-   - 2010-08-21
-   - 2007-11-24
-   - 2004-10-09
-   - 2001-11-10
-   - 1998-10-03
-   - 1996-03-02
-   The `person_id` is stable across terms, so re-ingesting someone who served multiple
-   terms will find them by external identifier and update rather than duplicate.
-
-4. **Scheduler wiring** — weekly refresh is fine for current members. Historical backfill
-   is a one-shot job. To be wired into `config/sidekiq.yml`.
-
-5. **`People::RecordPerson` extension** — call `Entity::RecordEntityWithExternalId`
-   directly from `ImportPoliticianRow`, bypassing `RecordPerson`. Avoids adding another
-   source-specific keyword arg to an already-busy service.
-
-6. **Party Tags** — parties arrive as raw strings from the API (e.g. "Australian Labor Party",
-   "Liberal Party of Australia"). Need a canonical mapping or normalisation step so they
-   align with whatever strings AEC data uses for the same parties. To be worked out when
-   writing `ImportPoliticianRow`.
-
-## Open questions
-
-- **`member_id` vs term Membership dates** — `member_id` is term-specific. If a person
-  served two non-consecutive terms, they get two `member_id`s but one `person_id`. Should
-  each term be a separate `Membership` (with `start_date`/`end_date` from the detail
-  endpoint), or is one Membership per chamber sufficient? _Likely: one Membership per term
-  with dates — to be decided when writing the row service._
-
-- **Party string normalisation** — how closely do OpenAustralia party strings match what's
-  already in the Tags table from AEC ingestion? Needs a quick audit once credentials are
-  available and a first API call can be made.
+`person_id` is stable across terms — re-processing a politician from an earlier election date
+hits `find_entity_by_external_id` and updates rather than duplicates.
 
 ---
 
 ## Codebase context (read before writing code)
 
-### Existing ingestion pattern to follow
-
-The lobbyist ingestion is the closest match to what we're building. Study these files:
+### Lobbyist ingestion — the pattern to follow
 
 ```
-app/sidekiq/au_lobbyists/ingest_lobbyists_job.rb          # Sidekiq job shell
-app/sidekiq/au_lobbyists/import_lobbyists_people_row_job.rb  # Per-row job with sidekiq lock
-app/services/au_lobbyists/ingest_lobbyists.rb             # Orchestrator (download → dispatch)
-app/services/au_lobbyists/csv_importer.rb                 # Iterates rows, calls perform_async
+app/sidekiq/au_lobbyists/ingest_lobbyists_job.rb
+app/sidekiq/au_lobbyists/import_lobbyists_people_row_job.rb
+app/services/au_lobbyists/ingest_lobbyists.rb
+app/services/au_lobbyists/csv_importer.rb
 ```
 
-Key pattern: the orchestrator calls `perform_async` with scalar args (strings/ints) for each
-row. The row job does all the DB work. Row jobs use `sidekiq_options lock: :until_executed, on_conflict: :log, retry: 1`.
+Row jobs use: `sidekiq_options lock: :until_executed, on_conflict: :log, retry: 1`
+Orchestrator passes only scalar args (strings/ints) to `perform_async`.
 
 ### `Entity::RecordEntityWithExternalId`
 `app/services/entity/record_entity_with_external_id.rb`
 
-This is what `ImportPoliticianRow` should call instead of `People::RecordPerson`. It:
-1. Looks up `ExternalIdentifier` by `(source, owner_type, value)` — returns the owner if found.
-2. Falls back to finding a sole `Person` by name and appending the external ID.
-3. Creates a new `Person` if neither path finds a match.
+Lookup chain: ExternalIdentifier match → sole name match → create new.
 
-Constructor: `new(name:, identifier:, source:, id_attribute:, klass:)`
-- `identifier` = the `person_id` string from OpenAustralia
-- `source` = `'open_australia'`
-- `id_attribute` = whichever column on Person holds this (likely none — we rely purely on
-  the `external_identifiers` table, so `id_attribute` may need a dummy or the service may
-  need a small tweak for the no-column case)
-
-**Watch out:** `find_sole_entity_by_name_and_append_external_id` calls
-`entity.public_send(:"#{id_attribute}=", identifier)` — which assumes there's a column
-on `Person` for the ID. Since `open_australia` IDs live only in `external_identifiers`
-(no column on `people`), this will raise. We'll need to handle that — either skip the
-setter or guard it. Worth checking when writing `ImportPoliticianRow`.
+**Gotcha:** `find_sole_entity_by_name_and_append_external_id` calls
+`entity.public_send(:"#{id_attribute}=", identifier)`, which assumes a column on the model.
+Since `open_australia` IDs live only in `external_identifiers` (no column on `people`),
+passing a real `id_attribute` will raise `NoMethodError`. Options:
+- Pass `id_attribute: nil` and guard the setter in the service.
+- Or subclass / monkey-patch for the no-column case.
+- Simplest: just rescue `NoMethodError` in the service and skip the setter — the
+  `ExternalIdentifier` record is created separately anyway.
+_Resolve when writing `ImportPoliticianRow`._
 
 ### `ExternalIdentifier` model
 `app/models/external_identifier.rb`
@@ -226,68 +264,68 @@ setter or guard it. Worth checking when writing `ImportPoliticianRow`.
 SOURCES = %w[aec acnc open_politics].freeze
 ```
 
-Currently has zero rows for `open_politics`. We rename the source string to `'open_australia'`
-and add it to SOURCES. No migration needed (it's just a string column), just update the constant.
+Action needed: replace `'open_politics'` with `'open_australia'` in SOURCES.
+No migration needed (string column). Zero existing rows for `open_politics`.
+ExternalIdentifiers will be created on **both Person and Group** (chamber Groups).
 
 ### `People::RecordPerson`
 `app/services/people/record_person.rb`
 
-Worth knowing: it has a long `cleaned_up_name` method that strips titles (Hon, Dr, Senator, MP,
-OAM, etc.), reverses "Last, First" format, and capitalises. Many of those transforms are exactly
-what we need for OpenAustralia names, which can include titles. Consider calling this normalisation
-logic from `ImportPoliticianRow` before passing the name to `RecordEntityWithExternalId`. The
-safest approach: instantiate `People::RecordPerson` just to call `cleaned_up_name`, then pass
-the result to `RecordEntityWithExternalId`.
+Has `cleaned_up_name` (private) that strips Hon, Dr, Senator, MP, OAM, etc. and fixes
+"Last, First" ordering. Call this before passing names to `RecordEntityWithExternalId`.
+Safe approach: `People::RecordPerson.new(raw_name).send(:cleaned_up_name, raw_name)`.
 
 ### `Membership` model
-Memberships have `start_date`, `end_date`, `evidence`, and `positions` (has_many Position with
-`title`). For chamber memberships we'll set:
-- `start_date` = `entered_house` from API
-- `end_date` = `left_house` from API (nil if currently serving)
-- `evidence` = `'https://www.openaustralia.org.au'`
+Has `start_date`, `end_date`, `evidence`, `positions` (has_many Position with `title`).
+Multiple Memberships per (person, group) pair are valid — used for multi-term politicians.
 
-For a politician who served two non-consecutive terms in the same chamber, create two separate
-`Membership` records (the model allows this — see CLAUDE.md: "A person or sub-group can have
-multiple memberships in the same group over time").
+### Faraday pattern
+See `app/services/au_lobbyists/file_downloader.rb` and `app/services/abn/fetch_business_names.rb`.
+OpenAustralia is simple GET with query params — no auth headers.
 
-### Faraday HTTP client pattern
-`app/services/au_lobbyists/file_downloader.rb` and `app/services/abn/fetch_business_names.rb`
-are good examples of how other services use Faraday. The OpenAustralia API is simple HTTP GET
-with query params — no auth headers, just `key=` in the query string.
-
-Example request shape:
 ```
 GET https://www.openaustralia.org.au/api/getRepresentatives?key=KEY&output=js&date=2022-05-21
 ```
 
-Response is a JSON array of member objects (when `output=js`).
+Response is a JSON array when `output=js`.
 
-### Ruby gem we considered and rejected
-The `openaustralia` gem (v1.0.1, ~2013) wraps all these endpoints but is ancient and unmaintained.
-Not used. Raw Faraday only.
+### Ruby gem — rejected
+`openaustralia` gem (v1.0.1, ~2013) — ancient, unmaintained. Not used. Raw Faraday only.
 
 ---
 
-## Environment / credentials
+## Open questions
 
-API key stored at `Rails.application.credentials.open_australia.api_key`.
-Key may already be present in credentials — to be confirmed once master.key is available
-on the current machine.
+- **Electorate → state mapping for MPs** — needed for state-branch party membership for
+  Labor/Liberal/Nationals/Greens MPs. Options: hardcoded lookup table, `getDivisions` API call,
+  or defer to Phase 1b. Currently deferred.
+
+- **Party string audit** — how do OpenAustralia party strings compare with existing AEC-sourced
+  Tags in the DB? Need a live API call + Tag query to compare. Blocked on master.key / credentials.
+
+- **LNP (Queensland)** — "Liberal National Party of Queensland" is a merged Liberal-National entity.
+  Treat as a single state-branch major party. Confirm handling when party strings are audited.
+
+- **`Entity::RecordEntityWithExternalId` id_attribute gotcha** — needs a code-level fix
+  before `ImportPoliticianRow` can run. See codebase context above.
 
 ---
 
 ## Status
 
 - [x] API exploration complete
-- [x] Design agreed (decisions above)
-- [ ] Confirm API key in credentials (blocked: master.key not on current machine)
-- [ ] `ApiClient` service written + manually tested against live API
-- [ ] `ExternalIdentifier::SOURCES` updated to include `'open_australia'`
+- [x] Phase 1 design agreed
+- [x] Phase 2 design sketched (offices / ministries)
+- [ ] Confirm API key in credentials  _(blocked: master.key not on this machine)_
+- [ ] Audit party strings from API vs existing DB Tags  _(blocked: same)_
+- [ ] `ExternalIdentifier::SOURCES` — replace `'open_politics'` with `'open_australia'`
+- [ ] Fix / workaround `id_attribute` gotcha in `Entity::RecordEntityWithExternalId`
+- [ ] `OpenAustralia::ApiClient` written + smoke-tested against live API
+- [ ] `Person.only_parliamentary_connections` scope written
 - [ ] `IngestPoliticians` service + `IngestPoliticiansJob` written
 - [ ] `BackfillHistoricalPoliticiansJob` written
-- [ ] `ImportPoliticianRow` service written (includes singular detail API call)
-- [ ] Party string normalisation audited against existing Tags
-- [ ] Membership-per-term vs single-Membership decision made
+- [ ] `ImportPoliticianRow` service written
+- [ ] Electorate → state lookup resolved (Phase 1b)
 - [ ] Specs written
-- [ ] Scheduler entry added to `config/sidekiq.yml` (weekly, current only)
-- [ ] First live ingest run tested
+- [ ] Scheduler entry added to `config/sidekiq.yml`
+- [ ] First live ingest run on staging
