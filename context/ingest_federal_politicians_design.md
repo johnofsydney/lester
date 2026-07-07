@@ -128,7 +128,7 @@ State branch resolution:
   b. Call `getDivisions` API endpoint which may return state info per electorate.
   c. For Phase 1, fall back to national party Tag for MPs and revisit.
   _Decision: defer electorate→state mapping to Phase 1b. MPs get national party for now._
-
+d. Make a call to  https://www.aec.gov.au/profiles/ to fetch State when we know electorate
 State branch Tag naming convention (to align with AEC data — audit needed):
 - `"Australian Labor Party (NSW)"` / `"Australian Labor Party (VIC)"` etc.
 - `"Liberal Party of Australia (NSW Division)"` etc.
