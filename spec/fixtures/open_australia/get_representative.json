@@ -1,0 +1,29 @@
+{
+  "member_id": "6",
+  "house": "1",
+  "first_name": "Anthony",
+  "last_name": "Albanese",
+  "constituency": "Grayndler",
+  "party": "Australian Labor Party",
+  "entered_house": "1996-03-02",
+  "left_house": "9999-12-31",
+  "entered_reason": "general_election",
+  "left_reason": "still_in_office",
+  "person_id": "10007",
+  "title": "",
+  "lastupdate": "2008-04-26 11:08:04",
+  "full_name": "Anthony Albanese",
+  "name": "Anthony Albanese",
+  "image": "/images/mpsL/10007.jpg",
+  "office": [
+    {
+      "moffice_id": "287830",
+      "dept": "",
+      "position": "Prime Minister",
+      "from_date": "2022-06-01",
+      "to_date": "9999-12-31",
+      "person": "10007",
+      "source": ""
+    }
+  ]
+}

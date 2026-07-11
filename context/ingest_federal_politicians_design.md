@@ -19,11 +19,12 @@ Parliament group, their party, and state branch (where applicable).
 ### Endpoints used
 
 #### `getRepresentatives` / `getSenators`  (list)
-Returns all members as of a given date (or today if no date given).
+Returns all current members (no date param needed). The `date` param is documented but returns
+`{}` in practice for historical dates — it does not serve past-parliament snapshots.
 
 | Param | Notes |
 |---|---|
-| `date` | ISO date — returns parliament as it stood on that date. Key for historical ingestion. |
+| `date` | Documented but non-functional for historical dates — returns `{}`. Omit for current parliament. |
 | `party` | Optional filter |
 | `search` | Optional filter |
 | `state` | Senators only |
@@ -67,6 +68,8 @@ Person.only_parliamentary_connections
 ```
 
 Implemented as a scope on `Person` — see `app/models/person.rb`. ✅
+The `"Office Holders"` group is included in the permitted set so that the Speaker/President/
+Deputy-President are correctly identified as deletable on re-import.
 
 ---
 
@@ -100,10 +103,13 @@ Australian Federal Parliament group, with a `Position` recording the chamber rol
 
 **Position on this Membership:**
 
-| House | Position title |
-|---|---|
-| `"representatives"` | `"MP"` |
-| `"senate"` | `"Senator"` |
+| `party` from API | `house` | Position title |
+|---|---|---|
+| anything else | `"representatives"` | `"MP"` |
+| anything else | `"senate"` | `"Senator"` |
+| `"Speaker"` | `"representatives"` | `"Speaker of the House"` |
+| `"President"` | `"senate"` | `"President of the Senate"` |
+| `"Deputy-President"` | `"senate"` | `"Deputy President of the Senate"` |
 
 A politician who served two non-consecutive terms gets two Membership records (each with
 its own Position). The model explicitly supports multiple Memberships per (person, group).
@@ -130,8 +136,15 @@ The branch Group names are what `Group::NAMES` describes.
 
 Three cases based on the `party` field from the API:
 
-**Independents** — party string is blank, `"Independent"`, or similar.
+**Independents** — party string is blank or `"Independent"`.
 → No party Membership created.
+
+**Office holders** — party string is `"Speaker"`, `"President"`, or `"Deputy-President"`.
+The API overrides the party field with the parliamentary role for the House Speaker and Senate
+President/Deputy-President. Neither the list nor the detail endpoint reveals their real party.
+→ Create a Membership in the find-or-create Group `"Office Holders"` (a plain Group, not a Tag).
+  Position title on that Membership: `"Federal Parliamentary Party Member"` (same as other parties).
+→ Their Position title on the **parliament** Membership is also overridden (see position table below).
 
 **Minor parties** (One Nation, Lambie Network, United Australia Party, Katter's Australian Party, etc.)
 → One Membership in a find-or-create Group named after the party string.
@@ -222,10 +235,9 @@ IngestPoliticiansJob  (weekly)
        ├─ ApiClient#get_representatives → ImportPoliticianRowJob.perform_async per row
        └─ ApiClient#get_senators        → ImportPoliticianRowJob.perform_async per row
 
-BackfillHistoricalPoliticiansJob  (one-shot)
-  └─ calls IngestPoliticians.call for each election date:
-       2025-05-03, 2022-05-21, 2019-05-18, 2016-07-02, 2013-09-07,
-       2010-08-21, 2007-11-24, 2004-10-09, 2001-11-10, 1998-10-03, 1996-03-02
+BackfillHistoricalPoliticiansJob  (one-shot, approach TBD)
+  └─ The `date` param on getRepresentatives/getSenators returns {} for past parliaments —
+     historical backfill strategy needs investigation (different endpoint or manual list).
 
 ImportPoliticianRowJob
   └─ OpenAustralia::ImportPoliticianRow.call(
@@ -376,16 +388,17 @@ pre-audit party strings in isolation — let real data surface the gaps.
 - [x] Phase 1 design agreed
 - [x] Phase 2 removed — Ministry Groups and Memberships to be deleted
 - [x] Confirm API key in credentials
-- [ ] Audit party strings from API vs existing DB Tags
-- [ ] `ExternalIdentifier::SOURCES` — replace `'open_politics'` with `'open_australia'`
-- [ ] `ExternalIdentifiable` — add `open_australia_id` / `open_australia_id=` virtual attribute
-- [ ] `People::RecordPerson` — add `open_australia_id:` kwarg + routing branch
-- [ ] `Groups::RecordGroup` — add `open_australia_id:` kwarg + routing branch
-- [ ] `OpenAustralia::ApiClient` written + smoke-tested against live API
+- [x] Audit party strings from API vs existing DB Tags  _(live API call — all known, `"Australia's Voice"` will create a new Group on first ingest, fine)_
+- [x] `ExternalIdentifier::SOURCES` — replace `'open_politics'` with `'open_australia'`
+- [x] `ExternalIdentifiable` — add `open_australia_id` / `open_australia_id=` virtual attribute
+- [x] `People::RecordPerson` — add `open_australia_id:` kwarg + routing branch
+- [x] `Groups::RecordGroup` — add `open_australia_id:` kwarg + routing branch
+- [x] `OpenAustralia::ApiClient` written + smoke-tested against live API
+- [x] API fixtures downloaded to `spec/fixtures/open_australia/`
 - [x] `Person.only_parliamentary_connections` scope written + specced
 - [x] `MapElectorateToState` mapping file created (150 electorates)
 - [ ] `IngestPoliticians` service + `IngestPoliticiansJob` written
-- [ ] `BackfillHistoricalPoliticiansJob` written
+- [ ] `BackfillHistoricalPoliticiansJob` written  _(blocked: historical date param non-functional, approach TBD)_
 - [ ] `ImportPoliticianRow` service written
 - [ ] Scheduler entry added to `config/sidekiq.yml`
 - [ ] First live ingest run on staging
