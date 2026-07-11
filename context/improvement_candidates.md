@@ -137,3 +137,32 @@ end
 The `OpenStruct.new(...)` on line 123 is evaluated but its return value is never used — the next line begins the actual return logic. The OpenStruct does nothing. This was likely left over from an earlier version of the method.
 
 **Fix:** Remove the duplicate include. Audit whether `transfers` and `first_degree_transfers` are called anywhere (a grep suggests they're only used by `tweet_body` which is itself only called from one controller action). If they are live, remove the dead assignment and the dead OpenStruct. If `transfers` is genuinely unused, delete it.
+
+---
+
+## 6. `RecordPerson` / `RecordGroup` keyword arguments — and the broader ExternalIdentifier sprawl
+
+**Files:** `app/services/people/record_person.rb`, `app/services/groups/record_group.rb`, `app/models/concerns/external_identifiable.rb`, `app/models/group.rb`
+
+`People::RecordPerson` and `Groups::RecordGroup` both accept `aec_id:` and `acnc_id:` as
+keyword arguments, with `open_australia_id:` being added as part of the politician ingestion
+work. Each new external identifier source means another keyword arg on both services, another
+branch in each routing method, and another pair of virtual attribute methods on
+`ExternalIdentifiable`. Both services will keep growing in lockstep as new data sources are
+added.
+
+The root issue is that `ExternalIdentifier` already exists as the correct abstraction for
+"a source-keyed ID for an entity" — but both `RecordPerson` and `RecordGroup` predate it
+and still treat each source as a first-class parameter rather than routing through a uniform
+interface.
+
+**Longer-term fix:** Both services should accept a single
+`external_id: { source:, value: }` argument (or similar), eliminating the per-source
+proliferation from both call sites and both service implementations simultaneously.
+
+**Related — `business_number` on `Group`:** `business_number` (ABN) is just another
+external identifier, but it lives as a dedicated column on the `groups` table rather than
+in `external_identifiers`. It would be cleaner to migrate it into the `ExternalIdentifier`
+paradigm (source: `'abn'`), unifying all external IDs under one table and one lookup path.
+This is a non-trivial migration (the column is indexed, validated, and referenced in several
+services) so it should be its own piece of work.

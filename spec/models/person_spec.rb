@@ -49,4 +49,67 @@ RSpec.describe Person do
       end
     end
   end
+
+  describe '.only_parliamentary_connections' do
+    let(:greens_category) { Tag.create!(name: 'The Greens') }
+    let(:alp_category)    { Tag.create!(name: 'Australian Labor Party') }
+
+    let!(:federal_parliament) { Group.create!(name: 'Australian Federal Parliament') }
+    let!(:nsw_parliament) { Group.create!(name: 'NSW Parliament') }
+    let!(:greens_party_federal)     { Group.create!(name: 'The Greens (Federal)') }
+    let!(:alp_party_federal)     { Group.create!(name: 'ALP (Federal)') }
+    let!(:alp_party_nsw)     { Group.create!(name: 'ALP (NSW)') }
+    let!(:lobbying_group)   { Group.create!(name: 'Lobbying Firm') }
+    let!(:charity_group)   { Group.create!(name: 'Charity Group') }
+
+    let!(:zali_federal_parliament_only) { Person.create!(name: 'Zali') } # independent fed
+    let!(:alice_nsw_parliament_only) { Person.create!(name: 'Alice Chamber') } # independent nsw
+    let!(:john_party_only) { Person.create!(name: 'John Party') } # only party tag
+    let!(:lee_federal_parliament_and_party) { Person.create!(name: 'Lee Both') } # chamber and party tag
+    let!(:bruce_federal_and_nsw_parliament_and_party) { Person.create!(name: 'Bruce Both') }
+
+    let!(:dave_no_memberships) { Person.create!(name: 'Dave None') }
+    let!(:morris_nsw_parliament_and_lobbying) { Person.create!(name: 'Eve Mixed') } # Lobbyist, ex NSW parliamentarian
+    let!(:frank_lobby)  { Person.create!(name: 'Frank Other') } # Lobbyist, no parliamentary connections
+
+    before do
+      # Add all of the major parties into a tag group (category) for the purposes of this test
+      Membership.create!(group: greens_category, member: greens_party_federal)
+      Membership.create!(group: alp_category, member: alp_party_federal)
+      Membership.create!(group: alp_category, member: alp_party_nsw)
+
+      # Add the people to their respective groups, person by person
+      # Independents
+      Membership.create!(member: zali_federal_parliament_only, group: federal_parliament)
+
+      Membership.create!(member: alice_nsw_parliament_only, group: nsw_parliament)
+
+      # Memebers of both a chamber and a party, but not any other groups
+      Membership.create!(member: lee_federal_parliament_and_party, group: federal_parliament)
+      Membership.create!(member: lee_federal_parliament_and_party, group: greens_party_federal)
+
+      Membership.create!(member: bruce_federal_and_nsw_parliament_and_party, group: federal_parliament)
+      Membership.create!(member: bruce_federal_and_nsw_parliament_and_party, group: nsw_parliament)
+      Membership.create!(member: bruce_federal_and_nsw_parliament_and_party, group: alp_party_federal)
+      Membership.create!(member: bruce_federal_and_nsw_parliament_and_party, group: alp_party_nsw)
+
+      # Members of a chamber and a non-parliamentary group
+      Membership.create!(member: morris_nsw_parliament_and_lobbying, group: nsw_parliament)
+      Membership.create!(member: morris_nsw_parliament_and_lobbying, group: lobbying_group)
+
+      # Members of a non-parliamentary group only
+      Membership.create!(member: frank_lobby, group: lobbying_group)
+      Membership.create!(member: frank_lobby, group: charity_group)
+
+      # Members of a party only
+      Membership.create!(member: john_party_only, group: greens_party_federal)
+    end
+
+    # The scope should include people who are members of a chamber and no other groups except for parties
+    it 'includes members of a chamber and no other groups except for parties' do
+      expect(Person.only_parliamentary_connections).to contain_exactly(
+        zali_federal_parliament_only, alice_nsw_parliament_only, lee_federal_parliament_and_party, bruce_federal_and_nsw_parliament_and_party
+      )
+    end
+  end
 end
