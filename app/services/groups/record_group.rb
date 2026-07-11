@@ -1,16 +1,17 @@
 class Groups::RecordGroup
-  attr_reader :name, :business_number, :group, :mapper, :aec_id, :acnc_id
+  attr_reader :name, :business_number, :group, :mapper, :aec_id, :acnc_id, :open_australia_id
 
-  def initialize(name, business_number: nil, mapper: nil, aec_id: nil, acnc_id: nil)
+  def initialize(name, business_number: nil, mapper: nil, aec_id: nil, acnc_id: nil, open_australia_id: nil)
     @name = mapper.present? ? mapper.call(name) : name
     @business_number = business_number.present? ? business_number&.gsub(/\D/, '') : nil
     @mapper = mapper
     @aec_id = aec_id
     @acnc_id = acnc_id
+    @open_australia_id = open_australia_id
   end
 
-  def self.call(name, business_number: nil, mapper: nil, aec_id: nil, acnc_id: nil)
-    new(name, business_number:, mapper:, aec_id:, acnc_id:).call
+  def self.call(name, business_number: nil, mapper: nil, aec_id: nil, acnc_id: nil, open_australia_id: nil)
+    new(name, business_number:, mapper:, aec_id:, acnc_id:, open_australia_id:).call
   end
 
   def call
@@ -37,13 +38,14 @@ class Groups::RecordGroup
   attr_reader :source, :identifier, :id_attribute
 
   def external_id
-    # If we have an external identifier, then set all of the relevant instance variables
-    return false unless aec_id.present? || acnc_id.present?
+    return false unless aec_id.present? || acnc_id.present? || open_australia_id.present?
 
     @source, @identifier, @id_attribute = if aec_id.present?
                                             ['aec', aec_id.to_s, 'aec_id']
                                           elsif acnc_id.present?
                                             ['acnc', acnc_id.to_s, 'acnc_id']
+                                          elsif open_australia_id.present?
+                                            ['open_australia', open_australia_id.to_s, 'open_australia_id']
                                           end
   end
 
