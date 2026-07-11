@@ -50,7 +50,7 @@ class Person < ApplicationRecord
   #   2. Person has no memberships outside the permitted set — parliament groups, party branch
   #      groups (Groups that are members of a category Tag), and the Office Holders group.
   PARLIAMENT_GROUP_NAMES = ['australian federal parliament', 'nsw parliament'].freeze
-  OFFICE_HOLDER_GROUP_NAME = 'office holders'
+  OFFICE_HOLDER_GROUP_NAME = 'office holders'.freeze
 
   scope :only_parliamentary_connections, lambda {
     parliament_group_ids = Group.where(name: PARLIAMENT_GROUP_NAMES).pluck(:id)
@@ -58,8 +58,8 @@ class Person < ApplicationRecord
 
     tag_ids = Group.where(type: 'Tag', name: [Group::MAJOR_POLITICAL_GROUPS]).pluck(:id)
     party_branch_group_ids = Membership
-      .where(group_id: tag_ids, member_type: 'Group')
-      .pluck(:member_id)
+                             .where(group_id: tag_ids, member_type: 'Group')
+                             .pluck(:member_id)
 
     permitted_group_ids = (parliament_group_ids + office_holder_group_ids + party_branch_group_ids).uniq
 

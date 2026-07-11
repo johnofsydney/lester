@@ -1,5 +1,5 @@
 class OpenAustralia::ApiClient
-  BASE_URL = 'https://www.openaustralia.org.au/api/'
+  BASE_URL = 'https://www.openaustralia.org.au/api/'.freeze
 
   def get_representatives(date: nil)
     get('getRepresentatives', date:)

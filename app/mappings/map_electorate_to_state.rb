@@ -164,7 +164,7 @@ module MapElectorateToState
     'Pearce'           => 'WA',
     'Perth'            => 'WA',
     'Swan'             => 'WA',
-    'Tangney'          => 'WA',
+    'Tangney'          => 'WA'
   }.freeze
 
   def self.lookup(electorate_name)

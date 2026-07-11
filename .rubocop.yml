@@ -28,10 +28,14 @@ Bundler/OrderedGems:
   Exclude:
     - 'Gemfile'
 
+Layout/ExtraSpacing:
+  AllowForAlignment: true
+
 Layout/LineLength:
   Max: 360
   Exclude:
     - 'app/views/home/index_view.rb'
+    - 'app/services/nodes/name_capitalizer.rb'
 
 Metrics/BlockLength:
   Exclude:
@@ -41,6 +45,15 @@ Metrics/BlockLength:
 Metrics/ClassLength:
   Exclude:
     - 'app/mappings/*' # unavoidably large hashes
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'app/mappings/*' # unavoidably large hashes
+    - 'app/models/concerns/node_methods.rb'
+
+Layout/HashAlignment:
+  Exclude:
+    - 'app/mappings/*' # table style intentional for readability
 
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc', 'method_call']

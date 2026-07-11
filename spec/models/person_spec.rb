@@ -56,11 +56,11 @@ RSpec.describe Person do
 
     let!(:federal_parliament) { Group.create!(name: 'Australian Federal Parliament') }
     let!(:nsw_parliament) { Group.create!(name: 'NSW Parliament') }
-    let!(:greens_party_federal)     { Group.create!(name: 'The Greens (Federal)') }
-    let!(:alp_party_federal)     { Group.create!(name: 'ALP (Federal)') }
-    let!(:alp_party_nsw)     { Group.create!(name: 'ALP (NSW)') }
-    let!(:lobbying_group)   { Group.create!(name: 'Lobbying Firm') }
-    let!(:charity_group)   { Group.create!(name: 'Charity Group') }
+    let!(:greens_party_federal) { Group.create!(name: 'The Greens (Federal)') }
+    let!(:alp_party_federal) { Group.create!(name: 'ALP (Federal)') }
+    let!(:alp_party_nsw) { Group.create!(name: 'ALP (NSW)') }
+    let!(:lobbying_group) { Group.create!(name: 'Lobbying Firm') }
+    let!(:charity_group) { Group.create!(name: 'Charity Group') }
 
     let!(:zali_federal_parliament_only) { Person.create!(name: 'Zali') } # independent fed
     let!(:alice_nsw_parliament_only) { Person.create!(name: 'Alice Chamber') } # independent nsw
@@ -68,9 +68,11 @@ RSpec.describe Person do
     let!(:lee_federal_parliament_and_party) { Person.create!(name: 'Lee Both') } # chamber and party tag
     let!(:bruce_federal_and_nsw_parliament_and_party) { Person.create!(name: 'Bruce Both') }
 
+    # rubocop:disable RSpec/LetSetup
     let!(:dave_no_memberships) { Person.create!(name: 'Dave None') }
     let!(:morris_nsw_parliament_and_lobbying) { Person.create!(name: 'Eve Mixed') } # Lobbyist, ex NSW parliamentarian
-    let!(:frank_lobby)  { Person.create!(name: 'Frank Other') } # Lobbyist, no parliamentary connections
+    let!(:frank_lobby) { Person.create!(name: 'Frank Other') } # Lobbyist, no parliamentary connections
+    # rubocop:enable RSpec/LetSetup
 
     before do
       # Add all of the major parties into a tag group (category) for the purposes of this test
