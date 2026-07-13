@@ -10,11 +10,11 @@ class OpenAustralia::ApiClient
   end
 
   def get_representative(person_id)
-    get('getRepresentative', id: person_id).first
+    get('getRepresentative', id: person_id)
   end
 
   def get_senator(person_id)
-    get('getSenator', id: person_id).first
+    get('getSenator', id: person_id)
   end
 
   private

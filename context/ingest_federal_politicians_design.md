@@ -215,14 +215,15 @@ Pattern: lobbyist ingestion (`app/sidekiq/au_lobbyists/`, `app/services/au_lobby
 
 ```
 app/sidekiq/open_australia/
-  ingest_politicians_job.rb           # weekly Sidekiq job — current parliament only
-  backfill_historical_politicians_job.rb  # one-shot — walks all election dates
-  import_politician_row_job.rb        # per-person job (lock: :until_executed)
+  ingest_politicians_job.rb              # weekly Sidekiq job — current parliament only
+  backfill_historical_politicians_job.rb # one-shot — iterates person_id range, tries both chambers
+  import_politician_row_job.rb           # per-person/chamber job (lock: :until_executed)
 
 app/services/open_australia/
-  ingest_politicians.rb               # calls API for both chambers, dispatches row jobs
-  api_client.rb                       # Faraday wrapper
-  import_politician_row.rb            # records one politician (Person + memberships)
+  ingest_politicians.rb                  # calls API for both chambers, dispatches row jobs
+  backfill_historical_politicians.rb     # iterates ID range, enqueues per-ID jobs
+  api_client.rb                          # Faraday wrapper ✅
+  import_politician_row.rb               # records one politician (Person + memberships) ✅
 ```
 
 ---
@@ -235,9 +236,27 @@ IngestPoliticiansJob  (weekly)
        ├─ ApiClient#get_representatives → ImportPoliticianRowJob.perform_async per row
        └─ ApiClient#get_senators        → ImportPoliticianRowJob.perform_async per row
 
-BackfillHistoricalPoliticiansJob  (one-shot, approach TBD)
-  └─ The `date` param on getRepresentatives/getSenators returns {} for past parliaments —
-     historical backfill strategy needs investigation (different endpoint or manual list).
+BackfillHistoricalPoliticiansJob  (one-shot — run once after current parliament is proven)
+  └─ OpenAustralia::BackfillHistoricalPoliticians.call(up_to_id: 15_000)
+       └─ For each integer ID in 1..up_to_id:
+            ├─ Try ApiClient#get_representative(id)
+            │    → if valid response: ImportPoliticianRowJob.perform_async(person_id: id, house: '1', ...)
+            ├─ Try ApiClient#get_senator(id)
+            │    → if valid response: ImportPoliticianRowJob.perform_async(person_id: id, house: '2', ...)
+            └─ If both return {}: skip silently
+
+  Rationale: person_id is a stable consecutive integer on OpenAustralia. The date param
+  on getRepresentatives/getSenators returns {} for historical dates (non-functional).
+  Iterating IDs against the singular detail endpoints works for any era. A person who
+  served in both chambers (rep then senator) will return data from both calls and get
+  two sets of memberships — correct behaviour.
+
+  Upper bound: highest known person_id is ~10,880 (current parliament). Use 15,000 as
+  a safe ceiling. Handle {} / error responses gracefully — they just mean the ID is
+  unused.
+
+  Rate limiting: run the backfill job through a dedicated low-concurrency Sidekiq queue
+  to avoid hammering the API.
 
 ImportPoliticianRowJob
   └─ OpenAustralia::ImportPoliticianRow.call(
@@ -254,8 +273,17 @@ ImportPoliticianRowJob
           Find-or-create state branch Membership + Position (major parties only)
 ```
 
-`person_id` is stable across terms — re-processing a politician from an earlier election date
-hits the ExternalIdentifier lookup and updates rather than duplicates.
+`person_id` is stable across terms and chambers — re-processing the same person (e.g. via
+the ID-range backfill hitting both `getRepresentative` and `getSenator` for the same ID)
+finds the existing Person by ExternalIdentifier and adds the second chamber's Membership
+rather than duplicating the Person. Different `start_date` values mean different Membership
+records, so a Senator-turned-MP gets one Senator Membership and one MP Membership. ✅
+
+**Party-change within a term:** OpenAustralia creates a new member record (new `member_id`,
+same `person_id`) when a politician changes party mid-term, with `entered_reason: "changed_party"`.
+The `entered_house` date on that record reflects the party-change date, not the original election
+date. Our service imports this as-is — the parliament Membership `start_date` will reflect the
+party-change date rather than the election date for that term. Acceptable for Phase 1.
 
 ---
 
@@ -398,7 +426,7 @@ pre-audit party strings in isolation — let real data surface the gaps.
 - [x] `Person.only_parliamentary_connections` scope written + specced
 - [x] `MapElectorateToState` mapping file created (150 electorates)
 - [ ] `IngestPoliticians` service + `IngestPoliticiansJob` written
-- [ ] `BackfillHistoricalPoliticiansJob` written  _(blocked: historical date param non-functional, approach TBD)_
+- [ ] `BackfillHistoricalPoliticiansJob` written  _(approach: iterate person_id range 1..15_000, try both chambers per ID)_
 - [ ] `ImportPoliticianRow` service written
 - [ ] Scheduler entry added to `config/sidekiq.yml`
 - [ ] First live ingest run on staging
