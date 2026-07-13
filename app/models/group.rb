@@ -213,6 +213,10 @@ class Group < ApplicationRecord
     Group.where('LOWER(name) = ?', name.downcase).first
   end
 
+  def self.federal_parliament
+    Group.find(877)
+  end
+
   def self.charities_tag
     Group.find(124_513)
   end

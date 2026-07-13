@@ -85,10 +85,7 @@ Deputy-President are correctly identified as deletable on re-import.
 
 One Group for all federal parliamentarians:
 
-- **`"Australian Federal Parliament"`** — `ExternalIdentifier` source `'open_australia'`, value `'federal_parliament'`
-
-Using an ExternalIdentifier on the Group (not a hardcoded ID) means we can look it up
-reliably without the hardcoded-ID antipattern flagged in `improvement_candidates.md`.
+- **`"Australian Federal Parliament"`** — `Group.federal_parliament` (id: 877). Same pattern as `Group.charities_tag`. No ExternalIdentifier — OpenAustralia has no concept of a parliament group ID.
 
 #### Parliament Membership  (one per term)
 
@@ -314,7 +311,7 @@ SOURCES = %w[aec acnc open_politics].freeze
 
 Action needed: replace `'open_politics'` with `'open_australia'` in SOURCES.
 No migration needed (string column). Zero existing rows for `open_politics`.
-ExternalIdentifiers are created on **both Person and Group** (parliament Group).
+ExternalIdentifiers are created on Person records only. The parliament Group is found by name.
 
 ### `People::RecordPerson`
 `app/services/people/record_person.rb`
@@ -344,10 +341,10 @@ The **single entry point** for recording a group — equivalent to `People::Reco
 for the group side. Used for both the parliament Group and (via the mapper) for locating
 party branch Groups.
 
-**Parliament Group** (find-or-create once, anchored by ExternalIdentifier):
+**Parliament Group** (hardcoded ID, same pattern as `Group.charities_tag`):
 
 ```ruby
-Groups::RecordGroup.call('Australian Federal Parliament', open_australia_id: 'federal_parliament')
+Group.federal_parliament  # id: 877
 ```
 
 **Party branch Groups** (found by normalised name via mapper; mostly already exist in the DB):

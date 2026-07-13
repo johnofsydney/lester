@@ -1,9 +1,12 @@
 require 'rails_helper'
 
+# rubocop:disable RSpec/LetSetup
 RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
   let(:fixture_dir) { Rails.root.join('spec/fixtures/open_australia') }
   let(:rep_detail)  { JSON.parse(File.read(fixture_dir.join('get_representative.json'))) }
   let(:sen_detail)  { JSON.parse(File.read(fixture_dir.join('get_senator.json'))) }
+
+  let!(:parliament_group)  { create(:group, name: 'australian federal parliament') }
 
   # Albanese: ALP MP, Grayndler (NSW), person_id 10007, entered_house 1996-03-02
   let(:alp_tag)            { create(:group, type: 'Tag', name: 'australian labor party') }
@@ -12,11 +15,12 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
   let!(:_alp_federal_membership) { create(:membership, member: alp_federal_group, group: alp_tag) }
   let!(:_alp_nsw_membership)     { create(:membership, member: alp_nsw_group,     group: alp_tag) }
 
+  let(:api_client) { instance_double(OpenAustralia::ApiClient) }
+
   before do
-    allow_any_instance_of(OpenAustralia::ApiClient)
-      .to receive(:get_representative).and_return(rep_detail)
-    allow_any_instance_of(OpenAustralia::ApiClient)
-      .to receive(:get_senator).and_return(sen_detail)
+    allow(OpenAustralia::ApiClient).to receive(:new).and_return(api_client)
+    allow(api_client).to receive_messages(get_representative: rep_detail, get_senator: sen_detail)
+    allow(Group).to receive(:federal_parliament).and_return(parliament_group)
   end
 
   describe 'importing an MP (Anthony Albanese, ALP, Grayndler)' do
@@ -36,15 +40,10 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
       expect(ei.owner).to eq(Person.last)
     end
 
-    it 'finds or creates the Australian Federal Parliament group' do
-      expect { call }.to change { Group.where(name: 'australian federal parliament').count }.by(1)
-    end
-
     it 'creates a parliament membership with position MP' do
       call
       person     = Person.find_by(name: 'anthony albanese')
-      parliament = Group.find_by(name: 'australian federal parliament')
-      membership = Membership.find_by(member: person, group: parliament)
+      membership = Membership.find_by(member: person, group: parliament_group)
 
       expect(membership).to be_present
       expect(membership.start_date).to eq(Date.new(1996, 3, 2))
@@ -75,9 +74,9 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
       before { call }
 
       it 'does not create duplicate records' do
-        expect { call }.not_to change(Person, :count)
-        expect { call }.not_to change(Membership, :count)
-        expect { call }.not_to change(Position, :count)
+        [Person, Membership, Position].each do |klass|
+          expect { described_class.call(person_id: '10007', house: '1') }.not_to change(klass, :count)
+        end
       end
     end
   end
@@ -87,14 +86,13 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
       described_class.call(person_id: '10071', house: '2')
     end
 
-    let!(:alp_tas_group)        { create(:group, name: 'alp (tas)') }
-    let!(:_alp_tas_membership)  { create(:membership, member: alp_tas_group, group: alp_tag) }
+    let!(:alp_tas_group)       { create(:group, name: 'alp (tas)') }
+    let!(:_alp_tas_membership) { create(:membership, member: alp_tas_group, group: alp_tag) }
 
     it 'creates a parliament membership with position Senator' do
       call
       person     = Person.find_by(name: 'carol brown')
-      parliament = Group.find_by(name: 'australian federal parliament')
-      membership = Membership.find_by(member: person, group: parliament)
+      membership = Membership.find_by(member: person, group: parliament_group)
 
       expect(membership.positions.first.title).to eq('Senator')
     end
@@ -115,16 +113,13 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
     end
 
     before do
-      allow_any_instance_of(OpenAustralia::ApiClient)
-        .to receive(:get_representative)
+      allow(api_client).to receive(:get_representative)
         .and_return([rep_detail.first.merge('full_name' => 'Zali Steggall', 'person_id' => 99_001, 'party' => 'Independent')])
     end
 
     it 'creates no party membership' do
-      person     = call
-      parliament = Group.find_by(name: 'australian federal parliament')
-
-      expect(person.memberships.where.not(group: parliament)).to be_empty
+      person = call
+      expect(person.memberships.where.not(group: parliament_group)).to be_empty
     end
   end
 
@@ -134,15 +129,13 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
     end
 
     before do
-      allow_any_instance_of(OpenAustralia::ApiClient)
-        .to receive(:get_representative)
+      allow(api_client).to receive(:get_representative)
         .and_return([rep_detail.first.merge('full_name' => 'Milton Dick', 'person_id' => 10_880, 'party' => 'Speaker')])
     end
 
     it 'creates a parliament membership with position Speaker of the House' do
       person     = call
-      parliament = Group.find_by(name: 'australian federal parliament')
-      membership = Membership.find_by(member: person, group: parliament)
+      membership = Membership.find_by(member: person, group: parliament_group)
 
       expect(membership.positions.first.title).to eq('Speaker of the House')
     end
@@ -177,10 +170,7 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
     let(:import_as_mp)      { described_class.call(person_id: '10350', house: '1') }
 
     before do
-      allow_any_instance_of(OpenAustralia::ApiClient)
-        .to receive(:get_senator).and_return(barnaby_sen_detail)
-      allow_any_instance_of(OpenAustralia::ApiClient)
-        .to receive(:get_representative).and_return(barnaby_rep_detail)
+      allow(api_client).to receive_messages(get_senator: barnaby_sen_detail, get_representative: barnaby_rep_detail)
     end
 
     it 'creates only one Person record across both imports' do
@@ -195,9 +185,8 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
       import_as_senator
       import_as_mp
 
-      parliament  = Group.find_by(name: 'australian federal parliament')
-      person      = Person.find_by(name: 'barnaby joyce')
-      memberships = Membership.where(member: person, group: parliament).includes(:positions)
+      memberships = Membership.where(member: Person.find_by(name: 'barnaby joyce'), group: parliament_group)
+                              .includes(:positions)
 
       expect(memberships.count).to eq(3)
       expect(memberships.flat_map { |m| m.positions.map(&:title) }).to contain_exactly(
@@ -208,9 +197,8 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
     it 'gives the Senator Membership the correct dates' do
       import_as_senator
 
-      parliament = Group.find_by(name: 'australian federal parliament')
       person     = Person.find_by(name: 'barnaby joyce')
-      membership = Membership.find_by(member: person, group: parliament, start_date: Date.new(2005, 7, 1))
+      membership = Membership.find_by(member: person, group: parliament_group, start_date: Date.new(2005, 7, 1))
 
       expect(membership).to be_present
       expect(membership.end_date).to eq(Date.new(2013, 8, 8))
@@ -219,9 +207,8 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
     it 'gives the current MP Membership a nil end_date (start of stint, not start of last term)' do
       import_as_mp
 
-      parliament = Group.find_by(name: 'australian federal parliament')
       person     = Person.find_by(name: 'barnaby joyce')
-      membership = Membership.find_by(member: person, group: parliament, start_date: Date.new(2017, 12, 2))
+      membership = Membership.find_by(member: person, group: parliament_group, start_date: Date.new(2017, 12, 2))
 
       expect(membership).to be_present
       expect(membership.end_date).to be_nil
@@ -242,8 +229,7 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
       import_as_senator
 
       person           = Person.find_by(name: 'barnaby joyce')
-      parliament       = Group.find_by(name: 'australian federal parliament')
-      party_membership = Membership.where(member: person).where.not(group: parliament).first
+      party_membership = Membership.where(member: person).where.not(group: parliament_group).first
 
       expect(party_membership).to be_present
     end
@@ -272,3 +258,4 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
     end
   end
 end
+# rubocop:enable RSpec/LetSetup

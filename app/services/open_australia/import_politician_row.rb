@@ -34,7 +34,7 @@ class OpenAustralia::ImportPoliticianRow
 
     terms            = terms.sort_by { |t| t['entered_house'] }
     person           = record_person(terms.last)
-    parliament_group = find_or_create_parliament_group
+    parliament_group = Group.federal_parliament
 
     group_into_stints(terms).each { |stint| record_parliament_membership(person, parliament_group, stint) }
     terms.each { |term| record_party_membership(person, term) }
@@ -53,10 +53,6 @@ class OpenAustralia::ImportPoliticianRow
 
   def record_person(term)
     People::RecordPerson.call(term['full_name'], open_australia_id: person_id)
-  end
-
-  def find_or_create_parliament_group
-    Groups::RecordGroup.call('Australian Federal Parliament', open_australia_id: 'federal_parliament')
   end
 
   # Terms where left_house[i] == entered_house[i+1] are a single unbroken parliament stint
