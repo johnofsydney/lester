@@ -1,7 +1,7 @@
 class OpenAustralia::ImportPoliticianRow
   OFFICE_HOLDER_PARLIAMENT_POSITIONS = {
-    'Speaker'          => 'Speaker of the House',
-    'President'        => 'President of the Senate',
+    'Speaker' => 'Speaker of the House',
+    'President' => 'President of the Senate',
     'Deputy-President' => 'Deputy President of the Senate'
   }.freeze
 
@@ -15,8 +15,8 @@ class OpenAustralia::ImportPoliticianRow
 
   SENATOR_STATE_NORMALISATION = {
     'Queensland' => 'QLD',
-    'Tasmania'   => 'TAS',
-    'Victoria'   => 'VIC'
+    'Tasmania' => 'TAS',
+    'Victoria' => 'VIC'
   }.freeze
 
   def self.call(person_id:, house:)
@@ -29,7 +29,10 @@ class OpenAustralia::ImportPoliticianRow
   end
 
   def call
-    terms            = fetch_detail.sort_by { |t| t['entered_house'] }
+    terms = fetch_detail
+    return nil if terms.empty?
+
+    terms            = terms.sort_by { |t| t['entered_house'] }
     person           = record_person(terms.last)
     parliament_group = find_or_create_parliament_group
 
@@ -44,7 +47,8 @@ class OpenAustralia::ImportPoliticianRow
   attr_reader :person_id, :house
 
   def fetch_detail
-    representatives? ? api_client.get_representative(person_id) : api_client.get_senator(person_id)
+    response = representatives? ? api_client.get_representative(person_id) : api_client.get_senator(person_id)
+    response.is_a?(Array) ? response : []
   end
 
   def record_person(term)
@@ -67,8 +71,8 @@ class OpenAustralia::ImportPoliticianRow
     last_party = stint.last['party'].to_s.strip
 
     membership = Membership.find_or_create_by!(
-      member:     person,
-      group:      parliament_group,
+      member: person,
+      group: parliament_group,
       start_date:
     ) do |m|
       m.evidence = 'https://www.openaustralia.org.au'
@@ -120,7 +124,7 @@ class OpenAustralia::ImportPoliticianRow
   end
 
   def upsert_position(membership, title, start_date: nil)
-    position            = membership.positions.find_or_initialize_by(title:)
+    position = membership.positions.find_or_initialize_by(title:)
     position.start_date ||= start_date
     position.save!
     position

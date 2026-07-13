@@ -425,8 +425,8 @@ pre-audit party strings in isolation — let real data surface the gaps.
 - [x] API fixtures downloaded to `spec/fixtures/open_australia/`
 - [x] `Person.only_parliamentary_connections` scope written + specced
 - [x] `MapElectorateToState` mapping file created (150 electorates)
-- [ ] `IngestPoliticians` service + `IngestPoliticiansJob` written
-- [ ] `BackfillHistoricalPoliticiansJob` written  _(approach: iterate person_id range 1..15_000, try both chambers per ID)_
-- [ ] `ImportPoliticianRow` service written
-- [ ] Scheduler entry added to `config/sidekiq.yml`
+- [x] `IngestPoliticians` service + `IngestPoliticiansJob` written
+- [x] `BackfillHistoricalPoliticiansJob` written  _(approach: iterate person_id range 1..15_000, batch 500 IDs, re-enqueues every 2 min)_
+- [x] `ImportPoliticianRow` service written
+- [x] Scheduler entry added to `config/sidekiq.yml`
 - [ ] First live ingest run on staging
