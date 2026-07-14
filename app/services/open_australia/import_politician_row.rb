@@ -68,10 +68,10 @@ class OpenAustralia::ImportPoliticianRow
 
     membership = Membership.find_or_create_by!(
       member: person,
-      group: parliament_group,
-      start_date:
+      group: parliament_group
     ) do |m|
       m.evidence = 'https://www.openaustralia.org.au'
+      m.start_date = start_date
     end
 
     membership.update!(end_date:) if membership.end_date != end_date
@@ -93,7 +93,7 @@ class OpenAustralia::ImportPoliticianRow
   end
 
   def record_major_party_memberships(person, term_party, term_constituency, start_date:)
-    federal_group      = Groups::RecordGroup.call(term_party, mapper: MapGroupNamesAecRecipients.new)
+    federal_group      = Groups::RecordGroup.call("#{term_party} (Federal)", mapper: MapGroupNamesAecRecipients.new)
     federal_membership = Membership.find_or_create_by!(member: person, group: federal_group)
     upsert_position(federal_membership, 'Federal Parliamentary Party Member', start_date:)
 
