@@ -83,21 +83,13 @@ class OpenAustralia::ImportPoliticianRow
     term_constituency = term['constituency'].to_s.strip
     start_date        = parse_date(term['entered_house'])
 
-    if office_holder?(term_party)
-      record_office_holder_membership(person)
-    elsif independent?(term_party)
+    if office_holder?(term_party) || independent?(term_party)
       nil
     elsif major_party?(term_party)
       record_major_party_memberships(person, term_party, term_constituency, start_date:)
     else
       record_minor_party_membership(person, term_party, start_date:)
     end
-  end
-
-  def record_office_holder_membership(person)
-    group      = Groups::RecordGroup.call('Office Holders')
-    membership = Membership.find_or_create_by!(member: person, group:)
-    upsert_position(membership, 'Federal Parliamentary Party Member')
   end
 
   def record_major_party_memberships(person, term_party, term_constituency, start_date:)

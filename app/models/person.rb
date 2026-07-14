@@ -43,25 +43,23 @@ class Person < ApplicationRecord
   }
 
   # People safe to delete before a politician re-import: those whose only group connections
-  # are to a parliament group, party branch groups, or the Office Holders group.
+  # are to a parliament group or party branch groups.
   #
   # Two conditions must both hold:
   #   1. Person is a member of at least one parliament group (identified by name).
-  #   2. Person has no memberships outside the permitted set — parliament groups, party branch
-  #      groups (Groups that are members of a category Tag), and the Office Holders group.
+  #   2. Person has no memberships outside the permitted set — parliament groups and party
+  #      branch groups (Groups that are members of a category Tag).
   PARLIAMENT_GROUP_NAMES = ['australian federal parliament', 'nsw parliament'].freeze
-  OFFICE_HOLDER_GROUP_NAME = 'office holders'.freeze
 
   scope :only_parliamentary_connections, lambda {
     parliament_group_ids = Group.where(name: PARLIAMENT_GROUP_NAMES).pluck(:id)
-    office_holder_group_ids = Group.where(name: OFFICE_HOLDER_GROUP_NAME).pluck(:id)
 
     tag_ids = Group.where(type: 'Tag', name: [Group::MAJOR_POLITICAL_GROUPS]).pluck(:id)
     party_branch_group_ids = Membership
                              .where(group_id: tag_ids, member_type: 'Group')
                              .pluck(:member_id)
 
-    permitted_group_ids = (parliament_group_ids + office_holder_group_ids + party_branch_group_ids).uniq
+    permitted_group_ids = (parliament_group_ids + party_branch_group_ids).uniq
 
     where(id: Membership.where(member_type: 'Person', group_id: parliament_group_ids).select(:member_id))
       .where.not(

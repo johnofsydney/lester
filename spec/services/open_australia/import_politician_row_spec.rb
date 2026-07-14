@@ -140,14 +140,9 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
       expect(membership.positions.first.title).to eq('Speaker of the House')
     end
 
-    it 'creates an Office Holders group membership' do
-      person         = call
-      office_holders = Group.find_by(name: 'office holders')
-
-      expect(office_holders).to be_present
-      membership = Membership.find_by(member: person, group: office_holders)
-      expect(membership).to be_present
-      expect(membership.positions.first.title).to eq('Federal Parliamentary Party Member')
+    it 'creates no party membership — real party is unknown from the API for this term' do
+      person = call
+      expect(person.memberships.where.not(group: parliament_group)).to be_empty
     end
   end
 

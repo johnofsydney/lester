@@ -3,9 +3,11 @@ ActiveAdmin.register LeadershipWebsite do
   permit_params :group_id, :url, :people_card_selector, :name_selector, :title_selector, :reviewed_at
 
   filter :id
-  filter :group
+  filter :group_name_cont, as: :string, label: 'Group name'
   filter :url
   filter :created_at
+
+  includes :group
 
   index do
     selectable_column
