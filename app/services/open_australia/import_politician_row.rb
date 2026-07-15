@@ -56,10 +56,13 @@ class OpenAustralia::ImportPoliticianRow
     People::RecordPerson.call(term['full_name'], open_australia_id: person_id)
   end
 
-  # Terms where left_house[i] == entered_house[i+1] are a single unbroken parliament stint
-  # (the politician never left — only their party changed). Collapse them into one Membership.
+  # Terms where left_house[i] == entered_house[i+1] are a single unbroken parliament stint.
+  # Break the stint when a term is an office holder (Speaker, President, etc.) — those get
+  # their own membership with a distinct position title.
   def group_into_stints(sorted_terms)
-    sorted_terms.chunk_while { |prev, curr| prev['left_house'] == curr['entered_house'] }.to_a
+    sorted_terms.chunk_while do |prev, curr|
+      prev['left_house'] == curr['entered_house'] && !office_holder?(curr['party'].to_s.strip)
+    end.to_a
   end
 
   def record_parliament_membership(person, parliament_group, stint)
@@ -137,21 +140,23 @@ class OpenAustralia::ImportPoliticianRow
   end
 
   def close_party_memberships(person, term_party, term_constituency, end_date)
-    party_groups(term_party, term_constituency).each do |group|
+    if major_party?(term_party)
+      federal_group = Groups::RecordGroup.call("#{term_party} (Federal)", mapper: MapGroupNamesAecRecipients.new)
+      Membership.where(member: person, group: federal_group, end_date: nil).find_each do |m|
+        m.update!(end_date:)
+        m.positions.where(end_date: nil).find_each { |p| p.update!(end_date:) }
+      end
+      state = resolve_state(term_constituency)
+      if state
+        state_group = Groups::RecordGroup.call("#{term_party} (#{state})", mapper: MapGroupNamesAecRecipients.new)
+        Membership.where(member: person, group: state_group, end_date: nil).find_each { |m| m.update!(end_date:) }
+      end
+    else
+      group = Groups::RecordGroup.call(term_party, mapper: MapGroupNamesAecRecipients.new)
       Membership.where(member: person, group:, end_date: nil).find_each do |m|
         m.update!(end_date:)
         m.positions.where(end_date: nil).find_each { |p| p.update!(end_date:) }
       end
-    end
-  end
-
-  def party_groups(term_party, term_constituency)
-    if major_party?(term_party)
-      state        = resolve_state(term_constituency)
-      state_branch = Groups::RecordGroup.call("#{term_party} (#{state})", mapper: MapGroupNamesAecRecipients.new) if state
-      [Groups::RecordGroup.call("#{term_party} (Federal)", mapper: MapGroupNamesAecRecipients.new), state_branch].compact
-    else
-      [Groups::RecordGroup.call(term_party, mapper: MapGroupNamesAecRecipients.new)]
     end
   end
 
