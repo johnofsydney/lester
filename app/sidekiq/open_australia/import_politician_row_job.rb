@@ -9,7 +9,6 @@ class OpenAustralia::ImportPoliticianRowJob
   )
 
   def perform(person_id, house)
-    sleep 0.3
     OpenAustralia::ImportPoliticianRow.call(person_id:, house:)
   end
 end

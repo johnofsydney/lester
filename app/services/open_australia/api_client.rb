@@ -1,3 +1,5 @@
+class OpenAustralia::ApiError < StandardError; end
+
 class OpenAustralia::ApiClient
   BASE_URL = 'https://www.openaustralia.org.au/api/'.freeze
 
@@ -21,7 +23,7 @@ class OpenAustralia::ApiClient
 
   def get(function, params = {})
     response = connection.get(function, base_params.merge(params.compact))
-    raise "OpenAustralia API error (#{response.status}): #{response.body.truncate(200)}" unless response.success?
+    raise OpenAustralia::ApiError, "OpenAustralia API error (#{response.status}): #{response.body.truncate(200)}" unless response.success?
 
     JSON.parse(response.body)
   end
@@ -35,6 +37,9 @@ class OpenAustralia::ApiClient
   end
 
   def connection
-    @connection ||= Faraday.new(url: BASE_URL)
+    @connection ||= Faraday.new(url: BASE_URL) do |f|
+      f.options.timeout      = 10
+      f.options.open_timeout = 5
+    end
   end
 end

@@ -126,7 +126,7 @@ module NodeMethods
 
   def direct_connections
     if is_a?(Person)
-      memberships.includes(:positions, :group).map do |membership|
+      memberships.order(start_date: :desc).includes(:positions, :group).map do |membership|
         node = membership.group
         basic_info = {
           klass: node.class.name,
