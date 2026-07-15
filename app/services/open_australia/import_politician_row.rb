@@ -38,6 +38,7 @@ class OpenAustralia::ImportPoliticianRow
 
     group_into_stints(terms).each { |stint| record_parliament_membership(person, parliament_group, stint) }
     terms.each { |term| record_party_membership(person, term) }
+    apply_party_end_dates(person, terms)
 
     person
   end
@@ -68,10 +69,10 @@ class OpenAustralia::ImportPoliticianRow
 
     membership = Membership.find_or_create_by!(
       member: person,
-      group: parliament_group
+      group: parliament_group,
+      start_date: start_date
     ) do |m|
       m.evidence = 'https://www.openaustralia.org.au'
-      m.start_date = start_date
     end
 
     membership.update!(end_date:) if membership.end_date != end_date
@@ -94,21 +95,60 @@ class OpenAustralia::ImportPoliticianRow
 
   def record_major_party_memberships(person, term_party, term_constituency, start_date:)
     federal_group      = Groups::RecordGroup.call("#{term_party} (Federal)", mapper: MapGroupNamesAecRecipients.new)
-    federal_membership = Membership.find_or_create_by!(member: person, group: federal_group)
+    federal_membership = Membership.find_or_create_by!(member: person, group: federal_group) do |m|
+      m.start_date = start_date
+    end
     upsert_position(federal_membership, 'Federal Parliamentary Party Member', start_date:)
 
     state = resolve_state(term_constituency)
     return unless state
 
     state_group      = Groups::RecordGroup.call("#{term_party} (#{state})", mapper: MapGroupNamesAecRecipients.new)
-    state_membership = Membership.find_or_create_by!(member: person, group: state_group)
+    state_membership = Membership.find_or_create_by!(member: person, group: state_group) do |m|
+      m.start_date = start_date
+    end
     upsert_position(state_membership, "Party Member (#{state})")
   end
 
   def record_minor_party_membership(person, term_party, start_date:)
     group      = Groups::RecordGroup.call(term_party, mapper: MapGroupNamesAecRecipients.new)
-    membership = Membership.find_or_create_by!(member: person, group:)
+    membership = Membership.find_or_create_by!(member: person, group:) do |m|
+      m.start_date = start_date
+    end
     upsert_position(membership, 'Federal Parliamentary Party Member', start_date:)
+  end
+
+  # After all terms are processed, detect party transitions and close the outgoing
+  # party's membership(s) with the date the politician switched.
+  def apply_party_end_dates(person, terms)
+    terms.each_cons(2) do |current_term, next_term|
+      current_party = current_term['party'].to_s.strip
+      next_party    = next_term['party'].to_s.strip
+
+      next if current_party == next_party
+      next if office_holder?(current_party) || independent?(current_party)
+
+      end_date          = parse_date(next_term['entered_house'])
+      term_constituency = current_term['constituency'].to_s.strip
+
+      close_party_memberships(person, current_party, term_constituency, end_date)
+    end
+  end
+
+  def close_party_memberships(person, term_party, term_constituency, end_date)
+    party_groups(term_party, term_constituency).each do |group|
+      Membership.where(member: person, group:, end_date: nil).find_each { |m| m.update!(end_date:) }
+    end
+  end
+
+  def party_groups(term_party, term_constituency)
+    if major_party?(term_party)
+      state        = resolve_state(term_constituency)
+      state_branch = Groups::RecordGroup.call("#{term_party} (#{state})", mapper: MapGroupNamesAecRecipients.new) if state
+      [Groups::RecordGroup.call("#{term_party} (Federal)", mapper: MapGroupNamesAecRecipients.new), state_branch].compact
+    else
+      [Groups::RecordGroup.call(term_party, mapper: MapGroupNamesAecRecipients.new)]
+    end
   end
 
   def upsert_position(membership, title, start_date: nil)

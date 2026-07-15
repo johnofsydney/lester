@@ -251,6 +251,43 @@ RSpec.describe OpenAustralia::ImportPoliticianRow, type: :service do
       person = Person.find_by(name: 'barnaby joyce')
       expect(Membership.find_by(member: person, group: nationals_nsw_group)).to be_nil
     end
+
+    it 'closes Nationals (Federal) membership when party changes to Independent' do
+      import_as_mp
+
+      person     = Person.find_by(name: 'barnaby joyce')
+      membership = Membership.find_by(member: person, group: nationals_federal_group)
+
+      expect(membership.end_date).to eq(Date.new(2025, 11, 27))
+    end
+
+    it 'closes Nationals (NSW) membership when party changes to Independent' do
+      import_as_mp
+
+      person     = Person.find_by(name: 'barnaby joyce')
+      membership = Membership.find_by(member: person, group: nationals_nsw_group)
+
+      expect(membership.end_date).to eq(Date.new(2025, 11, 27))
+    end
+
+    it 'leaves the One Nation membership open (current party has no end_date)' do
+      import_as_mp
+
+      person     = Person.find_by(name: 'barnaby joyce')
+      one_nation = Group.find_by(name: "pauline hanson's one nation")
+      membership = Membership.find_by(member: person, group: one_nation)
+
+      expect(membership.end_date).to be_nil
+    end
+
+    it 'is idempotent — re-importing does not change correctly set end_dates' do
+      2.times { described_class.call(person_id: '10350', house: '1') }
+
+      person     = Person.find_by(name: 'barnaby joyce')
+      membership = Membership.find_by(member: person, group: nationals_federal_group)
+
+      expect(membership.end_date).to eq(Date.new(2025, 11, 27))
+    end
   end
 end
 # rubocop:enable RSpec/LetSetup

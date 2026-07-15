@@ -1,9 +1,9 @@
 require 'capitalize_names'
 
 class Nodes::NameCapitalizer
-  PEOPLE_NAMES = %w[Greg Paul John Pete Jan Troy Lucy Marc Sep Mark Kate Sam Hugh Ann Anne Ross Ian Kain Anna Zoe Luke Holt Zali Ryan Gai Lee Jane Dyer Tony Alan Pyne Dan Hunt Josh Ken Matt Cash Ley Don Alex Gee Ben Van Bob King Back Drum Dai Le Dean Doug Cox Ed Emma Eric Nash Liu Hunt Jana Hume Rice Jim Jess Ware Keay Katy Pitt Kim Carr Tink Lisa Llew Mary Max Dick Watt Nick Nita Nola Pat Wong Raff Rex Rick Rob Hart Lim Rae Bird Skye Sue Lamb Ted Tim Swan Zed].freeze
+  PEOPLE_NAMES = %w[Greg Paul John Pete Jan Troy Lucy Marc Sep Mark Kate Sam Hugh Ann Anne Ross Ian Kain Anna Zoe Luke Holt Zali Ryan Gai Lee Jane Dyer Tony Alan Pyne Dan Hunt Josh Ken Matt Cash Ley Don Alex Gee Ben Van Bob King Back Drum Dai Le Dean Doug Cox Ed Emma Eric Nash Liu Hunt Jana Hume Rice Jim Jess Ware Keay Katy Pitt Kim Carr Tink Lisa Llew Mary Max Dick Watt Nick Nita Nola Pat Wong Raff Rex Rick Rob Hart Lim Rae Bird Skye Sue Lamb Ted Tim Swan Zed Dave].freeze
   BUSINESS_WORDS = %w[Pty Ltd Inc Co Aus Hire Bank Host Plus Sole Tax Aid Job Sub Fund Toll Root Web Data Corp Hays Rio].freeze
-  OTHER_WORDS = %w[The To Of And For As Is Home No East West Mind Menu Sub Fund Let Talk Red Man Hat Asia Hive Ping Arts Van Body Gold Wall Air Hide Seek Dim Gin San Reef Oh Snow Hook Hull Hall Car Park Fair Work Anti Foot Diet Now Are Able Bell Land].freeze
+  OTHER_WORDS = %w[The To Of And For As Is Home No East West Mind Menu Sub Fund Let Talk Red Man Hat Asia Hive Ping Arts Van Body Gold Wall Air Hide Seek Dim Gin San Reef Oh Snow Hook Hull Hall Car Park Fair Work Anti Foot Diet Now Are Able Bell Land With].freeze
 
   def self.capitalize(name)
     raise "Nodes::NameCapitalizer.capitalize backtrace:\n#{caller.join("\n")}" if name.blank?
