@@ -51,6 +51,13 @@ class Person < ApplicationRecord
   #      branch groups (Groups that are members of a category Tag).
   PARLIAMENT_GROUP_NAMES = ['australian federal parliament', 'nsw parliament'].freeze
 
+  scope :with_multiple_federal_parliament_memberships, -> {
+    where(id: Membership.where(group_id: 877, member_type: 'Person')
+                        .group(:member_id)
+                        .having('COUNT(*) >= 2')
+                        .select(:member_id))
+  }
+
   scope :only_parliamentary_connections, lambda {
     parliament_group_ids = Group.where(name: PARLIAMENT_GROUP_NAMES).pluck(:id)
 

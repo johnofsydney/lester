@@ -76,7 +76,8 @@ class OpenAustralia::ImportPoliticianRow
     end
 
     membership.update!(end_date:) if membership.end_date != end_date
-    upsert_position(membership, parliament_position_title(last_party), start_date:)
+    position = upsert_position(membership, parliament_position_title(last_party), start_date:)
+    position.update!(end_date:) if end_date.present? && position.end_date != end_date
   end
 
   def record_party_membership(person, term)
@@ -137,7 +138,10 @@ class OpenAustralia::ImportPoliticianRow
 
   def close_party_memberships(person, term_party, term_constituency, end_date)
     party_groups(term_party, term_constituency).each do |group|
-      Membership.where(member: person, group:, end_date: nil).find_each { |m| m.update!(end_date:) }
+      Membership.where(member: person, group:, end_date: nil).find_each do |m|
+        m.update!(end_date:)
+        m.positions.where(end_date: nil).find_each { |p| p.update!(end_date:) }
+      end
     end
   end
 

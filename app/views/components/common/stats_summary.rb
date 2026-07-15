@@ -26,7 +26,7 @@ class Common::StatsSummary < ApplicationView
   end
 
   def groups_count
-    direct_connections.count {|c| c['klass'] == 'Group' }
+    direct_connections.filter { |c| c['klass'] == 'Group' }.map { |c| c['id'] }.uniq.count
   end
 
   def people_count

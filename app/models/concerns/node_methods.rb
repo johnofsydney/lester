@@ -125,20 +125,33 @@ module NodeMethods
   end
 
   def direct_connections
-    nodes.map do |n|
-      last_position = fetch_last_position(n)
-
-      basic_info = {
-        klass: n.class.name,
-        id: n.id,
-        name: n.name,
-        nodes_count: n.nodes_count,
-        is_tag: n.is_tag?
-      }
-
-      basic_info[:last_position] = last_position if last_position.present?
-
-      basic_info
+    if is_a?(Person)
+      memberships.includes(:positions, :group).map do |membership|
+        node = membership.group
+        basic_info = {
+          klass: node.class.name,
+          id: node.id,
+          name: node.name,
+          nodes_count: node.nodes_count,
+          is_tag: node.is_tag?
+        }
+        last_position = format_position(membership.last_position)
+        basic_info[:last_position] = last_position if last_position.present?
+        basic_info
+      end
+    else
+      nodes.map do |n|
+        basic_info = {
+          klass: n.class.name,
+          id: n.id,
+          name: n.name,
+          nodes_count: n.nodes_count,
+          is_tag: n.is_tag?
+        }
+        last_position = fetch_last_position(n)
+        basic_info[:last_position] = last_position if last_position.present?
+        basic_info
+      end
     end
   end
 
@@ -149,12 +162,13 @@ module NodeMethods
                     Membership.find_by(group: node, member: self)
                  end
 
-    position = membership&.last_position
+    format_position(membership&.last_position)
+  end
 
-    return '' unless position
+  def format_position(position)
+    return '' if position&.title.blank?
 
     result = position.title
-    return '' unless result
 
     if position.end_date.present? && position.start_date.present?
       if position.end_date == position.start_date
