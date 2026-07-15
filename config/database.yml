@@ -7,7 +7,7 @@ default: &default
 
 development:
   <<: *default
-  database: lester_development
+  database: <%= ENV.fetch('DEV_DATABASE_NAME', 'lester_development') %> # can set db in env - useful for worktrees
 
 test:
   <<: *default
