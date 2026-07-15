@@ -1,6 +1,7 @@
 class OpenAustralia::ImportPoliticianRow
   OFFICE_HOLDER_PARLIAMENT_POSITIONS = {
     'Speaker' => 'Speaker of the House',
+    'Deputy-Speaker' => 'Deputy Speaker of the House',
     'President' => 'President of the Senate',
     'Deputy-President' => 'Deputy President of the Senate'
   }.freeze

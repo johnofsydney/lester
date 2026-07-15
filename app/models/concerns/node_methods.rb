@@ -140,19 +140,37 @@ module NodeMethods
         basic_info
       end
     else
-      nodes.map do |n|
+      person_connections = best_person_memberships.map do |membership|
+        node = membership.member
         basic_info = {
-          klass: n.class.name,
-          id: n.id,
-          name: n.name,
-          nodes_count: n.nodes_count,
-          is_tag: n.is_tag?
+          klass: node.class.name,
+          id: node.id,
+          name: node.name,
+          nodes_count: node.nodes_count,
+          is_tag: node.is_tag?
         }
+        last_position = format_position(membership.last_position)
+        basic_info[:last_position] = last_position if last_position.present?
+        basic_info
+      end
+
+      group_connections = affiliated_groups.map do |n|
+        basic_info = { klass: n.class.name, id: n.id, name: n.name, nodes_count: n.nodes_count, is_tag: n.is_tag? }
         last_position = fetch_last_position(n)
         basic_info[:last_position] = last_position if last_position.present?
         basic_info
       end
+
+      person_connections + group_connections
     end
+  end
+
+  def best_person_memberships
+    memberships.where(member_type: 'Person')
+               .includes(:positions, :member)
+               .group_by(&:member_id)
+               .values
+               .map { |mems| mems.min_by { |m| m.end_date.nil? ? [0, 0] : [1, -m.end_date.to_time.to_i] } }
   end
 
   def fetch_last_position(node)
