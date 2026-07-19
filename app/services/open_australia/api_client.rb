@@ -11,9 +11,21 @@ class OpenAustralia::ApiClient
     get('getSenator', id: person_id)
   end
 
+  # Names mirror the OpenAustralia API's own action names (getRepresentatives/getSenators),
+  # not Ruby accessor conventions.
+  # rubocop:disable Naming/AccessorMethodName
+  def get_representatives
+    get('getRepresentatives')
+  end
+
+  def get_senators
+    get('getSenators')
+  end
+  # rubocop:enable Naming/AccessorMethodName
+
   private
 
-  def get(action, params)
+  def get(action, params = {})
     response = connection.get(action, params.merge(key: api_key, output: 'js'))
     raise OpenAustraliaApiError, "#{response.status}: #{response.body}" unless response.success?
 
