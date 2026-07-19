@@ -1,332 +1,91 @@
-# Ingest Federal Politicians — Design
+# Ingest Federal Politicians — Design & Roadmap
 
-## Goal
+## Current status (2026-07-19)
 
-Fetch all current and historical Australian federal politicians from the OpenAustralia API
-and record them in the Lester graph as `Person` nodes, connected to their chamber, party,
-and (in later phases) their ministerial offices and Cabinet.
+**Increment 1 — Ingest — is done and verified on staging.** See [issue #209](https://github.com/johnofsydney/lester/issues/209) (parent spec), [#210](https://github.com/johnofsydney/lester/issues/210) and [#211](https://github.com/johnofsydney/lester/issues/211) (implementation tickets).
+
+What exists today:
+- `OpenAustralia::ApiClient` — Faraday wrapper for `getRepresentative(id)`, `getSenator(id)`, `getRepresentatives`, `getSenators`.
+- `OpenAustralia::IngestPerson.call(person_id:)` — fetches a person's full Term history from **both** chambers, merges chronologically, resolves/creates the `Person` via the existing `People::RecordPerson` name/external-identifier logic, and stores the raw merged Terms on `open_australia_data` (jsonb) / `open_australia_data_fetched_at` (timestamp) columns on `people`.
+- `OpenAustralia::IngestCurrentPoliticians.call` — fetches the current roster (`getRepresentatives` + `getSenators`), enqueues one `IngestPersonJob` per distinct `person_id`.
+- `open_australia_id` on `ExternalIdentifiable` / `People::RecordPerson`.
+
+**Deliberately not done in Increment 1** (see `CONTEXT.md` and `docs/adr/`):
+- No `Membership`/`Position` records are created — this is Ingest only, not Interpretation.
+- Only *currently-serving* politicians are ingested (~226 people) — not the full 50-year historical set.
+- No freshness/staleness checking, no throttling, no scheduled trigger — console-only, unconditional overwrite on each run.
+
+Domain vocabulary (Term, Raw Terms, Ingest, Interpretation, Major/Minor Party, Federal/State Branch Membership, Office Holder, Current Standing) is defined in `CONTEXT.md`. Settled decisions are recorded in `docs/adr/0001`–`0004`. Read both before starting any of the work below — several non-obvious rules (e.g. state-branch memberships never get an `end_date`) are already resolved there, don't re-derive them.
 
 ---
 
-## API: OpenAustralia
+## Increment 2 — Interpretation (next up)
+
+Turn each Person's `open_australia_data` (their Raw Terms) into real `Membership`/`Position` records: one Parliament Membership per continuous stint, one Federal Branch Membership per major party (closed when the parliamentary term ends — ADR 0002), one State Branch / Minor Party Membership per party (never auto-closed — ADR 0002), with Office Holder terms (Speaker/Deputy-Speaker/President/Deputy-President) inheriting party from the preceding real-party Term (ADR 0003).
+
+This is where essentially all the complexity from the first (abandoned) attempt lived. Known hard parts, already identified but **not yet re-solved** in this rebuild:
+
+- **Grouping Terms into a single continuous Parliament Membership** — contiguous Terms (where one's `left_house` equals the next's `entered_house`) should collapse into one Membership; a real gap (lost seat, later re-elected) should be two. `CONTEXT.md` deliberately left this internal-method-level detail unnamed ("Stint" was explicitly rejected as a glossary term) — work out the grouping logic fresh, don't resurrect the old `group_into_stints` code wholesale, since it had a real bug (an Office Holder term could silently merge into the next contiguous term and lose its title — the `chunk_while` predicate only checked the *current* term, not the *previous* one).
+- **Federal vs State Branch vs Minor Party group resolution** — mapping a `party` string to the right Group(s), including electorate→state lookup for MPs (state is direct on the Term for Senators, but MPs only give an electorate name). A `MapElectorateToState`-style lookup table existed in the abandoned branch; may be worth rebuilding, or reconsider using `getDivisions` if it exists.
+- **Party string audit** — how do OpenAustralia's party strings (`"Australian Labor Party"`, `"The Nationals"`, etc.) compare against existing AEC-sourced Tags already in the DB? Needs a live comparison now that the API key works — this was blocked before, isn't now.
+- **Idempotency** — Interpretation needs to be safely re-runnable (re-run after a fresh Ingest fetch) without duplicating Memberships/Positions.
+
+Suggest running this against the ~226 already-ingested current politicians as the test bed before touching historical data at all.
+
+---
+
+## Increment 3 — Historical backfill (after Interpretation is proven)
+
+Goal: ingest *all* federal politicians within the 50-year window (ADR 0004), not just current ones.
+
+This needs its own design pass — it's a genuinely different problem from Increment 1, not just "run the same thing on a bigger list":
+
+- There's no single "everyone who's ever served" roster endpoint. `getRepresentatives`/`getSenators` take an optional `date` param and return the roster *as it stood on that date* — historical discovery means querying across many historical dates and deduplicating `person_id`s.
+- A naive approach (one query per election date) has a real gap: someone who won a by-election and then lost their seat (or died, or resigned) entirely between two general elections would never appear in any election-day snapshot. Sampling more densely (e.g. every few months) reduces but may not eliminate this risk — worth explicitly deciding what risk is acceptable rather than discovering it by omission.
+- Whatever discovery strategy is chosen, it only needs to produce a list of `person_id`s — `OpenAustralia::IngestPerson` (already built) handles the rest unchanged, since it always fetches a person's *entire* Term history regardless of which date surfaced them.
+- Volume is much larger than 226 — worth revisiting whether throttling is still unnecessary (Increment 1 deliberately skipped it for a one-off ~226-person run; that reasoning doesn't automatically extend to a much larger historical run).
+
+Run `/grill-with-docs` for this increment specifically before implementing — the discovery-strategy question above needs a real decision, not an assumption.
+
+---
+
+## Later — Ministries and Cabinet offices
+
+Each Term OpenAustralia returns already includes an `office` array — ministerial/shadow ministerial positions with date ranges (`{ moffice_id, dept, position, from_date, to_date, person, source }`). **This data is already being captured** — Increment 1 stores the whole raw Term unmodified in `open_australia_data`, `office` included. No new Ingest work is needed for this; it's purely a future Interpretation concern reading data that's already there.
+
+When picked up:
+- Each `office` entry → a `Membership` between the Person and a Department Group (find-or-create by `dept`), with a `Position` (`title` = `position` string, dates from `from_date`/`to_date`).
+- A **Ministry** (the collective cabinet under a PM — "Albanese Ministry", "Morrison Ministry") is its own concept, not directly given by OpenAustralia — grouping office-holders into a Ministry needs PM tenure date ranges from elsewhere (not in this API). Design separately; don't conflate with the per-office Membership work above.
+
+---
+
+## Reference: OpenAustralia API
 
 - Base URL: `https://www.openaustralia.org.au/api/`
-- Auth: `key=VALUE` query param on every request
-- Output: `output=js` returns JSON
+- Auth: `key=VALUE` query param on every request — `Rails.application.credentials.dig(:open_australia, :api_key)` (now set).
+- Output: `output=js` returns JSON.
 - Docs: https://www.openaustralia.org.au/api/
-- Credentials: `Rails.application.credentials.open_australia.api_key`
-  (key may already be present — confirm once master.key is available on current machine)
 
-### Endpoints used
+### `getRepresentatives` / `getSenators` (roster, no ID)
+Returns all members as of a given date (`date` param, ISO — omit for today). Also takes optional `party`/`search` filters, and `state` (senators only). Confirmed live: 150 representatives, 76 senators currently.
 
-#### `getRepresentatives` / `getSenators`  (list)
-Returns all members as of a given date (or today if no date given).
+### `getRepresentative` / `getSenator` (singular, by `person_id`)
+Returns that person's **full Term history** in that chamber — every row they've ever had, not just current. Confirmed field shape from live data:
 
-| Param | Notes |
-|---|---|
-| `date` | ISO date — returns parliament as it stood on that date. Key for historical ingestion. |
-| `party` | Optional filter |
-| `search` | Optional filter |
-| `state` | Senators only |
-
-Response fields per row:
-- `member_id` — term-specific (changes if re-elected after a gap)
-- `person_id` — **stable cross-term integer ID** — use as ExternalIdentifier value
-- `name` — full name string (may include titles)
-- `party` — party string e.g. `"Australian Labor Party"`
-- `constituency` — electorate name for MPs; state abbreviation (NSW, VIC…) for Senators
-
-#### `getRepresentative` / `getSenator`  (singular, by person_id)
-Called inside each row job to get enriched detail.
-
-Additional fields:
-- `first_name`, `last_name`, `full_name`
-- `entered_house` / `left_house` — ISO date strings for this term (`left_house` is blank if currently serving)
-- `entered_reason` / `left_reason` — e.g. `"general_election"`, `"dissolution"`, `"died"`
-- `title` — e.g. `"Mr"`, `"Dr"`
-- `image` — `/images/mpsL/{person_id}.jpg`
-- `house` — `"representatives"` or `"senate"` — used as ExternalIdentifier value on the chamber Group
-- `office` — array of ministerial/shadow positions:
-  `[{ position, from_date, to_date, dept, person, source }, ...]`
-- `lastupdate` — timestamp
-
----
-
-## Pre-import: deletion scope
-
-Before re-running the import we delete "pure politician" Person records — those whose only
-graph connections are to a chamber (House of Reps / Senate) and/or a party Tag.
-
-Anyone who also appears in other contexts (lobbyist org, charity, government contractor, etc.)
-is **excluded from deletion** — their political memberships get rebuilt but the Person record
-is preserved.
-
-This mirrors the ACNC people import pattern.
-
-Implement as a scope (or class method) on `Person`, e.g.:
-
-```ruby
-Person.only_parliamentary_connections
-# → people whose membership groups are ALL in: chamber Tags + party Tags
-# → excludes anyone with a membership in any other Group type
+```json
+{
+  "member_id": "6", "house": "1", "first_name": "Anthony", "last_name": "Albanese",
+  "constituency": "Grayndler", "party": "Australian Labor Party",
+  "entered_house": "1996-03-02", "left_house": "9999-12-31",
+  "entered_reason": "general_election", "left_reason": "still_in_office",
+  "person_id": "10007", "title": "", "lastupdate": "2008-04-26 11:08:04",
+  "full_name": "Anthony Albanese", "name": "Anthony Albanese",
+  "image": "/images/mpsL/10007.jpg",
+  "office": [{ "moffice_id": "287830", "dept": "", "position": "Prime Minister",
+                "from_date": "2022-06-01", "to_date": "9999-12-31", "person": "10007", "source": "" }]
+}
 ```
 
-Exact implementation TBD when writing the model code — likely uses a NOT EXISTS subquery
-checking for memberships outside the permitted Tag set.
+Note: `house` is the string `"1"` (Representatives) or `"2"` (Senate) — **not** `"representatives"`/`"senate"` as originally guessed before live API access was available. `left_house` is `"9999-12-31"` (not blank) when currently serving.
 
----
-
-## Phase 1: Politicians, chambers, parties
-
-### What gets created
-
-#### Person
-- Name cleaned via `People::RecordPerson#cleaned_up_name` (strips Hon, Dr, Senator, MP, etc.)
-- `ExternalIdentifier`: `source: 'open_australia'`, `value: person_id.to_s`
-
-#### Chamber Groups  (find-or-create once, not per politician)
-Two Groups exist for the chambers:
-- `"House of Representatives"` — `ExternalIdentifier` source `'open_australia'`, value `'representatives'`
-- `"Senate"` — `ExternalIdentifier` source `'open_australia'`, value `'senate'`
-
-Using ExternalIdentifiers on the Groups (not hardcoded IDs) means we can look them up
-reliably without the hardcoded-ID antipattern already flagged in `improvement_candidates.md`.
-
-#### Chamber Membership  (one per term)
-Each term = one `Membership` record between the Person and the chamber Group.
-
-| Field | Value |
-|---|---|
-| `start_date` | `entered_house` from API |
-| `end_date` | `left_house` from API (nil if currently serving) |
-| `evidence` | `'https://www.openaustralia.org.au'` |
-
-A politician who served two non-consecutive terms in the same chamber gets two Membership
-records. The model explicitly supports this ("multiple memberships in the same group over time").
-
-Deduplication on re-import: find existing Membership by `(member: person, group: chamber,
-start_date: entered_house)` — update `end_date` if changed, otherwise skip.
-
-#### Party membership
-
-Three cases based on the `party` field from the API:
-
-**Independents** — party string is blank, `"Independent"`, or similar.
-→ No party Membership created.
-
-**Minor parties** (One Nation, Lambie Network, United Australia Party, Katter's Australian Party, etc.)
-→ Membership in the national party Tag only. No state.
-
-**Major parties** (Labor, Liberals, Nationals, Greens)
-→ Membership in the **state branch** Tag.
-
-State branch resolution:
-- **Senators**: `constituency` from the API IS the state (NSW, VIC, QLD, WA, SA, TAS, ACT, NT). Straightforward.
-- **MPs**: `constituency` is the electorate name, not the state. Requires an electorate → state
-  lookup. Options:
-  a. Maintain a lookup table in the codebase (all ~151 electorates mapped to states).
-    get info from https://www.aec.gov.au/profiles/ and populate a mapper ruby file
-  b. Call `getDivisions` API endpoint which may return state info per electorate.
-  c. For Phase 1, fall back to national party Tag for MPs and revisit.
-  _Decision: defer electorate→state mapping to Phase 1b. MPs get national party for now._
-d. Make a call to  https://www.aec.gov.au/profiles/ to fetch State when we know electorate
-State branch Tag naming convention (to align with AEC data — audit needed):
-- `"Australian Labor Party (NSW)"` / `"Australian Labor Party (VIC)"` etc.
-- `"Liberal Party of Australia (NSW Division)"` etc.
-- Exact strings TBD pending audit of existing Tags in DB vs OpenAustralia party strings.
-
-**Determining major vs minor**: use a constant list of major party strings in the service.
-Anything not in the list and not independent → minor party → national Tag only.
-
-```ruby
-MAJOR_PARTIES = [
-  /Australian Labor Party/i,
-  /Liberal Party/i,
-  /The Nationals/i,
-  /Australian Greens/i,
-].freeze
-```
-
-Note: Queensland has the "Liberal National Party of Queensland" (LNP) — a merged entity.
-Treat as major (state branch). Will surface in audit.
-
----
-
-## Phase 2: Offices and Ministries  (not in scope yet — design only)
-
-OpenAustralia's `office` array contains ministerial and shadow ministerial positions with
-date ranges. Phase 2 will:
-
-### Ministerial offices
-
-For each entry in `office`:
-- Create a `Membership` between the Person and a **Department** Group
-  (find-or-create by `dept` string, e.g. `"Department of Defence"`)
-- Create a `Position` on that Membership with `title` = `position` string,
-  `start_date` / `end_date` from `from_date` / `to_date`
-
-### Ministries / Cabinets
-
-A **Ministry** is the collective cabinet of a PM (e.g. "Morrison Ministry", "Albanese Ministry").
-Each Ministry is a `Group`. Ministers have `Membership` in the Ministry Group with their
-portfolio `Position`.
-
-Identifying which Ministry a given office stint belongs to requires a lookup of PM tenure date
-ranges (not provided by OpenAustralia directly — needs a separate lookup table or seed data).
-
-This is complex enough to design separately when Phase 1 is complete.
-
----
-
-## Implementation structure
-
-Pattern: lobbyist ingestion (`app/sidekiq/au_lobbyists/`, `app/services/au_lobbyists/`).
-
-```
-app/sidekiq/open_australia/
-  ingest_politicians_job.rb           # weekly Sidekiq job — current parliament only
-  backfill_historical_politicians_job.rb  # one-shot — walks all election dates
-  import_politician_row_job.rb        # per-person job (lock: :until_executed)
-
-app/services/open_australia/
-  ingest_politicians.rb               # calls API for both chambers, dispatches row jobs
-  api_client.rb                       # Faraday wrapper
-  import_politician_row.rb            # records one politician (Person + memberships)
-```
-
----
-
-## Job flow
-
-```
-IngestPoliticiansJob  (weekly)
-  └─ OpenAustralia::IngestPoliticians.call(date: nil)
-       ├─ ApiClient#get_representatives → ImportPoliticianRowJob.perform_async per row
-       └─ ApiClient#get_senators        → ImportPoliticianRowJob.perform_async per row
-
-BackfillHistoricalPoliticiansJob  (one-shot)
-  └─ calls IngestPoliticians.call for each election date:
-       2025-05-03, 2022-05-21, 2019-05-18, 2016-07-02, 2013-09-07,
-       2010-08-21, 2007-11-24, 2004-10-09, 2001-11-10, 1998-10-03, 1996-03-02
-
-ImportPoliticianRowJob
-  └─ OpenAustralia::ImportPoliticianRow.call(
-         person_id:, name:, party:, constituency:, chamber:)
-       ├─ ApiClient#get_representative(person_id) or get_senator(person_id)
-       │    → enriched detail: entered_house, left_house, office[], etc.
-       ├─ Clean name via People::RecordPerson.new(name).send(:cleaned_up_name)
-       ├─ Entity::RecordEntityWithExternalId.call(
-       │    name:, identifier: person_id, source: 'open_australia',
-       │    id_attribute: nil [see gotcha below], klass: 'Person')
-       ├─ Find-or-create chamber Group (via ExternalIdentifier on Group)
-       ├─ Find-or-create chamber Membership (matched on person + group + start_date)
-       ├─ Resolve party Tag (major/minor/independent logic)
-       └─ Find-or-create party Membership
-```
-
-`person_id` is stable across terms — re-processing a politician from an earlier election date
-hits `find_entity_by_external_id` and updates rather than duplicates.
-
----
-
-## Codebase context (read before writing code)
-
-### Lobbyist ingestion — the pattern to follow
-
-```
-app/sidekiq/au_lobbyists/ingest_lobbyists_job.rb
-app/sidekiq/au_lobbyists/import_lobbyists_people_row_job.rb
-app/services/au_lobbyists/ingest_lobbyists.rb
-app/services/au_lobbyists/csv_importer.rb
-```
-
-Row jobs use: `sidekiq_options lock: :until_executed, on_conflict: :log, retry: 1`
-Orchestrator passes only scalar args (strings/ints) to `perform_async`.
-
-### `Entity::RecordEntityWithExternalId`
-`app/services/entity/record_entity_with_external_id.rb`
-
-Lookup chain: ExternalIdentifier match → sole name match → create new.
-
-**Gotcha:** `find_sole_entity_by_name_and_append_external_id` calls
-`entity.public_send(:"#{id_attribute}=", identifier)`, which assumes a column on the model.
-Since `open_australia` IDs live only in `external_identifiers` (no column on `people`),
-passing a real `id_attribute` will raise `NoMethodError`. Options:
-- Pass `id_attribute: nil` and guard the setter in the service.
-- Or subclass / monkey-patch for the no-column case.
-- Simplest: just rescue `NoMethodError` in the service and skip the setter — the
-  `ExternalIdentifier` record is created separately anyway.
-_Resolve when writing `ImportPoliticianRow`._
-
-### `ExternalIdentifier` model
-`app/models/external_identifier.rb`
-
-```ruby
-SOURCES = %w[aec acnc open_australia].freeze
-```
-
-`'open_politics'` was a naming mistake from before the source was settled on OpenAustralia
-specifically — fixed. ExternalIdentifiers will be created on **both Person and Group**
-(chamber Groups).
-
-### `People::RecordPerson`
-`app/services/people/record_person.rb`
-
-Has `cleaned_up_name` (private) that strips Hon, Dr, Senator, MP, OAM, etc. and fixes
-"Last, First" ordering. Call this before passing names to `RecordEntityWithExternalId`.
-Safe approach: `People::RecordPerson.new(raw_name).send(:cleaned_up_name, raw_name)`.
-
-### `Membership` model
-Has `start_date`, `end_date`, `evidence`, `positions` (has_many Position with `title`).
-Multiple Memberships per (person, group) pair are valid — used for multi-term politicians.
-
-### Faraday pattern
-See `app/services/au_lobbyists/file_downloader.rb` and `app/services/abn/fetch_business_names.rb`.
-OpenAustralia is simple GET with query params — no auth headers.
-
-```
-GET https://www.openaustralia.org.au/api/getRepresentatives?key=KEY&output=js&date=2022-05-21
-```
-
-Response is a JSON array when `output=js`.
-
-### Ruby gem — rejected
-`openaustralia` gem (v1.0.1, ~2013) — ancient, unmaintained. Not used. Raw Faraday only.
-
----
-
-## Open questions
-
-- **Electorate → state mapping for MPs** — needed for state-branch party membership for
-  Labor/Liberal/Nationals/Greens MPs. Options: hardcoded lookup table, `getDivisions` API call,
-  or defer to Phase 1b. Currently deferred.
-
-- **Party string audit** — how do OpenAustralia party strings compare with existing AEC-sourced
-  Tags in the DB? Need a live API call + Tag query to compare. Blocked on master.key / credentials.
-
-- **LNP (Queensland)** — "Liberal National Party of Queensland" is a merged Liberal-National entity.
-  Treat as a single state-branch major party. Confirm handling when party strings are audited.
-
-- **`Entity::RecordEntityWithExternalId` id_attribute gotcha** — needs a code-level fix
-  before `ImportPoliticianRow` can run. See codebase context above.
-
----
-
-## Status
-
-- [x] API exploration complete
-- [x] Phase 1 design agreed
-- [x] Phase 2 design sketched (offices / ministries)
-- [ ] Confirm API key in credentials  _(blocked: master.key not on this machine)_
-- [ ] Audit party strings from API vs existing DB Tags  _(blocked: same)_
-- [x] `ExternalIdentifier::SOURCES` — replace `'open_politics'` with `'open_australia'`
-- [ ] Fix / workaround `id_attribute` gotcha in `Entity::RecordEntityWithExternalId`
-- [ ] `OpenAustralia::ApiClient` written + smoke-tested against live API
-- [ ] `Person.only_parliamentary_connections` scope written
-- [ ] `IngestPoliticians` service + `IngestPoliticiansJob` written
-- [ ] `BackfillHistoricalPoliticiansJob` written
-- [ ] `ImportPoliticianRow` service written
-- [ ] Electorate → state lookup resolved (Phase 1b)
-- [ ] Specs written
-- [ ] Scheduler entry added to `config/sidekiq.yml`
-- [ ] First live ingest run on staging
+`person_id` is stable across a person's entire career, even across chambers (confirmed: Barnaby Joyce is `person_id: "10350"` for both his Senate and House terms) — this is why `IngestPerson` calls both `get_representative` and `get_senator` for every person regardless of which chamber they're currently in.
