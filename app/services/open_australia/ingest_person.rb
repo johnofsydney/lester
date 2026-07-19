@@ -6,20 +6,21 @@ class OpenAustralia::IngestPerson
   end
 
   def call
-    terms = fetch_terms
     return nil if terms.empty?
 
-    person = People::RecordPerson.call(terms.last['full_name'], open_australia_id: person_id)
-    person.update!(open_australia_data: terms, open_australia_data_fetched_at: Time.current)
-    person
+    People::RecordPerson
+      .call(terms.last['full_name'], open_australia_id: person_id)
+      .tap do |person|
+        person.update!(open_australia_data: terms, open_australia_data_fetched_at: Time.current)
+      end
   end
 
   private
 
   attr_reader :person_id
 
-  def fetch_terms
-    (representative_terms + senator_terms).sort_by { |term| term['entered_house'] }
+  def terms
+    @terms ||= (representative_terms + senator_terms).sort_by { |term| term['entered_house'] }
   end
 
   def representative_terms
