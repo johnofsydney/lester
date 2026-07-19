@@ -1,0 +1,40 @@
+[
+  {
+    "member_id": "2350",
+    "house": "1",
+    "first_name": "Barnaby",
+    "last_name": "Joyce",
+    "constituency": "New England",
+    "party": "The Nationals",
+    "entered_house": "2013-09-07",
+    "left_house": "2025-11-27",
+    "entered_reason": "general_election",
+    "left_reason": "resigned_from_party",
+    "person_id": "10350",
+    "title": "",
+    "lastupdate": "2025-12-01 10:00:00",
+    "full_name": "Barnaby Joyce",
+    "name": "Barnaby Joyce",
+    "image": "/images/mpsL/10350.jpg",
+    "office": []
+  },
+  {
+    "member_id": "2351",
+    "house": "1",
+    "first_name": "Barnaby",
+    "last_name": "Joyce",
+    "constituency": "New England",
+    "party": "Independent",
+    "entered_house": "2025-11-27",
+    "left_house": "9999-12-31",
+    "entered_reason": "resigned_from_party",
+    "left_reason": "still_in_office",
+    "person_id": "10350",
+    "title": "",
+    "lastupdate": "2025-12-01 10:00:00",
+    "full_name": "Barnaby Joyce",
+    "name": "Barnaby Joyce",
+    "image": "/images/mpsL/10350.jpg",
+    "office": []
+  }
+]

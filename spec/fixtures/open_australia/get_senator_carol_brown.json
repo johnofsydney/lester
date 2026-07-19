@@ -1,0 +1,21 @@
+[
+  {
+    "member_id": "1071",
+    "house": "2",
+    "first_name": "Carol",
+    "last_name": "Brown",
+    "constituency": "Tasmania",
+    "party": "Australian Labor Party",
+    "entered_house": "2011-04-05",
+    "left_house": "9999-12-31",
+    "entered_reason": "vacancy_fill",
+    "left_reason": "still_in_office",
+    "person_id": "10071",
+    "title": "",
+    "lastupdate": "2011-05-10 09:12:00",
+    "full_name": "Carol Brown",
+    "name": "Carol Brown",
+    "image": "/images/mpsL/10071.jpg",
+    "office": []
+  }
+]

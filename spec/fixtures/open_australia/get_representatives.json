@@ -1,0 +1,40 @@
+[
+  {
+    "member_id": "6",
+    "house": "1",
+    "first_name": "Anthony",
+    "last_name": "Albanese",
+    "constituency": "Grayndler",
+    "party": "Australian Labor Party",
+    "entered_house": "1996-03-02",
+    "left_house": "9999-12-31",
+    "entered_reason": "general_election",
+    "left_reason": "still_in_office",
+    "person_id": "10007",
+    "title": "",
+    "lastupdate": "2008-04-26 11:08:04",
+    "full_name": "Anthony Albanese",
+    "name": "Anthony Albanese",
+    "image": "/images/mpsL/10007.jpg",
+    "office": []
+  },
+  {
+    "member_id": "69",
+    "house": "1",
+    "first_name": "Tony",
+    "last_name": "Burke",
+    "constituency": "Watson",
+    "party": "Australian Labor Party",
+    "entered_house": "2004-10-09",
+    "left_house": "9999-12-31",
+    "entered_reason": "general_election",
+    "left_reason": "still_in_office",
+    "person_id": "10081",
+    "title": "Mr",
+    "lastupdate": "2008-07-20 12:54:54",
+    "full_name": "Mr Tony Burke",
+    "name": "Mr Tony Burke",
+    "image": "/images/mpsL/10081.jpg",
+    "office": []
+  }
+]

@@ -21,9 +21,10 @@ if [[ $? -ne 0 ]]; then
 fi
 
 # Step 2: Copy the backup file from the remote server to the local machine
+LOCAL_DUMP_FILE="$LOCAL_BACKUP_DIR/lester_db_$(date +%Y%m%d_%H%M%S).sql"
 echo "Copying backup file to local machine..."
-scp "$REMOTE_USER@$REMOTE_HOST:$REMOTE_BACKUP_DIR/$BACKUP_FILE" "$LOCAL_BACKUP_DIR/$BACKUP_FILE"
-# scp user@host_ip:~/db_dumps/database.bak ~/Desktop/database.bak
+scp "$REMOTE_USER@$REMOTE_HOST:$REMOTE_BACKUP_DIR/$BACKUP_FILE" "$LOCAL_DUMP_FILE"
+echo "Saved to: $LOCAL_DUMP_FILE"
 
 # Step 3: Delete the backup file from the remote server
 ssh "$REMOTE_USER@$REMOTE_HOST" << EOF

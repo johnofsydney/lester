@@ -166,6 +166,15 @@ RSpec.describe People::RecordPerson, type: :service do
           expect(person.acnc_id).to eq('ACNC-123')
           expect(person.trading_names.where(name:).exists?).to be(true)
         end
+
+        it 'creates a new record when name and open_australia_id are provided' do
+          expect { described_class.call(name, open_australia_id: '10999') }.to change(Person, :count).by(1)
+
+          person = Person.find_by(name:)
+          expect(person).to be_present
+          expect(person.open_australia_id).to eq('10999')
+          expect(person.trading_names.where(name:).exists?).to be(true)
+        end
       end
 
       context 'when an existing person with a name exists' do
@@ -185,6 +194,12 @@ RSpec.describe People::RecordPerson, type: :service do
           expect { described_class.call(name, acnc_id: 'ACNC-200') }.not_to change(Person, :count)
 
           expect(person.reload.acnc_id).to eq('ACNC-200')
+        end
+
+        it 'does not create a new record when name and open_australia_id are provided and updates open_australia_id' do
+          expect { described_class.call(name, open_australia_id: '10201') }.not_to change(Person, :count)
+
+          expect(person.reload.open_australia_id).to eq('10201')
         end
       end
 
