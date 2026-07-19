@@ -262,12 +262,12 @@ _Resolve when writing `ImportPoliticianRow`._
 `app/models/external_identifier.rb`
 
 ```ruby
-SOURCES = %w[aec acnc open_politics].freeze
+SOURCES = %w[aec acnc open_australia].freeze
 ```
 
-Action needed: replace `'open_politics'` with `'open_australia'` in SOURCES.
-No migration needed (string column). Zero existing rows for `open_politics`.
-ExternalIdentifiers will be created on **both Person and Group** (chamber Groups).
+`'open_politics'` was a naming mistake from before the source was settled on OpenAustralia
+specifically — fixed. ExternalIdentifiers will be created on **both Person and Group**
+(chamber Groups).
 
 ### `People::RecordPerson`
 `app/services/people/record_person.rb`
@@ -319,7 +319,7 @@ Response is a JSON array when `output=js`.
 - [x] Phase 2 design sketched (offices / ministries)
 - [ ] Confirm API key in credentials  _(blocked: master.key not on this machine)_
 - [ ] Audit party strings from API vs existing DB Tags  _(blocked: same)_
-- [ ] `ExternalIdentifier::SOURCES` — replace `'open_politics'` with `'open_australia'`
+- [x] `ExternalIdentifier::SOURCES` — replace `'open_politics'` with `'open_australia'`
 - [ ] Fix / workaround `id_attribute` gotcha in `Entity::RecordEntityWithExternalId`
 - [ ] `OpenAustralia::ApiClient` written + smoke-tested against live API
 - [ ] `Person.only_parliamentary_connections` scope written

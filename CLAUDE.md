@@ -53,7 +53,7 @@ The graph has two entity types — **Person** and **Group** — connected by:
 - **Transfer** (polymorphic `giver`/`taker`: Person or Group → Person or Group). `transfer_type` is either `donations` or `government_contracts`.
 - **Tag** is a subclass of Group (`type: 'Tag'`). Tags are used as political party labels and category labels (Charities, Lobbyists, etc.). Several tags have hardcoded IDs relied on in scopes (e.g. `Group.charities_tag` → id 124513).
 
-Both Person and Group include three concerns: `NodeMethods` (live graph traversal & money aggregation), `CachedMethods` (cache access via `cached_data` jsonb column), and `TransferMethods`. They also include `ExternalIdentifiable`, which gives access to the `external_identifiers` polymorphic table (sources: `aec`, `acnc`, `open_politics`).
+Both Person and Group include three concerns: `NodeMethods` (live graph traversal & money aggregation), `CachedMethods` (cache access via `cached_data` jsonb column), and `TransferMethods`. They also include `ExternalIdentifiable`, which gives access to the `external_identifiers` polymorphic table (sources: `aec`, `acnc`, `open_australia`).
 
 Names on both Person and Group are normalised on save: downcased, stripped, `.` removed.
 
@@ -91,3 +91,13 @@ See `context/person_disambiguation_design.md`. The short version: people from di
 ActiveAdmin at `/admin` (authenticated via Devise `AdminUser`). Key custom actions: `Admin::People#ingest_linkedin`, `Admin::People::ExplodePerson` (splits a falsely-merged person), `Admin::Groups#perform_merge`, membership bulk upload.
 
 Flipper UI at `/flipper`, Sidekiq Web at `/sidekiq` — both behind `authenticate :admin_user`.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live as GitHub issues in johnofsydney/lester, managed via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Domain docs
+
+Single-context layout — `CONTEXT.md` + `docs/adr/` at the repo root. See `docs/agents/domain.md`.
