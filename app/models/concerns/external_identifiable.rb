@@ -21,6 +21,14 @@ module ExternalIdentifiable
     set_external_identifier('acnc', value)
   end
 
+  def open_australia_id
+    external_identifier_value('open_australia')
+  end
+
+  def open_australia_id=(value)
+    set_external_identifier('open_australia', value)
+  end
+
   private
 
   def external_identifier_value(source)

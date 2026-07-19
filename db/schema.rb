@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2026_06_29_072142) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_19_000001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "active_admin_comments", force: :cascade do |t|
-    t.string "namespace"
-    t.text "body"
-    t.string "resource_type"
-    t.bigint "resource_id"
-    t.string "author_type"
     t.bigint "author_id"
+    t.string "author_type"
+    t.text "body"
     t.datetime "created_at", null: false
+    t.string "namespace"
+    t.bigint "resource_id"
+    t.string "resource_type"
     t.datetime "updated_at", null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author"
     t.index ["namespace"], name: "index_active_admin_comments_on_namespace"
@@ -29,77 +29,77 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_29_072142) do
   end
 
   create_table "admin_users", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
+    t.datetime "reset_password_sent_at"
+    t.string "reset_password_token"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
   create_table "api_logs", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "endpoint"
     t.text "message"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "contract_backfills", force: :cascade do |t|
-    t.date "last_processed_date", null: false
     t.datetime "created_at", null: false
+    t.date "last_processed_date", null: false
     t.datetime "updated_at", null: false
     t.index ["last_processed_date"], name: "index_contract_backfills_on_last_processed_date", unique: true
   end
 
   create_table "external_identifiers", force: :cascade do |t|
-    t.string "owner_type", null: false
-    t.bigint "owner_id", null: false
-    t.string "source", null: false
-    t.string "value", null: false
     t.datetime "created_at", null: false
+    t.bigint "owner_id", null: false
+    t.string "owner_type", null: false
+    t.string "source", null: false
     t.datetime "updated_at", null: false
+    t.string "value", null: false
     t.index ["owner_type", "owner_id", "source", "value"], name: "index_external_identifiers_on_owner_source_and_value", unique: true
     t.index ["owner_type", "owner_id"], name: "index_external_identifiers_on_owner"
     t.index ["source", "value"], name: "index_external_identifiers_on_source_and_value"
   end
 
   create_table "fine_grained_transaction_categories", force: :cascade do |t|
-    t.string "name"
-    t.bigint "major_transaction_category_id"
     t.datetime "created_at", null: false
+    t.bigint "major_transaction_category_id"
+    t.string "name"
     t.datetime "updated_at", null: false
     t.index ["major_transaction_category_id"], name: "idx_on_major_transaction_category_id_558fd27f86"
   end
 
   create_table "flipper_features", force: :cascade do |t|
-    t.string "key", null: false
     t.datetime "created_at", null: false
+    t.string "key", null: false
     t.datetime "updated_at", null: false
     t.index ["key"], name: "index_flipper_features_on_key", unique: true
   end
 
   create_table "flipper_gates", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "feature_key", null: false
     t.string "key", null: false
-    t.text "value"
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "value"
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
   end
 
   create_table "groups", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "category", default: false
-    t.json "cached_data", default: {}
     t.string "business_number"
+    t.json "cached_data", default: {}
+    t.boolean "category", default: false
+    t.datetime "created_at", null: false
+    t.string "name", null: false
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
     t.string "type"
+    t.datetime "updated_at", null: false
     t.integer "views", default: 0, null: false
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
     t.index ["category"], name: "index_groups_on_category"
@@ -107,25 +107,25 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_29_072142) do
   end
 
   create_table "individual_transactions", force: :cascade do |t|
-    t.bigint "transfer_id"
-    t.float "amount"
-    t.text "evidence"
-    t.string "transaction_type"
-    t.date "effective_date"
-    t.string "external_id"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "contract_id"
     t.string "amendment_id"
+    t.float "amount"
     t.string "category"
-    t.string "giver_type"
-    t.bigint "giver_id"
-    t.string "taker_type"
-    t.bigint "taker_id"
+    t.string "contract_id"
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.date "effective_date"
+    t.text "evidence"
+    t.string "external_id"
     t.bigint "fine_grained_transaction_category_id"
-    t.integer "return_id"
+    t.bigint "giver_id"
+    t.string "giver_type"
     t.string "registration_code"
+    t.integer "return_id"
+    t.bigint "taker_id"
+    t.string "taker_type"
+    t.string "transaction_type"
+    t.bigint "transfer_id"
+    t.datetime "updated_at", null: false
     t.index ["contract_id"], name: "index_individual_transactions_on_contract_id"
     t.index ["effective_date"], name: "index_individual_transactions_on_effective_date"
     t.index ["external_id"], name: "index_individual_transactions_on_external_id"
@@ -136,32 +136,32 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_29_072142) do
   end
 
   create_table "leadership_websites", force: :cascade do |t|
-    t.bigint "group_id"
-    t.text "url"
-    t.text "name_selector"
-    t.text "title_selector"
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.bigint "group_id"
+    t.text "name_selector"
     t.text "people_card_selector"
     t.date "reviewed_at"
+    t.text "title_selector"
+    t.datetime "updated_at", null: false
+    t.text "url"
     t.index ["group_id"], name: "index_leadership_websites_on_group_id"
   end
 
   create_table "major_transaction_categories", force: :cascade do |t|
-    t.string "name"
     t.datetime "created_at", null: false
+    t.string "name"
     t.datetime "updated_at", null: false
   end
 
   create_table "memberships", force: :cascade do |t|
-    t.string "member_type", null: false
-    t.bigint "member_id", null: false
-    t.bigint "group_id", null: false
-    t.date "start_date"
-    t.date "end_date"
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.date "end_date"
     t.string "evidence"
+    t.bigint "group_id", null: false
+    t.bigint "member_id", null: false
+    t.string "member_type", null: false
+    t.date "start_date"
+    t.datetime "updated_at", null: false
     t.index ["end_date"], name: "index_memberships_on_end_date"
     t.index ["group_id", "member_type", "member_id"], name: "index_memberships_on_group_and_member"
     t.index ["group_id"], name: "index_memberships_on_group_id"
@@ -171,53 +171,55 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_29_072142) do
   end
 
   create_table "people", force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.json "cached_data", default: {}
-    t.string "linkedin_url"
+    t.datetime "created_at", null: false
     t.date "linkedin_ingested"
+    t.string "linkedin_url"
+    t.string "name", null: false
     t.integer "nodes_count_cached"
     t.datetime "nodes_count_cached_at"
+    t.jsonb "open_australia_data", default: [], null: false
+    t.datetime "open_australia_data_fetched_at"
+    t.datetime "updated_at", null: false
     t.integer "views", default: 0, null: false
     t.index ["name"], name: "index_people_on_name"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
     t.text "content"
-    t.string "searchable_type"
-    t.bigint "searchable_id"
     t.datetime "created_at", null: false
+    t.bigint "searchable_id"
+    t.string "searchable_type"
     t.datetime "updated_at", null: false
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
   create_table "positions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "end_date"
+    t.string "evidence"
     t.bigint "membership_id", null: false
     t.date "start_date"
-    t.date "end_date"
     t.string "title", null: false
-    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "evidence"
     t.index ["membership_id"], name: "index_positions_on_membership_id"
   end
 
   create_table "suggestions", force: :cascade do |t|
-    t.string "headline", null: false
+    t.datetime "created_at", null: false
     t.text "description"
     t.string "evidence", null: false
-    t.string "suggested_by"
+    t.string "headline", null: false
     t.string "status"
-    t.datetime "created_at", null: false
+    t.string "suggested_by"
     t.datetime "updated_at", null: false
   end
 
   create_table "trading_names", force: :cascade do |t|
-    t.string "owner_type", null: false
-    t.bigint "owner_id", null: false
-    t.text "name", null: false
     t.datetime "created_at", null: false
+    t.text "name", null: false
+    t.bigint "owner_id", null: false
+    t.string "owner_type", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_trading_names_on_name"
     t.index ["owner_type", "owner_id", "name"], name: "index_trading_names_on_owner_and_name", unique: true
@@ -225,18 +227,18 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_29_072142) do
   end
 
   create_table "transfers", force: :cascade do |t|
-    t.string "giver_type"
-    t.bigint "giver_id"
-    t.string "taker_type"
-    t.bigint "taker_id"
     t.float "amount", default: 0.0, null: false
-    t.text "evidence"
-    t.text "transfer_type"
-    t.date "effective_date"
     t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
     t.json "data", default: {}
+    t.date "effective_date"
+    t.text "evidence"
     t.text "external_id"
+    t.bigint "giver_id"
+    t.string "giver_type"
+    t.bigint "taker_id"
+    t.string "taker_type"
+    t.text "transfer_type"
+    t.datetime "updated_at", null: false
     t.integer "views", default: 0, null: false
     t.index ["effective_date"], name: "index_transfers_on_effective_date"
     t.index ["external_id"], name: "index_transfers_on_external_id"
@@ -246,12 +248,12 @@ ActiveRecord::Schema[8.0].define(version: 2026_06_29_072142) do
   end
 
   create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.datetime "created_at", null: false
+    t.datetime "reset_password_sent_at"
+    t.string "reset_password_token"
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
