@@ -19,16 +19,28 @@ Domain vocabulary (Term, Raw Terms, Ingest, Interpretation, Major/Minor Party, F
 
 ---
 
-## Increment 2 — Interpretation (next up)
+## Increment 2 — Interpretation (in progress)
 
 Turn each Person's `open_australia_data` (their Raw Terms) into real `Membership`/`Position` records: one Parliament Membership per continuous stint, one Federal Branch Membership per major party (closed when the parliamentary term ends — ADR 0002), one State Branch / Minor Party Membership per party (never auto-closed — ADR 0002), with Office Holder terms (Speaker/Deputy-Speaker/President/Deputy-President) inheriting party from the preceding real-party Term (ADR 0003).
 
-This is where essentially all the complexity from the first (abandoned) attempt lived. Known hard parts, already identified but **not yet re-solved** in this rebuild:
+This is where essentially all the complexity from the first (abandoned) attempt lived. Progress so far:
 
-- **Grouping Terms into a single continuous Parliament Membership** — contiguous Terms (where one's `left_house` equals the next's `entered_house`) should collapse into one Membership; a real gap (lost seat, later re-elected) should be two. `CONTEXT.md` deliberately left this internal-method-level detail unnamed ("Stint" was explicitly rejected as a glossary term) — work out the grouping logic fresh, don't resurrect the old `group_into_stints` code wholesale, since it had a real bug (an Office Holder term could silently merge into the next contiguous term and lose its title — the `chunk_while` predicate only checked the *current* term, not the *previous* one).
-- **Federal vs State Branch vs Minor Party group resolution** — mapping a `party` string to the right Group(s), including electorate→state lookup for MPs (state is direct on the Term for Senators, but MPs only give an electorate name). A `MapElectorateToState`-style lookup table existed in the abandoned branch; may be worth rebuilding, or reconsider using `getDivisions` if it exists.
-- **Party string audit** — how do OpenAustralia's party strings (`"Australian Labor Party"`, `"The Nationals"`, etc.) compare against existing AEC-sourced Tags already in the DB? Needs a live comparison now that the API key works — this was blocked before, isn't now.
-- **Idempotency** — Interpretation needs to be safely re-runnable (re-run after a fresh Ingest fetch) without duplicating Memberships/Positions.
+- **Grouping Terms into continuous periods** — done, no DB writes. `OpenAustralia::Interpretation::ExtractPeriods` groups Terms into continuous Parliament periods (break on a real gap or a house change); `OpenAustralia::Interpretation::ResolvePartyAffiliations` separately groups into continuous party-affiliation periods (break on a real gap or a party-string change), with Office Holder Terms folded into the party they inherit per ADR-0003 before grouping — so the merge/lose-title bug in the old `group_into_stints` doesn't recur; it's structurally avoided rather than patched.
+- **Federal vs State Branch vs Minor Party group resolution** — done. Major parties resolve directly against `Group::NAMES` via a small party-family classifier (not via `MapGroupNamesAecRecipients`'s synthetic-suffix trick — checked against Barnaby Joyce's real Queensland Senate data and found the mapper has no Nationals/QLD pattern, so that approach would have silently mis-resolved). Minor parties resolve via `MapGroupNamesAecRecipients` for its alias-cleanup rules. `MapElectorateToState` ported from the abandoned branch (pure data, unchanged) for MP electorate→state; Senators get state directly from the Term.
+- **Party string audit** — done as part of the above; resolved against real data (Barnaby Joyce, Milton Dick) rather than a separate audit pass.
+- **Idempotency** — not yet re-solved; see manual pre-step below, which sidesteps the hard version of this question for the first run.
+
+Still to build: the actual DB-writing step (Memberships/Positions from the two services above).
+
+### Manual pre-step required before running the DB-writing step
+
+The ~226 current politicians already have a Membership in `Group.find(877)` ("australian federal parliament") and in their Federal Branch party group (e.g. `nationals (federal)`), from an earlier, cruder bulk import (352 people, all created Sept 2024–Mar 2025, no `evidence`, single always-open span per person — factually wrong for anyone with real history, e.g. Barnaby Joyce's existing row shows continuous "MP" since 2013 with no record of his 2005–2013 Senate service or his 2017 disqualification gap).
+
+This new Interpretation work supersedes those. Before running the write step against real data, manually delete:
+- All `Membership`/`Position` records where `group_id: 877` (the Parliament group)
+- All `Membership`/`Position` records for people in Federal Branch party groups (`nationals (federal)`, `alp (federal)`, etc.)
+
+With that clean slate, the write step can assume no pre-existing Parliament/Federal Branch data and use plain `find_or_create_by!` — no reconciliation logic needed. State Branch / Minor Party Memberships are unaffected either way (they're found by person+group only, never dated-closed, so the existing dateless rows get reused automatically regardless of this cleanup).
 
 Suggest running this against the ~226 already-ingested current politicians as the test bed before touching historical data at all.
 

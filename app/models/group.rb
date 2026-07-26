@@ -228,4 +228,8 @@ class Group < ApplicationRecord
   def self.government_department_tag
     Group.find(124_514)
   end
+
+  def self.federal_parliament
+    Group.find(877)
+  end
 end

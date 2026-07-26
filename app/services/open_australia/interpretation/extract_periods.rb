@@ -1,4 +1,7 @@
 class OpenAustralia::Interpretation::ExtractPeriods
+  include OpenAustralia::Interpretation::RawTermDates
+  private :contiguous?, :parse_date
+
   ParliamentPeriod = Struct.new(:house, :position, :constituency, :start_date, :end_date, keyword_init: true)
   PartyPeriod = Struct.new(:party, :start_date, :end_date, keyword_init: true)
   Result = Struct.new(:parliament_periods, :party_periods, keyword_init: true)
@@ -34,10 +37,6 @@ class OpenAustralia::Interpretation::ExtractPeriods
          .map { |group| build_party_period(group) }
   end
 
-  def contiguous?(prev, curr)
-    prev['left_house'] == curr['entered_house']
-  end
-
   def build_parliament_period(group)
     first = group.first
     last = group.last
@@ -64,13 +63,5 @@ class OpenAustralia::Interpretation::ExtractPeriods
       start_date: parse_date(first['entered_house']),
       end_date: parse_date(last['left_house'])
     )
-  end
-
-  def parse_date(date_string)
-    return nil if date_string.blank? || date_string == '9999-12-31'
-
-    Date.parse(date_string)
-  rescue Date::Error
-    nil
   end
 end

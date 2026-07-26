@@ -1,0 +1,42 @@
+[
+  {
+    "member_id": "815",
+    "house": "1",
+    "first_name": "Milton",
+    "last_name": "Dick",
+    "constituency": "Oxley",
+    "party": "Speaker",
+    "entered_house": "2022-07-26",
+    "left_house": "9999-12-31",
+    "entered_reason": "changed_party",
+    "left_reason": "still_in_office",
+    "person_id": "10880",
+    "title": "",
+    "lastupdate": "2026-07-23 06:34:16",
+    "created_at": "2022-08-08 01:28:03",
+    "updated_at": "2022-08-08 01:28:03",
+    "full_name": "Milton Dick",
+    "name": "Milton Dick",
+    "image": "/images/mpsL/10880.jpg"
+  },
+  {
+    "member_id": "705",
+    "house": "1",
+    "first_name": "Milton",
+    "last_name": "Dick",
+    "constituency": "Oxley",
+    "party": "Australian Labor Party",
+    "entered_house": "2016-07-02",
+    "left_house": "2022-07-26",
+    "entered_reason": "general_election",
+    "left_reason": "changed_party",
+    "person_id": "10880",
+    "title": "",
+    "lastupdate": "2026-07-23 06:34:16",
+    "created_at": "2022-08-08 01:28:03",
+    "updated_at": "2022-08-08 01:28:03",
+    "full_name": "Milton Dick",
+    "name": "Milton Dick",
+    "image": "/images/mpsL/10880.jpg"
+  }
+]
