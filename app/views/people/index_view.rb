@@ -1,3 +1,5 @@
+require 'capitalize_names'
+
 class People::IndexView < ApplicationView
   def initialize(people:, page:, pages:)
     @people = people
