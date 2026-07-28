@@ -34,7 +34,7 @@ Initial generation can be `"#{name} #{id}"` when required.
 
 ## Elevated Priority: External Identifier Table
 
-Future sources will include additional IDs (for example `open_politics_id`).
+Future sources will include additional IDs (for example `open_australia_id`).
 Identifier handling should not remain column-per-source on `people`.
 
 Preferred table name for this project:
