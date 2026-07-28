@@ -565,12 +565,6 @@ Style/ConditionalAssignment:
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
-Style/EmptyCaseCondition:
-  Exclude:
-    - 'app/models/position.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AutoCorrect, EnforcedStyle, AllowComments.
 # SupportedStyles: empty, nil, both
 Style/EmptyElse:
@@ -647,12 +641,6 @@ Style/PercentLiteralDelimiters:
     - 'app/models/group.rb'
     - 'app/models/transfer.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/PerlBackrefs:
-  Exclude:
-    - 'bin/bundle'
-
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: SafeForConstants.
@@ -718,12 +706,6 @@ Style/SafeNavigation:
     - 'app/models/group.rb'
     - 'app/models/position.rb'
     - 'app/services/au_lobbyists/file_downloader.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/Sample:
-  Exclude:
-    - 'app/controllers/home_controller.rb'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).

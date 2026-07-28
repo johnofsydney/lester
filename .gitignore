@@ -44,3 +44,9 @@ node_modules
 *.local
 
 mise.toml
+
+# Environment variables
+/.env
+
+# Bundled gems
+/vendor/bundle

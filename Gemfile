@@ -33,6 +33,7 @@ group :development, :test do
   gem 'rubocop-performance', require: false
   gem 'bundler-audit', require: false
   gem 'factory_bot_rails'
+  gem 'dotenv-rails'
 end
 
 group :development do

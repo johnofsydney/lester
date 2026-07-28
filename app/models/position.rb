@@ -30,8 +30,7 @@ class Position < ApplicationRecord
   def formatting_for_date(date)
     days_in_month = Time.days_in_month(date.month, date.year)
 
-    case
-    when [1, days_in_month].include?(date.day)
+    if [1, days_in_month].include?(date.day)
       '%B %Y'
     else
       '%d/%m/%Y'
