@@ -1,17 +1,17 @@
 class RecordTransfer
   attr_reader :giver, :taker, :effective_date, :amount, :transfer_type, :evidence
 
-  def initialize(giver, taker, effective_date, amount, transfer_type, evidence)
-    @giver = giver
-    @taker = taker
-    @effective_date = effective_date
-    @amount = amount
-    @transfer_type = transfer_type
-    @evidence = evidence
+  def initialize(attrs)
+    @giver = attrs[:giver]
+    @taker = attrs[:taker]
+    @effective_date = attrs[:effective_date]
+    @amount = attrs[:amount] || 0
+    @transfer_type = attrs[:transfer_type]
+    @evidence = attrs[:evidence]
   end
 
-  def self.call(giver:, taker:, effective_date:, transfer_type:, evidence:, amount: 0)
-    new(giver, taker, effective_date, amount, transfer_type, evidence).call
+  def self.call(attrs)
+    new(attrs).call
   end
 
   def call

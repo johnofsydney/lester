@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# rubocop:disable Style/StringConcatenation, Style/IfUnlessModifier, Style/SafeNavigation, Naming/MethodParameterName, Style/RedundantCondition
+# rubocop:disable Style/StringConcatenation, Style/IfUnlessModifier, Style/SafeNavigation, Style/RedundantCondition
 class ApplicationView < ApplicationComponent
   # The ApplicationView is an abstract class for all your views.
 
@@ -49,7 +49,15 @@ class ApplicationView < ApplicationComponent
   # style: the CSS style to use
   # link_text: the text to display in the link
   # action: the action to append to the link
-  def link_for(entity:, class: '', style: '', link_text: nil, action: nil, klass: nil, id: nil)
+  def link_for(attrs)
+    entity = attrs[:entity]
+    css_class = attrs[:class] || ''
+    style = attrs[:style] || ''
+    link_text = attrs[:link_text]
+    action = attrs[:action]
+    klass = attrs[:klass]
+    id = attrs[:id]
+
     klass_name_plural = if klass.present?
                           klass.to_s.pluralize.downcase
                         else
@@ -65,10 +73,18 @@ class ApplicationView < ApplicationComponent
 
     href += "/#{action}" if action
 
-    a(href: href, class:, style:, data_turbo: 'false') { link_text }
+    a(href: href, class: css_class, style:, data_turbo: 'false') { link_text }
   end
 
-  def link_for_hash(h:, class: '', style: '', link_text: nil, action: nil, klass: nil, id: nil)
+  def link_for_hash(attrs)
+    h = attrs[:h]
+    css_class = attrs[:class] || ''
+    style = attrs[:style] || ''
+    link_text = attrs[:link_text]
+    action = attrs[:action]
+    klass = attrs[:klass]
+    id = attrs[:id]
+
     klass_name_plural = if klass.present?
                           klass.to_s.pluralize.downcase
                         else
@@ -83,7 +99,7 @@ class ApplicationView < ApplicationComponent
 
     href += "/#{action}" if action
 
-    a(href: href, class:, style:, data_turbo: 'false') { link_text }
+    a(href: href, class: css_class, style:, data_turbo: 'false') { link_text }
   end
 end
-# rubocop:enable Style/StringConcatenation, Style/IfUnlessModifier, Style/SafeNavigation, Naming/MethodParameterName, Style/RedundantCondition
+# rubocop:enable Style/StringConcatenation, Style/IfUnlessModifier, Style/SafeNavigation, Style/RedundantCondition
