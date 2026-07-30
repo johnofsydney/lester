@@ -69,7 +69,6 @@ class Group < ApplicationRecord
           )
 
   has_many :trading_names, as: :owner, dependent: :destroy
-  has_many :leadership_websites, dependent: :destroy
 
   # TODO: memberships are only working on one direction, need to fix this
   # affiliated groups are not being followed from child to parent to other child
@@ -227,5 +226,11 @@ class Group < ApplicationRecord
 
   def self.government_department_tag
     Group.find(124_514)
+  end
+
+  # NOTE: not yet hardcoded to an ID -- this tag doesn't exist in production yet.
+  # Once created there, swap this to a hardcoded Group.find(id) like the tags above.
+  def self.local_councils_tag
+    Group.find_by(name: 'australian local councils')
   end
 end
