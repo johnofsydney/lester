@@ -49,21 +49,26 @@ class OpenAustralia::Interpretation::RecordMembershipsAndPositions
     upsert_position(membership, title: FEDERAL_PARTY_POSITION_TITLE, start_date: affiliation.start_date, end_date: affiliation.end_date)
   end
 
+  # State Branch Membership is closed as soon as ResolvePartyAffiliations says it's been
+  # superseded — a different state in the same family, a different party, or Independent (ADR-0005).
+  # affiliation.superseded_on is nil for the person's current/final affiliation, which stays open.
   def record_state_branch(affiliation)
     return unless affiliation.state_group_name
 
     group = Groups::RecordGroup.call(affiliation.state_group_name)
-    membership = find_or_create_never_closed_membership(group: group, start_date: affiliation.start_date)
-    upsert_position(membership, title: "Party Member (#{affiliation.state})", start_date: membership.start_date, end_date: nil)
+    membership = find_or_create_membership_by_group_only(group: group, start_date: affiliation.start_date)
+    close_if_changed(membership, affiliation.superseded_on)
+    upsert_position(membership, title: "Party Member (#{affiliation.state})", start_date: membership.start_date, end_date: membership.end_date)
   end
 
   # For a Minor Party affiliation, ResolvePartyAffiliations puts its one resolved canonical
   # Group name in federal_group_name — there's no separate state name, since Minor Parties
-  # have no Federal/State split.
+  # have no Federal/State split. Closes on supersession the same way State Branch does (ADR-0005).
   def record_minor_party(affiliation)
     group = Groups::RecordGroup.call(affiliation.federal_group_name)
-    membership = find_or_create_never_closed_membership(group: group, start_date: affiliation.start_date)
-    upsert_position(membership, title: MINOR_PARTY_POSITION_TITLE, start_date: membership.start_date, end_date: nil)
+    membership = find_or_create_membership_by_group_only(group: group, start_date: affiliation.start_date)
+    close_if_changed(membership, affiliation.superseded_on)
+    upsert_position(membership, title: MINOR_PARTY_POSITION_TITLE, start_date: membership.start_date, end_date: membership.end_date)
   end
 
   def find_or_create_membership(group:, start_date:)
@@ -72,7 +77,7 @@ class OpenAustralia::Interpretation::RecordMembershipsAndPositions
     end
   end
 
-  def find_or_create_never_closed_membership(group:, start_date:)
+  def find_or_create_membership_by_group_only(group:, start_date:)
     Membership.find_or_create_by!(member: person, group: group) do |m|
       m.start_date = start_date
       m.evidence = EVIDENCE_URL

@@ -55,7 +55,7 @@ RSpec.describe OpenAustralia::Interpretation::RecordMembershipsAndPositions, typ
       expect(memberships.first.positions.sole.title).to eq('Federal Parliamentary Party Member')
     end
 
-    it 'creates State Branch Memberships, never closed, one per state (QLD then NSW), not duplicated across the gap' do
+    it 'creates State Branch Memberships, one per state (QLD then NSW), not duplicated across the gap' do
       call
 
       qld_group = Group.find_by(name: 'liberal national party (qld)')
@@ -65,12 +65,42 @@ RSpec.describe OpenAustralia::Interpretation::RecordMembershipsAndPositions, typ
       nsw_memberships = Membership.where(member: person, group: nsw_group)
 
       expect(qld_memberships.size).to eq(1)
-      expect(qld_memberships.first).to have_attributes(start_date: Date.new(2005, 7, 1), end_date: nil)
-      expect(qld_memberships.first.positions.sole.title).to eq('Party Member (QLD)')
-
       expect(nsw_memberships.size).to eq(1)
-      expect(nsw_memberships.first).to have_attributes(start_date: Date.new(2013, 9, 7), end_date: nil)
       expect(nsw_memberships.first.positions.sole.title).to eq('Party Member (NSW)')
+    end
+
+    it 'closes QLD when the later NSW stint begins, and closes NSW when Barnaby later goes Independent (ADR-0005)' do
+      call
+
+      qld_group = Group.find_by(name: 'liberal national party (qld)')
+      nsw_group = Group.find_by(name: 'nationals (nsw)')
+
+      qld_membership = Membership.where(member: person, group: qld_group).sole
+      nsw_membership = Membership.where(member: person, group: nsw_group).sole
+
+      expect(qld_membership).to have_attributes(start_date: Date.new(2005, 7, 1), end_date: Date.new(2013, 9, 7))
+      expect(qld_membership.positions.sole).to have_attributes(title: 'Party Member (QLD)', end_date: Date.new(2013, 9, 7))
+
+      expect(nsw_membership).to have_attributes(start_date: Date.new(2013, 9, 7), end_date: Date.new(2025, 11, 27))
+      expect(nsw_membership.positions.sole).to have_attributes(title: 'Party Member (NSW)', end_date: Date.new(2025, 11, 27))
+    end
+
+    it 'closes the Federal Branch Nationals Membership on its own natural end (disqualification), unaffected by the later Independent supersession' do
+      call
+
+      federal_group = Group.find_by(name: 'nationals (federal)')
+      memberships = Membership.where(member: person, group: federal_group).order(:start_date)
+
+      expect(memberships.map(&:end_date)).to eq([Date.new(2013, 8, 8), Date.new(2017, 10, 27), Date.new(2025, 11, 27)])
+    end
+
+    it 'leaves the Minor Party (One Nation) Membership open, since nothing supersedes it yet' do
+      call
+
+      one_nation_group = Group.find_by(name: "Pauline Hanson's One Nation")
+      membership = Membership.where(member: person, group: one_nation_group).sole
+
+      expect(membership.end_date).to be_nil
     end
 
     it 'creates a never-closed Minor Party Membership for the One Nation switch, and none for the Independent gap' do

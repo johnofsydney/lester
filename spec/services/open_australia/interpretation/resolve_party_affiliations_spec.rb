@@ -50,6 +50,29 @@ RSpec.describe OpenAustralia::Interpretation::ResolvePartyAffiliations, type: :s
       )
     end
 
+    it 'marks the QLD stint as superseded on the date the NSW stint begins (ADR-0005)' do
+      periods = result.party_affiliations
+
+      expect(periods[0].state).to eq('QLD')
+      expect(periods[0].superseded_on).to eq(Date.new(2013, 9, 7))
+    end
+
+    it 'marks both NSW stints as superseded when Barnaby later goes Independent, even though the second NSW stint is unrelated to that gap' do
+      periods = result.party_affiliations
+
+      expect(periods[1].state).to eq('NSW')
+      expect(periods[1].superseded_on).to eq(Date.new(2025, 11, 27))
+      expect(periods[2].state).to eq('NSW')
+      expect(periods[2].superseded_on).to eq(Date.new(2025, 11, 27))
+    end
+
+    it 'leaves the Minor Party (One Nation) unsuperseded, since it is the final observed affiliation' do
+      period = result.party_affiliations.last
+
+      expect(period.party).to eq("Pauline Hanson's One Nation Party")
+      expect(period.superseded_on).to be_nil
+    end
+
     it 'resolves the Minor party switch with no state split, via the AEC name mapper' do
       period = result.party_affiliations.last
 
@@ -104,6 +127,73 @@ RSpec.describe OpenAustralia::Interpretation::ResolvePartyAffiliations, type: :s
         start_date: Date.new(2010, 8, 21),
         end_date: nil
       )
+    end
+  end
+
+  # A state change is only detected when it lines up with a party-period boundary (a real
+  # date gap, as here, or a party-string change) — state alone doesn't break a period (see
+  # build_chunk, which reads state off the chunk's first Term). That's fine for real federal
+  # politicians: a Senate seat is always tied to one state and a House electorate never crosses
+  # a state line, so a same-party, zero-gap, cross-state transition isn't a realistic shape for
+  # this data. It's a real gap for a hypothetical same-day cross-state move, not something
+  # federal Term data can actually produce.
+  describe 'a state branch superseded twice within the same family (synthetic — not exercised by real data)' do
+    let(:raw_terms) do
+      [
+        { 'house' => '2', 'party' => 'Australian Labor Party', 'constituency' => 'Tasmania',
+          'entered_house' => '2000-01-01', 'left_house' => '2004-12-31' },
+        { 'house' => '2', 'party' => 'Australian Labor Party', 'constituency' => 'Victoria',
+          'entered_house' => '2005-01-01', 'left_house' => '2014-12-31' },
+        { 'house' => '2', 'party' => 'Australian Labor Party', 'constituency' => 'Queensland',
+          'entered_house' => '2015-01-01', 'left_house' => '9999-12-31' }
+      ]
+    end
+
+    it 'chains supersession through each successive state, leaving only the final one open' do
+      periods = result.party_affiliations
+
+      expect(periods.map(&:state)).to eq(%w[TAS VIC QLD])
+      expect(periods[0].superseded_on).to eq(Date.new(2005, 1, 1))
+      expect(periods[1].superseded_on).to eq(Date.new(2015, 1, 1))
+      expect(periods[2].superseded_on).to be_nil
+    end
+  end
+
+  describe 'a Major party Membership superseded by a later switch to Independent (synthetic)' do
+    let(:raw_terms) do
+      [
+        { 'house' => '1', 'party' => 'Australian Labor Party', 'constituency' => 'Grayndler',
+          'entered_house' => '2000-01-01', 'left_house' => '2020-01-01' },
+        { 'house' => '1', 'party' => 'Independent', 'constituency' => 'Grayndler',
+          'entered_house' => '2020-01-01', 'left_house' => '9999-12-31' }
+      ]
+    end
+
+    it 'closes the Labor affiliation on the date Independent status begins, even though Independent produces no period of its own' do
+      periods = result.party_affiliations
+
+      expect(periods.size).to eq(1)
+      expect(periods.first.party).to eq('Australian Labor Party')
+      expect(periods.first.superseded_on).to eq(Date.new(2020, 1, 1))
+    end
+  end
+
+  describe 'a Minor party Membership superseded by a switch to a different Minor party (synthetic)' do
+    let(:raw_terms) do
+      [
+        { 'house' => '1', 'party' => 'Katter Australia Party', 'constituency' => 'Kennedy',
+          'entered_house' => '2000-01-01', 'left_house' => '2018-01-01' },
+        { 'house' => '1', 'party' => "Pauline Hanson's One Nation Party", 'constituency' => 'Kennedy',
+          'entered_house' => '2018-01-01', 'left_house' => '9999-12-31' }
+      ]
+    end
+
+    it 'closes the first Minor party affiliation on the date the second one begins, and leaves the second open' do
+      periods = result.party_affiliations
+
+      expect(periods.size).to eq(2)
+      expect(periods[0]).to have_attributes(major: false, superseded_on: Date.new(2018, 1, 1))
+      expect(periods[1]).to have_attributes(major: false, superseded_on: nil)
     end
   end
 

@@ -32,9 +32,16 @@ class OpenAustralia::Interpretation::ResolvePartyAffiliations
 
   PartyAffiliationPeriod = Struct.new(
     :party, :major, :federal_group_name, :state, :state_group_name, :start_date, :end_date,
+    :family, :superseded_on,
     keyword_init: true
   )
   Result = Struct.new(:party_affiliations, keyword_init: true)
+
+  # Carries a chunk's supersession identity and start date alongside its (possibly absent, for
+  # Independent) PartyAffiliationPeriod, so Independent stretches can act as boundary events for
+  # supersession purposes without ever appearing in the final output — there's no Group for "no
+  # party", but going independent is still real evidence a prior State/Minor Branch ended.
+  Chunk = Struct.new(:identity, :start_date, :period, keyword_init: true)
 
   def self.call(raw_terms) = new(raw_terms).call
 
@@ -51,9 +58,34 @@ class OpenAustralia::Interpretation::ResolvePartyAffiliations
   attr_reader :terms
 
   def party_affiliations
-    terms_with_effective_party
-      .chunk_while { |prev, curr| contiguous?(prev[:term], curr[:term]) && prev[:effective_party] == curr[:effective_party] }
-      .filter_map { |group| build_affiliation_period(group) }
+    chunks = terms_with_effective_party
+             .chunk_while { |prev, curr| contiguous?(prev[:term], curr[:term]) && prev[:effective_party] == curr[:effective_party] }
+             .map { |group| build_chunk(group) }
+
+    apply_supersession(chunks)
+    chunks.filter_map(&:period)
+  end
+
+  # A State Branch or Minor Party Membership is closed the moment we observe the person's *next
+  # distinct affiliation* — a different state in the same major family, a different major party
+  # altogether, a different minor party, or Independent. You can't hold two of these at once, so
+  # seeing the next one is real evidence the previous one ended, even though we still don't know
+  # when it started (ADR-0005). A state/party that simply *resumes* after a gap — e.g. Barnaby
+  # Joyce's two separate Nationals (NSW) stints either side of his 2017 disqualification — is the
+  # same identity both times, so it isn't self-superseding.
+  #
+  # Federal Branch is unaffected: it already closes on its own natural end, which is tied to
+  # parliamentary tenure specifically (ADR-0002) — a separate, already-correct signal.
+  def apply_supersession(chunks)
+    distinct_identities_in_order = chunks.map(&:identity).uniq
+
+    distinct_identities_in_order.each_cons(2) do |current_identity, next_identity|
+      supersede_date = chunks.find { |chunk| chunk.identity == next_identity }.start_date
+
+      chunks.select { |chunk| chunk.identity == current_identity && chunk.period }.each do |chunk|
+        chunk.period.superseded_on = supersede_date
+      end
+    end
   end
 
   def terms_with_effective_party
@@ -79,27 +111,33 @@ class OpenAustralia::Interpretation::ResolvePartyAffiliations
   def independent?(party) = party.blank? || party.match?(/\AIndependent\z/i)
   def real_party?(party) = !independent?(party) && !office_holder?(party)
 
-  # Independent (and an Office Holder Term with no resolvable preceding real party) produce no
-  # affiliation period at all — there's no Group for "no party". The gap this leaves is enough
-  # on its own to correctly bound the neighbouring real-party periods' start/end dates.
-  def build_affiliation_period(group)
+  # Independent (and an Office Holder Term with no resolvable preceding real party) produce a
+  # Chunk with no PartyAffiliationPeriod at all — there's no Group for "no party" — but it still
+  # carries an identity and start date, since going independent is itself a supersession trigger.
+  def build_chunk(group)
     effective_party = group.first[:effective_party]
-    return nil if effective_party.blank? || independent?(effective_party)
-
     first_term = group.first[:term]
+    start_date = parse_date(first_term['entered_house'])
+
+    return Chunk.new(identity: 'independent', start_date: start_date, period: nil) if effective_party.blank? || independent?(effective_party)
+
     last_term = group.last[:term]
     family = major_party_family(effective_party)
     state = family && state_for(first_term)
+    identity = family ? "major:#{family}:#{state}" : "minor:#{effective_party}"
 
-    PartyAffiliationPeriod.new(
+    period = PartyAffiliationPeriod.new(
       party: effective_party,
       major: family.present?,
       federal_group_name: federal_group_name(effective_party, family),
       state: state,
       state_group_name: state && Group::NAMES.send(family).send(state.downcase.to_sym),
-      start_date: parse_date(first_term['entered_house']),
-      end_date: parse_date(last_term['left_house'])
+      start_date: start_date,
+      end_date: parse_date(last_term['left_house']),
+      family: family
     )
+
+    Chunk.new(identity: identity, start_date: start_date, period: period)
   end
 
   def major_party_family(party)
