@@ -12,9 +12,6 @@ class InertiaController < ApplicationController
     reduce_network_depth if network_too_big?
 
     @action = 'network_graph_person' # required in layout
-    # @toast_note ||= define_toast_note # required in layout
-    # session[:depth] = depth
-
     if @person.cache_fresh?
       render inertia: 'NetworkGraph', props: {
         url: "/people/#{person.id}",
@@ -35,9 +32,6 @@ class InertiaController < ApplicationController
     reduce_network_depth if network_too_big?
 
     @action = 'network_graph_group'
-    # @toast_note ||= define_toast_note
-    # session[:depth] = depth
-
     if @group.cache_fresh?
       render inertia: 'NetworkGraph', props: {
         url: "/groups/#{group.id}",
@@ -53,13 +47,11 @@ class InertiaController < ApplicationController
   end
 
   def ids_people_descendents
-    nodes.filter{|n| n.klass == 'Person' }
-         .map{|n| n.id }
+    nodes.filter { |n| n.klass == 'Person' }.map(&:id)
   end
 
   def ids_group_descendents
-    nodes.filter{|n| n.klass == 'Group' }
-         .map{|n| n.id }
+    nodes.filter { |n| n.klass == 'Group' }.map(&:id)
   end
 
   def edges
@@ -82,12 +74,9 @@ class InertiaController < ApplicationController
   end
 
   def configure_edge(membership)
-    member_id = "#{membership.member_type.downcase}_#{membership.member_id}"
-    group_id = "group_#{membership.group_id}"
-
     {
-      from: group_id,
-      to: member_id
+      from: "group_#{membership.group_id}",
+      to: "#{membership.member_type.downcase}_#{membership.member_id}"
     }
   end
 
@@ -107,10 +96,6 @@ class InertiaController < ApplicationController
       klass: node.klass
     }
   end
-
-  # def define_toast_note
-  #   'Building network graph... this may take a few seconds.'
-  # end
 
   def depth
     @depth ||= if depth_in_params?
