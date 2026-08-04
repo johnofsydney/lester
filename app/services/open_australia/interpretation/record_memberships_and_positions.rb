@@ -92,6 +92,7 @@ class OpenAustralia::Interpretation::RecordMembershipsAndPositions
     position = membership.positions.find_or_initialize_by(title: title)
     position.start_date ||= start_date
     position.end_date = end_date
+    position.evidence = EVIDENCE_URL
     position.save!
   end
 
