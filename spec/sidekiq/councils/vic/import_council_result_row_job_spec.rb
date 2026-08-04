@@ -99,5 +99,20 @@ RSpec.describe Councils::Vic::ImportCouncilResultRowJob, type: :job do
         expect(ApiLog.last.endpoint).to eq(expected_url)
       end
     end
+
+    context 'when the council is divided into wards' do
+      let(:council_name) { 'Casey City Council' }
+      let(:council_slug) { 'casey-city-council' }
+      let(:page) { Rails.root.join('spec/fixtures/councils/vic/councillor_declared_wards.html').read }
+
+      it 'records candidates from every ward under the same council Group' do
+        described_class.new.perform(council_name, council_slug)
+
+        council = Group.find_by(name: council_name)
+        expect(Person.find_by(name: 'scott william dowling')).to be_present
+        expect(Person.find_by(name: 'damien nguyen')).to be_present
+        expect(Membership.where(group: council, member_type: 'Person').count).to eq(2)
+      end
+    end
   end
 end

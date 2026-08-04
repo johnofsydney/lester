@@ -4,7 +4,9 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
   describe '#perform' do
     let(:council_name) { 'Federation Council' }
     let(:council_slug) { 'federation' }
+    let(:results_url) { "https://pastvtr.elections.nsw.gov.au/#{described_class::ELECTION_ID}/#{council_slug}/results" }
     let(:expected_url) { "https://pastvtr.elections.nsw.gov.au/#{described_class::ELECTION_ID}/#{council_slug}/councillor" }
+    let(:results_page) { Rails.root.join('spec/fixtures/councils/nsw/results_single.html').read }
 
     before do
       FactoryBot.create(:group, name: Group::NAMES.labor.nsw, type: 'Tag')
@@ -13,6 +15,7 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
       # stub it so Tag::AddGroupToTag#valid? doesn't blow up against the test DB.
       allow(Group).to receive(:government_department_tag).and_return(FactoryBot.create(:group, name: 'government department tag', type: 'Tag'))
 
+      allow(Councils::PageDownloader).to receive(:call).with(results_url).and_return(results_page)
       allow(Councils::PageDownloader).to receive(:call).with(expected_url).and_return(page)
     end
 
@@ -110,12 +113,62 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
       end
     end
 
-    context 'when the page fails to download' do
+    context 'when the results page fails to download' do
+      let(:results_page) { nil }
+      let(:page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
+
+      it 'logs to ApiLog and re-raises' do
+        expect { described_class.new.perform(council_name, council_slug) }.to raise_error(RuntimeError, /Failed to download NSW council results page/)
+        expect(ApiLog.last.endpoint).to eq(results_url)
+      end
+    end
+
+    context 'when the councillor contest page fails to download' do
       let(:page) { nil }
 
       it 'logs to ApiLog and re-raises' do
-        expect { described_class.new.perform(council_name, council_slug) }.to raise_error(RuntimeError, /Failed to download/)
+        expect { described_class.new.perform(council_name, council_slug) }.to raise_error(RuntimeError, /Failed to download NSW councillor results/)
         expect(ApiLog.last.endpoint).to eq(expected_url)
+      end
+    end
+
+    context 'when the council is divided into wards' do
+      let(:council_name) { 'City of Blacktown' }
+      let(:council_slug) { 'blacktown' }
+      let(:page) { nil } # no flat "councillor" page exists for a ward council
+      let(:results_page) { Rails.root.join('spec/fixtures/councils/nsw/results_wards.html').read }
+      let(:ward_1_url) { "https://pastvtr.elections.nsw.gov.au/#{described_class::ELECTION_ID}/#{council_slug}/ward-1/councillor" }
+      let(:ward_2_url) { "https://pastvtr.elections.nsw.gov.au/#{described_class::ELECTION_ID}/#{council_slug}/ward-2/councillor" }
+      let(:ward_1_page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
+      let(:ward_2_page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
+
+      before do
+        allow(Councils::PageDownloader).to receive(:call).with(ward_1_url).and_return(ward_1_page)
+        allow(Councils::PageDownloader).to receive(:call).with(ward_2_url).and_return(ward_2_page)
+      end
+
+      it 'records candidates from every ward under the same council Group' do
+        described_class.new.perform(council_name, council_slug)
+
+        council = Group.find_by(name: council_name)
+        person = Person.find_by(name: 'derek schoen')
+        expect(Membership.exists?(group: council, member: person)).to be(true)
+      end
+
+      context 'when only some wards have declared' do
+        let(:ward_2_page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_not_declared.html').read }
+        let!(:council) { FactoryBot.create(:group, name: council_name) }
+        let!(:ward_2_incumbent) { FactoryBot.create(:person, name: 'Ward Two Incumbent') }
+        let!(:ward_2_membership) do
+          Membership.create!(group: council, member: ward_2_incumbent, start_date: Date.new(2016, 1, 1))
+        end
+
+        it 'still records the declared ward but does not close out members of the undeclared ward' do
+          described_class.new.perform(council_name, council_slug)
+
+          expect(Person.find_by(name: 'derek schoen')).to be_present
+          expect(ward_2_membership.reload.end_date).to be_nil
+        end
       end
     end
   end
