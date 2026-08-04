@@ -55,18 +55,15 @@ class BlueskyService
 
   private
 
+  # NOTE: message.scan(URI::RFC2396_PARSER.make_regexp(["http", "https"])) raises, so a plain
+  # regex is used instead to find each link.
   def link_facets(message)
     [].tap do |facets|
-      matches = []
-      # message.scan(URI::RFC2396_PARSER.make_regexp(["http", "https"])) { matches << Regexp.last_match }
-      # raises exception, so using plain old regex instead to find each link
-      url_regex = /https?:\/\/[\w\-.]+\.[a-z]{2,}(?:\/[^\s<>"']*)?/i
-      message.scan(url_regex) { matches << Regexp.last_match }
-      matches.each do |match|
-        start, stop = match.byteoffset(0)
+      message.scan(/https?:\/\/[\w\-.]+\.[a-z]{2,}(?:\/[^\s<>"']*)?/i) do
+        start, stop = Regexp.last_match.byteoffset(0)
         facets << {
           'index' => { 'byteStart' => start, 'byteEnd' => stop },
-          'features' => [{ 'uri' => match[0], '$type' => 'app.bsky.richtext.facet#link' }]
+          'features' => [{ 'uri' => Regexp.last_match[0], '$type' => 'app.bsky.richtext.facet#link' }]
         }
       end
     end
@@ -74,9 +71,8 @@ class BlueskyService
 
   def tag_facets(message)
     [].tap do |facets|
-      matches = []
-      message.scan(/(^|[^\w])(#[\w-]+)/) { matches << Regexp.last_match }
-      matches.each do |match|
+      message.scan(/(^|[^\w])(#[\w-]+)/) do
+        match = Regexp.last_match
         start, stop = match.byteoffset(2)
         facets << {
           'index' => { 'byteStart' => start, 'byteEnd' => stop },
