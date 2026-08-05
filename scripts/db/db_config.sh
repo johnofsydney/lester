@@ -8,8 +8,20 @@ set -euo pipefail
 REMOTE_USER=deploy
 REMOTE_BACKUP_DIR=db_dumps
 BACKUP_FILE=latest_backup.sql
-LOCAL_DB=lester_development
 LOCAL_BACKUP_DIR=/Users/john/db_backups
+
+# Local dev database name. Rails picks up DEV_DATABASE_NAME from .env itself (via
+# dotenv-rails) when load_latest_database.sh runs `rails db:create`, but the plain
+# `psql` restore in that script is a separate process — source .env here too so
+# LOCAL_DB matches the db Rails actually created, in a per-worktree checkout (see
+# bin/worktree) as much as the main one. Same default as config/database.yml.
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+if [[ -f "$REPO_ROOT/.env" ]]; then
+  set -a
+  source "$REPO_ROOT/.env"
+  set +a
+fi
+LOCAL_DB="${DEV_DATABASE_NAME:-lester_development}"
 
 # Environment variables — set these in your shell profile (~/.zshrc or ~/.bashrc):
 #   export LESTER_REMOTE_DB_HOST=...
