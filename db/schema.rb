@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_19_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_07_28_122206) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -133,18 +133,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_000001) do
     t.index ["giver_type", "giver_id"], name: "index_individual_transactions_on_giver"
     t.index ["taker_type", "taker_id"], name: "index_individual_transactions_on_taker"
     t.index ["transfer_id"], name: "index_individual_transactions_on_transfer_id"
-  end
-
-  create_table "leadership_websites", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.bigint "group_id"
-    t.text "name_selector"
-    t.text "people_card_selector"
-    t.date "reviewed_at"
-    t.text "title_selector"
-    t.datetime "updated_at", null: false
-    t.text "url"
-    t.index ["group_id"], name: "index_leadership_websites_on_group_id"
   end
 
   create_table "major_transaction_categories", force: :cascade do |t|
