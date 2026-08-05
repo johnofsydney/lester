@@ -1,6 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe NodeMethods do
+  # CachedMethods#nodes_count checks Sidekiq::Queue#size (a live Redis call) before deciding
+  # whether to enqueue a Cache::NodeCountJob — Sidekiq::Testing.fake! (rails_helper) only fakes
+  # perform_async, not this queue-inspection call, so it still hits Redis without this stub.
+  before do
+    allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))
+  end
+
   def add_position(membership, title:, start_date: nil, end_date: nil)
     membership.positions.create!(title: title, start_date: start_date, end_date: end_date)
   end
