@@ -6,6 +6,11 @@ RSpec.describe NodeMethods do
   # perform_async, not this queue-inspection call, so it still hits Redis without this stub.
   before do
     allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))
+    # Cache::NodeCountJob sets sidekiq_options(lock: :until_executed) (sidekiq-unique-jobs), which
+    # does its own real Redis lock check on every perform_async call regardless of
+    # Sidekiq::Testing.fake! — stub the job directly, matching this codebase's usual pattern for
+    # avoiding job side effects in specs (e.g. record_group_spec.rb, tender_ingestor_spec.rb).
+    allow(Cache::NodeCountJob).to receive(:perform_async)
   end
 
   def add_position(membership, title:, start_date: nil, end_date: nil)
