@@ -152,15 +152,6 @@ class Group < ApplicationRecord
     parent_groups + groups
   end
 
-  def less_level
-    # only called from a disused section in FileIngestor
-    # TODO: Potentially useless code
-    name.gsub(/(Federal|NSW|VIC|SA|WA|TAS|ACT|NT)/, '')
-        .delete('(')
-        .delete(')')
-        .strip
-  end
-
   def state
     name.match(/(NSW|VIC|QLD|SA|WA|TAS|ACT|NT)/).to_s
   end
@@ -190,9 +181,7 @@ class Group < ApplicationRecord
   def is_person? = false
 
   def display_name
-    return "#{name} (#{business_number})" if business_number.present?
-
-    name
+    business_number.present? ? "#{name} (#{business_number})" : name
   end
 
   def add_to_tag(tag_group: nil, tag_name: nil)
