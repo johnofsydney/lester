@@ -5,14 +5,14 @@
 class Descendent
   attr_accessor :entity, :id, :name, :depth, :klass, :parent, :parent_count
 
-  def initialize(depth:, node: nil, **attrs)
+  def initialize(depth:, node: nil, id: nil, name: nil, klass: nil, parent: nil, parent_count: nil)
     @entity = node # this is the entity; Person or Group
-    @id = node&.id || attrs[:id]
-    @name = node&.name || attrs[:name]
+    @id = node&.id || id
+    @name = node&.name || name
     @depth = depth
-    @klass = node&.class&.to_s || attrs[:klass]
-    @parent = attrs[:parent]
-    @parent_count = attrs[:parent_count]
+    @klass = node&.class&.to_s || klass
+    @parent = parent
+    @parent_count = parent_count
   end
 
   def to_h
@@ -41,18 +41,22 @@ class Descendent
     klass == 'Person' ? 'dot' : 'box'
   end
 
-  # https://chartscss.org/components/colors/
-  DEPTH_COLORS = {
-    0 => 'rgba(240,50,50,1)',
-    1 => 'rgba(255,180,50,1)',
-    2 => 'rgba(100,210,80,1)',
-    3 => 'rgba(90,165,255,1)',
-    4 => 'rgba(170,90,240,1)',
-    5 => 'rgba(180,180,180,1)'
-  }.freeze
-
   def color
-    DEPTH_COLORS[depth]
+    # https://chartscss.org/components/colors/
+    case depth
+    when 0
+      'rgba(240,50,50,1)'
+    when 1
+      'rgba(255,180,50,1)'
+    when 2
+      'rgba(100,210,80,1)'
+    when 3
+      'rgba(90,165,255,1)'
+    when 4
+      'rgba(170,90,240,1)'
+    when 5
+      'rgba(180,180,180,1)'
+    end
   end
 
   def mass

@@ -69,23 +69,47 @@ class Nodes::Merge
   end
 
   def handle_transfers
-    merge_transfers(argument_node.outgoing_transfers, receiver_node.outgoing_transfers, match_on: :taker, moved_field: :giver)
-    merge_transfers(argument_node.incoming_transfers, receiver_node.incoming_transfers, match_on: :giver, moved_field: :taker)
-  end
+    argument_node.outgoing_transfers.find_each do |transfer|
+      if (equivalent = receiver_node.outgoing_transfers.find_by(taker: transfer.taker, effective_date: transfer.effective_date))
+        # The argument_node has an outgoing transfer that has an equivalent to already on receiver_node
+        # Keep the equivalent transfer, move over individual transactions, recalculate amount, delete the now-empty transfer
 
-  # If an equivalent transfer (same match_on party, same effective date) already exists on
-  # receiver_node, merge the individual transactions into it and drop the now-empty transfer.
-  # Otherwise, move the transfer itself onto receiver_node.
-  def merge_transfers(argument_transfers, receiver_transfers, match_on:, moved_field:)
-    argument_transfers.find_each do |transfer|
-      equivalent = receiver_transfers.find_by(match_on => transfer.public_send(match_on), effective_date: transfer.effective_date)
+        # Move individual transactions across
+        transfer.individual_transactions.find_each do |it|
+          it.update!(transfer: equivalent)
+        end
 
-      if equivalent
-        transfer.individual_transactions.find_each { |it| it.update!(transfer: equivalent) }
-        equivalent.update!(amount: equivalent.individual_transactions.sum(:amount))
+        # Recalculate amount on equivalent transfer
+        total_amount = equivalent.individual_transactions.sum(:amount)
+        equivalent.update!(amount: total_amount)
+
+        # Delete the now-empty transfer
         transfer.destroy!
+        next
       else
-        transfer.update!(moved_field => receiver_node)
+        transfer.update!(giver: receiver_node)
+      end
+    end
+
+    argument_node.incoming_transfers.find_each do |transfer|
+      if (equivalent = receiver_node.incoming_transfers.find_by(giver: transfer.giver, effective_date: transfer.effective_date))
+        # The argument_node has an incoming transfer that has an equivalent to already on receiver_node
+        # Keep the equivalent transfer, move over individual transactions, recalculate amount, delete the now-empty transfer
+
+        # Move individual transactions across
+        transfer.individual_transactions.find_each do |it|
+          it.update!(transfer: equivalent)
+        end
+
+        # Recalculate amount on equivalent transfer
+        total_amount = equivalent.individual_transactions.sum(:amount)
+        equivalent.update!(amount: total_amount)
+
+        # Delete the now-empty transfer
+        transfer.destroy!
+        next
+      else
+        transfer.update!(taker: receiver_node)
       end
     end
   end
