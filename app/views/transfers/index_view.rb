@@ -107,4 +107,20 @@ class Transfers::IndexView < ApplicationView
       end
     end
   end
+
+  def selected_start_year(year)
+    return false if session[:duration_start].blank?
+
+    session[:duration_start].is_a?(String) || year == session[:duration_start].year
+  end
+
+  def selected_end_year(year)
+    return false if session[:duration_end].blank?
+
+    if session[:duration_end].is_a?(String)
+      Date.parse(session[:duration_end]).year == year
+    else
+      year == session[:duration_end].year
+    end
+  end
 end
