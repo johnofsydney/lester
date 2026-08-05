@@ -19,43 +19,68 @@ class RecordPersonOrGroup
     @aec_id = aec_id
   end
 
-  # Each entry matches a class of company/party/campaign names and returns 'group'.
-  # Order does not matter within this list - order only matters relative to the
-  # person/couple checks in #person_or_group below.
-  GROUP_KEYWORD_REGEXES = [
-    /\bHCF\b|\bINPEX\b|\bCMAX\b|\bSDA\b|\bONA\b|\bSPP\b|\bACCI\b|\bACTU\b|\bCEC\b|\bCLP|\bMSD\b|\bUNSW\b|\bAICR\b|\bAFUL\b|\bAGL\b|\bEY\b|\bPESA\b|\bPR\b|\bGHD\b|\bGas\b|\bPty\b|\bKPMG\b|\bRISC\b/i, # acronyms
-    /Corporation|Transport|Tax Aid|Outcomes|Lifestyle|active super/i, # company names
-    /business|technology|shopping|toyota|\bbank\b|promotions|publications/i,
-    /institute|horticultural|cleaning|technologies|centre|strategic|development/i,
-    /Services|investments|entertainment|Insurance|Commerce|Network|Schools/i,
-    /Public|affairs|nimbin hemp|company|workpac|wren oil|consultants/i,
-    /plumbing|division|federal|office|advisory|deloitte touche/i,
-    /company|events|commerce|webdrill|private|restaurant|Mining/i,
-    /enterprise|lendlease|party|healthcare|agency|team|lawyers|employment/i,
-    /national\b|\bbranch\b|\binstitution\b|\bcommunity|compliance|equipment|solutions/i,
-    /guide dogs|\bcommunikate\b|\bDirectors\b|Hunter Land|\bTrading\b|Readyco\b|Stockland\b/i,
-    /consulting|ministry|family|Lobbying|Personnel|Resources|Compression/i,
-    /jewish|workforce|payments|weaponry|xero|xodus|yokogawa|petroleum|strategy|Environmental/i,
-    /metal|minerals|department|university|Constituional|\bChurch\b/i,
-    /parliament|minerals|department|university|Constituional|\bChurch\b/i,
-    /Anniversary|Empowered|Employment|campaign/i, # specific companies
-    /\bLib - Fed\b|\bLib - Sa\b|\bLib - Wa\b|\bLib - Vic\b/i, # party names
-    /\bLib Fed\b|\bLib Vic\b/i,
-    /\bLib-Act\b|\bLib-Fec\b|\bLib-Fed\b|\bLib-Sa\b|\bLib-Tas\b|\bLib-Vic\b|\bLib-Wa\b/i,
-    /\bNat - Fed\b|\bNat-Fed\b/i,
-    /\bSocialists\b|\bCommittee\b|\bFund\b|\b(Dialogues|Dialogue)\b|\bForum\b/i,
-    /\bFor Yes\b|\bFor No\b\bFor The\b/i, # campaign names
-    /Constitutional|Empowered|Employment|campaign/i,
-    /Anniversary|Empowered|Employment|campaign/i
-  ].freeze
-
   def person_or_group
     return 'person' if name.match?(People::Regexp::PREFIX_TITLES)
+
+    regex_for_3_or_4_capitals = /\bHCF\b|\bINPEX\b|\bCMAX\b|\bSDA\b|\bONA\b|\bSPP\b|\bACCI\b|\bACTU\b|\bCEC\b|\bCLP|\bMSD\b|\bUNSW\b|\bAICR\b|\bAFUL\b|\bAGL\b|\bEY\b|\bPESA\b|\bPR\b|\bGHD\b|\bGas\b|\bPty\b|\bKPMG\b|\bRISC\b/i
+
+    regex_for_company_words_1 = /Corporation|Transport|Tax Aid|Outcomes|Lifestyle|active super/i
+    regex_for_company_words_2 = /business|technology|shopping|toyota|\bbank\b|promotions|publications/i
+    regex_for_company_words_3 = /institute|horticultural|cleaning|technologies|centre|strategic|development/i
+    regex_for_company_words_4 = /Services|investments|entertainment|Insurance|Commerce|Network|Schools/i
+    regex_for_company_words_5 = /Public|affairs|nimbin hemp|company|workpac|wren oil|consultants/i
+    regex_for_company_words_6 = /plumbing|division|federal|office|advisory|deloitte touche/i
+    regex_for_company_words_7 = /company|events|commerce|webdrill|private|restaurant|Mining/i
+    regex_for_company_words_8 = /enterprise|lendlease|party|healthcare|agency|team|lawyers|employment/i
+    regex_for_company_words_9 = /national\b|\bbranch\b|\binstitution\b|\bcommunity|compliance|equipment|solutions/i
+    regex_for_company_words_10 = /guide dogs|\bcommunikate\b|\bDirectors\b|Hunter Land|\bTrading\b|Readyco\b|Stockland\b/i
+    regex_for_company_words_11 = /consulting|ministry|family|Lobbying|Personnel|Resources|Compression/i
+    regex_for_company_words_12 = /jewish|workforce|payments|weaponry|xero|xodus|yokogawa|petroleum|strategy|Environmental/i
+    regex_for_company_words_13 = /metal|minerals|department|university|Constituional|\bChurch\b/i
+    regex_for_company_words_14 = /parliament|minerals|department|university|Constituional|\bChurch\b/i
+
+    regex_for_party_words_1 = /\bLib - Fed\b|\bLib - Sa\b|\bLib - Wa\b|\bLib - Vic\b/i
+    regex_for_party_words_2 = /\bLib Fed\b|\bLib Vic\b/i
+    regex_for_party_words_3 = /\bLib-Act\b|\bLib-Fec\b|\bLib-Fed\b|\bLib-Sa\b|\bLib-Tas\b|\bLib-Vic\b|\bLib-Wa\b/i
+    regex_for_party_words_4 = /\bNat - Fed\b|\bNat-Fed\b/i
+    regex_for_party_words_5 = /\bSocialists\b|\bCommittee\b|\bFund\b|\b(Dialogues|Dialogue)\b|\bForum\b/i
+
+    regex_for_campaign_words_1 = /\bFor Yes\b|\bFor No\b\bFor The\b/i
+    regex_for_campaign_words_2 = /Constitutional|Empowered|Employment|campaign/i
+    regex_for_campaign_words_3 = /Anniversary|Empowered|Employment|campaign/i
+
+    regex_for_specific_companies_1 = /Anniversary|Empowered|Employment|campaign/i
 
     # tom jones and lady gaga
     return 'group' if name.match?(/([a-z]+) [a-z]+ (and) ([a-z]+) ([a-z]+)/i)
 
-    return 'group' if GROUP_KEYWORD_REGEXES.any? { |regex| name.match?(regex) }
+    return 'group' if name.match?(regex_for_3_or_4_capitals)  # Check for acronyms
+    return 'group' if name.match?(regex_for_company_words_1)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_2)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_3)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_4)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_5)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_6)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_7)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_8)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_9)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_10)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_11)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_12)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_13)  # Check for company names
+    return 'group' if name.match?(regex_for_company_words_14)  # Check for company names
+
+    return 'group' if name.match?(regex_for_specific_companies_1)  # Check for company names
+
+    return 'group' if name.match?(regex_for_party_words_1)  # Check for party related names
+    return 'group' if name.match?(regex_for_party_words_2)  # Check for party related names
+    return 'group' if name.match?(regex_for_party_words_3)  # Check for party related names
+    return 'group' if name.match?(regex_for_party_words_4)  # Check for party related names
+    return 'group' if name.match?(regex_for_party_words_5)  # Check for party related names
+
+    return 'group' if name.match?(regex_for_campaign_words_1)  # Check for campaign related names
+    return 'group' if name.match?(regex_for_campaign_words_2)  # Check for campaign related names
+    return 'group' if name.match?(regex_for_campaign_words_3)  # Check for campaign related names
 
     return 'group' if name.match?(/Not A Race/i)
     return 'group' if name.match?(/NIB Health/i)
@@ -108,3 +133,5 @@ class RecordPersonOrGroup
     name.include?(',') ? name.split(',').reverse.join(' ') : name
   end
 end
+
+

@@ -9,13 +9,13 @@
 
 require 'capitalize_names'
 class Group::RecordRow
-  def initialize(group:, person_name:, title: nil, **attrs)
+  def initialize(group:, person_name:, title: nil, evidence: nil, start_date: nil, end_date: nil)
     @group = group
     @person_name = person_name
     @title = nice_title(title)
-    @evidence = attrs[:evidence]
-    @start_date = attrs[:start_date]
-    @end_date = attrs[:end_date]
+    @evidence = evidence
+    @start_date = start_date
+    @end_date = end_date
   end
 
   def call
