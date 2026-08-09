@@ -79,6 +79,7 @@ Background jobs (Sidekiq) ingest from:
 - **AusTender** — government contracts (`app/sidekiq/aus_tender/`, `app/sidekiq/backfill_contracts_master_job.rb`)
 - **ABN Lookup** — business name resolution
 - **Lobbyist register** (`app/sidekiq/au_lobbyists/`)
+- **OpenAustralia** — federal politician parliamentary/party history (`app/services/open_australia/`, `app/sidekiq/open_australia/`). Split into Ingest (fetch and store raw Terms, no interpretation) and Interpretation (derive Membership/Position records from stored Terms) — see `CONTEXT.md`'s "OpenAustralia ingest" section and `docs/adr/0001`–`0005` for the vocabulary and decisions this split relies on.
 
 Services under `app/services/` follow the pattern: a top-level `RecordPerson`, `RecordGroup`, or `RecordTransfer` service that upserts the entity, with sub-services for source-specific logic. `ExternalIdentifier` records are used to disambiguate entities across sources.
 
