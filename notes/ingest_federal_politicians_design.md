@@ -15,7 +15,7 @@ What exists today:
 - Only *currently-serving* politicians are ingested (~226 people) — not the full 50-year historical set.
 - No freshness/staleness checking, no throttling, no scheduled trigger — console-only, unconditional overwrite on each run.
 
-Domain vocabulary (Term, Raw Terms, Ingest, Interpretation, Major/Minor Party, Federal/State Branch Membership, Office Holder, Current Standing) is defined in `CONTEXT.md`. Settled decisions are recorded in `docs/adr/0001`–`0004`. Read both before starting any of the work below — several non-obvious rules (e.g. state-branch memberships never get an `end_date`) are already resolved there, don't re-derive them.
+Domain vocabulary (Term, Raw Terms, Ingest, Interpretation, Major/Minor Party, Federal/State Branch Membership, Office Holder, Current Standing) is defined in `CONTEXT.md`. Settled decisions are recorded in `docs/adr/0001`–`0005`. Read both before starting any of the work below — several non-obvious rules (e.g. a State Branch/Minor Party Membership only closes when a person's *next* distinct affiliation supersedes it, ADR-0005 — it's not simply "never closed", that was the original ADR-0002 rule before 0005 refined it) are already resolved there, don't re-derive them.
 
 ---
 
@@ -29,7 +29,7 @@ This is where essentially all the complexity from the first (abandoned) attempt 
 - **Federal vs State Branch vs Minor Party group resolution** — done. Major parties resolve directly against `Group::NAMES` via a small party-family classifier (not via `MapGroupNamesAecRecipients`'s synthetic-suffix trick — checked against Barnaby Joyce's real Queensland Senate data and found the mapper has no Nationals/QLD pattern, so that approach would have silently mis-resolved). Minor parties resolve via `MapGroupNamesAecRecipients` for its alias-cleanup rules. `MapElectorateToState` ported from the abandoned branch (pure data, unchanged) for MP electorate→state; Senators get state directly from the Term.
 - **Party string audit** — done as part of the above; resolved against real data (Barnaby Joyce, Milton Dick) rather than a separate audit pass.
 - **Idempotency** — not yet re-solved; see manual pre-step below, which sidesteps the hard version of this question for the first run.
-- **The DB-writing step** — done. `OpenAustralia::Interpretation::RecordMembershipsAndPositions` creates/closes Parliament, Federal Branch, and State/Minor Party Memberships and Positions from the two services above, and is idempotent on re-run (verified by spec, including a re-run-after-new-data-closes-a-period case).
+- **The DB-writing step** — done. `OpenAustralia::Interpretation::RecordMembershipsAndPositions` creates/closes Parliament, Federal Branch (ADR-0002), and State/Minor Party Memberships and Positions (closed on supersession per ADR-0005, not left permanently open) from the two services above, and is idempotent on re-run (verified by spec, including a re-run-after-new-data-closes-a-period case).
 
 Still to do: actually run it for real. Nothing in the app calls `RecordMembershipsAndPositions` outside its own spec yet — the manual pre-step below (never yet executed) and the real run against the ~226 already-ingested politicians are done via two new rake tasks: `rake lester:cleanup_legacy_politician_memberships` (DRY_RUN=true by default) and `rake lester:record_politician_memberships_and_positions`, both in `lib/tasks/maintenance.rake`. This stays console/rake-triggered only for this first run — no Sidekiq job chaining or scheduler entry yet, mirroring how Increment 1 itself first shipped.
 
