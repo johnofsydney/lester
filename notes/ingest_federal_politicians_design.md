@@ -19,7 +19,7 @@ Domain vocabulary (Term, Raw Terms, Ingest, Interpretation, Major/Minor Party, F
 
 ---
 
-## Increment 2 — Interpretation (in progress)
+## Increment 2 — Interpretation (done, merged to main via #232)
 
 Turn each Person's `open_australia_data` (their Raw Terms) into real `Membership`/`Position` records: one Parliament Membership per continuous stint, one Federal Branch Membership per major party (closed when the parliamentary term ends — ADR 0002), one State Branch / Minor Party Membership per party (never auto-closed — ADR 0002), with Office Holder terms (Speaker/Deputy-Speaker/President/Deputy-President) inheriting party from the preceding real-party Term (ADR 0003).
 
@@ -31,7 +31,7 @@ This is where essentially all the complexity from the first (abandoned) attempt 
 - **Idempotency** — not yet re-solved; see manual pre-step below, which sidesteps the hard version of this question for the first run.
 - **The DB-writing step** — done. `OpenAustralia::Interpretation::RecordMembershipsAndPositions` creates/closes Parliament, Federal Branch (ADR-0002), and State/Minor Party Memberships and Positions (closed on supersession per ADR-0005, not left permanently open) from the two services above, and is idempotent on re-run (verified by spec, including a re-run-after-new-data-closes-a-period case).
 
-Still to do: actually run it for real. Nothing in the app calls `RecordMembershipsAndPositions` outside its own spec yet — the manual pre-step below (never yet executed) and the real run against the ~226 already-ingested politicians are done via two new rake tasks: `rake lester:cleanup_legacy_politician_memberships` (DRY_RUN=true by default) and `rake lester:record_politician_memberships_and_positions`, both in `lib/tasks/maintenance.rake`. This stays console/rake-triggered only for this first run — no Sidekiq job chaining or scheduler entry yet, mirroring how Increment 1 itself first shipped.
+Shipped via [#232](https://github.com/johnofsydney/lester/pull/232): two rake tasks in `lib/tasks/maintenance.rake` — `rake lester:cleanup_legacy_politician_memberships` (DRY_RUN=true by default, deletes the legacy bulk-import data below) and `rake lester:record_politician_memberships_and_positions` (runs `RecordMembershipsAndPositions` for every already-ingested politician). Deliberately console/rake-triggered only for this first run — no Sidekiq job chaining or scheduler entry — mirroring how Increment 1 itself first shipped. **That gap (no automatic trigger) is exactly what Increment 3 below picks up.**
 
 ### Manual pre-step required before running the DB-writing step
 
@@ -47,7 +47,26 @@ Suggest running this against the ~226 already-ingested current politicians as th
 
 ---
 
-## Increment 3 — Historical backfill (after Interpretation is proven)
+## Increment 3 — Scheduling & Automation (not started)
+
+Increments 1 and 2 are both proven correct but only run when a human triggers them from a console/rake task. Two related gaps remain before the pipeline can keep itself current without manual intervention:
+
+1. **Discover new politicians** — nothing re-fetches the current roster after the initial run, so anyone who enters Parliament later (by-election, new term) never gets ingested.
+2. **Refresh already-known current politicians** — nothing re-fetches Raw Terms for politicians already in our DB, so an exit (retirement, lost seat, disqualification) or a mid-term party switch that OpenAustralia later records is never picked up, and their Parliament/Federal Branch Membership never closes.
+
+Design notes for whoever picks this up:
+
+- **Neither need requires new Ingest logic.** `OpenAustralia::IngestPerson.call(person_id:)` already fetches a person's *entire* history unconditionally, regardless of why that `person_id` was selected — re-running it for someone who has since left Parliament correctly returns their updated `left_house` date (per the API reference below), and re-running `RecordMembershipsAndPositions` afterward is already proven idempotent *and* correctly closes a previously-open period when new data closes it (see the "re-running after new data closes a previously-open period" spec case). So need #2 has no new detection logic to write — it's "re-ingest, then re-interpret," full stop.
+- **The one real gap is that nothing chains Interpretation onto Ingest.** PR #232 deliberately left `RecordMembershipsAndPositions` triggered only by its own rake task, since the first real run needed a human watching it. A *scheduled* job has no human watching each run, so this increment should decide where that chaining happens (most likely: inside `OpenAustralia::IngestPersonJob#perform`, right after a successful `IngestPerson.call`) and make new/refreshed Memberships and Positions happen automatically.
+- **"Politicians our database considers current" (need #2) already has a precise definition, no new schema needed**: people with an open (`end_date: nil`) `Membership` in `Group.federal_parliament` (id 877).
+- **Needs #1 and #2 may collapse into one scheduled job.** Union the OpenAustralia live roster's `person_id`s (need #1's source, via `OpenAustralia::IngestCurrentPoliticians`'s existing dedup logic) with the `person_id`s of everyone our DB currently considers a sitting politician (need #2's source), dedupe, enqueue one ingest-then-interpret pass per person. The two sources diverge exactly where it matters — someone who dropped off the live roster is only in the DB-side set (that's the "they left" case), a fresh by-election winner is only in the live-roster-side set (that's the "new politician" case) — so the union covers both needs with one job. Worth validating this simplification with the project owner rather than assuming it.
+- **`OpenAustralia::IngestCurrentPoliticians` is a plain service, not a Sidekiq job** — it'll need a thin `Sidekiq::Job` wrapper (same gap `IngestPersonJob` already fills for the per-person case) to be schedulable via `config/sidekiq.yml`'s `:scheduler: :schedule:` block. Follow the existing pattern there (e.g. `AuLobbyists::IngestLobbyistsJob`'s cron entry).
+- **Cadence is a judgment call, not a technical constraint.** Existing scheduled jobs range from daily (AusTender contracts) to yearly (ACNC). Parliamentary composition doesn't change often outside elections/by-elections — weekly or monthly is plausible, but confirm with the project owner rather than assuming.
+- **Consider shipping this as two small PRs** (chain Interpretation onto `IngestPersonJob` + wire up the roster-discovery job first; extend to the DB-driven refresh second) rather than one big one, matching this project's preference for small increments — but confirm sequencing with the project owner first.
+
+---
+
+## Increment 4 — Historical backfill (after Interpretation is proven)
 
 Goal: ingest *all* federal politicians within the 50-year window (ADR 0004), not just current ones.
 
