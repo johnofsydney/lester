@@ -124,37 +124,71 @@ module NodeMethods
     "#{name[0..25]}..."
   end
 
+  # Person: one row per Membership (their full history — a person can rejoin the same Group,
+  # e.g. Barnaby Joyce's three separate Parliament stints, and each should show its own dates).
+  # Group: one row per distinct connected Person/Group, showing that connection's best Membership
+  # (the currently-open one, else the most recently ended) — a Group's member list shouldn't show
+  # the same person/sub-group more than once.
+  #
+  # In both cases we build each row's position from the specific Membership behind that row,
+  # rather than re-querying "a" Membership for the node afterwards — re-querying is what silently
+  # collapsed every row for the same (person, group) pair onto a single arbitrary Membership.
   def direct_connections
-    nodes.map do |n|
-      last_position = fetch_last_position(n)
-
-      basic_info = {
-        klass: n.class.name,
-        id: n.id,
-        name: n.name,
-        nodes_count: n.nodes_count,
-        is_tag: n.is_tag?
-      }
-
-      basic_info[:last_position] = last_position if last_position.present?
-
-      basic_info
+    if is_a?(Person)
+      memberships.order(start_date: :desc).includes(:positions, :group).map do |membership|
+        node_connection(membership.group, membership.last_position)
+      end
+    else
+      best_person_memberships.map { |membership| node_connection(membership.member, membership.last_position) } +
+        best_group_memberships.map { |membership, other_group| node_connection(other_group, membership.last_position) }
     end
   end
 
-  def fetch_last_position(node)
-    membership = if self.is_a?(Group) && node.is_a?(Person)
-                    Membership.find_by(group: self, member: node)
-                 elsif self.is_a?(Person) && node.is_a?(Group)
-                    Membership.find_by(group: node, member: self)
-                 end
+  def best_person_memberships
+    memberships.where(member_type: 'Person')
+               .includes(:positions, :member)
+               .group_by(&:member_id)
+               .values
+               .map { |candidates| candidates.min_by { |m| membership_recency_key(m) } }
+  end
 
-    position = membership&.last_position
+  # Group-to-group connections come from two directions: sub-groups that belong to self
+  # (self.memberships, self is the group) and parent groups self belongs to (self is the member).
+  # Both are grouped by the *other* group's id so a group connected via both directions, or with
+  # multiple non-contiguous Memberships in one direction, still gets exactly one row.
+  def best_group_memberships
+    as_owner = memberships.where(member_type: 'Group').includes(:positions, :member).map { |m| [m, m.member] }
+    as_member = Membership.where(member: self, member_type: 'Group').includes(:positions, :group).map { |m| [m, m.group] }
 
-    return '' unless position
+    (as_owner + as_member)
+      .group_by { |_membership, other_group| other_group.id }
+      .values
+      .map { |pairs| pairs.min_by { |membership, _| membership_recency_key(membership) } }
+  end
+
+  def membership_recency_key(membership)
+    membership.end_date.nil? ? [0, 0] : [1, -membership.end_date.to_time.to_i]
+  end
+
+  def node_connection(node, position)
+    basic_info = {
+      klass: node.class.name,
+      id: node.id,
+      name: node.name,
+      nodes_count: node.nodes_count,
+      is_tag: node.is_tag?
+    }
+
+    formatted_position = format_position(position)
+    basic_info[:last_position] = formatted_position if formatted_position.present?
+
+    basic_info
+  end
+
+  def format_position(position)
+    return '' if position&.title.blank?
 
     result = position.title
-    return '' unless result
 
     if position.end_date.present? && position.start_date.present?
       if position.end_date == position.start_date

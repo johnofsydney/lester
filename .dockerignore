@@ -37,3 +37,7 @@
 /app/assets/builds/*
 !/app/assets/builds/.keep
 /public/assets
+
+# Ignore docs/notes not needed at runtime.
+/notes/
+/evidence/
