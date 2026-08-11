@@ -8,6 +8,7 @@ class Councils::Nsw::IngestElectionResultsJob
   include Sidekiq::Job
 
   INDEX_URL = 'https://pastvtr.elections.nsw.gov.au/LG2401/index'.freeze
+  IMPORT_SPACING = 9.seconds
 
   def perform
     page = Councils::PageDownloader.call(INDEX_URL)
@@ -16,8 +17,8 @@ class Councils::Nsw::IngestElectionResultsJob
     councils = Councils::Nsw::ResultsIndexParser.call(page)
     raise "No councils found on NSW council index: #{INDEX_URL}" if councils.blank?
 
-    councils.each do |council|
-      Councils::Nsw::ImportCouncilResultRowJob.perform_in(rand(1..60).seconds, council[:name], council[:slug])
+    councils.each_with_index do |council, index|
+      Councils::Nsw::ImportCouncilResultRowJob.perform_in(index * IMPORT_SPACING, council[:name], council[:slug])
     end
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Nsw::IngestElectionResultsJob: #{e.message} - will retry"
