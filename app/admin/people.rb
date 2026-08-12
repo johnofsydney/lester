@@ -104,4 +104,54 @@ ActiveAdmin.register Person do
       redirect_to admin_memberships_path, alert: 'No memberships were found for this person.'
     end
   end
+
+  # Add a "Merge With" button on the show page
+  action_item :merge_with, only: :show do
+    link_to 'Merge With', merge_with_admin_person_path(resource), method: :get
+  end
+
+  # Custom route#action for the initial view of merging
+  member_action :merge_with, method: :get do
+    @current_person = resource
+    render 'admin/people/merge_with' # view for this action
+  end
+
+  # Custom route#action for searching people by name
+  member_action :search_people, method: :post do
+    @current_person = Person.find(params[:current_person_id])
+    @search_query = params[:query]
+
+    @search_results = PgSearch.multisearch(@search_query).where(searchable_type: 'Person') if @search_query.present?
+
+    render 'admin/people/merge_with'
+  end
+
+  # Custom route#action for the 2nd view of merging - accept id of person to merge with
+  member_action :preview_merge, method: :post do
+    @current_person = Person.find(params[:current_person_id])
+    @merge_with_person_id = params[:merge_with_person_id]
+
+    if @merge_with_person_id.present?
+      @merge_with_person = Person.find_by(id: @merge_with_person_id)
+
+      if @merge_with_person.nil?
+        flash.now[:error] = "Person with ID #{@merge_with_person_id} not found."
+      elsif @merge_with_person.id == @current_person.id
+        flash.now[:error] = 'Cannot merge a person with itself.'
+        @merge_with_person = nil
+      end
+    end
+
+    render 'admin/people/merge_with'
+  end
+
+  # Custom route#action for the action of merging - we have the two people now for the merge
+  member_action :perform_merge, method: :post do
+    source_person = Person.find(params[:current_person_id])
+    replacement_person = Person.find(params[:merge_with_person_id])
+    replacement_person_name = replacement_person.name
+
+    source_person.merge!(replacement_person)
+    redirect_to admin_person_path(source_person), notice: "Person successfully merged with #{replacement_person_name}."
+  end
 end

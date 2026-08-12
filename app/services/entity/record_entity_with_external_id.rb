@@ -42,10 +42,24 @@ class Entity::RecordEntityWithExternalId
   def create_entity_with_external_id
     entity = klass.constantize.new(name:)
 
-    save_inside_advisory_lock!(entity)
-    add_to_trading_names(entity)
+    entity = save_inside_advisory_lock!(entity) { find_concurrently_created_entity }
+    add_to_trading_names(entity) if entity.previously_new_record?
 
     entity.public_send(:"#{id_attribute}=", identifier)
     entity
+  end
+
+  # Guards against the same (name, identifier) pair being recorded twice by concurrent
+  # callers. Deliberately narrower than a plain name match: an entity that already carries
+  # a *different* external id at this name is a genuine same-name-different-entity case
+  # (see #find_sole_entity_by_name_and_append_external_id), not a race, and must not be
+  # collapsed into here.
+  def find_concurrently_created_entity
+    candidates = klass.constantize.where(name:).select do |candidate|
+      existing_id = candidate.public_send(id_attribute)
+      existing_id.blank? || existing_id == identifier
+    end
+
+    candidates.sole if candidates.one?
   end
 end

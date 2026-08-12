@@ -188,4 +188,25 @@ namespace :lester do
     puts "Individual transactions relinked#{dry_run ? ' (would relink)' : ''}: #{transactions_relinked}"
     puts 'Run with DRY_RUN=false to apply changes.' if dry_run
   end
+
+  desc 'Deduplicate people who are only tagged as Lobbyists'
+  task dedupe_lobbyist_people: :environment do
+    dry_run = ActiveModel::Type::Boolean.new.cast(ENV.fetch('DRY_RUN', 'true'))
+
+    service = People::DeleteDuplicates.new
+    duplicate_groups = service.duplicates(Person.only_in_lobbyists)
+
+    if duplicate_groups.empty?
+      puts 'No duplicate lobbyist people found.'
+      next
+    end
+
+    puts "Found #{duplicate_groups.size} duplicate lobbyist name groups."
+    puts "DRY_RUN=#{dry_run}"
+
+    service.call(dry_run:, scope: Person.only_in_lobbyists)
+
+    puts 'Done.'
+    puts 'Run with DRY_RUN=false to apply changes.' if dry_run
+  end
 end

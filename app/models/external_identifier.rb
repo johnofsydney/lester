@@ -6,5 +6,5 @@ class ExternalIdentifier < ApplicationRecord
   validates :value, presence: true
   validates :value, uniqueness: { scope: %i[owner_type owner_id source] }
 
-  SOURCES = %w[aec acnc open_australia].freeze
+  SOURCES = %w[aec acnc open_australia lobbyists].freeze
 end

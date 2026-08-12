@@ -1,17 +1,18 @@
 require 'capitalize_names'
 
 class People::RecordPerson
-  attr_reader :name, :aec_id, :acnc_id, :open_australia_id
+  attr_reader :name, :aec_id, :acnc_id, :open_australia_id, :lobbyist_id
 
-  def initialize(name, aec_id: nil, acnc_id: nil, open_australia_id: nil)
+  def initialize(name, aec_id: nil, acnc_id: nil, open_australia_id: nil, lobbyist_id: nil)
     @name = cleaned_up_name(name)
     @aec_id = aec_id
     @acnc_id = acnc_id
     @open_australia_id = open_australia_id
+    @lobbyist_id = lobbyist_id
   end
 
-  def self.call(name, aec_id: nil, acnc_id: nil, open_australia_id: nil)
-    new(name, aec_id:, acnc_id:, open_australia_id:).call
+  def self.call(name, aec_id: nil, acnc_id: nil, open_australia_id: nil, lobbyist_id: nil)
+    new(name, aec_id:, acnc_id:, open_australia_id:, lobbyist_id:).call
   end
 
   def call
@@ -19,6 +20,13 @@ class People::RecordPerson
       Entity::RecordEntityWithExternalId.new(name:, identifier:, source:, id_attribute:, klass: 'Person').call
     elsif (person = Person.find_by(name:))
         person
+    elsif TradingName.where(name:, owner_type: 'Person').count > 1
+        Rails.logger.info("Multiple trading names found for: #{name}")
+        NewRelic::Agent.notice_error("Cannot Disambiguate Trading name: #{name}")
+
+        raise ArgumentError, "Attempting to create Person with name: #{name}. Multiple trading names exist with the same name, cannot disambiguate"
+    elsif (tn = TradingName.find_by(name:, owner_type: 'Person'))
+        tn.owner
     else
       People::Record::RecordPersonWithName.new(name:).call
     end
@@ -29,7 +37,7 @@ class People::RecordPerson
   attr_reader :source, :identifier, :id_attribute
 
   def external_id
-    return false unless aec_id.present? || acnc_id.present? || open_australia_id.present?
+    return false unless aec_id.present? || acnc_id.present? || open_australia_id.present? || lobbyist_id.present?
 
     map = if aec_id.present?
             { source: 'aec', identifier: aec_id.to_s, id_attribute: 'aec_id' }
@@ -37,6 +45,8 @@ class People::RecordPerson
             { source: 'acnc', identifier: acnc_id.to_s, id_attribute: 'acnc_id' }
           elsif open_australia_id.present?
             { source: 'open_australia', identifier: open_australia_id.to_s, id_attribute: 'open_australia_id' }
+          elsif lobbyist_id.present?
+            { source: 'lobbyists', identifier: lobbyist_id.to_s, id_attribute: 'lobbyist_id' }
           end
 
     @source = map[:source]

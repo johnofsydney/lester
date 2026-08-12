@@ -10,8 +10,8 @@ class Groups::Record::RecordGroupWithName
   def call
     group = Group.new(name:)
 
-    save_inside_advisory_lock!(group)
-    add_to_trading_names(group)
+    group = save_inside_advisory_lock!(group) { Group.find_by(name:) }
+    add_to_trading_names(group) if group.previously_new_record?
 
     group
   end
