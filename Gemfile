@@ -88,6 +88,8 @@ gem "prettytodo"
 
 gem 'sidekiq-scheduler'
 
+gem 'maintenance_tasks'
+
 # For working with XLSX files
 gem "roo", "~> 3.0.0"
 

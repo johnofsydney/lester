@@ -1,13 +1,13 @@
 require 'sidekiq/web' # require the web UI
 
 Rails.application.routes.draw do
-
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
   authenticate :admin_user do
     mount Flipper::UI.app(Flipper) => '/flipper'
     mount Sidekiq::Web => '/sidekiq'
+    mount MaintenanceTasks::Engine, at: '/maintenance_tasks'
   end
 
   mount Prettytodo::Engine => '/prettytodo' if Rails.env.development?
