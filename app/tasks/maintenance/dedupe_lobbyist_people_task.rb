@@ -1,0 +1,33 @@
+module Maintenance
+  class DedupeLobbyistPeopleTask < MaintenanceTasks::Task
+    attribute :dry_run, :boolean, default: true
+
+    def collection
+      duplicate_ids = People::DeleteDuplicates.new.duplicates(Person.only_in_lobbyists).flat_map { |_name, ids| ids.drop(1) }
+      Person.where(id: duplicate_ids).order(:id)
+    end
+
+    delegate :count, to: :collection
+
+    # Re-derives the keeper at process-time, rather than trusting the ids
+    # captured by `collection`, so that a resumed/re-run task stays safe to
+    # process the same person twice (earlier merges may have already folded
+    # this row's siblings together).
+    def process(duplicate)
+      return unless Person.exists?(duplicate.id)
+
+      keeper = Person.where('UPPER(name) = ?', duplicate.name.upcase)
+                     .where.not(id: duplicate.id)
+                     .order(:id)
+                     .first
+      return unless keeper
+
+      if dry_run
+        Rails.logger.info("[DRY RUN] Would merge Person ##{duplicate.id} (#{duplicate.name}) into ##{keeper.id}")
+        return
+      end
+
+      keeper.merge!(duplicate)
+    end
+  end
+end

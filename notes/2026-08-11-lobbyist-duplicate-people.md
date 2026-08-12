@@ -73,12 +73,12 @@ Ship independently, in this order:
 
 4. **Fix cache invalidation after merge.** `Nodes::Merge#handle_refresh_job` only rebuilds the cache of the merged-into Person, not any Group whose membership set changed as a side effect — so without this fix, `/groups/124509` would keep showing stale duplicates for up to a week even after the DB is clean. After each merge, enqueue `Cache::BuildGroupCachedDataJob` for the Lobbyists tag group and each affected employer Group.
 
-5. **Wrap it in a rake task** (`lib/tasks/maintenance.rake`, alongside the existing `lester:find_duplicates` and `lester:dedupe_transfers_natural_key`): `lester:dedupe_lobbyist_people`, `DRY_RUN`-gated, same operational pattern already used for transfer cleanup.
+5. **Wrap it in a `maintenance_tasks` Task** (`app/tasks/maintenance/dedupe_lobbyist_people_task.rb`, `Maintenance::DedupeLobbyistPeopleTask`), run and monitored from the `/maintenance_tasks` admin UI rather than a rake task. `collection` is `Person.only_in_lobbyists`'s duplicate ids (excluding the lowest-id keeper per name); `process(duplicate)` re-derives the current keeper at call-time so it's safe to reprocess the same person if the task is interrupted/resumed. A `dry_run` Active Model attribute (default `true`, toggleable from the run-start form) replaces the rake task's `DRY_RUN` env var — run once with it on to eyeball the log output, then again with it off to apply.
 
 ### Rollout order
 
 1. TOCTOU fix (1.1) — smallest, safest, ships alone first.
-2. Fixed `DeleteDuplicates` + lobbyist-only scope + rake task (2.1, 2.2, 2.5) — run `DRY_RUN=true` in production console, eyeball output, then `DRY_RUN=false`. This is the fix users will actually see reflected on the live page.
+2. Fixed `DeleteDuplicates` + lobbyist-only scope + `Maintenance::DedupeLobbyistPeopleTask` (2.1, 2.2, 2.5) — start a run from `/maintenance_tasks` with `dry_run` on, eyeball the log output, then start a fresh run with `dry_run` off. This is the fix users will actually see reflected on the live page.
 3. Cache rebuild (2.4) — bundled into the same rewrite; manually verify `/groups/124509` afterward.
 4. Person admin merge UI (2.3) — any time after step 2, for manual-review leftovers.
 5. `trading_names` fallback on `RecordPerson` (1.2) — after step 2, so it doesn't interact confusingly with still-duplicated data mid-cleanup.
@@ -98,12 +98,12 @@ Ship independently, in this order:
 - `app/services/people/delete_duplicates.rb`, `app/services/groups/delete_duplicates.rb` — fix multi-duplicate bug
 - `app/models/person.rb` — `only_in_lobbyists` scope
 - `app/admin/people.rb`, `app/views/admin/people/merge_with.html.erb`, `config/routes.rb` — Person admin merge action
-- `lib/tasks/maintenance.rake` — `lester:dedupe_lobbyist_people` task
+- `app/tasks/maintenance/dedupe_lobbyist_people_task.rb` — `Maintenance::DedupeLobbyistPeopleTask` (run from `/maintenance_tasks`)
 - Specs alongside each changed service
 
 ## Verification
 
 - `bundle exec rspec spec/services/people/ spec/services/concerns/ spec/services/au_lobbyists/` after each change.
 - Before enabling step 1.3, confirm via Rails console: `Person.only_in_lobbyists.group(:name).having('count(*) > 1').count` is empty.
-- After Part 2's rake task runs (`DRY_RUN=false`), reload `https://join-the-dots.info/groups/124509` and confirm no duplicate names remain in the People list, and that "People in Group" / "Connected Groups" counts have dropped correspondingly.
+- After Part 2's `Maintenance::DedupeLobbyistPeopleTask` run completes with `dry_run` off, reload `https://join-the-dots.info/groups/124509` and confirm no duplicate names remain in the People list, and that "People in Group" / "Connected Groups" counts have dropped correspondingly.
 - Spot-check a few individually merged people's pages (`/people/:id`) to confirm memberships, transfers, and trading names carried over correctly via `Nodes::Merge`.
