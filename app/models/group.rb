@@ -69,7 +69,6 @@ class Group < ApplicationRecord
           )
 
   has_many :trading_names, as: :owner, dependent: :destroy
-  has_many :leadership_websites, dependent: :destroy
 
   # TODO: memberships are only working on one direction, need to fix this
   # affiliated groups are not being followed from child to parent to other child
@@ -152,15 +151,6 @@ class Group < ApplicationRecord
     parent_groups + groups
   end
 
-  def less_level
-    # only called from a disused section in FileIngestor
-    # TODO: Potentially useless code
-    name.gsub(/(Federal|NSW|VIC|SA|WA|TAS|ACT|NT)/, '')
-        .delete('(')
-        .delete(')')
-        .strip
-  end
-
   def state
     name.match(/(NSW|VIC|QLD|SA|WA|TAS|ACT|NT)/).to_s
   end
@@ -190,9 +180,7 @@ class Group < ApplicationRecord
   def is_person? = false
 
   def display_name
-    return "#{name} (#{business_number})" if business_number.present?
-
-    name
+    business_number.present? ? "#{name} (#{business_number})" : name
   end
 
   def add_to_tag(tag_group: nil, tag_name: nil)
@@ -227,5 +215,15 @@ class Group < ApplicationRecord
 
   def self.government_department_tag
     Group.find(124_514)
+  end
+
+  def self.federal_parliament
+    Group.find(877)
+  end
+
+  # NOTE: not yet hardcoded to an ID -- this tag doesn't exist in production yet.
+  # Once created there, swap this to a hardcoded Group.find(id) like the tags above.
+  def self.local_councils_tag
+    Group.find_by(name: 'australian local councils')
   end
 end

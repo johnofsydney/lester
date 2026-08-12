@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_07_19_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_12_031862) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -135,16 +135,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_07_19_000001) do
     t.index ["transfer_id"], name: "index_individual_transactions_on_transfer_id"
   end
 
-  create_table "leadership_websites", force: :cascade do |t|
+  create_table "maintenance_tasks_runs", force: :cascade do |t|
+    t.text "arguments"
+    t.text "backtrace"
     t.datetime "created_at", null: false
-    t.bigint "group_id"
-    t.text "name_selector"
-    t.text "people_card_selector"
-    t.date "reviewed_at"
-    t.text "title_selector"
+    t.string "cursor"
+    t.boolean "cursor_is_json", default: false, null: false
+    t.datetime "ended_at"
+    t.string "error_class"
+    t.string "error_message"
+    t.string "job_id"
+    t.integer "lock_version", default: 0, null: false
+    t.text "metadata"
+    t.datetime "started_at"
+    t.string "status", default: "enqueued", null: false
+    t.string "task_name", null: false
+    t.bigint "tick_count", default: 0, null: false
+    t.bigint "tick_total"
+    t.float "time_running", default: 0.0, null: false
     t.datetime "updated_at", null: false
-    t.text "url"
-    t.index ["group_id"], name: "index_leadership_websites_on_group_id"
+    t.index ["task_name", "status", "created_at"], name: "index_maintenance_tasks_runs", order: { created_at: :desc }
   end
 
   create_table "major_transaction_categories", force: :cascade do |t|

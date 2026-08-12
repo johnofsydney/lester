@@ -189,24 +189,68 @@ namespace :lester do
     puts 'Run with DRY_RUN=false to apply changes.' if dry_run
   end
 
-  desc 'Deduplicate people who are only tagged as Lobbyists'
-  task dedupe_lobbyist_people: :environment do
+  desc 'Delete legacy Parliament/Federal Branch Memberships and Positions superseded by OpenAustralia Interpretation'
+  task cleanup_legacy_politician_memberships: :environment do
     dry_run = ActiveModel::Type::Boolean.new.cast(ENV.fetch('DRY_RUN', 'true'))
 
-    service = People::DeleteDuplicates.new
-    duplicate_groups = service.duplicates(Person.only_in_lobbyists)
+    federal_branch_group_names = OpenAustralia::Interpretation::ResolvePartyAffiliations::MAJOR_PARTY_FAMILIES
+                                 .map(&:first).uniq
+                                 .map { |family| Group::NAMES.send(family).federal }
+    federal_branch_group_ids = Group.where(name: federal_branch_group_names).pluck(:id)
+    legacy_group_ids = ([Group.federal_parliament.id] + federal_branch_group_ids).uniq
 
-    if duplicate_groups.empty?
-      puts 'No duplicate lobbyist people found.'
+    puts "DRY_RUN=#{dry_run}"
+
+    legacy_group_ids.each do |group_id|
+      group = Group.find(group_id)
+      membership_ids = Membership.where(group_id: group_id).pluck(:id)
+      position_count = Position.where(membership_id: membership_ids).count
+
+      puts "Group ##{group_id} (#{group.name}): #{membership_ids.size} memberships, #{position_count} positions#{dry_run ? ' (would delete)' : ''}"
+    end
+
+    if dry_run
+      puts 'Run with DRY_RUN=false to apply changes.'
       next
     end
 
-    puts "Found #{duplicate_groups.size} duplicate lobbyist name groups."
-    puts "DRY_RUN=#{dry_run}"
+    membership_ids = Membership.where(group_id: legacy_group_ids).pluck(:id)
+    positions_deleted = Position.where(membership_id: membership_ids).delete_all
+    memberships_deleted = Membership.where(id: membership_ids).delete_all
 
-    service.call(dry_run:, scope: Person.only_in_lobbyists)
+    puts "Deleted #{memberships_deleted} memberships and #{positions_deleted} positions across #{legacy_group_ids.size} groups."
+  end
 
-    puts 'Done.'
-    puts 'Run with DRY_RUN=false to apply changes.' if dry_run
+  desc 'Run OpenAustralia Interpretation (RecordMembershipsAndPositions) for every already-ingested politician'
+  task record_politician_memberships_and_positions: :environment do
+    # `where.not(open_australia_data: [])` is a Rails gotcha for jsonb columns: an empty array
+    # value is treated as an empty IN-list, so `.not` on it matches everyone (`WHERE 1=1`), not
+    # "not equal to []". Comparing against the serialized JSON string is what actually excludes
+    # the column's `[]` default.
+    people = Person.where('open_australia_data != ?', [].to_json)
+    puts "Found #{people.count} people with OpenAustralia data to interpret."
+
+    membership_count_before = Membership.count
+    position_count_before = Position.count
+    processed = 0
+    errors = []
+
+    people.find_each do |person|
+      OpenAustralia::Interpretation::RecordMembershipsAndPositions.call(person: person)
+      processed += 1
+    rescue StandardError => e
+      errors << "Person ##{person.id} (#{person.name}): #{e.message}"
+    end
+
+    puts "Processed #{processed} people."
+    puts "Memberships: #{Membership.count - membership_count_before} net new (#{Membership.count} total)."
+    puts "Positions: #{Position.count - position_count_before} net new (#{Position.count} total)."
+
+    if errors.any?
+      puts "#{errors.size} errors:"
+      errors.each { |error| puts "  #{error}" }
+    else
+      puts 'No errors.'
+    end
   end
 end

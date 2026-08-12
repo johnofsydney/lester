@@ -42,6 +42,11 @@ Metrics/ClassLength:
   Exclude:
     - 'app/mappings/*' # unavoidably large hashes
 
+Metrics/ModuleLength:
+  Exclude:
+    - 'app/mappings/*' # unavoidably large hashes
+    - 'app/models/concerns/node_methods.rb' # TODO: Break into smaller pieces if possible
+
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc', 'method_call']
   Exclude:
