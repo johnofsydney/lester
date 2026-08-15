@@ -42,22 +42,12 @@ class Person < ApplicationRecord
       .distinct
   }
 
-  # A lobbyist "only in lobbyists" if their entire membership footprint is the Lobbyists
-  # tag plus at most one other group (their employer). Anyone with more than that is left
-  # for manual review rather than auto-merged - deriving "legitimate lobbyist employer"
-  # from other lobbyists' own memberships would be circular (a person's own disqualifying
-  # membership could end up validating themselves).
-  scope :only_in_lobbyists, lambda {
-    where(id: Membership.person_in_lobbyists.select(:member_id))
-      .where.not(
-        id: Membership.where(member_type: 'Person', member_id: Membership.person_in_lobbyists.select(:member_id))
-                      .where.not(group_id: Group.lobbyists_tag.id)
-                      .group(:member_id)
-                      .having('COUNT(*) > 1')
-                      .select(:member_id)
-      )
-      .distinct
-  }
+  # Anyone tagged as a Lobbyist. Deliberately unrestricted by other memberships - unlike
+  # .only_in_charities, duplicate-merge compatibility here is judged pairwise (shared
+  # employer group, or no employer recorded on either side) at merge time by
+  # Maintenance::DedupeLobbyistPeopleTask, rather than by a blanket "no other
+  # memberships" rule up front.
+  scope :in_lobbyists, -> { where(id: Membership.person_in_lobbyists.select(:member_id)) }
 
   def nodes
     groups

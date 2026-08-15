@@ -25,12 +25,21 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
       expect(described_class.collection).to contain_exactly(dup1, dup2)
     end
 
-    it 'excludes people outside the only_in_lobbyists scope' do
+    it 'excludes people who are not tagged as a lobbyist' do
       outsider_dup = Person.create(name: 'Adam Benson')
       Membership.create(group: firm, member: outsider_dup)
       Membership.create(group: Group.create(name: 'Other Group'), member: outsider_dup)
 
       expect(described_class.collection).not_to include(outsider_dup)
+    end
+
+    it 'includes same-name lobbyists even when their employers are disjoint, for manual review' do
+      firm_b = Group.create(name: 'Firm B')
+      disjoint_dup = Person.create(name: 'Adam Benson')
+      Membership.create(group: lobbyists_tag, member: disjoint_dup)
+      Membership.create(group: firm_b, member: disjoint_dup)
+
+      expect(described_class.collection).to include(disjoint_dup)
     end
   end
 
@@ -74,7 +83,7 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
         expect { task.process(dup1) }.not_to(change { Person.exists?(unrelated.id) })
       end
 
-      it 'does not merge into a lower-id same-name person outside the lobbyist scope' do
+      it 'does not merge into a lower-id same-name person who is not tagged as a lobbyist' do
         outsider = Person.create!(name: 'Zeta Yardley')
         Membership.create!(group: firm, member: outsider)
         Membership.create!(group: Group.create!(name: 'Other Group'), member: outsider)
@@ -93,6 +102,39 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
         expect(Person.exists?(outsider.id)).to be(true)
         expect(Person.exists?(in_scope_keeper.id)).to be(true)
         expect(Person.exists?(in_scope_dup.id)).to be(false)
+      end
+
+      it 'does not merge same-name lobbyists whose employers are disjoint, leaving them for manual review' do
+        firm_b = Group.create!(name: 'Firm B')
+
+        keeper_only = Person.create!(name: 'Casey Nguyen')
+        Membership.create!(group: lobbyists_tag, member: keeper_only)
+        Membership.create!(group: firm, member: keeper_only)
+
+        disjoint_dup = Person.create!(name: 'Casey Nguyen')
+        Membership.create!(group: lobbyists_tag, member: disjoint_dup)
+        Membership.create!(group: firm_b, member: disjoint_dup)
+
+        task = described_class.new.tap { |t| t.dry_run = false }
+        task.process(disjoint_dup)
+
+        expect(Person.exists?(keeper_only.id)).to be(true)
+        expect(Person.exists?(disjoint_dup.id)).to be(true)
+      end
+
+      it 'merges a same-name lobbyist with no other memberships into any same-name lobbyist' do
+        keeper_only = Person.create!(name: 'Riley Chen')
+        Membership.create!(group: lobbyists_tag, member: keeper_only)
+        Membership.create!(group: firm, member: keeper_only)
+
+        bare_dup = Person.create!(name: 'Riley Chen')
+        Membership.create!(group: lobbyists_tag, member: bare_dup)
+
+        task = described_class.new.tap { |t| t.dry_run = false }
+        task.process(bare_dup)
+
+        expect(Person.exists?(keeper_only.id)).to be(true)
+        expect(Person.exists?(bare_dup.id)).to be(false)
       end
     end
   end

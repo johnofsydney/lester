@@ -73,21 +73,17 @@ RSpec.describe Person do
       allow(Group).to receive(:lobbyists_tag).and_return(lobbyists_tag)
     end
 
-    describe '.only_in_lobbyists' do
-      it 'returns lobbyists whose memberships are entirely within the lobbyist subgraph' do
-        expect(Person.only_in_lobbyists).to include(lobbyist1)
-      end
-
-      it 'excludes lobbyists with a membership outside the lobbyist subgraph' do
-        expect(Person.only_in_lobbyists).not_to include(lobbyist2)
+    describe '.in_lobbyists' do
+      it 'returns anyone tagged as a lobbyist, regardless of other memberships' do
+        expect(Person.in_lobbyists).to include(lobbyist1, lobbyist2)
       end
 
       it 'excludes people who are not themselves tagged as a lobbyist' do
-        expect(Person.only_in_lobbyists).not_to include(employee3, person4)
+        expect(Person.in_lobbyists).not_to include(employee3, person4)
       end
 
       it 'returns an active record relation' do
-        expect(Person.only_in_lobbyists).to be_a(ActiveRecord::Relation)
+        expect(Person.in_lobbyists).to be_a(ActiveRecord::Relation)
       end
     end
   end
