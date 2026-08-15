@@ -6,24 +6,31 @@ require 'sidekiq-scheduler'
 # the Commission's site.
 class Councils::Nsw::IngestElectionResultsJob
   include Sidekiq::Job
+  sidekiq_options queue: :low
 
-  INDEX_URL = 'https://pastvtr.elections.nsw.gov.au/LG2401/index'.freeze
   IMPORT_SPACING = 9.seconds
 
-  def perform
-    page = Councils::PageDownloader.call(INDEX_URL)
-    raise "Failed to download NSW council index: #{INDEX_URL}" if page.blank?
+  def perform(election_id = Councils::Nsw::Elections.latest[:id])
+    url = index_url(election_id)
+    page = Councils::PageDownloader.call(url)
+    raise "Failed to download NSW council index: #{url}" if page.blank?
 
     councils = Councils::Nsw::ResultsIndexParser.call(page)
-    raise "No councils found on NSW council index: #{INDEX_URL}" if councils.blank?
+    raise "No councils found on NSW council index: #{url}" if councils.blank?
 
     councils.each_with_index do |council, index|
-      Councils::Nsw::ImportCouncilResultRowJob.perform_in(index * IMPORT_SPACING, council[:name], council[:slug])
+      Councils::Nsw::ImportCouncilResultRowJob.perform_in(index * IMPORT_SPACING, council[:name], council[:slug], election_id)
     end
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Nsw::IngestElectionResultsJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: INDEX_URL, message: e.message)
+    ApiLog.create(endpoint: index_url(election_id), message: e.message)
     raise e
+  end
+
+  private
+
+  def index_url(election_id)
+    "https://pastvtr.elections.nsw.gov.au/#{election_id}/index"
   end
 end

@@ -2,9 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Councils::Nsw::IngestElectionResultsJob, type: :job do
   describe '#perform' do
+    let(:election_id) { Councils::Nsw::Elections.latest[:id] }
+    let(:index_url) { "https://pastvtr.elections.nsw.gov.au/#{election_id}/index" }
+
     before do
       allow(Councils::PageDownloader).to receive(:call)
-        .with(described_class::INDEX_URL)
+        .with(index_url)
         .and_return(index_page)
       allow(Councils::Nsw::ImportCouncilResultRowJob).to receive(:perform_in)
     end
@@ -16,11 +19,11 @@ RSpec.describe Councils::Nsw::IngestElectionResultsJob, type: :job do
         described_class.new.perform
 
         expect(Councils::Nsw::ImportCouncilResultRowJob).to have_received(:perform_in)
-          .with(kind_of(ActiveSupport::Duration), 'Albury City Council', 'albury')
+          .with(kind_of(ActiveSupport::Duration), 'Albury City Council', 'albury', election_id)
         expect(Councils::Nsw::ImportCouncilResultRowJob).to have_received(:perform_in)
-          .with(kind_of(ActiveSupport::Duration), 'Armidale Regional Council', 'armidale')
+          .with(kind_of(ActiveSupport::Duration), 'Armidale Regional Council', 'armidale', election_id)
         expect(Councils::Nsw::ImportCouncilResultRowJob).to have_received(:perform_in)
-          .with(kind_of(ActiveSupport::Duration), 'Federation Council', 'federation')
+          .with(kind_of(ActiveSupport::Duration), 'Federation Council', 'federation', election_id)
       end
     end
 
@@ -29,7 +32,7 @@ RSpec.describe Councils::Nsw::IngestElectionResultsJob, type: :job do
 
       it 'logs to ApiLog and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /Failed to download/)
-        expect(ApiLog.last.endpoint).to eq(described_class::INDEX_URL)
+        expect(ApiLog.last.endpoint).to eq(index_url)
         expect(Councils::Nsw::ImportCouncilResultRowJob).not_to have_received(:perform_in)
       end
     end
@@ -39,7 +42,7 @@ RSpec.describe Councils::Nsw::IngestElectionResultsJob, type: :job do
 
       it 'logs to ApiLog and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /No councils found/)
-        expect(ApiLog.last.endpoint).to eq(described_class::INDEX_URL)
+        expect(ApiLog.last.endpoint).to eq(index_url)
       end
     end
   end

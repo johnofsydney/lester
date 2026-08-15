@@ -4,8 +4,8 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
   describe '#perform' do
     let(:council_name) { 'Federation Council' }
     let(:council_slug) { 'federation' }
-    let(:results_url) { "https://pastvtr.elections.nsw.gov.au/#{described_class::ELECTION_ID}/#{council_slug}/results" }
-    let(:expected_url) { "https://pastvtr.elections.nsw.gov.au/#{described_class::ELECTION_ID}/#{council_slug}/councillor" }
+    let(:results_url) { "https://pastvtr.elections.nsw.gov.au/#{Councils::Nsw::Elections.latest[:id]}/#{council_slug}/results" }
+    let(:expected_url) { "https://pastvtr.elections.nsw.gov.au/#{Councils::Nsw::Elections.latest[:id]}/#{council_slug}/councillor" }
     let(:results_page) { Rails.root.join('spec/fixtures/councils/nsw/results_single.html').read }
 
     before do
@@ -101,6 +101,46 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
       end
     end
 
+    context 'when backfilling a non-latest election cycle' do
+      let(:backfill_election) { Councils::Nsw::Elections::ALL.first }
+      let(:results_url) { "https://pastvtr.elections.nsw.gov.au/#{backfill_election[:id]}/#{council_slug}/results" }
+      let(:expected_url) { "https://pastvtr.elections.nsw.gov.au/#{backfill_election[:id]}/#{council_slug}/councillor" }
+      let(:page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
+
+      it 'does not close out an existing open membership that is unrelated to this cycle\'s candidates' do
+        council = FactoryBot.create(:group, name: council_name)
+        unrelated_person = FactoryBot.create(:person, name: 'Unrelated Councillor')
+        unrelated_membership = Membership.create!(group: council, member: unrelated_person, start_date: Date.new(2016, 1, 1))
+
+        described_class.new.perform(council_name, council_slug, backfill_election[:id])
+
+        expect(unrelated_membership.reload.end_date).to be_nil
+      end
+
+      it 'closes out a backfilled candidate\'s new membership using the next cycle\'s election_date, since they have no open membership in the latest cycle' do
+        described_class.new.perform(council_name, council_slug, backfill_election[:id])
+
+        council = Group.find_by(name: council_name)
+        person = Person.find_by(name: 'derek schoen')
+        membership = Membership.find_by(group: council, member: person)
+
+        expect(membership.start_date).to eq(Date.new(2024, 10, 1))
+        expect(membership.end_date).to eq(Councils::Nsw::Elections.next(backfill_election[:id])[:election_date])
+      end
+
+      it 'leaves a candidate\'s existing open membership untouched when they continued into a later cycle' do
+        council = FactoryBot.create(:group, name: council_name)
+        continuing_person = FactoryBot.create(:person, name: 'Derek Schoen')
+        continuing_membership = Membership.create!(group: council, member: continuing_person, start_date: Date.new(2024, 10, 1))
+
+        described_class.new.perform(council_name, council_slug, backfill_election[:id])
+
+        expect(continuing_membership.reload.start_date).to eq(Date.new(2024, 10, 1))
+        expect(continuing_membership.reload.end_date).to be_nil
+        expect(Membership.where(group: council, member: continuing_person).count).to eq(1)
+      end
+    end
+
     context 'when the council has not yet declared results' do
       let(:page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_not_declared.html').read }
 
@@ -137,8 +177,8 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
       let(:council_slug) { 'blacktown' }
       let(:page) { nil } # no flat "councillor" page exists for a ward council
       let(:results_page) { Rails.root.join('spec/fixtures/councils/nsw/results_wards.html').read }
-      let(:ward_1_url) { "https://pastvtr.elections.nsw.gov.au/#{described_class::ELECTION_ID}/#{council_slug}/ward-1/councillor" }
-      let(:ward_2_url) { "https://pastvtr.elections.nsw.gov.au/#{described_class::ELECTION_ID}/#{council_slug}/ward-2/councillor" }
+      let(:ward_1_url) { "https://pastvtr.elections.nsw.gov.au/#{Councils::Nsw::Elections.latest[:id]}/#{council_slug}/ward-1/councillor" }
+      let(:ward_2_url) { "https://pastvtr.elections.nsw.gov.au/#{Councils::Nsw::Elections.latest[:id]}/#{council_slug}/ward-2/councillor" }
       let(:ward_1_page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
       let(:ward_2_page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
 

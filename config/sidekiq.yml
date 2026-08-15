@@ -62,3 +62,14 @@
     refresh_nodes_count_job:
       cron: '15 * * * *' # Every hour at 15 mins past the hour
       class: Cache::RefreshNodesCountJob
+    # Every month re-run NSW council election ingestion -- idempotent, catches any
+    # wards that hadn't declared yet on a previous run. Currently hardcoded to the
+    # LG2401 (2024) cycle -- see context/2026-08-12-council-ingestion-production-readiness-goal-3.md
+    ingest_nsw_council_election_results_job:
+      cron: '0 13 3 * *' # On the 3rd of every month, at 23:00 AEST
+      class: Councils::Nsw::IngestElectionResultsJob
+    # Every month re-run VIC council election ingestion -- same rationale as NSW above.
+    # Currently hardcoded to the 2024 cycle.
+    ingest_vic_council_election_results_job:
+      cron: '0 13 4 * *' # On the 4th of every month, at 23:00 AEST
+      class: Councils::Vic::IngestElectionResultsJob
