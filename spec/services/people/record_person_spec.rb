@@ -231,5 +231,44 @@ RSpec.describe People::RecordPerson, type: :service do
         end
       end
     end
+
+    describe 'trading_names fallback' do
+      let(:name) { 'John Smith' }
+
+      context 'when no person matches the name exactly but a trading name does' do
+        let!(:owner) { FactoryBot.create(:person, name: 'Jonathan Smith') }
+
+        before { TradingName.create!(owner:, name:) }
+
+        it 'returns the trading name owner instead of creating a new person' do
+          expect { described_class.call(name) }.not_to change(Person, :count)
+          expect(described_class.call(name)).to eq(owner)
+        end
+      end
+
+      context 'when a group (not a person) has a matching trading name' do
+        let!(:group_owner) { FactoryBot.create(:group, name: 'Some Group') }
+
+        before { TradingName.create!(owner: group_owner, name:) }
+
+        it 'does not treat the group trading name as a match and creates a new person' do
+          expect { described_class.call(name) }.to change(Person, :count).by(1)
+        end
+      end
+
+      context 'when multiple people have the same trading name' do
+        let!(:owner_a) { FactoryBot.create(:person, name: 'Jonathan Smith') }
+        let!(:owner_b) { FactoryBot.create(:person, name: 'Jon Smith') }
+
+        before do
+          TradingName.create!(owner: owner_a, name:)
+          TradingName.create!(owner: owner_b, name:)
+        end
+
+        it 'raises rather than guessing which person to use' do
+          expect { described_class.call(name) }.to raise_error(ArgumentError, /Multiple trading names exist/)
+        end
+      end
+    end
   end
 end

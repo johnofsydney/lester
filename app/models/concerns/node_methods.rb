@@ -209,14 +209,14 @@ module NodeMethods
     merge!(replacement_entity)
   end
 
-  def merge!(other_entity)
+  def merge!(other_entity, queue: nil)
     raise 'Cannot merge self into self' if other_entity == self
     raise 'Cannot merge different types' unless other_entity.class == self.class
     raise 'Cannot merge where both entities have business numbers' if both_have_business_number?(other_entity)
     raise 'Cannot merge where both entities have aec_id' if aec_id.present? && other_entity.aec_id.present?
     raise 'Cannot merge where both entities have acnc_id' if acnc_id.present? && other_entity.acnc_id.present?
 
-    Nodes::Merge.call(receiver_node: self, argument_node: other_entity)
+    Nodes::Merge.call(receiver_node: self, argument_node: other_entity, queue:)
   end
 
   def ==(other)

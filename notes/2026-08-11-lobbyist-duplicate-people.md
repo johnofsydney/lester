@@ -1,0 +1,112 @@
+# Lobbyist duplicate-people: investigation, idempotency fix, and cleanup plan
+
+## Context
+
+Issue #234 ("Lobbyists - duplicate people") and a direct visual inspection of the live Lobbyists tag group (`https://join-the-dots.info/groups/124509`) confirm the same thing: most people on that page are listed two or three times. This isn't a display bug — the duplicates resolve to genuinely different `Person` database rows with identical names (e.g. "ADAM Benson" → `/people/1174` **and** `/people/238365`). This inflates the group's stats (1635 "People in Group", 462 "Connected Groups"), damages trust in a civic-transparency tool whose whole value proposition is data integrity, and will keep getting worse every time the biannual lobbyist ingest job runs.
+
+This document covers: (1) root cause, (2) how to make lobbyist ingestion idempotent going forward, (3) how to safely merge the existing duplicates.
+
+**On where this doc lives:** the repo has an established (if informally documented) convention of putting design/investigation docs in `context/YYYY-MM-DD-slug.md` — there's no ticket system, so the date-prefixed filename is the ordering/discoverability mechanism. It isn't written down in `CLAUDE.md` or `docs/agents/domain.md` (which explicitly says to proceed silently if convention docs don't exist), but it's the real precedent set by other files in this directory.
+
+---
+
+## Root cause
+
+Two independent findings, confirmed via direct code reads and `git log`/`git show` (not just live-site inspection):
+
+### 1. Two separate ingestion events created two full generations of Person records
+
+- **Old generation** (Person IDs ~1174–1186, contiguous): commit `ae21b40e` ("made one csv for lobbyists and one ingester method", 2024-11-05) added `csv_data/lobbyists_2024-11-04.csv` (columns: `person,title,company`) as a one-off manual import, run via the commented-out `lib/tasks/add_records.rake` block (`FileIngestor.lobbyists_upload(file)` / `FileIngestor#general_upload` — the exact method that ran has since been refactored/renamed, but `general_upload`'s expected columns line up with this CSV's shape). This called `People::RecordPerson.call(row['person'])` — plain name, no external ID.
+- **New generation** (Person IDs ~238364–238376+, contiguous, same relative row order as the old range): the current automated pipeline, `AuLobbyists::CsvImporter#import_lobbyist_people` → `AuLobbyists::ImportLobbyistsPeopleRowJob`, downloading fresh from the AGD API on the biannual cron. This *also* calls `People::RecordPerson.call(person_name)` — plain name, no external ID.
+
+Both paths rely solely on `Person.find_by(name:)` for matching (no external identifier is registered for lobbyists — `ExternalIdentifier::SOURCES = %w[aec acnc open_australia]` — and unlike `Group`, `Person`'s plain-name path has no `trading_names` fallback). Two structurally separate code paths, months/years apart, pulling from two different data exports of the same real-world register, is exactly the kind of gap where whitespace/capitalization/punctuation drift between the two name strings causes every single row to miss the exact-match check on the second run and get created as a brand-new `Person` — explaining both the *volume* (near-total duplication across the group) and the *clean two-generation ID clustering* (each ingestion event created its own contiguous block in one run).
+
+**Not yet verified** (no production DB access at the time of writing): the exact byte-level difference between a duplicate pair's two `name` values. Before executing the merge (below), do a quick production console check: `Person.where(id: [1174, 238365]).pluck(:id, :name)` to confirm they really are byte-identical after normalization (they should be, given `UPPER(name)` grouping is used to find pairs) or spot a subtler mismatch.
+
+### 2. Two compounding structural weaknesses
+
+- **`people.name` uniqueness was deliberately removed.** Commit `7fe3023b` ("remove name constrains, validation and force downcasing of names", 2026-03-30) dropped `validates :name, uniqueness:` on `Person` *and* the DB unique index `index_people_on_lower_name`, in favour of `trading_names`-based disambiguation — introduced in the same window. **`Group` got the equivalent trading-name fallback in `Groups::RecordGroup`; `Person` never did.** So today, nothing in the write path or the DB stops two `Person` rows sharing a name.
+- **A live TOCTOU bug in the shared advisory-lock helper**, confirmed by reading `app/services/concerns/record/saving_helpers.rb`:
+  ```ruby
+  def save_inside_advisory_lock!(entity)
+    entity.class.transaction do
+      lock_id = Zlib.crc32(name).to_i
+      entity.class.connection.execute("SELECT pg_advisory_xact_lock(#{lock_id})")
+      entity.save!   # no re-check for an existing record with this name after acquiring the lock
+    end
+    entity
+  end
+  ```
+  `People::Record::RecordPersonWithName#call` never re-queries `Person.find_by(name:)` after acquiring the lock. Two concurrent Sidekiq jobs that both miss the outer `find_by` (in `People::RecordPerson#call`) will both proceed to create — the lock only serializes the writes, it doesn't prevent the second one. This affects every caller of `People::RecordPerson`'s plain-name branch (donations, general file ingest, lobbyists), not just lobbyists, and is a smaller contributing factor alongside the two-generation event above.
+
+Secondary/cosmetic factor: `Group#people` / `#nodes` (`app/models/group.rb`) has no `.distinct`, so even a single Person with duplicate `Membership` rows would double-count in listings — not the primary cause here (the IDs are genuinely distinct people rows), but worth knowing since the Membership fix below touches this same code path.
+
+---
+
+## Part 1 — Idempotent ingestion fix
+
+Ship independently, in this order:
+
+1. **Fix the TOCTOU bug** in `app/services/concerns/record/saving_helpers.rb` — re-check `entity.class.find_by(name: entity.name)` *inside* the lock, before `save!`, and return the existing record if found. Behavior-preserving for every existing caller except the race case (today a silent bug). Add a spec exercising two concurrent calls for the same name.
+
+2. **Add a `trading_names` fallback to `People::RecordPerson`'s plain-name branch** (`app/services/people/record_person.rb`), mirroring `Groups::RecordGroup`'s existing trading-name branches (find-by-trading-name, raise/log on ambiguous multi-match). Purely additive — only engages when the exact-name match already fails. This is the general-purpose resilience Person has been missing since the March 2026 uniqueness removal, and it means any alias recorded as a trading name during the cleanup below becomes a permanent future-proof alias.
+
+3. **Add `lobbyists` as a scoped external-identifier source**, using a synthetic ID since the AGD register has no native per-lobbyist ID:
+   ```ruby
+   lobbyist_id = Digest::SHA256.hexdigest("#{person_name.downcase.gsub(/\W/, '')}|#{lobbyist_abn}")
+   ```
+   Add `lobbyists` to `ExternalIdentifier::SOURCES`, add `lobbyist_id`/`lobbyist_id=` to `ExternalIdentifiable`, thread a `lobbyist_id:` kwarg through `People::RecordPerson` and `AuLobbyists::ImportLobbyistsPeopleRowJob`. **This must ship last, after Part 2's cleanup has run** — `Entity::RecordEntityWithExternalId`'s `find_sole_entity_by_name_and_append_external_id` bails out (and falls through to creating a *third* duplicate) if more than one Person still shares the name at attach-time. Verify via `Person.in_lobbyists.group(:name).having('count(*) > 1').count` returning 0 before enabling this — that includes manually merging any pairs the automated task left behind for review (see item 2 below), not just running the task itself.
+
+   **Deferred out of the maintenance-task PR entirely** (not just sequenced after it) — a PR review on that PR caught this step's `lobbyist_id:` wiring landing unconditionally in `import_lobbyists_people_row_job.rb`, ahead of Part 2's cleanup actually having run in production, reintroducing the exact "third duplicate" landmine described above. Pulled back out; ship as its own follow-up PR only after `Maintenance::DedupeLobbyistPeopleTask` has been run with `dry_run: false` against production and the verification query above returns ~0.
+
+4. **Make the two `Membership` check-then-act blocks atomic** in `AuLobbyists::ImportLobbyistsPeopleRowJob` — replace `Membership.find_by(...) || Membership.create!(...)` with `Membership.find_or_create_by!(...)`. No DB unique index here: `Membership` legitimately allows repeat tenures for the same (member, group) pair (see the "Wayne Rooney" comment in `app/models/membership.rb`), so atomicity via `find_or_create_by!` is the correct-strength fix, not a constraint.
+
+5. **(Optional/low priority)** a batch-level CSV hash watermark in `AuLobbyists::CsvImporter#import_lobbyist_people` to skip a no-op fan-out when the register hasn't changed since last run — an efficiency/observability nicety, not a correctness requirement, since steps 1–4 are what actually prevent duplicates.
+
+---
+
+## Part 2 — Merging the existing duplicates
+
+1. **Fix `People::DeleteDuplicates`** (`app/services/people/delete_duplicates.rb`), which today only merges the first+last ID in a duplicate-name group (silently skipping anything in the middle for 3+ duplicates). Rewrite to fold all duplicates into one deterministic keeper (lowest ID = oldest record), with a `dry_run:` flag defaulting to `true`, following the existing `lester:dedupe_transfers_natural_key` rake-task convention (log every merge, review, then re-run for real). Apply the identical fix to `Groups::DeleteDuplicates` (same bug shape), as a small bundled fix.
+
+2. **Scope the cleanup to lobbyists, and gate each merge on a compatibility check, not a blanket restriction.** Do not run an unscoped merge across all `Person` rows — a same-name collision outside the lobbyist context (e.g. two unrelated people who happen to share a name, one an AEC donor and one a lobbyist) must not get auto-merged. Add a `Person.in_lobbyists` scope (member of the Lobbyists tag group — no restriction on other memberships) as the candidate population. A first cut restricted this to people whose *entire* footprint was Lobbyists-tag-plus-at-most-one-other-group, mirroring `only_in_charities`, but that turned out too aggressive: a lobbyist who changed employer across a biannual register re-import, or who legitimately holds a second affiliation, would pick up a second non-Lobbyists membership and get silently excluded from cleanup entirely, with no list surfacing them. Since `Nodes::Merge` unions data additively (memberships, transfers, trading names) and hard-guards against conflicting external identifiers, the actual risk isn't the merge itself — it's merging two people who only coincidentally share a name. So the check happens pairwise, at merge time, instead of as an upfront population filter: two same-name lobbyists are merged if their non-Lobbyists-tag group sets overlap (a shared employer), or if either side has no other memberships recorded; a same-name pair with genuinely disjoint employers is left untouched for manual review. See `Maintenance::DedupeLobbyistPeopleTask#compatible_employers?`.
+
+3. **Add a Person-side admin merge action**, mirroring the existing `Admin::Groups#perform_merge` (`app/admin/groups.rb`, `app/views/admin/groups/merge_with.html.erb`) — needed both for the manual-review leftovers from step 2 and as a standing tool for future one-off duplicates a human spots (there's already `Admin::People::ExplodePerson` as the inverse operation; this fills the obvious gap).
+
+4. **Fix cache invalidation after merge.** `Nodes::Merge#handle_refresh_job` only rebuilds the cache of the merged-into Person, not any Group whose membership set changed as a side effect — so without this fix, `/groups/124509` would keep showing stale duplicates for up to a week even after the DB is clean. After each merge, enqueue `Cache::BuildGroupCachedDataJob` for the Lobbyists tag group and each affected employer Group.
+
+5. **Wrap it in a `maintenance_tasks` Task** (`app/tasks/maintenance/dedupe_lobbyist_people_task.rb`, `Maintenance::DedupeLobbyistPeopleTask`), run and monitored from the `/maintenance_tasks` admin UI rather than a rake task. `collection` is `Person.in_lobbyists`'s duplicate ids (excluding the lowest-id keeper per name) — this includes same-name pairs that won't actually merge. `process(duplicate)` re-derives the current keeper at call-time via the employer-overlap check above, so it's safe to reprocess the same person if the task is interrupted/resumed, and a duplicate with no compatible keeper is logged and left alone rather than merged. A `dry_run` Active Model attribute (default `true`, toggleable from the run-start form) replaces the rake task's `DRY_RUN` env var — run once with it on to eyeball the log output, then again with it off to apply.
+
+### Order of operations
+
+This is the operational runbook — the sequence to actually follow in production, as opposed to the code-shipping breakdown in Parts 1 and 2 above. Steps 1 and 4 are code-shipping PRs; steps 2 and 3 are actions a human takes against production once the corresponding PR has merged.
+
+1. **Removal of existing duplicates.** Merge this PR (TOCTOU fix, `trading_names` fallback, `find_or_create_by!` for Memberships, fixed `DeleteDuplicates`, `in_lobbyists` scope, cache rebuild, Person admin merge UI, `Maintenance::DedupeLobbyistPeopleTask`) — none of it wires up `lobbyist_id` yet. Then, from `/maintenance_tasks`, start a run of `Maintenance::DedupeLobbyistPeopleTask` with `dry_run` on, eyeball the log output, then start a fresh run with `dry_run` off. Check with `Person.in_lobbyists.group(:name).having('count(*) > 1').count`: any names still listed are pairs the employer-overlap check declined to auto-merge (genuinely disjoint employers) and need a manual look via the Person admin merge action from step 2 of Part 2. This is the fix users will actually see reflected on `/groups/124509`.
+
+2. **Applying the synthetic external ID to existing lobbyists.** Ship the follow-up PR adding the `lobbyists` external-identifier source (item 1.3) — gated on step 1's verification query returning 0 (including any manual merges of flagged pairs), since attaching an ID before dedup completes risks `Entity::RecordEntityWithExternalId` hitting >1 same-name match and creating a third duplicate. The ID doesn't need a dedicated backfill task: the very next ingestion run reprocesses the *entire* current AGD register (see below), so it attaches `lobbyist_id` to every already-registered lobbyist as a normal side effect. To apply it sooner than the next scheduled cron date, manually trigger `AuLobbyists::IngestLobbyists.call` (or enqueue `AuLobbyists::IngestLobbyistsJob`) right after this PR ships.
+
+3. **Scheduled ingestion of lobbyists from the AGD website.** `AuLobbyists::IngestLobbyistsJob` runs on cron `0 14 1 4,10 *` (April 1 and October 1) and, each time, downloads and reprocesses the *entire* current register — not a delta. This job does **not** need to be paused or coordinated around the cleanup window: it's safe to let it run at any point in the sequence above, including between steps 1 and 2, because the idempotency fixes from step 1 (TOCTOU-safe lock, `trading_names` fallback, atomic `Membership` upsert) already make it duplicate-safe on their own, independent of whether `lobbyist_id` has shipped yet.
+
+4. **Ensuring no new duplicates are created**, on an ongoing basis, via two independent, layered protections: (a) from step 1 onward, the idempotency fixes protect every ingestion run — TOCTOU-safe advisory lock plus `trading_names` fallback means the plain-name matching path can no longer silently create a duplicate; (b) from step 2 onward, exact-ID matching via `lobbyist_id` takes over from name matching entirely for lobbyists specifically, which is immune to the whitespace/capitalization/punctuation drift in the source register that caused the original duplication in the first place.
+
+---
+
+## Files changed
+
+- `app/services/concerns/record/saving_helpers.rb` — TOCTOU fix
+- `app/services/people/record_person.rb` — trading_names fallback (`lobbyist_id:` kwarg deferred to a follow-up PR, see item 1.3)
+- `app/models/external_identifier.rb`, `app/models/concerns/external_identifiable.rb` — `lobbyists` source (deferred, see item 1.3)
+- `app/sidekiq/au_lobbyists/import_lobbyists_people_row_job.rb` — `find_or_create_by!` (`lobbyist_id:` deferred, see item 1.3)
+- `app/services/au_lobbyists/csv_importer.rb` — optional watermark
+- `app/services/people/delete_duplicates.rb`, `app/services/groups/delete_duplicates.rb` — fix multi-duplicate bug
+- `app/models/person.rb` — `in_lobbyists` scope
+- `app/admin/people.rb`, `app/views/admin/people/merge_with.html.erb`, `config/routes.rb` — Person admin merge action
+- `app/tasks/maintenance/dedupe_lobbyist_people_task.rb` — `Maintenance::DedupeLobbyistPeopleTask` (run from `/maintenance_tasks`)
+- Specs alongside each changed service
+
+## Verification
+
+- `bundle exec rspec spec/services/people/ spec/services/concerns/ spec/services/au_lobbyists/` after each change.
+- Before enabling step 1.3, confirm via Rails console: `Person.in_lobbyists.group(:name).having('count(*) > 1').count` is empty (after the automated task run plus any manual merges of flagged pairs).
+- After Part 2's `Maintenance::DedupeLobbyistPeopleTask` run completes with `dry_run` off, reload `https://join-the-dots.info/groups/124509` and confirm no duplicate names remain in the People list, and that "People in Group" / "Connected Groups" counts have dropped correspondingly.
+- Spot-check a few individually merged people's pages (`/people/:id`) to confirm memberships, transfers, and trading names carried over correctly via `Nodes::Merge`.

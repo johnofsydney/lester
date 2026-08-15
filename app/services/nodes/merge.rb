@@ -1,11 +1,12 @@
 class Nodes::Merge
-  def self.call(receiver_node:, argument_node:)
-    new(receiver_node:, argument_node:).call
+  def self.call(receiver_node:, argument_node:, queue: nil)
+    new(receiver_node:, argument_node:, queue:).call
   end
 
-  def initialize(receiver_node:, argument_node:)
+  def initialize(receiver_node:, argument_node:, queue: nil)
     @receiver_node = receiver_node
     @argument_node = argument_node
+    @queue = queue
   end
 
   def call
@@ -121,6 +122,8 @@ class Nodes::Merge
 
   def handle_memberships_as_member
     Membership.where(member: argument_node).find_each do |membership|
+      affected_nodes << membership.group
+
       if Membership.exists?(group: membership.group, member: receiver_node)
         # Equivalent membership already exists on receiver_node, so just delete this one
         membership.destroy!
@@ -132,6 +135,8 @@ class Nodes::Merge
 
   def handle_memberships_as_group
     Membership.where(group: argument_node).find_each do |membership|
+      affected_nodes << membership.member
+
       if Membership.exists?(group: receiver_node, member: membership.member)
         # Equivalent membership already exists on receiver_node, so just delete this one
         membership.destroy!
@@ -141,17 +146,33 @@ class Nodes::Merge
     end
   end
 
+  # Groups/people whose own membership set changed as a side effect of this merge
+  # (eg the Lobbyists tag group, or a merged person's employer) - their cached_data
+  # would otherwise stay stale for up to a week.
+  def affected_nodes
+    @affected_nodes ||= Set.new
+  end
+
   def handle_refresh_job
-    if receiver_node.is_a?(Group)
-      Cache::BuildGroupCachedDataJob.perform_async(receiver_node.id)
-    elsif receiver_node.is_a?(Person)
-      Cache::BuildPersonCachedDataJob.perform_async(receiver_node.id)
-    end
+    enqueue_refresh_job(receiver_node)
+    affected_nodes.each { |node| enqueue_refresh_job(node) }
+  end
+
+  def enqueue_refresh_job(node)
+    job_class =
+      if node.is_a?(Group)
+        Cache::BuildGroupCachedDataJob
+      elsif node.is_a?(Person)
+        Cache::BuildPersonCachedDataJob
+      end
+    return unless job_class
+
+    queue ? job_class.set(queue:).perform_async(node.id) : job_class.perform_async(node.id)
   end
 
   def both_have_business_number?
     receiver_node.business_number.present? && argument_node.business_number.present?
   end
 
-  attr_reader :receiver_node, :argument_node
+  attr_reader :receiver_node, :argument_node, :queue
 end
