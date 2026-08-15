@@ -3,8 +3,7 @@ module Maintenance
     attribute :dry_run, :boolean, default: true
 
     def collection
-      duplicate_ids = People::DeleteDuplicates.new.duplicates(Person.only_in_lobbyists).flat_map { |_name, ids| ids.drop(1) }
-      Person.where(id: duplicate_ids).order(:id)
+      Person.where(id: People::DeleteDuplicates.new.duplicate_ids(Person.only_in_lobbyists)).order(:id)
     end
 
     delegate :count, to: :collection

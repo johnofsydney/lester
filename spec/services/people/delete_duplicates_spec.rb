@@ -54,4 +54,27 @@ RSpec.describe People::DeleteDuplicates do
       end
     end
   end
+
+  describe '#duplicate_ids' do
+    it 'returns every duplicate id except each name-group keeper' do
+      keeper = FactoryBot.create(:person, name: 'Adam Benson')
+      dup1 = FactoryBot.create(:person, name: 'Adam Benson')
+      dup2 = FactoryBot.create(:person, name: 'Adam Benson')
+      FactoryBot.create(:person, name: 'Solo Person')
+
+      expect(described_class.new.duplicate_ids).to contain_exactly(dup1.id, dup2.id)
+      expect(described_class.new.duplicate_ids).not_to include(keeper.id)
+    end
+
+    it 'respects the given scope' do
+      in_scope_keeper = FactoryBot.create(:person, name: 'Scoped Duplicate')
+      in_scope_dup = FactoryBot.create(:person, name: 'Scoped Duplicate')
+      FactoryBot.create(:person, name: 'Unscoped Duplicate')
+      FactoryBot.create(:person, name: 'Unscoped Duplicate')
+
+      scope = Person.where(id: [in_scope_keeper.id, in_scope_dup.id])
+
+      expect(described_class.new.duplicate_ids(scope)).to contain_exactly(in_scope_dup.id)
+    end
+  end
 end

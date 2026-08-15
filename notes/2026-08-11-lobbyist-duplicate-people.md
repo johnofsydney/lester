@@ -77,16 +77,17 @@ Ship independently, in this order:
 
 5. **Wrap it in a `maintenance_tasks` Task** (`app/tasks/maintenance/dedupe_lobbyist_people_task.rb`, `Maintenance::DedupeLobbyistPeopleTask`), run and monitored from the `/maintenance_tasks` admin UI rather than a rake task. `collection` is `Person.only_in_lobbyists`'s duplicate ids (excluding the lowest-id keeper per name); `process(duplicate)` re-derives the current keeper at call-time so it's safe to reprocess the same person if the task is interrupted/resumed. A `dry_run` Active Model attribute (default `true`, toggleable from the run-start form) replaces the rake task's `DRY_RUN` env var — run once with it on to eyeball the log output, then again with it off to apply.
 
-### Rollout order
+### Order of operations
 
-1. TOCTOU fix (1.1) — smallest, safest, ships alone first.
-2. Fixed `DeleteDuplicates` + lobbyist-only scope + `Maintenance::DedupeLobbyistPeopleTask` (2.1, 2.2, 2.5) — start a run from `/maintenance_tasks` with `dry_run` on, eyeball the log output, then start a fresh run with `dry_run` off. This is the fix users will actually see reflected on the live page.
-3. Cache rebuild (2.4) — bundled into the same rewrite; manually verify `/groups/124509` afterward.
-4. Person admin merge UI (2.3) — any time after step 2, for manual-review leftovers.
-5. `trading_names` fallback on `RecordPerson` (1.2) — after step 2, so it doesn't interact confusingly with still-duplicated data mid-cleanup.
-6. `find_or_create_by!` for Memberships (1.4) — independent, any time.
-7. `lobbyists` external-id source (1.3) — **last**, only after step 2's cleanup has actually run (see the `entities.many?` landmine above).
-8. CSV batch watermark (1.5) — optional, lowest priority.
+This is the operational runbook — the sequence to actually follow in production, as opposed to the code-shipping breakdown in Parts 1 and 2 above. Steps 1 and 4 are code-shipping PRs; steps 2 and 3 are actions a human takes against production once the corresponding PR has merged.
+
+1. **Removal of existing duplicates.** Merge this PR (TOCTOU fix, `trading_names` fallback, `find_or_create_by!` for Memberships, fixed `DeleteDuplicates`, lobbyist-only scope, cache rebuild, Person admin merge UI, `Maintenance::DedupeLobbyistPeopleTask`) — none of it wires up `lobbyist_id` yet. Then, from `/maintenance_tasks`, start a run of `Maintenance::DedupeLobbyistPeopleTask` with `dry_run` on, eyeball the log output, then start a fresh run with `dry_run` off. Verify with `Person.only_in_lobbyists.group(:name).having('count(*) > 1').count` → expect 0. This is the fix users will actually see reflected on `/groups/124509`.
+
+2. **Applying the synthetic external ID to existing lobbyists.** Ship the follow-up PR adding the `lobbyists` external-identifier source (item 1.3) — gated on step 1's verification query returning 0, since attaching an ID before dedup completes risks `Entity::RecordEntityWithExternalId` hitting >1 same-name match and creating a third duplicate. The ID doesn't need a dedicated backfill task: the very next ingestion run reprocesses the *entire* current AGD register (see below), so it attaches `lobbyist_id` to every already-registered lobbyist as a normal side effect. To apply it sooner than the next scheduled cron date, manually trigger `AuLobbyists::IngestLobbyists.call` (or enqueue `AuLobbyists::IngestLobbyistsJob`) right after this PR ships.
+
+3. **Scheduled ingestion of lobbyists from the AGD website.** `AuLobbyists::IngestLobbyistsJob` runs on cron `0 14 1 4,10 *` (April 1 and October 1) and, each time, downloads and reprocesses the *entire* current register — not a delta. This job does **not** need to be paused or coordinated around the cleanup window: it's safe to let it run at any point in the sequence above, including between steps 1 and 2, because the idempotency fixes from step 1 (TOCTOU-safe lock, `trading_names` fallback, atomic `Membership` upsert) already make it duplicate-safe on their own, independent of whether `lobbyist_id` has shipped yet.
+
+4. **Ensuring no new duplicates are created**, on an ongoing basis, via two independent, layered protections: (a) from step 1 onward, the idempotency fixes protect every ingestion run — TOCTOU-safe advisory lock plus `trading_names` fallback means the plain-name matching path can no longer silently create a duplicate; (b) from step 2 onward, exact-ID matching via `lobbyist_id` takes over from name matching entirely for lobbyists specifically, which is immune to the whitespace/capitalization/punctuation drift in the source register that caused the original duplication in the first place.
 
 ---
 

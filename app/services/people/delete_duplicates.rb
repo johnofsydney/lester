@@ -23,6 +23,12 @@ class People::DeleteDuplicates
     scope.group('UPPER(name)').having('COUNT(*) > 1').pluck('UPPER(name)', Arel.sql('ARRAY_AGG(id ORDER BY id)'))
   end
 
+  # The ids of every duplicate within `scope`, excluding each name-group's keeper
+  # (the lowest id, which `#call` would merge everything else into).
+  def duplicate_ids(scope = Person.all)
+    duplicates(scope).flat_map { |_name, ids| ids.drop(1) }
+  end
+
   # The lowest-id same-name Person within `scope`, i.e. the record `person` would be
   # folded into by `#call`. Scoping matters: without it, a duplicate could match a
   # same-name Person outside the intended subgraph (e.g. an unrelated AEC donor).

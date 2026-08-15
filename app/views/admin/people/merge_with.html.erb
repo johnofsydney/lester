@@ -2,7 +2,7 @@
 
 <h4><%= link_to "Return to main view", "/people/#{@current_person.id}" %></h4>
 
-<div style="margin-top: 20px; padding: 15px; border: 2px solid #28a745; background-color: #e8f5e9;">
+<div class="admin-merge-box admin-merge-box--search">
   <h3>Search for Person</h3>
   <%= form_with url: search_people_admin_person_path(@current_person), method: :post, local: true do |form| %>
     <div>
@@ -17,7 +17,7 @@
 </div>
 
 <% if @search_results.present? %>
-  <div style="margin-top: 20px; padding: 15px; border: 2px solid #6c757d; background-color: #f8f9fa;">
+  <div class="admin-merge-box admin-merge-box--results">
     <h3>Search Results</h3>
     <% @search_results.each do |result| %>
       <div style="padding: 10px; margin: 5px 0; border: 1px solid #dee2e6; background-color: white;">
@@ -32,7 +32,7 @@
   </div>
 <% end %>
 
-<div style="margin-top: 20px; padding: 15px; border: 2px solid #007bff; background-color: #e7f3ff;">
+<div class="admin-merge-box admin-merge-box--id-entry">
   <h3>Person ID</h3>
   <%= form_with url: preview_merge_admin_person_path(@current_person), method: :post, local: true do |form| %>
     <div>
@@ -47,7 +47,7 @@
 </div>
 
 <% if @merge_with_person.present? %>
-  <div style="margin-top: 20px; padding: 15px; border: 2px solid #ffcc00; background-color: #fff9e6;">
+  <div class="admin-merge-box admin-merge-box--confirmation">
     <h3>Confirmation</h3>
     <p><strong>Current Person:</strong> <%= @current_person.name %> (ID: <%= @current_person.id %>)</p>
     <p><strong>Will be merged into:</strong> <%= @merge_with_person.name %> (ID: <%= @merge_with_person.id %>)</p>

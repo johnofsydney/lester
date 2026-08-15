@@ -18,14 +18,9 @@ class People::RecordPerson
     if external_id
       Entity::RecordEntityWithExternalId.new(name:, identifier:, source:, id_attribute:, klass: 'Person').call
     elsif (person = Person.find_by(name:))
-        person
-    elsif TradingName.where(name:, owner_type: 'Person').count > 1
-        Rails.logger.info("Multiple trading names found for: #{name}")
-        NewRelic::Agent.notice_error("Cannot Disambiguate Trading name: #{name}")
-
-        raise ArgumentError, "Attempting to create Person with name: #{name}. Multiple trading names exist with the same name, cannot disambiguate"
-    elsif (tn = TradingName.find_by(name:, owner_type: 'Person'))
-        tn.owner
+      person
+    elsif (trading_name_owner = find_by_trading_name)
+      trading_name_owner
     else
       People::Record::RecordPersonWithName.new(name:).call
     end
@@ -34,6 +29,19 @@ class People::RecordPerson
   private
 
   attr_reader :source, :identifier, :id_attribute
+
+  def find_by_trading_name
+    matches = TradingName.where(name:, owner_type: 'Person')
+
+    if matches.count > 1
+      Rails.logger.info("Multiple trading names found for: #{name}")
+      NewRelic::Agent.notice_error("Cannot Disambiguate Trading name: #{name}")
+
+      raise ArgumentError, "Attempting to create Person with name: #{name}. Multiple trading names exist with the same name, cannot disambiguate"
+    end
+
+    matches.first&.owner
+  end
 
   def external_id
     return false unless aec_id.present? || acnc_id.present? || open_australia_id.present?
