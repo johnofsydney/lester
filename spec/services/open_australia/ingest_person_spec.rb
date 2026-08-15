@@ -84,8 +84,8 @@ RSpec.describe OpenAustralia::IngestPerson, type: :service do
     it 'merges terms from both houses into open_australia_data' do
       person = call
 
-      expect(person.open_australia_data.length).to eq(3)
-      expect(person.open_australia_data.map { |t| t['house'] }).to contain_exactly('1', '1', '2')
+      expect(person.open_australia_data.length).to eq(5)
+      expect(person.open_australia_data.map { |t| t['house'] }).to contain_exactly('1', '1', '1', '1', '2')
     end
 
     it 'orders the merged terms chronologically by entered_house' do

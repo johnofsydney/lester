@@ -1,5 +1,13 @@
 # Government Grants Ingestion — Design Document
 
+## Current status (2026-07-19)
+
+**Design only — no code written yet.** Nothing in `app/services`, `app/sidekiq`, or `db/schema.rb` implements any part of this pipeline (no `AuGrants` namespace, no `government_grants`/`government_grant` enum values). This is a full design pass, not a partially-built increment — treat every "Proposed" / "Planned" section below as not started.
+
+Before implementation starts, resolve open question #1 (VALUE cumulative-vs-per-grant, see below) — the doc already flags this as the critical blocker.
+
+---
+
 ## Goal
 
 Ingest Australian Commonwealth awarded grants from GrantConnect into the existing Transfer/IndividualTransaction model, mirroring the AusTender contracts pipeline.

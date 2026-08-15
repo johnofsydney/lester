@@ -42,6 +42,8 @@ This is called inside `to_h`, which is called by every cache build job. The TODO
 
 ## 3. Hardcoded tag IDs in `Group` — will silently break in any fresh DB
 
+**Note (2026-07-19): the "Fix" below conflicts with an explicit, standing project preference — hardcoded DB IDs over name lookups, because this DB is never recreated, IDs are stable, and names are editable (and thus a weaker key). Don't apply the name-lookup fix without raising it with the owner first; the fragility problem below (bad error message on a fresh/restored DB) may still be worth solving, but via a clearer error/guard on the existing ID lookup, not by switching to name-based lookup.**
+
 **File:** `app/models/group.rb`, lines 214-227
 
 ```ruby

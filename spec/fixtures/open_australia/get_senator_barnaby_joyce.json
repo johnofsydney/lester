@@ -1,21 +1,18 @@
 [
   {
-    "member_id": "1350",
+    "member_id": "100114",
     "house": "2",
     "first_name": "Barnaby",
     "last_name": "Joyce",
     "constituency": "Queensland",
-    "party": "The Nationals",
+    "party": "National Party",
     "entered_house": "2005-07-01",
     "left_house": "2013-08-08",
     "entered_reason": "general_election",
     "left_reason": "resigned",
     "person_id": "10350",
     "title": "",
-    "lastupdate": "2013-09-01 10:00:00",
-    "full_name": "Barnaby Joyce",
-    "name": "Barnaby Joyce",
-    "image": "/images/mpsL/10350.jpg",
-    "office": []
+    "lastupdate": "2013-10-11 03:49:21",
+    "full_name": "Barnaby Joyce"
   }
 ]
