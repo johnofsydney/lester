@@ -69,6 +69,17 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
         expect(Person.exists?(dup1.id)).to be(false)
       end
 
+      it 'enqueues the refresh job on the low priority queue rather than the default' do
+        setter = double('Sidekiq::Job::Setter') # rubocop:disable RSpec/VerifiedDoubles
+        allow(Cache::BuildPersonCachedDataJob).to receive(:set).with(queue: :low).and_return(setter)
+        allow(setter).to receive(:perform_async)
+
+        task = described_class.new.tap { |t| t.dry_run = false }
+        task.process(dup1)
+
+        expect(setter).to have_received(:perform_async).with(keeper.id)
+      end
+
       it 'is safe to process the same element twice' do
         task = described_class.new.tap { |t| t.dry_run = false }
         task.process(dup1)

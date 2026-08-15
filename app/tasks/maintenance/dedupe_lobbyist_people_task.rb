@@ -29,7 +29,7 @@ module Maintenance
         return
       end
 
-      keeper.merge!(duplicate)
+      keeper.merge!(duplicate, queue: :low)
     end
 
     private

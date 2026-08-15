@@ -33,6 +33,20 @@ RSpec.describe Nodes::Merge, type: :service do
       expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(group_a.id)
     end
 
+    context 'when a queue is given' do
+      subject(:merge) { described_class.call(receiver_node:, argument_node:, queue: :low) }
+
+      it 'enqueues the refresh job on that queue' do
+        setter = double('Sidekiq::Job::Setter') # rubocop:disable RSpec/VerifiedDoubles
+        allow(Cache::BuildGroupCachedDataJob).to receive(:set).with(queue: :low).and_return(setter)
+        allow(setter).to receive(:perform_async)
+
+        merge
+
+        expect(setter).to have_received(:perform_async).with(group_a.id)
+      end
+    end
+
     context 'when there are no transfers or memberships' do
       it 'performs merge without errors' do
         result = merge

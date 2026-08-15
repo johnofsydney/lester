@@ -1,11 +1,12 @@
 class Nodes::Merge
-  def self.call(receiver_node:, argument_node:)
-    new(receiver_node:, argument_node:).call
+  def self.call(receiver_node:, argument_node:, queue: nil)
+    new(receiver_node:, argument_node:, queue:).call
   end
 
-  def initialize(receiver_node:, argument_node:)
+  def initialize(receiver_node:, argument_node:, queue: nil)
     @receiver_node = receiver_node
     @argument_node = argument_node
+    @queue = queue
   end
 
   def call
@@ -158,16 +159,20 @@ class Nodes::Merge
   end
 
   def enqueue_refresh_job(node)
-    if node.is_a?(Group)
-      Cache::BuildGroupCachedDataJob.perform_async(node.id)
-    elsif node.is_a?(Person)
-      Cache::BuildPersonCachedDataJob.perform_async(node.id)
-    end
+    job_class =
+      if node.is_a?(Group)
+        Cache::BuildGroupCachedDataJob
+      elsif node.is_a?(Person)
+        Cache::BuildPersonCachedDataJob
+      end
+    return unless job_class
+
+    queue ? job_class.set(queue:).perform_async(node.id) : job_class.perform_async(node.id)
   end
 
   def both_have_business_number?
     receiver_node.business_number.present? && argument_node.business_number.present?
   end
 
-  attr_reader :receiver_node, :argument_node
+  attr_reader :receiver_node, :argument_node, :queue
 end
