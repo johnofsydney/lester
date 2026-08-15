@@ -49,4 +49,42 @@ RSpec.describe Person do
       end
     end
   end
+
+  describe 'lobbyist scopes' do
+    let!(:lobbyists_tag) { Group.create(name: 'Lobbyists') }
+    let!(:firm_a) { Group.create(name: 'Firm A') }
+    let!(:firm_b) { Group.create(name: 'Firm B') }
+    let!(:other_group) { Group.create(name: 'Other Group') }
+    let!(:lobbyist1) { Person.create(name: 'Lobbyist 1') } # only in the lobbyist subgraph (firm_a)
+    let!(:lobbyist2) { Person.create(name: 'Lobbyist 2') } # in firm_b and an unrelated group
+    let!(:employee3) { Person.create(name: 'Employee 3') } # in firm_a but not tagged as a lobbyist
+    let!(:person4) { Person.create(name: 'Person 4') } # in no groups
+
+    before do
+      Membership.create(group: lobbyists_tag, member: lobbyist1)
+      Membership.create(group: firm_a, member: lobbyist1)
+
+      Membership.create(group: lobbyists_tag, member: lobbyist2)
+      Membership.create(group: firm_b, member: lobbyist2)
+      Membership.create(group: other_group, member: lobbyist2)
+
+      Membership.create(group: firm_a, member: employee3)
+
+      allow(Group).to receive(:lobbyists_tag).and_return(lobbyists_tag)
+    end
+
+    describe '.in_lobbyists' do
+      it 'returns anyone tagged as a lobbyist, regardless of other memberships' do
+        expect(Person.in_lobbyists).to include(lobbyist1, lobbyist2)
+      end
+
+      it 'excludes people who are not themselves tagged as a lobbyist' do
+        expect(Person.in_lobbyists).not_to include(employee3, person4)
+      end
+
+      it 'returns an active record relation' do
+        expect(Person.in_lobbyists).to be_a(ActiveRecord::Relation)
+      end
+    end
+  end
 end

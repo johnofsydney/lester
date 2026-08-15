@@ -17,25 +17,22 @@ class AuLobbyists::ImportLobbyistsPeopleRowJob
     evidence = 'https://lobbyists.ag.gov.au/register'
 
     # membership of person with their employer
-    if (membership = Membership.find_by(member: person, group: lobbyist))
-      membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
-      membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
-    else
-      membership = Membership.create!(member: person, group: lobbyist, start_date:, evidence:)
-    end
-
-    if membership.positions.find { |p| p.title == title }
-      # do nothing
-    else
-      Position.create!(membership:, title:, start_date:)
-    end
+    membership = upsert_membership(member: person, group: lobbyist, start_date:, evidence:)
+    Position.create!(membership:, title:, start_date:) unless membership.positions.find { |p| p.title == title }
 
     # ensure lobbyist person is added to lobbyists tag
-    if (membership = Membership.find_by(member: person, group: lobbyists_tag))
-      membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
-      membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
-    else
-      Membership.create!(member: person, group: lobbyists_tag, start_date:, evidence:)
+    upsert_membership(member: person, group: lobbyists_tag, start_date:, evidence:)
+  end
+
+  private
+
+  def upsert_membership(member:, group:, start_date:, evidence:)
+    membership = Membership.find_or_create_by!(member:, group:) do |m|
+      m.start_date = start_date
+      m.evidence = evidence
     end
+    membership.update!(start_date:) if start_date.present? && membership.start_date.blank?
+    membership.update!(evidence:) if evidence.present? && membership.evidence.blank?
+    membership
   end
 end

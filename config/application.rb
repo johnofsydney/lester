@@ -22,6 +22,12 @@ module Sunshine01
   class Application < Rails::Application
     config.load_defaults 8.0
 
+    # Without this, ActiveJob defaults to the in-memory `:async` adapter, which loses
+    # queued/in-progress jobs on every process restart. Sidekiq is already the app's
+    # persistent job backend (see config/initializers/sidekiq.rb); this just makes
+    # ActiveJob-based jobs (e.g. the maintenance_tasks gem's TaskJob) use it too.
+    config.active_job.queue_adapter = :sidekiq
+
     config.eager_load_paths += %W[
       #{root}/app/views
       #{root}/app/views/components

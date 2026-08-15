@@ -48,5 +48,31 @@
 	#title_bar h2 {
 		font-size: 1.5rem;
 	}
+
+	.admin-merge-box {
+		margin-top: 20px;
+		padding: 15px;
+		border: 2px solid;
+
+		&--search {
+			border-color: #28a745;
+			background-color: #e8f5e9;
+		}
+
+		&--results {
+			border-color: #6c757d;
+			background-color: #f8f9fa;
+		}
+
+		&--id-entry {
+			border-color: #007bff;
+			background-color: #e7f3ff;
+		}
+
+		&--confirmation {
+			border-color: #ffcc00;
+			background-color: #fff9e6;
+		}
+	}
 }
 

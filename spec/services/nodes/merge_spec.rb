@@ -33,6 +33,20 @@ RSpec.describe Nodes::Merge, type: :service do
       expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(group_a.id)
     end
 
+    context 'when a queue is given' do
+      subject(:merge) { described_class.call(receiver_node:, argument_node:, queue: :low) }
+
+      it 'enqueues the refresh job on that queue' do
+        setter = double('Sidekiq::Job::Setter') # rubocop:disable RSpec/VerifiedDoubles
+        allow(Cache::BuildGroupCachedDataJob).to receive(:set).with(queue: :low).and_return(setter)
+        allow(setter).to receive(:perform_async)
+
+        merge
+
+        expect(setter).to have_received(:perform_async).with(group_a.id)
+      end
+    end
+
     context 'when there are no transfers or memberships' do
       it 'performs merge without errors' do
         result = merge
@@ -146,6 +160,26 @@ RSpec.describe Nodes::Merge, type: :service do
         expect(Membership.where(group: group_a).count).to eq(2)
         expect(Membership).to exist(group: group_a, member: person_a)
         expect(Membership).to exist(group: group_a, member: person_b)
+      end
+
+      it 'refreshes the cache of the person merged in as a side effect' do
+        merge
+        expect(Cache::BuildPersonCachedDataJob).to have_received(:perform_async).with(person_a.id)
+        expect(Cache::BuildPersonCachedDataJob).to have_received(:perform_async).with(person_b.id)
+      end
+    end
+
+    context 'when a person is merged and has group memberships' do
+      let(:receiver_node) { person_a }
+      let(:argument_node) { person_b }
+
+      before do
+        Membership.create!(group: group_a, member: person_b)
+      end
+
+      it 'refreshes the cache of the affected employer group' do
+        merge
+        expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(group_a.id)
       end
     end
 

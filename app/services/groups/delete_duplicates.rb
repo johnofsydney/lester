@@ -1,23 +1,25 @@
 class Groups::DeleteDuplicates
-  def self.call
-    new.call
+  def self.call(dry_run: true)
+    new.call(dry_run:)
   end
 
-  def call
+  def call(dry_run: true)
     duplicates.each do |name, ids|
-      Rails.logger.info("Deleting one duplicate group with name: #{name} from ids: #{ids.join(', ')}")
+      keeper_id, *duplicate_ids = ids
 
-      p1_id = ids.first
-      p2_id = ids.last
+      Rails.logger.info(
+        "#{dry_run ? '[DRY RUN] Would merge' : 'Merging'} #{duplicate_ids.size} duplicate " \
+        "groups named '#{name}' into ##{keeper_id} (ids: #{duplicate_ids.join(', ')})"
+      )
 
-      p1 = Group.find(p1_id)
-      p2 = Group.find(p2_id)
+      next if dry_run
 
-      p1.merge!(p2)
+      keeper = Group.find(keeper_id)
+      duplicate_ids.each { |duplicate_id| keeper.merge!(Group.find(duplicate_id)) }
     end
   end
 
   def duplicates
-    Group.group('UPPER(name)').having('COUNT(*) > 1').pluck('UPPER(name)', 'ARRAY_AGG(id)')
+    Group.group('UPPER(name)').having('COUNT(*) > 1').pluck('UPPER(name)', Arel.sql('ARRAY_AGG(id ORDER BY id)'))
   end
 end

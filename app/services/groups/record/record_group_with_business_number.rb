@@ -25,7 +25,7 @@ class Groups::Record::RecordGroupWithBusinessNumber
   def create_group_with_business_number
     group = Group.new(name:, business_number:)
 
-    save_inside_advisory_lock!(group)
+    group = save_inside_advisory_lock!(group) { Group.find_by(business_number:) }
 
     Abn::UpdateGroupNamesJob.perform_async(group.id) if group.id.present?
 
