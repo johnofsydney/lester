@@ -47,22 +47,30 @@ Suggest running this against the ~226 already-ingested current politicians as th
 
 ---
 
-## Increment 3 — Scheduling & Automation (not started)
+## Increment 3 — Scheduling & Automation
 
 Increments 1 and 2 are both proven correct but only run when a human triggers them from a console/rake task. Two related gaps remain before the pipeline can keep itself current without manual intervention:
 
 1. **Discover new politicians** — nothing re-fetches the current roster after the initial run, so anyone who enters Parliament later (by-election, new term) never gets ingested.
 2. **Refresh already-known current politicians** — nothing re-fetches Raw Terms for politicians already in our DB, so an exit (retirement, lost seat, disqualification) or a mid-term party switch that OpenAustralia later records is never picked up, and their Parliament/Federal Branch Membership never closes.
 
-Design notes for whoever picks this up:
+Confirmed with the project owner: this ships as two PRs, and the two needs collapse into one scheduled job by the end of 3b (not two separate jobs).
 
-- **Neither need requires new Ingest logic.** `OpenAustralia::IngestPerson.call(person_id:)` already fetches a person's *entire* history unconditionally, regardless of why that `person_id` was selected — re-running it for someone who has since left Parliament correctly returns their updated `left_house` date (per the API reference below), and re-running `RecordMembershipsAndPositions` afterward is already proven idempotent *and* correctly closes a previously-open period when new data closes it (see the "re-running after new data closes a previously-open period" spec case). So need #2 has no new detection logic to write — it's "re-ingest, then re-interpret," full stop.
-- **The one real gap is that nothing chains Interpretation onto Ingest.** PR #232 deliberately left `RecordMembershipsAndPositions` triggered only by its own rake task, since the first real run needed a human watching it. A *scheduled* job has no human watching each run, so this increment should decide where that chaining happens (most likely: inside `OpenAustralia::IngestPersonJob#perform`, right after a successful `IngestPerson.call`) and make new/refreshed Memberships and Positions happen automatically.
-- **"Politicians our database considers current" (need #2) already has a precise definition, no new schema needed**: people with an open (`end_date: nil`) `Membership` in `Group.federal_parliament` (id 877).
-- **Needs #1 and #2 may collapse into one scheduled job.** Union the OpenAustralia live roster's `person_id`s (need #1's source, via `OpenAustralia::IngestCurrentPoliticians`'s existing dedup logic) with the `person_id`s of everyone our DB currently considers a sitting politician (need #2's source), dedupe, enqueue one ingest-then-interpret pass per person. The two sources diverge exactly where it matters — someone who dropped off the live roster is only in the DB-side set (that's the "they left" case), a fresh by-election winner is only in the live-roster-side set (that's the "new politician" case) — so the union covers both needs with one job. Worth validating this simplification with the project owner rather than assuming it.
-- **`OpenAustralia::IngestCurrentPoliticians` is a plain service, not a Sidekiq job** — it'll need a thin `Sidekiq::Job` wrapper (same gap `IngestPersonJob` already fills for the per-person case) to be schedulable via `config/sidekiq.yml`'s `:scheduler: :schedule:` block. Follow the existing pattern there (e.g. `AuLobbyists::IngestLobbyistsJob`'s cron entry).
-- **Cadence is a judgment call, not a technical constraint.** Existing scheduled jobs range from daily (AusTender contracts) to yearly (ACNC). Parliamentary composition doesn't change often outside elections/by-elections — weekly or monthly is plausible, but confirm with the project owner rather than assuming.
-- **Consider shipping this as two small PRs** (chain Interpretation onto `IngestPersonJob` + wire up the roster-discovery job first; extend to the DB-driven refresh second) rather than one big one, matching this project's preference for small increments — but confirm sequencing with the project owner first.
+### Increment 3a — done, shipped via [#238](https://github.com/johnofsydney/lester/pull/238)
+
+- `OpenAustralia::IngestPersonJob#perform` now runs `OpenAustralia::Interpretation::RecordMembershipsAndPositions.call(person:)` right after a successful `IngestPerson.call` (guarded by `if person`, since `IngestPerson` returns `nil` when OpenAustralia has no terms for that `person_id`) — this is the "chain Interpretation onto Ingest" gap PR #232 deliberately left open.
+- New `OpenAustralia::IngestCurrentPoliticiansJob` — thin `Sidekiq::Job` wrapper around the existing `OpenAustralia::IngestCurrentPoliticians` service, following `AuLobbyists::IngestLobbyistsJob`'s rescue/log/re-raise pattern.
+- Scheduled monthly in `config/sidekiq.yml`, cron `'0 14 4 * *'` — lands at 00:00 AEST on the 5th (cron day is 4, not 5, because hour 14 UTC rolls into the next AEST day per the file's own conversion table; this is commented inline both in the cron entry and in `IngestPersonJob`). Day 5 was chosen to avoid the 1st/2nd, where ACNC/lobbyist/AusTender-backfill jobs already run.
+- This alone covers need #1 (new politicians via the roster) and *most* of need #2 (anyone still on the roster gets refreshed) — but not the case where someone drops off the roster entirely. That's 3b.
+
+### Increment 3b — not started
+
+Add the DB-side half of need #2: politicians who've left the roster entirely (retirement, lost seat, disqualification) and so are never re-ingested by 3a's roster-only job, even though our DB still shows them as current.
+
+- **"Politicians our database considers current" already has a precise definition, no new schema needed**: people with an open (`end_date: nil`) `Membership` in `Group.federal_parliament` (id 877).
+- **Extend the existing scheduled job, don't add a second one.** Union the OpenAustralia live roster's `person_id`s (already fetched by `OpenAustralia::IngestCurrentPoliticians`) with the `person_id`s of everyone our DB currently considers a sitting politician (the query above), dedupe, enqueue one `IngestPersonJob` per person. The two sources diverge exactly where it matters — someone who dropped off the live roster is only in the DB-side set (the "they left" case), a fresh by-election winner is only in the roster-side set (the "new politician" case) — so the union covers both needs with the one job 3a already scheduled monthly.
+- No new Ingest or Interpretation logic needed — `IngestPersonJob` (as of 3a) already does ingest-then-interpret for whatever `person_id` it's given, regardless of which side of the union surfaced it.
+- Likely lands as a change to `OpenAustralia::IngestCurrentPoliticians` (or the job wrapping it) to also pull the DB-side `person_id` set before enqueuing, plus a spec covering the "dropped off the roster" case specifically.
 
 ---
 
