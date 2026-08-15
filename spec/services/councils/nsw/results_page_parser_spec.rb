@@ -34,4 +34,24 @@ RSpec.describe Councils::Nsw::ResultsPageParser, type: :service do
       expect(call_service).to eq([])
     end
   end
+
+  context 'when the council was under administration for this cycle' do
+    let(:page) { Rails.root.join('spec/fixtures/councils/nsw/results_in_administration.html').read }
+
+    it 'returns an empty array' do
+      expect(call_service).to eq([])
+    end
+  end
+
+  describe '.in_administration?' do
+    it 'is true for a council-in-administration page' do
+      page = Rails.root.join('spec/fixtures/councils/nsw/results_in_administration.html').read
+      expect(described_class.in_administration?(page)).to be(true)
+    end
+
+    it 'is false for a normal results page' do
+      page = Rails.root.join('spec/fixtures/councils/nsw/results_single.html').read
+      expect(described_class.in_administration?(page)).to be(false)
+    end
+  end
 end

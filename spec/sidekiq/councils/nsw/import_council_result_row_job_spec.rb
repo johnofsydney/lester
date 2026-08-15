@@ -141,6 +141,19 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
       end
     end
 
+    context 'when the council was under administration for this cycle (no election held)' do
+      let(:results_page) { Rails.root.join('spec/fixtures/councils/nsw/results_in_administration.html').read }
+      let(:page) { nil } # no councillor contest page exists for a council in administration
+
+      it 'does not raise, and does not create the council Group, any Person, or any Membership' do
+        expect { described_class.new.perform(council_name, council_slug) }.not_to raise_error
+
+        expect(Group.find_by(name: council_name)).to be_nil
+        expect(Person.count).to eq(0)
+        expect(Membership.count).to eq(0)
+      end
+    end
+
     context 'when the council has not yet declared results' do
       let(:page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_not_declared.html').read }
 

@@ -7,8 +7,17 @@
 class Councils::Nsw::ResultsPageParser
   COUNCILLOR_LINK_HREF = %r{\A/LG\d+/[a-z0-9-]+/(.+)\z}
 
+  # A council placed in administration for that cycle holds no election at all -- confirmed
+  # live for Balranald's LG2101 (2021) results page, which has no contest table, just this
+  # prose instead. Distinct from a genuinely unexpected/empty page, which should still raise.
+  IN_ADMINISTRATION_REGEX = /has been placed in administration/i
+
   def self.call(page)
     new(page).call
+  end
+
+  def self.in_administration?(page)
+    page.to_s.match?(IN_ADMINISTRATION_REGEX)
   end
 
   def initialize(page)
