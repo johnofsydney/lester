@@ -65,6 +65,8 @@
     # Every month, re-fetch the current OpenAustralia roster and re-ingest each politician
     # (each per-person ingest also re-runs Interpretation, so this both discovers new
     # politicians and refreshes/closes terms for already-known ones still on the roster)
+    # Cron day is 4, not 5: per the conversion table above, hour 14 UTC rolls into the
+    # *next* AEST day, so day 4 is what actually lands at 00:00 AEST on the 5th.
     ingest_current_politicians_job:
       cron: '0 14 4 * *' # Every month on the 5th at midnight AEST
       class: OpenAustralia::IngestCurrentPoliticiansJob
