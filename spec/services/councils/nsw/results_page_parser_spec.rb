@@ -43,15 +43,28 @@ RSpec.describe Councils::Nsw::ResultsPageParser, type: :service do
     end
   end
 
-  describe '.in_administration?' do
+  context 'when the council runs its own election, outside NSWEC' do
+    let(:page) { Rails.root.join('spec/fixtures/councils/nsw/results_council_run_election.html').read }
+
+    it 'returns an empty array' do
+      expect(call_service).to eq([])
+    end
+  end
+
+  describe '.no_contest_expected?' do
     it 'is true for a council-in-administration page' do
       page = Rails.root.join('spec/fixtures/councils/nsw/results_in_administration.html').read
-      expect(described_class.in_administration?(page)).to be(true)
+      expect(described_class.no_contest_expected?(page)).to be(true)
+    end
+
+    it 'is true for a council-run-election page' do
+      page = Rails.root.join('spec/fixtures/councils/nsw/results_council_run_election.html').read
+      expect(described_class.no_contest_expected?(page)).to be(true)
     end
 
     it 'is false for a normal results page' do
       page = Rails.root.join('spec/fixtures/councils/nsw/results_single.html').read
-      expect(described_class.in_administration?(page)).to be(false)
+      expect(described_class.no_contest_expected?(page)).to be(false)
     end
   end
 end

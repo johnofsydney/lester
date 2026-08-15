@@ -26,7 +26,7 @@ class Councils::Nsw::ImportCouncilResultRowJob
     raise "Failed to download NSW council results page: #{url}" if results_page.blank?
 
     councillor_paths = Councils::Nsw::ResultsPageParser.call(results_page)
-    return if councillor_paths.blank? && Councils::Nsw::ResultsPageParser.in_administration?(results_page) # council was under administration this cycle -- no election held, nothing to record
+    return if councillor_paths.blank? && Councils::Nsw::ResultsPageParser.no_contest_expected?(results_page) # council was under administration, or runs its own election -- nothing to record
     raise "No councillor contest found on NSW council results page: #{url}" if councillor_paths.blank?
 
     contests = councillor_paths.filter_map do |path|
