@@ -66,5 +66,5 @@
     # (each per-person ingest also re-runs Interpretation, so this both discovers new
     # politicians and refreshes/closes terms for already-known ones still on the roster)
     ingest_current_politicians_job:
-      cron: '0 14 5 * *' # Every month on the 5th at midnight AEST
+      cron: '0 14 4 * *' # Every month on the 5th at midnight AEST
       class: OpenAustralia::IngestCurrentPoliticiansJob
