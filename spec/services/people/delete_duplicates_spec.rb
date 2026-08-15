@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe People::DeleteDuplicates do
+  before { allow(Cache::BuildPersonCachedDataJob).to receive(:perform_async) }
+
   describe '#call' do
     context 'with three people sharing a name' do
       let!(:keeper) { FactoryBot.create(:person, name: 'Adam Benson') }

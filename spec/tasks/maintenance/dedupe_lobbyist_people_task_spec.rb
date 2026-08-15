@@ -16,6 +16,8 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
     end
 
     allow(Group).to receive(:lobbyists_tag).and_return(lobbyists_tag)
+    allow(Cache::BuildPersonCachedDataJob).to receive(:perform_async)
+    allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async)
   end
 
   describe '#collection' do
@@ -70,6 +72,27 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
         task = described_class.new.tap { |t| t.dry_run = false }
 
         expect { task.process(dup1) }.not_to(change { Person.exists?(unrelated.id) })
+      end
+
+      it 'does not merge into a lower-id same-name person outside the lobbyist scope' do
+        outsider = Person.create!(name: 'Zeta Yardley')
+        Membership.create!(group: firm, member: outsider)
+        Membership.create!(group: Group.create!(name: 'Other Group'), member: outsider)
+
+        in_scope_keeper = Person.create!(name: 'Zeta Yardley')
+        in_scope_dup = Person.create!(name: 'Zeta Yardley')
+        [in_scope_keeper, in_scope_dup].each do |person|
+          Membership.create!(group: lobbyists_tag, member: person)
+          Membership.create!(group: firm, member: person)
+        end
+        expect(outsider.id).to be < in_scope_keeper.id
+
+        task = described_class.new.tap { |t| t.dry_run = false }
+        task.process(in_scope_dup)
+
+        expect(Person.exists?(outsider.id)).to be(true)
+        expect(Person.exists?(in_scope_keeper.id)).to be(true)
+        expect(Person.exists?(in_scope_dup.id)).to be(false)
       end
     end
   end

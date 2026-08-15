@@ -22,4 +22,11 @@ class People::DeleteDuplicates
   def duplicates(scope = Person.all)
     scope.group('UPPER(name)').having('COUNT(*) > 1').pluck('UPPER(name)', Arel.sql('ARRAY_AGG(id ORDER BY id)'))
   end
+
+  # The lowest-id same-name Person within `scope`, i.e. the record `person` would be
+  # folded into by `#call`. Scoping matters: without it, a duplicate could match a
+  # same-name Person outside the intended subgraph (e.g. an unrelated AEC donor).
+  def keeper_for(person, scope: Person.all)
+    scope.where('UPPER(name) = ?', person.name.upcase).where.not(id: person.id).order(:id).first
+  end
 end

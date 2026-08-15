@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe Groups::DeleteDuplicates do
+  before { allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async) }
+
   describe '#call' do
     context 'with three groups sharing a name' do
       let!(:keeper) { FactoryBot.create(:group, name: 'Acme Foundation') }

@@ -29,14 +29,6 @@ module ExternalIdentifiable
     set_external_identifier('open_australia', value)
   end
 
-  def lobbyist_id
-    external_identifier_value('lobbyists')
-  end
-
-  def lobbyist_id=(value)
-    set_external_identifier('lobbyists', value)
-  end
-
   private
 
   def external_identifier_value(source)

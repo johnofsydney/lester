@@ -53,9 +53,11 @@ Ship independently, in this order:
 
 3. **Add `lobbyists` as a scoped external-identifier source**, using a synthetic ID since the AGD register has no native per-lobbyist ID:
    ```ruby
-   lobbyist_id = Digest::SHA256.hexdigest("#{cleaned_name}|#{lobbyist_abn}")
+   lobbyist_id = Digest::SHA256.hexdigest("#{person_name.downcase.gsub(/\W/, '')}|#{lobbyist_abn}")
    ```
    Add `lobbyists` to `ExternalIdentifier::SOURCES`, add `lobbyist_id`/`lobbyist_id=` to `ExternalIdentifiable`, thread a `lobbyist_id:` kwarg through `People::RecordPerson` and `AuLobbyists::ImportLobbyistsPeopleRowJob`. **This must ship last, after Part 2's cleanup has run** — `Entity::RecordEntityWithExternalId`'s `find_sole_entity_by_name_and_append_external_id` bails out (and falls through to creating a *third* duplicate) if more than one Person still shares the name at attach-time. Verify via `Person.only_in_lobbyists.group(:name).having('count(*) > 1').count` returning ~0 before enabling this.
+
+   **Deferred out of the maintenance-task PR entirely** (not just sequenced after it) — a PR review on that PR caught this step's `lobbyist_id:` wiring landing unconditionally in `import_lobbyists_people_row_job.rb`, ahead of Part 2's cleanup actually having run in production, reintroducing the exact "third duplicate" landmine described above. Pulled back out; ship as its own follow-up PR only after `Maintenance::DedupeLobbyistPeopleTask` has been run with `dry_run: false` against production and the verification query above returns ~0.
 
 4. **Make the two `Membership` check-then-act blocks atomic** in `AuLobbyists::ImportLobbyistsPeopleRowJob` — replace `Membership.find_by(...) || Membership.create!(...)` with `Membership.find_or_create_by!(...)`. No DB unique index here: `Membership` legitimately allows repeat tenures for the same (member, group) pair (see the "Wayne Rooney" comment in `app/models/membership.rb`), so atomicity via `find_or_create_by!` is the correct-strength fix, not a constraint.
 
@@ -91,9 +93,9 @@ Ship independently, in this order:
 ## Files changed
 
 - `app/services/concerns/record/saving_helpers.rb` — TOCTOU fix
-- `app/services/people/record_person.rb` — trading_names fallback, `lobbyist_id:` kwarg
-- `app/models/external_identifier.rb`, `app/models/concerns/external_identifiable.rb` — `lobbyists` source
-- `app/sidekiq/au_lobbyists/import_lobbyists_people_row_job.rb` — `find_or_create_by!`, pass `lobbyist_id:`
+- `app/services/people/record_person.rb` — trading_names fallback (`lobbyist_id:` kwarg deferred to a follow-up PR, see item 1.3)
+- `app/models/external_identifier.rb`, `app/models/concerns/external_identifiable.rb` — `lobbyists` source (deferred, see item 1.3)
+- `app/sidekiq/au_lobbyists/import_lobbyists_people_row_job.rb` — `find_or_create_by!` (`lobbyist_id:` deferred, see item 1.3)
 - `app/services/au_lobbyists/csv_importer.rb` — optional watermark
 - `app/services/people/delete_duplicates.rb`, `app/services/groups/delete_duplicates.rb` — fix multi-duplicate bug
 - `app/models/person.rb` — `only_in_lobbyists` scope

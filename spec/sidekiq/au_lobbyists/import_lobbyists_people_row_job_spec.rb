@@ -3,7 +3,10 @@ require 'rails_helper'
 RSpec.describe AuLobbyists::ImportLobbyistsPeopleRowJob do
   let!(:lobbyists_tag) { Group.create!(name: 'Lobbyists') }
 
-  before { allow(Group).to receive(:lobbyists_tag).and_return(lobbyists_tag) }
+  before do
+    allow(Group).to receive(:lobbyists_tag).and_return(lobbyists_tag)
+    allow(Abn::UpdateGroupNamesJob).to receive(:perform_async)
+  end
 
   def perform(person_name: 'Jane Doe', title: 'Consultant', start_date: '2024-01-01',
               lobbyist_name: 'Acme Lobbying', lobbyist_abn: '12345678901')

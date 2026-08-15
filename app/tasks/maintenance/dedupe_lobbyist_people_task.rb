@@ -16,10 +16,7 @@ module Maintenance
     def process(duplicate)
       return unless Person.exists?(duplicate.id)
 
-      keeper = Person.where('UPPER(name) = ?', duplicate.name.upcase)
-                     .where.not(id: duplicate.id)
-                     .order(:id)
-                     .first
+      keeper = People::DeleteDuplicates.new.keeper_for(duplicate, scope: Person.only_in_lobbyists)
       return unless keeper
 
       if dry_run
