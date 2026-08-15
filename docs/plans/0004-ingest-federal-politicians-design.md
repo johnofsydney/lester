@@ -1,5 +1,7 @@
 # Ingest Federal Politicians — Design & Roadmap
 
+**Status:** In Progress
+
 ## Current status (2026-07-19)
 
 **Increment 1 — Ingest — is done and verified on staging.** See [issue #209](https://github.com/johnofsydney/lester/issues/209) (parent spec), [#210](https://github.com/johnofsydney/lester/issues/210) and [#211](https://github.com/johnofsydney/lester/issues/211) (implementation tickets).

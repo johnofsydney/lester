@@ -1,5 +1,7 @@
 # API + Separate React Frontend — Design Plan
 
+**Status:** Proposed
+
 ## What we're doing
 
 Expose the Rails monolith as a JSON API so that one or more React frontends — each in their own repo, at their own URL, for their own audience — can consume the same data. The existing HTML app (join-the-dots.info) keeps working unchanged.

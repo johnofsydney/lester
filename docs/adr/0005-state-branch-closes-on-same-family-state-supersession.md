@@ -1,5 +1,7 @@
 # State Branch and Minor Party Membership close on supersession by the next distinct affiliation
 
+**Status:** Accepted
+
 ADR-0002 leaves State Branch and Minor Party Membership permanently open-ended because OpenAustralia gives no signal for when someone actually joined or left a party branch — that remains true for the *start* of a membership. This ADR adds an exception on the *end* side: whenever a person's next distinct party affiliation is observed, whatever came before it is closed, dated to when that next affiliation begins. Concretely, all of the following close a State Branch or Minor Party Membership:
 
 - **A different state within the same major party family** — e.g. Barnaby Joyce: Nationals Senator for Queensland, then — after a gap — Nationals MP for New England, NSW. The Queensland State Branch Membership closes the day the NSW one begins.

@@ -1,5 +1,7 @@
 # Person Disambiguation Design
 
+**Status:** Implemented
+
 ## Current status (2026-07-19): Done — historical design record
 
 Both phases below are implemented and covered by specs. This doc is kept as a record of the reasoning, not as a live plan — treat it as superseded rather than in-progress.

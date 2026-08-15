@@ -146,9 +146,8 @@ comment, a rework) or a stated preference on record — not as a preemptive styl
 ## Docs
 
 One root, `docs/`, with five purpose-specific subfolders. See
-`docs/plans/0001-docs-folder-taxonomy.md` for the full reasoning behind this split. This taxonomy
-governs *new* docs going forward — `notes/`'s existing files haven't been migrated yet, that's a
-separate follow-up task.
+`docs/plans/0001-docs-folder-taxonomy.md` for the full reasoning behind this split. `notes/`'s
+former contents have been migrated into this structure.
 
 - **`docs/adr/`** — a settled decision record: short, past-tense, "we chose X over Y because Z."
   `NNNN-slug.md`, sequential number. Carries a `Status:` line (`Accepted` / `Superseded by

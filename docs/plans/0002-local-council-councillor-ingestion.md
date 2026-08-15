@@ -1,5 +1,7 @@
 # Local Council Councillor Ingestion (NSW + VIC Electoral Commissions)
 
+**Status:** Proposed
+
 ## Context
 
 Join the Dots currently maps federal/state political affiliations, donations, and government contracts, but has no coverage of local government. The original framing was "scrape every council's own website" (elected members and staff), inferring departures from who drops off the page — but that runs into two hard problems: there's no master list of ~530 councils to start from, and a scraped "current roster" page never tells you *when* someone left, only that they're gone now.

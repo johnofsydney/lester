@@ -66,14 +66,17 @@ issue is now the record.
 
 ## Scope
 
-This taxonomy governs *new* docs going forward. `notes/`'s existing nine files are not yet
-migrated — that's a separate, later task. Nothing in `notes/` or `docs/` was moved, renamed, or
-deleted as part of adopting this taxonomy.
+At the time this taxonomy was adopted, it governed *new* docs only — `notes/`'s existing nine
+files were deliberately left untouched, migration being a separate, later task. That migration has
+since happened (see Follow-up below); this section is kept as a record of the original,
+narrower scope.
 
 ## Follow-up (not covered by this doc)
 
-- Migrate `notes/`'s existing files into the new `docs/` subfolders.
-- Correct `CLAUDE.md`'s issue-tracker section, which currently overstates GitHub issues as *the*
-  tracker — the repo-file backlog (`docs/backlog/`) is actually the primary future-work
-  mechanism.
-- Retrofit `Status:` fields onto the 5 existing ADRs once each is confirmed to still be accurate.
+All three items below have since been completed:
+
+- ~~Migrate `notes/`'s existing files into the new `docs/` subfolders.~~ Done — `notes/` no longer
+  exists; its 9 files are now under `docs/plans/`, `docs/runbooks/`, and split into `docs/backlog/`.
+- ~~Correct `CLAUDE.md`'s issue-tracker section, which currently overstates GitHub issues as *the*
+  tracker.~~ Done — it now describes `docs/backlog/` as primary, GitHub issues as secondary.
+- ~~Retrofit `Status:` fields onto the 5 existing ADRs.~~ Done — all 5 now carry `Status: Accepted`.
