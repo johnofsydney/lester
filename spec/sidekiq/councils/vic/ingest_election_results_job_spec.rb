@@ -2,9 +2,12 @@ require 'rails_helper'
 
 RSpec.describe Councils::Vic::IngestElectionResultsJob, type: :job do
   describe '#perform' do
+    let(:election_year) { Councils::Vic::Elections.latest[:year] }
+    let(:index_url) { "https://www.vec.vic.gov.au/results/council-election-results/#{election_year}-council-election-results" }
+
     before do
       allow(Councils::PageDownloader).to receive(:call)
-        .with(described_class::INDEX_URL)
+        .with(index_url)
         .and_return(index_page)
       allow(Councils::Vic::ImportCouncilResultRowJob).to receive(:perform_in)
     end
@@ -16,11 +19,11 @@ RSpec.describe Councils::Vic::IngestElectionResultsJob, type: :job do
         described_class.new.perform
 
         expect(Councils::Vic::ImportCouncilResultRowJob).to have_received(:perform_in)
-          .with(kind_of(ActiveSupport::Duration), 'Alpine Shire Council', 'alpine-shire-council')
+          .with(kind_of(ActiveSupport::Duration), 'Alpine Shire Council', 'alpine-shire-council', election_year)
         expect(Councils::Vic::ImportCouncilResultRowJob).to have_received(:perform_in)
-          .with(kind_of(ActiveSupport::Duration), 'Ararat Rural City Council', 'ararat-rural-city-council')
+          .with(kind_of(ActiveSupport::Duration), 'Ararat Rural City Council', 'ararat-rural-city-council', election_year)
         expect(Councils::Vic::ImportCouncilResultRowJob).to have_received(:perform_in)
-          .with(kind_of(ActiveSupport::Duration), 'Ballarat City Council', 'ballarat-city-council')
+          .with(kind_of(ActiveSupport::Duration), 'Ballarat City Council', 'ballarat-city-council', election_year)
       end
     end
 
@@ -29,7 +32,7 @@ RSpec.describe Councils::Vic::IngestElectionResultsJob, type: :job do
 
       it 'logs to ApiLog and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /Failed to download/)
-        expect(ApiLog.last.endpoint).to eq(described_class::INDEX_URL)
+        expect(ApiLog.last.endpoint).to eq(index_url)
         expect(Councils::Vic::ImportCouncilResultRowJob).not_to have_received(:perform_in)
       end
     end
@@ -39,7 +42,7 @@ RSpec.describe Councils::Vic::IngestElectionResultsJob, type: :job do
 
       it 'logs to ApiLog and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /No councils found/)
-        expect(ApiLog.last.endpoint).to eq(described_class::INDEX_URL)
+        expect(ApiLog.last.endpoint).to eq(index_url)
       end
     end
   end

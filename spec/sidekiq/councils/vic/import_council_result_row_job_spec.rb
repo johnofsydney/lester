@@ -4,7 +4,7 @@ RSpec.describe Councils::Vic::ImportCouncilResultRowJob, type: :job do
   describe '#perform' do
     let(:council_name) { 'Alpine Shire Council' }
     let(:council_slug) { 'alpine-shire-council' }
-    let(:expected_url) { "https://www.vec.vic.gov.au/results/council-election-results/#{described_class::ELECTION_YEAR}-council-election-results/#{council_slug}" }
+    let(:expected_url) { "https://www.vec.vic.gov.au/results/council-election-results/#{Councils::Vic::Elections.latest[:year]}-council-election-results/#{council_slug}" }
 
     before do
       # Group.government_department_tag is hardcoded to a production-only ID (app/models/group.rb) --
@@ -76,6 +76,54 @@ RSpec.describe Councils::Vic::ImportCouncilResultRowJob, type: :job do
           expect(returning_membership.reload.evidence).to eq('original evidence')
           expect(returning_membership.reload.end_date).to be_nil
         end
+      end
+    end
+
+    context 'when backfilling a non-latest election cycle' do
+      let(:backfill_election) { Councils::Vic::Elections::ALL.first }
+      let(:expected_url) { "https://www.vec.vic.gov.au/results/council-election-results/#{backfill_election[:year]}-council-election-results/#{council_slug}" }
+      let(:page) { Rails.root.join('spec/fixtures/councils/vic/councillor_declared.html').read }
+
+      it 'overrides the page\'s unreliable "Last updated" date with the cycle\'s known election_date' do
+        described_class.new.perform(council_name, council_slug, backfill_election[:year])
+
+        council = Group.find_by(name: council_name)
+        person = Person.find_by(name: 'sarah nicholas')
+        membership = Membership.find_by(group: council, member: person)
+
+        expect(membership.start_date).to eq(backfill_election[:election_date])
+      end
+
+      it 'does not close out an existing open membership that is unrelated to this cycle\'s candidates' do
+        council = FactoryBot.create(:group, name: council_name)
+        unrelated_person = FactoryBot.create(:person, name: 'Unrelated Councillor')
+        unrelated_membership = Membership.create!(group: council, member: unrelated_person, start_date: Date.new(2016, 1, 1))
+
+        described_class.new.perform(council_name, council_slug, backfill_election[:year])
+
+        expect(unrelated_membership.reload.end_date).to be_nil
+      end
+
+      it 'closes out a backfilled candidate\'s new membership using the next cycle\'s election_date, since they have no open membership in the latest cycle' do
+        described_class.new.perform(council_name, council_slug, backfill_election[:year])
+
+        council = Group.find_by(name: council_name)
+        person = Person.find_by(name: 'sarah nicholas')
+        membership = Membership.find_by(group: council, member: person)
+
+        expect(membership.end_date).to eq(Councils::Vic::Elections.next(backfill_election[:year])[:election_date])
+      end
+
+      it 'leaves a candidate\'s existing open membership untouched when they continued into a later cycle' do
+        council = FactoryBot.create(:group, name: council_name)
+        continuing_person = FactoryBot.create(:person, name: 'Sarah Nicholas')
+        continuing_membership = Membership.create!(group: council, member: continuing_person, start_date: Date.new(2024, 11, 22))
+
+        described_class.new.perform(council_name, council_slug, backfill_election[:year])
+
+        expect(continuing_membership.reload.start_date).to eq(Date.new(2024, 11, 22))
+        expect(continuing_membership.reload.end_date).to be_nil
+        expect(Membership.where(group: council, member: continuing_person).count).to eq(1)
       end
     end
 
