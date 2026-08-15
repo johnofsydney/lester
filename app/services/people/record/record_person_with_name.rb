@@ -10,8 +10,8 @@ class People::Record::RecordPersonWithName
   def call
     person = Person.new(name:)
 
-    save_inside_advisory_lock!(person)
-    add_to_trading_names(person)
+    person = save_inside_advisory_lock!(person) { Person.find_by(name:) }
+    add_to_trading_names(person) if person.previously_new_record?
 
     person
   end

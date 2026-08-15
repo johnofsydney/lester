@@ -6,10 +6,12 @@ module Record::SavingHelpers
       lock_id = Zlib.crc32(name).to_i
       entity.class.connection.execute("SELECT pg_advisory_xact_lock(#{lock_id})")
 
-      entity.save!
-    end
+      existing = yield if block_given?
+      next existing if existing
 
-    entity
+      entity.save!
+      entity
+    end
   end
 
   def add_to_trading_names(entity)

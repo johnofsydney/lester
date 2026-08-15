@@ -42,6 +42,13 @@ class Person < ApplicationRecord
       .distinct
   }
 
+  # Anyone tagged as a Lobbyist. Deliberately unrestricted by other memberships - unlike
+  # .only_in_charities, duplicate-merge compatibility here is judged pairwise (shared
+  # employer group, or no employer recorded on either side) at merge time by
+  # Maintenance::DedupeLobbyistPeopleTask, rather than by a blanket "no other
+  # memberships" rule up front.
+  scope :in_lobbyists, -> { where(id: Membership.person_in_lobbyists.select(:member_id)) }
+
   def nodes
     groups
   end
