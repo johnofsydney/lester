@@ -69,3 +69,18 @@ _Avoid_: Treating it like a Federal Branch Membership — closing it when a parl
 **Office Holder**:
 A chamber role — Speaker, Deputy-Speaker, President, or Deputy-President — held in addition to, not instead of, ordinary party membership and electorate representation. OpenAustralia represents this by putting the office's name (e.g. `"Speaker"`) in a Term's `party` field, which means that Term's real party is not stated directly. Interpretation infers it: an Office Holder Term takes the party of the most recent preceding Term that has a real party (skipping past any other Office Holder Terms in between), and continues that Party Branch Membership through the Office Holder period rather than treating it as a gap.
 _Avoid_: Presiding Officer (only accurately describes Speaker/President, not their deputies)
+
+### Lobbyist ingest
+
+**In Lobbyists**:
+A Person who holds a Membership in the Lobbyists Tag group. `Person.in_lobbyists` is the candidate population for lobbyist-duplicate cleanup — it carries no restriction on a Person's other memberships, unlike the narrower `only_in_*` scopes used elsewhere (e.g. `only_in_charities`). A lobbyist who changes employer, or who holds a second affiliation, is still In Lobbyists.
+
+**Keeper**:
+Of a same-name duplicate pair discovered among Persons In Lobbyists, the one merged into — the lowest-ID (oldest) record. The other is merged away via `Nodes::Merge` and ceases to exist as a separate row.
+
+**Compatible employers**:
+The pairwise check that decides whether a same-name duplicate pair is safe to auto-merge: their non-Lobbyists-Tag Group sets overlap (a shared employer), or either side has no other memberships at all. A same-name pair with genuinely disjoint employers is left for manual review rather than merged — same name alone is not sufficient evidence they're the same person.
+_Avoid_: Assuming same-name Persons In Lobbyists are always duplicates — a coincidental name match with disjoint employers is a distinct, deliberately-unmerged case.
+
+**Lobbyist ID** (planned, not yet implemented):
+A synthetic external identifier for a lobbyist, derived from their name and employer ABN, intended to replace name-matching as the primary way ingestion recognises an already-known lobbyist. Deferred until the existing duplicate population (see Keeper / Compatible employers) has been cleaned up — attaching it before then risks creating a third duplicate for any name still shared by more than one Person. Not yet a member of `ExternalIdentifier::SOURCES`.
