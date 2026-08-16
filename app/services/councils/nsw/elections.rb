@@ -14,14 +14,4 @@ module Councils::Nsw::Elections
   def self.latest
     ALL.last
   end
-
-  def self.latest?(election_id)
-    election_id == latest[:id]
-  end
-
-  # The next known cycle after the given one, or nil if it's the latest.
-  def self.next(election_id)
-    index = ALL.index { |election| election[:id] == election_id }
-    ALL[index + 1]
-  end
 end

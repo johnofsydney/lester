@@ -2,13 +2,11 @@
 # oldest first. Older cycles (2017, 2016, 2012, 2008) live under a structurally different legacy
 # site and aren't covered here.
 #
-# election_date is the state-wide polling day. For the latest cycle it's only used to close out
-# departed backfill members from an earlier cycle; the page's own "Last updated" date is trusted
-# for that cycle's declared_date instead, since it's genuinely accurate while the election is
-# current. For any non-latest cycle, election_date is used to override declared_date outright --
-# archived pages' "Last updated" stamp reflects whenever VEC last regenerated the page (confirmed
-# live: 2020 council pages all report "Last updated: 22 November 2024"), not the real 2020
-# declaration date, so it can't be trusted.
+# election_date is the state-wide polling day, used to override declared_date for any non-latest
+# cycle -- archived pages' "Last updated" stamp reflects whenever VEC last regenerated the page
+# (confirmed live: 2020 council pages all report "Last updated: 22 November 2024"), not the real
+# 2020 declaration date, so it can't be trusted. The latest cycle's page-level date is trusted
+# as-is instead, since it's genuinely accurate while the election is current.
 module Councils::Vic::Elections
   ALL = [
     { year: 2020, election_date: Date.new(2020, 10, 24) },
@@ -25,11 +23,5 @@ module Councils::Vic::Elections
 
   def self.latest?(election_year)
     election_year == latest[:year]
-  end
-
-  # The next known cycle after the given one, or nil if it's the latest.
-  def self.next(election_year)
-    index = ALL.index { |election| election[:year] == election_year }
-    ALL[index + 1]
   end
 end

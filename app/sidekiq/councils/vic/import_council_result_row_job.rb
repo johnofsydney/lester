@@ -1,7 +1,11 @@
 # Imports one VIC council's declared councillor election results for a given election cycle
-# (Councils::Vic::Elections): records each elected candidate as a Person with a Membership, and
-# closes out anyone previously on the council who wasn't returned. Unlike NSW, VEC results pages
-# don't show party affiliation, so no party membership is recorded here.
+# (Councils::Vic::Elections): records each elected candidate as a Person with an undated
+# Councillor Membership, and appends a raw, dated observation to Person#council_election_data for
+# a future interpretation pass to derive real tenure dates from (see
+# People::RecordCouncilElectionData -- VEC's declared date only tells us "elected in this cycle,"
+# not a councillor's true start, so no date is recorded on the Membership/Position itself).
+# Unlike NSW, VEC results pages don't show party affiliation, so no party membership is recorded
+# here.
 class Councils::Vic::ImportCouncilResultRowJob
   include Sidekiq::Job
 
@@ -12,6 +16,7 @@ class Councils::Vic::ImportCouncilResultRowJob
     retry: 3
   )
 
+  STATE = :vic
   LOCAL_COUNCILS_TAG_NAME = 'Australian Local Councils'.freeze
 
   def perform(council_name, council_slug, election_year = Councils::Vic::Elections.latest[:year])
@@ -29,14 +34,9 @@ class Councils::Vic::ImportCouncilResultRowJob
 
     evidence = "Victorian Electoral Commission #{election[:year]} council election declared results (#{url})"
     declared_date = declared_date(election:, result:)
-    recorded_people = result[:candidates].filter_map do |candidate|
-      record_candidate(council:, candidate:, declared_date:, evidence:, election:)
+    result[:candidates].each do |candidate|
+      record_candidate(council:, council_slug:, candidate:, declared_date:, evidence:, election:, source_url: url)
     end
-
-    # Guard against closing everyone out if the page parsed but yielded no usable candidates --
-    # that's more likely a parsing problem than an empty council. Only the latest known election
-    # cycle performs close-outs -- see backfill_end_date for why a backfilled cycle must not.
-    close_departed_members(council:, recorded_people:, declared_date:) if recorded_people.present? && Councils::Vic::Elections.latest?(election[:year])
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Vic::ImportCouncilResultRowJob(#{council_name}): #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
@@ -56,42 +56,26 @@ class Councils::Vic::ImportCouncilResultRowJob
     election[:election_date]
   end
 
-  def record_candidate(council:, candidate:, declared_date:, evidence:, election:)
+  def record_candidate(council:, council_slug:, candidate:, declared_date:, evidence:, election:, source_url:)
     person = People::RecordPerson.call(candidate[:name])
-    return nil if person.nil?
+    return if person.nil?
 
-    Group::RecordRow.new(
-      group: council, person:, title: 'Councillor', evidence:, start_date: declared_date,
-      end_date: backfill_end_date(council:, person:, election:)
-    ).call
-
-    person
+    Group::RecordRow.new(group: council, person:, title: 'Councillor', evidence:).call
+    record_election_data(person:, council:, council_slug:, declared_date:, election:, source_url:)
   end
 
-  # A backfilled (non-latest) cycle must close out anyone who didn't continue serving into a
-  # later cycle -- otherwise they'd be left with a dangling open membership forever, since only
-  # the latest cycle's run performs close-outs. If the person already has an open membership on
-  # this council, they continued serving (their real end_date, if any, belongs to a later cycle's
-  # own close-out) -- leave it alone. Relies on the latest cycle already having been imported, so
-  # "no open membership yet" reliably means they didn't continue.
-  def backfill_end_date(council:, person:, election:)
-    return nil if Councils::Vic::Elections.latest?(election[:year])
-    return nil if Membership.exists?(group: council, member: person, end_date: nil)
-
-    Councils::Vic::Elections.next(election[:year])[:election_date]
-  end
-
-  def close_departed_members(council:, recorded_people:, declared_date:)
-    still_serving_ids = recorded_people.map(&:id)
-
-    Membership.where(group: council, member_type: 'Person', end_date: nil)
-              .where.not(member_id: still_serving_ids)
-              .find_each do |membership|
-      membership.update!(
-        end_date: declared_date,
-        evidence: [membership.evidence, 'Not returned in the VIC council election'].compact.join(' / ')
-      )
-      membership.positions.each { |position| position.update!(end_date: declared_date) }
-    end
+  def record_election_data(person:, council:, council_slug:, declared_date:, election:, source_url:)
+    People::RecordCouncilElectionData.call(
+      person:,
+      observation: {
+        state: STATE,
+        council_name: council.name,
+        council_slug:,
+        cycle: election[:year],
+        declared_date:,
+        party: nil,
+        source_url:
+      }
+    )
   end
 end

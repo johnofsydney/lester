@@ -1,9 +1,8 @@
 # Backfills the one prior VIC council election cycle confirmed reachable in the current
 # vec.vic.gov.au site structure (see
-# context/2026-08-15-council-ingestion-production-readiness-goal-2.md for the live research
-# behind that scope decision). Run once, from /maintenance_tasks, after the latest cycle is
-# already imported -- Councils::Vic::ImportCouncilResultRowJob relies on that to correctly tell
-# a councillor who continued serving apart from one who didn't return after this older term.
+# notes/2026-08-15-council-ingestion-production-readiness-goal-2.md for the live research behind
+# that scope decision). Run from /maintenance_tasks -- order relative to the current-cycle import
+# no longer matters (see notes/2026-08-17-council-dates-deferred-to-interpretation.md).
 module Maintenance
   class BackfillVicCouncilElectionResultsTask < MaintenanceTasks::Task
     BACKFILL_ELECTION_YEAR = Councils::Vic::Elections::ALL.first[:year]

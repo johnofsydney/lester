@@ -44,9 +44,8 @@ class Group::RecordRow
   end
 
   # A Position's dates always mirror its Membership's -- kept in sync here rather than only set
-  # once at creation, so a Position for a councillor closed out later (see
-  # Councils::{Nsw,Vic}::ImportCouncilResultRowJob#close_departed_members, which updates
-  # Membership#end_date directly) doesn't go stale relative to it.
+  # once at creation, so a Position doesn't go stale relative to its Membership if some other
+  # caller updates the Membership's dates directly later (bypassing RecordRow).
   def apply_position(membership)
     position = Position.find_or_create_by(membership:, title:)
     position.start_date = membership.start_date

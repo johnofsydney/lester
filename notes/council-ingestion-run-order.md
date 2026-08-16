@@ -1,30 +1,29 @@
 # Council ingestion — run order
 
-How to (re-)populate NSW/VIC council election data from scratch (e.g. after a DB restore). Order
-matters — running the backfill before the current cycle produces wrong data (see
-`notes/2026-08-15-council-ingestion-production-readiness-goal-2.md`'s "backfill_end_date" section).
+How to (re-)populate NSW/VIC council election data from scratch (e.g. after a DB restore).
 
-## 1. Current cycle first
+**Order no longer matters for correctness.** As of `notes/2026-08-17-council-dates-deferred-to-interpretation.md`,
+`Councils::{Nsw,Vic}::ImportCouncilResultRowJob` records no `start_date`/`end_date` at all on
+Membership/Position -- it just ensures the (undated) Membership exists, and appends a raw dated
+observation to `Person#council_election_data`. `Group::RecordRow`'s dedup (matching on an *open*
+Membership) no longer depends on dates either, so running the backfill before the current cycle
+(or vice versa) produces the same end state either way. This replaces an earlier version of this
+runbook where sequencing was correctness-critical -- see that doc for the incident that motivated
+removing dates from this pipeline entirely.
+
+Any order below is fine; current-cycle-first is still the natural default.
+
+## Current cycle
 
 ```ruby
 Councils::Nsw::IngestElectionResultsJob.perform_async   # defaults to the latest cycle (LG2401/2024)
 Councils::Vic::IngestElectionResultsJob.perform_async    # defaults to the latest cycle (2024)
 ```
 
-Wait for these to fully drain from the `:low` Sidekiq queue before moving on -- roughly 3.2 hours
-for NSW (128 councils), 2 hours for VIC (78 councils), run concurrently. Check Sidekiq Web's
-`:low` queue size, or spot-check via `Membership.where(start_date: Date.new(2024,1,1)..).count`
-climbing toward the expected totals.
+Roughly 3.2 hours for NSW (128 councils), 2 hours for VIC (78 councils), run concurrently via the
+`:low` Sidekiq queue.
 
-**Why first:** `Councils::{Nsw,Vic}::ImportCouncilResultRowJob#backfill_end_date` decides whether a
-backfilled (older-cycle) councillor continued serving by checking for an already-open membership
-on that council. If the current cycle hasn't been imported yet, that check always says "no" --
-the backfill would then incorrectly close out every single councillor as a one-term departure,
-even people still serving today. This happened once already on staging (see
-`notes/2026-08-15-...` and the conversation it was caught in) -- 1,182 of 1,784 NSW memberships
-were wrongly closed because the backfill ran with zero 2024 data in the DB.
-
-## 2. Then the backfill
+## Backfill
 
 From `/maintenance_tasks`, start a run of:
 - `Maintenance::BackfillNswCouncilElectionResultsTask` (backfills `LG2101`/2021)
@@ -46,7 +45,7 @@ zero-record skips:
 
 ## Ongoing (no action needed)
 
-Once both cycles are in, `config/sidekiq.yml`'s `ingest_nsw_council_election_results_job` /
+`config/sidekiq.yml`'s `ingest_nsw_council_election_results_job` /
 `ingest_vic_council_election_results_job` cron entries re-run the *current* cycle monthly,
 idempotently -- no need to re-run anything manually going forward, except a future backfill if we
 ever extend coverage further back (see the "known limitation" section of
