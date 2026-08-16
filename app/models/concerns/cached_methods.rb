@@ -7,6 +7,8 @@
 module CachedMethods
   extend ActiveSupport::Concern
 
+  TIMESTAMP_IGNORED_ATTRS = %w[nodes_count_cached_at views].freeze
+
   included do
     store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
   end
@@ -33,6 +35,14 @@ module CachedMethods
       Cache::NodeCountJob.perform_async(self.class.name, id) unless Sidekiq::Queue.new('default').size >= 500
       nodes.count
     end
+  end
+
+  private
+
+  def should_record_timestamps?
+    return false if persisted? && (changed_attribute_names_to_save - TIMESTAMP_IGNORED_ATTRS).empty?
+
+    super
   end
 end
 
