@@ -8,7 +8,7 @@ class Councils::Vic::IngestElectionResultsJob
   include Sidekiq::Job
   sidekiq_options queue: :low
 
-  IMPORT_SPACING = 11.seconds
+  IMPORT_SPACING = 4.seconds
 
   def perform(election_year = Councils::Vic::Elections.latest[:year])
     url = index_url(election_year)
