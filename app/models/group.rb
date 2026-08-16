@@ -222,6 +222,6 @@ class Group < ApplicationRecord
   end
 
   def self.local_councils_tag
-    Group.find(132067)
+    Group.find(132_067)
   end
 end
