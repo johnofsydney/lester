@@ -35,14 +35,16 @@ RSpec.describe Maintenance::BackfillVicCouncilElectionResultsTask do
   end
 
   describe '#process' do
-    it 'delegates to Councils::Vic::ImportCouncilResultRowJob with the backfill election year' do
-      job = instance_double(Councils::Vic::ImportCouncilResultRowJob)
-      allow(Councils::Vic::ImportCouncilResultRowJob).to receive(:new).and_return(job)
-      allow(job).to receive(:perform)
+    it 'enqueues Councils::Vic::ImportCouncilResultRowJob with the backfill election year, spaced by collection position' do
+      allow(Councils::Vic::ImportCouncilResultRowJob).to receive(:perform_in)
 
-      described_class.new.process({ name: 'Alpine Shire Council', slug: 'alpine-shire-council' })
+      task = described_class.new
+      council = task.collection.find { |c| c[:slug] == 'ballarat-city-council' }
+      task.process(council)
 
-      expect(job).to have_received(:perform).with('Alpine Shire Council', 'alpine-shire-council', described_class::BACKFILL_ELECTION_YEAR)
+      expected_delay = task.collection.index(council) * Councils::Vic::IngestElectionResultsJob::IMPORT_SPACING
+      expect(Councils::Vic::ImportCouncilResultRowJob).to have_received(:perform_in)
+        .with(expected_delay, 'Ballarat City Council', 'ballarat-city-council', described_class::BACKFILL_ELECTION_YEAR)
     end
   end
 end

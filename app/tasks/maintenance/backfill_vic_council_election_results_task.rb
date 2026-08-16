@@ -13,8 +13,15 @@ module Maintenance
     end
     delegate :count, to: :collection
 
+    # Enqueues rather than calling ImportCouncilResultRowJob's #perform directly, so a single
+    # council's failure retries and eventually dead-letters via Sidekiq's own machinery (which
+    # sidekiq_options(retry: 3, ...) relies on) instead of raising straight out of #process and
+    # halting the whole task run. Spaced the same way as the normal fan-out
+    # (Councils::Vic::IngestElectionResultsJob) so ~76 near-instant enqueues don't hammer VEC
+    # once Sidekiq's 5 concurrent workers pick them up.
     def process(council)
-      Councils::Vic::ImportCouncilResultRowJob.new.perform(council[:name], council[:slug], BACKFILL_ELECTION_YEAR)
+      delay = collection.index(council) * Councils::Vic::IngestElectionResultsJob::IMPORT_SPACING
+      Councils::Vic::ImportCouncilResultRowJob.perform_in(delay, council[:name], council[:slug], BACKFILL_ELECTION_YEAR)
     end
 
     private
