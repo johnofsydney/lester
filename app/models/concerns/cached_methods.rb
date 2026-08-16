@@ -7,7 +7,7 @@
 module CachedMethods
   extend ActiveSupport::Concern
 
-  TIMESTAMP_IGNORED_ATTRS = %w[nodes_count_cached nodes_count_cached_at views].freeze
+  TIMESTAMP_IGNORED_ATTRS = %w[nodes_count_cached_at views].freeze
 
   included do
     store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
