@@ -7,9 +7,13 @@ RSpec.describe Councils::Vic::ImportCouncilResultRowJob, type: :job do
     let(:expected_url) { "https://www.vec.vic.gov.au/results/council-election-results/#{Councils::Vic::Elections.latest[:year]}-council-election-results/#{council_slug}" }
 
     before do
-      # Group.government_department_tag is hardcoded to a production-only ID (app/models/group.rb) --
-      # stub it so Tag::AddGroupToTag#valid? doesn't blow up against the test DB.
-      allow(Group).to receive(:government_department_tag).and_return(FactoryBot.create(:group, name: 'government department tag', type: 'Tag'))
+      # Group.government_department_tag and Group.local_councils_tag are hardcoded to
+      # production-only IDs (app/models/group.rb) -- stub them so they don't blow up against the
+      # test DB.
+      allow(Group).to receive_messages(
+        government_department_tag: FactoryBot.create(:group, name: 'government department tag', type: 'Tag'),
+        local_councils_tag: FactoryBot.create(:group, name: 'australian local councils', type: 'Tag')
+      )
 
       allow(Councils::PageDownloader).to receive(:call).with(expected_url).and_return(page)
     end
