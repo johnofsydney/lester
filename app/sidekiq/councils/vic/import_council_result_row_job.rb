@@ -91,6 +91,7 @@ class Councils::Vic::ImportCouncilResultRowJob
         end_date: declared_date,
         evidence: [membership.evidence, 'Not returned in the VIC council election'].compact.join(' / ')
       )
+      membership.positions.each { |position| position.update!(end_date: declared_date) }
     end
   end
 end

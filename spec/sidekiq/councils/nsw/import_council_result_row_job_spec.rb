@@ -72,12 +72,21 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
         let!(:departing_membership) do
           Membership.create!(group: council, member: departing_person, start_date: Date.new(2016, 1, 1))
         end
+        let!(:departing_position) do
+          Position.create!(membership: departing_membership, title: 'Councillor', start_date: Date.new(2016, 1, 1))
+        end
 
         it 'closes their membership with the declared date' do
           described_class.new.perform(council_name, council_slug)
 
           expect(departing_membership.reload.end_date).to eq(Date.new(2024, 10, 1))
           expect(departing_membership.reload.evidence).to include('Not returned')
+        end
+
+        it 'closes their Position with the same declared date as the Membership' do
+          described_class.new.perform(council_name, council_slug)
+
+          expect(departing_position.reload.end_date).to eq(Date.new(2024, 10, 1))
         end
       end
 

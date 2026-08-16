@@ -4,8 +4,8 @@
 # person:, Person record -- caller resolves/cleans the Person first (e.g. via People::RecordPerson)
 # title: String title -- optional, - Used for Position title
 # evidence: String evidence -- optional, - Used for Membership evidence
-# start_date: String or Date - used for Membership BUT NOT Position start_date,
-# end_date: String or Date - used for Membership BUT NOT Position end_date
+# start_date: String or Date - used for Membership, and mirrored onto the Position if title given
+# end_date: String or Date - used for Membership, and mirrored onto the Position if title given
 
 require 'capitalize_names'
 class Group::RecordRow
@@ -21,7 +21,7 @@ class Group::RecordRow
   def call
     membership = find_or_create_open_membership
     apply_membership_attributes(membership)
-    Position.find_or_create_by(membership:, title:) if title.present?
+    apply_position(membership) if title.present?
     membership
   end
 
@@ -41,6 +41,17 @@ class Group::RecordRow
     membership.end_date = end_date if end_date.present?
     membership.evidence = evidence if evidence.present? && membership.evidence.blank?
     membership.save! if membership.changed?
+  end
+
+  # A Position's dates always mirror its Membership's -- kept in sync here rather than only set
+  # once at creation, so a Position for a councillor closed out later (see
+  # Councils::{Nsw,Vic}::ImportCouncilResultRowJob#close_departed_members, which updates
+  # Membership#end_date directly) doesn't go stale relative to it.
+  def apply_position(membership)
+    position = Position.find_or_create_by(membership:, title:)
+    position.start_date = membership.start_date
+    position.end_date = membership.end_date
+    position.save! if position.changed?
   end
 
   def nice_title(title)

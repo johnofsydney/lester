@@ -117,6 +117,7 @@ class Councils::Nsw::ImportCouncilResultRowJob
         end_date: declared_date,
         evidence: [membership.evidence, 'Not returned in the NSW LG election'].compact.join(' / ')
       )
+      membership.positions.each { |position| position.update!(end_date: declared_date) }
     end
   end
 end

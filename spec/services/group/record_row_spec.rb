@@ -39,6 +39,19 @@ RSpec.describe Group::RecordRow, type: :service do
         membership = Membership.find_by(group:, member: person)
         expect(membership.positions).to be_empty
       end
+
+      it 'gives the Position the same start_date and end_date as the Membership' do
+        described_class.new(
+          group:, person:, title: 'councillor',
+          start_date: Date.new(2021, 12, 4), end_date: Date.new(2024, 9, 14)
+        ).call
+
+        membership = Membership.find_by(group:, member: person)
+        position = membership.positions.sole
+
+        expect(position.start_date).to eq(Date.new(2021, 12, 4))
+        expect(position.end_date).to eq(Date.new(2024, 9, 14))
+      end
     end
 
     context 'when an open membership already exists for this group and person' do
@@ -63,6 +76,16 @@ RSpec.describe Group::RecordRow, type: :service do
         described_class.new(group:, person:, end_date: Date.new(2024, 9, 14), evidence: 'not returned').call
 
         expect(existing_membership.reload.end_date).to eq(Date.new(2024, 9, 14))
+      end
+
+      it 'keeps an existing Position\'s dates in sync with the Membership on a later call' do
+        described_class.new(group:, person:, title: 'councillor').call
+
+        described_class.new(group:, person:, title: 'councillor', end_date: Date.new(2024, 9, 14)).call
+
+        position = existing_membership.reload.positions.sole
+        expect(position.start_date).to eq(Date.new(2020, 1, 1))
+        expect(position.end_date).to eq(Date.new(2024, 9, 14))
       end
     end
 
