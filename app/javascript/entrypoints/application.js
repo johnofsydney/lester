@@ -71,6 +71,8 @@ function initPage() {
   console.log("Page initialized");
 
   const toastLiveExample = document.getElementById('liveToast');
-  const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
-  toastBootstrap.show();
+  if (toastLiveExample) {
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample);
+    toastBootstrap.show();
+  }
 }
