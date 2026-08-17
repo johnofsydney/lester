@@ -1,5 +1,7 @@
 # Government Grants Ingestion — Design Document
 
+**Status:** Proposed
+
 ## Current status (2026-07-19)
 
 **Design only — no code written yet.** Nothing in `app/services`, `app/sidekiq`, or `db/schema.rb` implements any part of this pipeline (no `AuGrants` namespace, no `government_grants`/`government_grant` enum values). This is a full design pass, not a partially-built increment — treat every "Proposed" / "Planned" section below as not started.

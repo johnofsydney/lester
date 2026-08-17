@@ -37,4 +37,4 @@ bundle exec bundler-audit check --update
 
 ## Deployment
 
-Deployed to [Hatchbox](https://hatchbox.io). See `notes/runbook-hung-staging-deploy.md` and `notes/database.creating.prod.dump.as.staging.md` for operational runbooks.
+Deployed to [Hatchbox](https://hatchbox.io). See `docs/runbooks/hung-staging-deploy.md` and `docs/runbooks/creating-prod-dump-as-staging.md` for operational runbooks.

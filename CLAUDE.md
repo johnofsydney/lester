@@ -85,7 +85,7 @@ Services under `app/services/` follow the pattern: a top-level `RecordPerson`, `
 
 ### Person disambiguation
 
-See `notes/person_disambiguation_design.md` (now a historical design record — implemented). `external_identifiers` (polymorphic, source-keyed) is the primary merge key when a source ID is present; `trading_names` captures name variants; name-only matching is the fallback when no ID is available. See `People::RecordPerson`, `Entity::RecordEntityWithExternalId`, and `ExternalIdentifiable`.
+See `docs/plans/0006-person-disambiguation-design.md` (now a historical design record — implemented). `external_identifiers` (polymorphic, source-keyed) is the primary merge key when a source ID is present; `trading_names` captures name variants; name-only matching is the fallback when no ID is available. See `People::RecordPerson`, `Entity::RecordEntityWithExternalId`, and `ExternalIdentifiable`.
 
 ### Admin
 
@@ -95,9 +95,14 @@ Flipper UI at `/flipper`, Sidekiq Web at `/sidekiq` — both behind `authenticat
 
 ## Agent skills
 
-### Issue tracker
+### Future work / issue tracking
 
-Issues live as GitHub issues in johnofsydney/lester, managed via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+The primary mechanism is repo-file backlog notes: `docs/backlog/` holds one file per
+not-yet-committed idea (see `CODING_STANDARDS.md`'s `## Docs` section for the full taxonomy).
+GitHub issues in johnofsydney/lester, managed via the `gh` CLI, are a secondary channel used
+occasionally (e.g. away from the primary laptop) — see `docs/agents/issue-tracker.md` for how to
+work with them. A `docs/backlog/` idea is promoted to a numbered `docs/plans/` entry or a GitHub
+issue once committed to; the original backlog file is then deleted.
 
 ### Domain docs
 
