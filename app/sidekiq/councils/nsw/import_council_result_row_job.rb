@@ -1,35 +1,39 @@
-# Imports one NSW council's declared councillor election results: records each
-# declared-elected candidate as a Person with a Membership (real start_date from the
-# declaration date), links party affiliation where shown, and closes out anyone
-# previously on the council who wasn't returned. Fetches the council's results page
-# first to discover the actual councillor contest path(s) -- a single "councillor"
-# page for councils elected at-large, or one "ward-x/councillor" page per ward for
-# councils divided into wards (there is no shortcut: a ward council has no flat
+# Imports one NSW council's declared councillor election results for a given election cycle
+# (Councils::Nsw::Elections): records each declared-elected candidate as a Person with an undated
+# Councillor Membership, links party affiliation where shown, and appends a raw, dated observation
+# to Person#council_election_data for a future interpretation pass to derive real tenure dates
+# from (see People::RecordCouncilElectionData -- NSWEC's declared date only tells us "elected in
+# this cycle," not a councillor's true start, so no date is recorded on the Membership/Position
+# itself). Fetches the council's results page first to discover the actual councillor contest
+# path(s) -- a single "councillor" page for councils elected at-large, or one "ward-x/councillor"
+# page per ward for councils divided into wards (there is no shortcut: a ward council has no flat
 # "councillor" page at all).
 class Councils::Nsw::ImportCouncilResultRowJob
   include Sidekiq::Job
 
   sidekiq_options(
+    queue: :low,
     lock: :until_executed,
     on_conflict: :log,
     retry: 3
   )
 
-  ELECTION_ID = 'LG2401'.freeze
-  ELECTION_YEAR = 2024
   STATE = :nsw
   LOCAL_COUNCILS_TAG_NAME = 'Australian Local Councils'.freeze
 
-  def perform(council_name, council_slug)
-    url = "https://pastvtr.elections.nsw.gov.au/#{ELECTION_ID}/#{council_slug}/results"
+  def perform(council_name, council_slug, election_id = Councils::Nsw::Elections.latest[:id])
+    election = Councils::Nsw::Elections.find(election_id)
+
+    url = "https://pastvtr.elections.nsw.gov.au/#{election[:id]}/#{council_slug}/results"
     results_page = Councils::PageDownloader.call(url)
     raise "Failed to download NSW council results page: #{url}" if results_page.blank?
 
     councillor_paths = Councils::Nsw::ResultsPageParser.call(results_page)
+    return if councillor_paths.blank? && Councils::Nsw::ResultsPageParser.no_contest_expected?(results_page) # council was under administration, or runs its own election -- nothing to record
     raise "No councillor contest found on NSW council results page: #{url}" if councillor_paths.blank?
 
     contests = councillor_paths.filter_map do |path|
-      url = "https://pastvtr.elections.nsw.gov.au/#{ELECTION_ID}/#{council_slug}/#{path}"
+      url = "https://pastvtr.elections.nsw.gov.au/#{election[:id]}/#{council_slug}/#{path}"
       fetch_contest(url)
     end
     return if contests.blank? # not yet declared in any contest -- nothing to record yet
@@ -37,15 +41,7 @@ class Councils::Nsw::ImportCouncilResultRowJob
     council = Groups::RecordGroup.call(council_name)
     council.add_to_tag(tag_name: LOCAL_COUNCILS_TAG_NAME)
 
-    recorded_people = contests.flat_map { |contest| record_contest(council:, contest:) }
-
-    # Only close out departed members once every contest for this council has
-    # declared -- if a ward hasn't declared yet, its sitting councillors are absent
-    # from recorded_people too, and closing them out here would wrongly read as
-    # "not returned" when we simply haven't checked their ward yet.
-    # Wards can declare on different dates -- use the latest so a departed member's
-    # end_date never precedes the declaration that actually confirmed they're out.
-    close_departed_members(council:, recorded_people:, declared_date: contests.map { |c| c[:declared_date] }.max) if recorded_people.present? && contests.size == councillor_paths.size
+    contests.each { |contest| record_contest(council:, council_slug:, contest:, election:) }
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Nsw::ImportCouncilResultRowJob(#{council_name}): #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
@@ -65,44 +61,41 @@ class Councils::Nsw::ImportCouncilResultRowJob
     result.merge(url:)
   end
 
-  def record_contest(council:, contest:)
-    evidence = "NSW Electoral Commission #{ELECTION_YEAR} LG election declared results (#{contest[:url]})"
+  def record_contest(council:, council_slug:, contest:, election:)
+    evidence = "NSW Electoral Commission #{election[:year]} LG election declared results (#{contest[:url]})"
 
-    contest[:candidates].filter_map do |candidate|
-      record_candidate(council:, candidate:, declared_date: contest[:declared_date], evidence:)
+    contest[:candidates].each do |candidate|
+      record_candidate(council:, council_slug:, candidate:, declared_date: contest[:declared_date], evidence:, election:, source_url: contest[:url])
     end
   end
 
-  def record_candidate(council:, candidate:, declared_date:, evidence:)
-    person = People::RecordPerson.call(candidate[:name])
-    return nil if person.nil?
+  def record_candidate(council:, council_slug:, candidate:, declared_date:, evidence:, election:, source_url:)
+    person = Councils::RecordCandidatePerson.call(name: candidate[:name], council:)
 
-    Group::RecordRow.new(
-      group: council, person:, title: 'Councillor', evidence:, start_date: declared_date
-    ).call
-
-    record_party_membership(person:, candidate:, declared_date:, evidence:)
-
-    person
+    Group::RecordRow.new(group: council, person:, title: 'Councillor', evidence:).call
+    record_party_membership(person:, candidate:, evidence:)
+    record_election_data(person:, council:, council_slug:, candidate:, declared_date:, election:, source_url:)
   end
 
-  def record_party_membership(person:, candidate:, declared_date:, evidence:)
+  def record_election_data(person:, council:, council_slug:, candidate:, declared_date:, election:, source_url:)
+    People::RecordCouncilElectionData.call(
+      person:,
+      observation: {
+        state: STATE,
+        council_name: council.name,
+        council_slug:,
+        cycle: election[:id],
+        declared_date:,
+        party: candidate[:party],
+        source_url:
+      }
+    )
+  end
+
+  def record_party_membership(person:, candidate:, evidence:)
     party_group = Councils::PartyMapper.call(candidate[:party], state: STATE)
     return if party_group.nil?
 
-    Group::RecordRow.new(group: party_group, person:, evidence:, start_date: declared_date).call
-  end
-
-  def close_departed_members(council:, recorded_people:, declared_date:)
-    still_serving_ids = recorded_people.map(&:id)
-
-    Membership.where(group: council, member_type: 'Person', end_date: nil)
-              .where.not(member_id: still_serving_ids)
-              .find_each do |membership|
-      membership.update!(
-        end_date: declared_date,
-        evidence: [membership.evidence, "Not returned in the #{ELECTION_YEAR} NSW LG election"].compact.join(' / ')
-      )
-    end
+    Group::RecordRow.new(group: party_group, person:, evidence:).call
   end
 end
