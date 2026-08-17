@@ -1,8 +1,10 @@
 # Council Membership/Position dates deferred to a future interpretation pass
 
+**Status:** Accepted
+
 ## Context
 
-A staging spot-check (see `notes/2026-08-15-council-ingestion-production-readiness-goal-2.md`'s
+A staging spot-check (see `docs/plans/0009-council-ingestion-production-readiness-goal-2.md`'s
 incident) found that even correctly-functioning backfill data "didn't feel right": most NSW
 councillors ended up with both a `start_date` *and* an `end_date` on their Membership, and the
 associated `Councillor` Position had neither (a separate, smaller bug -- see below). Looking past
@@ -39,7 +41,7 @@ duplicate entries.
 Each observation: `state`, `council_name`, `council_slug`, `cycle` (NSW: `LG2401`-style election
 id; VIC: year), `declared_date`, `party` (NSW only), `source_url`. `declared_date` still applies
 VIC's existing election_date override for non-latest cycles (VEC's archived "Last updated" stamp
-is unreliable -- see `notes/2026-08-15-...`) -- that override was never about Membership dates
+is unreliable -- see `docs/plans/0009-council-ingestion-production-readiness-goal-2.md`) -- that override was never about Membership dates
 specifically, it's about recording the best available date in the raw data at all.
 
 ## What this removes
@@ -58,11 +60,12 @@ specifically, it's about recording the best available date in the raw data at al
 ## Consequence: run order no longer matters
 
 The whole "current cycle must be imported before backfill" constraint from
-`notes/2026-08-15-...`/`notes/council-ingestion-run-order.md` existed only because
-`backfill_end_date` needed to check for an already-open Membership to decide continuity. With no
-dates and no close-out logic, `Group::RecordRow`'s dedup (matching on *any* open Membership,
-regardless of when it was created) makes the backfill and current-cycle imports fully
-order-independent. `notes/council-ingestion-run-order.md` has been updated accordingly.
+`docs/plans/0009-council-ingestion-production-readiness-goal-2.md`/`docs/runbooks/council-ingestion-run-order.md`
+existed only because `backfill_end_date` needed to check for an already-open Membership to decide
+continuity. With no dates and no close-out logic, `Group::RecordRow`'s dedup (matching on *any*
+open Membership, regardless of when it was created) makes the backfill and current-cycle imports
+fully order-independent. `docs/runbooks/council-ingestion-run-order.md` has been updated
+accordingly.
 
 ## Also fixed in passing
 
@@ -76,7 +79,7 @@ mechanism is generically correct).
 ## Deferred: the interpretation pass
 
 Not built yet. Once enough historical depth exists (see the "how far back" discussion in
-`notes/2026-08-15-...`) to derive real tenure dates with confidence, a
+`docs/plans/0009-council-ingestion-production-readiness-goal-2.md`) to derive real tenure dates with confidence, a
 `Councils::Interpretation::RecordMembershipsAndPositions`-style service (mirroring OpenAustralia's)
 would read `Person#council_election_data` and populate real `start_date`/`end_date` values. Until
 then, council Membership/Position dates are simply absent, not approximated.

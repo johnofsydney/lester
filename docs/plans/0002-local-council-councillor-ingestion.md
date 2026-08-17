@@ -1,6 +1,6 @@
 # Local Council Councillor Ingestion (NSW + VIC Electoral Commissions)
 
-**Status:** Proposed
+**Status:** Implemented
 
 ## Context
 

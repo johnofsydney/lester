@@ -2,7 +2,7 @@
 
 How to (re-)populate NSW/VIC council election data from scratch (e.g. after a DB restore).
 
-**Order no longer matters for correctness.** As of `notes/2026-08-17-council-dates-deferred-to-interpretation.md`,
+**Order no longer matters for correctness.** As of `docs/adr/0006-council-membership-position-dates-deferred-to-interpretation.md`,
 `Councils::{Nsw,Vic}::ImportCouncilResultRowJob` records no `start_date`/`end_date` at all on
 Membership/Position -- it just ensures the (undated) Membership exists, and appends a raw dated
 observation to `Person#council_election_data`. `Group::RecordRow`'s dedup (matching on an *open*
@@ -49,4 +49,4 @@ zero-record skips:
 `ingest_vic_council_election_results_job` cron entries re-run the *current* cycle monthly,
 idempotently -- no need to re-run anything manually going forward, except a future backfill if we
 ever extend coverage further back (see the "known limitation" section of
-`notes/2026-08-15-council-ingestion-production-readiness-goal-2.md`).
+`docs/plans/0009-council-ingestion-production-readiness-goal-2.md`).
