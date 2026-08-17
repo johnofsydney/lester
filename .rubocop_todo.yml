@@ -435,14 +435,6 @@ Rails/Date:
   Exclude:
     - 'app/sidekiq/backfill_contracts_master_job.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: slashes, arguments
-Rails/FilePath:
-  Exclude:
-    - 'app/services/au_lobbyists/file_downloader.rb'
-
 # Offense count: 6
 Rails/I18nLocaleTexts:
   Exclude:
