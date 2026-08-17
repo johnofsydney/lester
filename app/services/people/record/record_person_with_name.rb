@@ -18,3 +18,9 @@ class People::Record::RecordPersonWithName
     person
   end
 end
+
+# The change to pass a block of Person.find_by(name:) to save_inside_advisory_lock!
+# is apparently to avoid a race condition, but it seems also to help if the Person is NOT FOUND in the RecordPerson class
+
+# It was introduced as part of the lobbyists de-duplication work
+# https://github.com/johnofsydney/lester/commit/dac98f4dd1f79b02c4597d7fef7cbf2e05eeb856#diff-8bfca1679492ca8199bc699df819427c06a842c948c681a7e63a82ecc9c379cb
