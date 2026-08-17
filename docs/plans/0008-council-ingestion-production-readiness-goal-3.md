@@ -1,8 +1,10 @@
 # Council Ingestion — Production Readiness, Goal 3 (Scheduled job for fresh results)
 
+**Status:** Implemented
+
 ## Context
 
-Follows `context/2026-08-11-council-ingestion-production-readiness-goal-1.md`. Goal 3 wires `Councils::{Nsw,Vic}::IngestElectionResultsJob` into `sidekiq-scheduler` so re-runs happen without manual triggering, per the recommended Goal 1 → Goal 3 → Goal 2 order in the original brief (Goal 3 needed no changes to the underlying import logic, just scheduling — Goal 1's fan-out/spacing work already proved the pipeline at full scale).
+Follows `docs/plans/0007-council-ingestion-production-readiness-goal-1.md`. Goal 3 wires `Councils::{Nsw,Vic}::IngestElectionResultsJob` into `sidekiq-scheduler` so re-runs happen without manual triggering, per the recommended Goal 1 → Goal 3 → Goal 2 order in the original brief (Goal 3 needed no changes to the underlying import logic, just scheduling — Goal 1's fan-out/spacing work already proved the pipeline at full scale).
 
 ## Decisions
 
@@ -18,8 +20,8 @@ Both jobs (and their per-council import jobs) were also moved onto the existing 
 - Near-term: catches any wards/councils that hadn't declared yet on the initial Goal 1 full run (NSW's `close_departed_members` guard explicitly waits for every contest to declare, so late declarations need a follow-up run to get picked up and closed out correctly).
 - Long-term: a cheap, idempotent, indefinite backstop/re-validation once 2024 results are fully settled — low value but harmless.
 
-Real 2028 coverage requires the election-id/year to become parameterized (or the constants manually bumped) before then — that's Goal 2's territory (`context/2026-07-28-local-council-councillor-ingestion.md`'s backfill design), not solved by this scheduler entry. Flagging this explicitly now so it isn't silently assumed solved.
+Real 2028 coverage requires the election-id/year to become parameterized (or the constants manually bumped) before then — that's Goal 2's territory (`docs/plans/0009-council-ingestion-production-readiness-goal-2.md`'s backfill design), not solved by this scheduler entry. Flagging this explicitly now so it isn't silently assumed solved.
 
-## Status
+## Rollout status
 
 Code changes complete: `queue: :low` added to all four job classes, two monthly cron entries added to `config/sidekiq.yml`. No spec changes needed (scheduler config isn't exercised by the job specs; `sidekiq_options` queue is not asserted anywhere in existing specs).

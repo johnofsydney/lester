@@ -1,8 +1,10 @@
 # Council Ingestion — Production Readiness, Goal 2 (Backfill older election cycles)
 
+**Status:** Implemented
+
 ## Context
 
-Follows Goal 1 (`context/2026-08-11-...`) and Goal 3 (`context/2026-08-12-...`). This removes the
+Follows Goal 1 (`docs/plans/0007-council-ingestion-production-readiness-goal-1.md`) and Goal 3 (`docs/plans/0008-council-ingestion-production-readiness-goal-3.md`). This removes the
 hardcoded `ELECTION_ID`/`ELECTION_YEAR` constants from `Councils::{Nsw,Vic}::ImportCouncilResultRowJob`
 and `Councils::{Nsw,Vic}::IngestElectionResultsJob`, parameterizing them to accept an election
 cycle, and adds a backfill of the one prior cycle confirmed reachable in each state.

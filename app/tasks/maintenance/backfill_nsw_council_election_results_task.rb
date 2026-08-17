@@ -1,8 +1,8 @@
 # Backfills the one prior NSW LG election cycle confirmed reachable in the current
 # pastvtr.elections.nsw.gov.au site structure (see
-# notes/2026-08-15-council-ingestion-production-readiness-goal-2.md for the live research behind
+# docs/plans/0009-council-ingestion-production-readiness-goal-2.md for the live research behind
 # that scope decision). Run from /maintenance_tasks -- order relative to the current-cycle import
-# no longer matters (see notes/2026-08-17-council-dates-deferred-to-interpretation.md).
+# no longer matters (see docs/adr/0006-council-membership-position-dates-deferred-to-interpretation.md).
 module Maintenance
   class BackfillNswCouncilElectionResultsTask < MaintenanceTasks::Task
     BACKFILL_ELECTION_ID = Councils::Nsw::Elections::ALL.first[:id]

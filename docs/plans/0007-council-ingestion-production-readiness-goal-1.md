@@ -1,8 +1,10 @@
 # Council Ingestion — Production Readiness, Goal 1 (Full ingest, current cycle)
 
+**Status:** Implemented
+
 ## Context
 
-`context/2026-07-28-local-council-councillor-ingestion.md` covers what already shipped: working NSW + VIC per-council import jobs, fanned out from an index-discovery job, using `rand(1..60).seconds` jitter designed for a small pilot run. Before running this for real across every council in both states, three gaps needed resolving. This doc covers the first: spacing, trigger mechanism, and success criteria for the initial full-scale run. (Goals 2 and 3 — historical backfill and scheduling — are separate, later docs.)
+`docs/plans/0002-local-council-councillor-ingestion.md` covers what already shipped: working NSW + VIC per-council import jobs, fanned out from an index-discovery job, using `rand(1..60).seconds` jitter designed for a small pilot run. Before running this for real across every council in both states, three gaps needed resolving. This doc covers the first: spacing, trigger mechanism, and success criteria for the initial full-scale run. (Goals 2 and 3 — historical backfill and scheduling — are separate, later docs.)
 
 ## Decisions
 
@@ -24,6 +26,6 @@ After triggering both jobs and letting them finish (~3-4 hours):
 - Undeclared contests: any council/ward not yet declared at run time is expected to simply be absent from this run's results (by design — see the governing doc's "wait for every contest to declare" note for NSW). Confirm this reads as "no data yet," not as an error, for any such council.
 - Browse `/admin/groups` filtered to "Australian Local Councils" and `/admin/memberships` for a couple of pilot councils to confirm the data reads sensibly through existing admin screens.
 
-## Status
+## Rollout status
 
 Code changes complete and spec-covered (`spec/sidekiq/councils/{nsw,vic}/ingest_election_results_job_spec.rb` — existing assertions on `kind_of(ActiveSupport::Duration)` needed no changes). The full-scale run itself has not been triggered yet — held pending a deliberate go-ahead, since it's a production-writing, real-external-site-hitting action.
