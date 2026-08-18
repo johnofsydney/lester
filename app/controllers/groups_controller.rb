@@ -5,13 +5,11 @@ class GroupsController < ApplicationController
 
   before_action :set_group, only: %i[ show ]
   before_action :increment_views, only: %i[ show ]
-  before_action :set_page, only: %i[ index ]
 
   def index
-    groups = Group.order(:name).limit(page_size).offset(paginate_offset).to_a
-    pages = (Group.count.to_f / page_size).ceil
+    groups = Group.order(:name).page(params[:page])
 
-    render Groups::IndexView.new(groups:, page: @page, pages:)
+    render Groups::IndexView.new(groups:)
   end
 
   def show

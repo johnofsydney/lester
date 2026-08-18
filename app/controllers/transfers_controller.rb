@@ -3,7 +3,6 @@ class TransfersController < ApplicationController
 
   before_action :set_transfer, only: %i[ show ]
   before_action :increment_views, only: %i[ show ]
-  before_action :set_page, only: %i[ index ]
 
   def index
     if params[:duration_start].present?
@@ -24,15 +23,11 @@ class TransfersController < ApplicationController
       duration_end = Date.new(Transfer.financial_years.last, 12, 31)
     end
 
-    # beware  #                       .limit(per_page)
     transfers = Transfer.where(effective_date: duration_start..duration_end)
                         .order(amount: :desc)
-                        .limit(page_size)
-                        .offset(paginate_offset)
+                        .page(params[:page])
 
-    pages = (Transfer.where(effective_date: duration_start..duration_end).count.to_f / page_size).ceil
-
-    render Transfers::IndexView.new(transfers:, page: @page, pages: pages, session: session)
+    render Transfers::IndexView.new(transfers:, session: session)
   end
 
   def show
@@ -47,16 +42,6 @@ class TransfersController < ApplicationController
 
   def transfer_params
     params.require(:transfer).permit(:giver_id, :giver_type, :taker_id, :amount, :evidence, :transfer_type, :effective_date)
-  end
-
-  def set_page
-    @page = (params[:page] || 0).to_i
-  end
-
-  def page_size
-    return 250
-
-    @page_size ||= Constants::PAGE_LIMIT
   end
 
   def increment_views
