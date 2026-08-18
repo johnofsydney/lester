@@ -11,7 +11,12 @@ RSpec.describe 'People index pagination' do
 
       if response.status == 500
         warn "===CI DEBUG BODY START==="
-        warn response.body.gsub(/<[^>]+>/, ' ').squeeze(' ')[0..4000]
+        title = response.body[/<title>(.*?)<\/title>/m, 1]
+        message = response.body[/class="message">(.*?)<\/div>/m, 1]
+        frame = response.body[/<pre class="traces[^>]*">(.*?)<\/pre>/m, 1] || response.body[/id="trace-Application_Trace_[^"]*"[^>]*>(.*?)<\/div>/m, 1]
+        warn "TITLE: #{title}"
+        warn "MESSAGE: #{message}"
+        warn "TRACE: #{frame&.gsub(/<[^>]+>/, ' ')&.squeeze(' ')&.slice(0, 3000)}"
         warn "===CI DEBUG BODY END==="
       end
 
