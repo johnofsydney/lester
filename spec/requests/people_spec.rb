@@ -10,14 +10,11 @@ RSpec.describe 'People index pagination' do
       get '/people'
 
       if response.status == 500
-        warn "===CI DEBUG BODY START==="
-        title = response.body[/<title>(.*?)<\/title>/m, 1]
-        message = response.body[/class="message">(.*?)<\/div>/m, 1]
-        frame = response.body[/<pre class="traces[^>]*">(.*?)<\/pre>/m, 1] || response.body[/id="trace-Application_Trace_[^"]*"[^>]*>(.*?)<\/div>/m, 1]
-        warn "TITLE: #{title}"
-        warn "MESSAGE: #{message}"
-        warn "TRACE: #{frame&.gsub(/<[^>]+>/, ' ')&.squeeze(' ')&.slice(0, 3000)}"
-        warn "===CI DEBUG BODY END==="
+        warn '===CI DEBUG BODY START==='
+        body_start = response.body.index('<body')
+        text = response.body[body_start..].gsub(/<[^>]+>/, ' ').squeeze(' ')
+        warn text.slice(0, 3000)
+        warn '===CI DEBUG BODY END==='
       end
 
       expect(response).to have_http_status(:ok)
