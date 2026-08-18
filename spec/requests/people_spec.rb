@@ -9,6 +9,12 @@ RSpec.describe 'People index pagination' do
     it 'shows the first page of results at the default page size' do
       get '/people'
 
+      if response.status == 500
+        warn "===CI DEBUG BODY START==="
+        warn response.body.gsub(/<[^>]+>/, ' ').squeeze(' ')[0..4000]
+        warn "===CI DEBUG BODY END==="
+      end
+
       expect(response).to have_http_status(:ok)
       expect(response.body.scan(/Person \d\d/).uniq.size).to eq(25)
     end
