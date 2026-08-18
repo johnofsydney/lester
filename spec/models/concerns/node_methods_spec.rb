@@ -143,5 +143,16 @@ RSpec.describe NodeMethods do
 
       expect(connections.first[:klass]).to eq('Tag')
     end
+
+    it 'does not raise when a Membership references a Group that no longer exists' do
+      create(:membership, member: child, group: parent)
+      orphaned_child = create(:group)
+      create(:membership, member: orphaned_child, group: parent)
+      orphaned_child.delete # bypass dependent: :destroy cleanup to simulate a pre-existing orphaned row
+
+      connections = parent.direct_connections.select { |c| c[:klass] == 'Group' }
+
+      expect(connections.map { |c| c[:id] }).to contain_exactly(child.id)
+    end
   end
 end

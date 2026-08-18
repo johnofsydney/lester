@@ -177,16 +177,29 @@ ActiveAdmin.register Group do
     redirect_to collection_path, alert: "Groups added to #{tag.name}."
   end
 
+  batch_action :destroy, confirm: 'Are you sure you want to delete these groups?' do |ids|
+    blocked_names = []
+
+    Group.where(id: ids).find_each do |group|
+      if group_has_memberships_or_transfers?(group)
+        blocked_names << group.name
+      else
+        group.destroy
+      end
+    end
+
+    if blocked_names.any?
+      redirect_to collection_path, alert: "Could not delete groups with existing memberships or transfers: #{blocked_names.join(', ')}."
+    else
+      redirect_to collection_path, notice: 'Groups deleted successfully.'
+    end
+  end
+
   controller do
     def destroy
       @group = Group.find(params[:id])
 
-      has_memberships_as_owner = @group.memberships.exists?
-      has_memberships_as_member = Membership.where(member: @group).exists?
-      has_incoming_transfers = @group.incoming_transfers.exists?
-      has_outgoing_transfers = @group.outgoing_transfers.exists?
-
-      if has_memberships_as_owner || has_memberships_as_member || has_incoming_transfers || has_outgoing_transfers
+      if group_has_memberships_or_transfers?(@group)
         flash[:error] = 'Cannot delete group with existing memberships or transfers.'
         redirect_to admin_group_path(@group)
       else
@@ -194,6 +207,15 @@ ActiveAdmin.register Group do
         flash[:notice] = 'Group deleted successfully.'
         redirect_to admin_groups_path
       end
+    end
+
+    private
+
+    def group_has_memberships_or_transfers?(group)
+      group.memberships.exists? ||
+        Membership.where(member: group).exists? ||
+        group.incoming_transfers.exists? ||
+        group.outgoing_transfers.exists?
     end
   end
 end
