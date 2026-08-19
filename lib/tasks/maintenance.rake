@@ -221,6 +221,32 @@ namespace :lester do
     puts "Deleted #{memberships_deleted} memberships and #{positions_deleted} positions across #{legacy_group_ids.size} groups."
   end
 
+  desc 'Delete Memberships whose polymorphic member reference points at a deleted Person/Group'
+  task cleanup_orphaned_memberships: :environment do
+    dry_run = ActiveModel::Type::Boolean.new.cast(ENV.fetch('DRY_RUN', 'true'))
+
+    orphaned_by_type = %w[Person Group].index_with do |member_type|
+      klass = member_type.constantize
+      Membership.where(member_type: member_type)
+                .where.not(member_id: klass.select(:id))
+                .pluck(:id)
+    end
+
+    puts "DRY_RUN=#{dry_run}"
+    orphaned_by_type.each { |member_type, ids| puts "#{member_type}: #{ids.size} orphaned memberships#{dry_run ? ' (would delete)' : ''}" }
+
+    if dry_run
+      puts 'Run with DRY_RUN=false to apply changes.'
+      next
+    end
+
+    orphaned_ids = orphaned_by_type.values.flatten
+    positions_deleted = Position.where(membership_id: orphaned_ids).delete_all
+    memberships_deleted = Membership.where(id: orphaned_ids).delete_all
+
+    puts "Deleted #{memberships_deleted} orphaned memberships and #{positions_deleted} positions."
+  end
+
   desc 'Run OpenAustralia Interpretation (RecordMembershipsAndPositions) for every already-ingested politician'
   task record_politician_memberships_and_positions: :environment do
     # `where.not(open_australia_data: [])` is a Rails gotcha for jsonb columns: an empty array
