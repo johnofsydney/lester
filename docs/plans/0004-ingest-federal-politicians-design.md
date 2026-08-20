@@ -114,11 +114,18 @@ This design went through a `grill-me` pass after the first draft; several of the
        delegate :count, to: :collection
 
        def process(person_id)
-         OpenAustralia::IngestPersonJob.perform_in(SPACING, person_id)
+         OpenAustralia::IngestPersonJob.perform_in(next_delay, person_id)
        end
 
        def self.max_person_id
          @max_person_id ||= OpenAustralia::MaxKnownPersonId.call
+       end
+
+       private
+
+       def next_delay
+         @item_count = (@item_count || 0) + 1
+         @item_count * SPACING
        end
      end
    end
@@ -126,14 +133,19 @@ This design went through a `grill-me` pass after the first draft; several of the
 
    Enqueuing (not processing inline) mirrors `BackfillVicCouncilElectionResultsTask`'s reasoning: a single id's failure retries and dead-letters via Sidekiq's own machinery rather than halting the task run. Run from `/maintenance_tasks`.
 
+   **Bug found on the first real run and fixed:** the original draft used a *flat* `SPACING` delay for every `perform_in` call. That looked resume-safe (deliberately not accumulated off this id's position in the full range, for the reason in step 4's original writeup), but missed that `job-iteration` reuses one `Task` instance across every `#process` call *within a single job execution* (a batch), calling it in a tight loop — so a flat delay makes an entire batch due at the same instant instead of trickling out, which is exactly the "enqueuing everything to run ASAP" behavior observed live. Fixed with an instance-level counter (`next_delay`) that increments per call and resets to 0 on every new job execution/batch — genuinely spaces items within a batch, while still not assuming anything about how much of the overall run has happened before it (so pause/resume is still safe).
+
 5. **Add `sidekiq_options(lock: :until_executed, on_conflict: :log)` to `OpenAustralia::IngestPersonJob`.** It currently has none, which is a pre-existing gap against the hard convention that any write/idempotency-sensitive job needs this lock (`sidekiq-unique-jobs` is already a dependency). Worth closing as part of this work rather than as drive-by cleanup: this backfill runs this job at far higher volume than before, and can plausibly overlap the existing monthly `IngestCurrentPoliticiansJob` re-ingesting the same ids concurrently.
+
+   **Also found on the first real run:** `getRepresentative`/`getSenator` respond with an error-shaped JSON object (e.g. `{"error" => "Unknown person ID"}`) for the *vast majority* of ids in a brute-force sweep — that's the expected, common case, not a failure. The initial 429/error-payload fix (step below) over-corrected by raising `OpenAustraliaApiError` for *any* Hash-shaped response with an `error` key, on every endpoint — which turned this extremely common, totally normal outcome into a hard, deterministic, endlessly-retried job failure. Fixed two ways: (a) `ApiClient#get` only raises on a Hash+error payload for the roster endpoints (`getRepresentatives`/`getSenators`, `expect_array: true`) — per-person lookups let it flow through unchanged, exactly as before this feature existed, relying on `IngestPerson#coerce_to_array`'s existing non-Array → `[]` handling; (b) `IngestPersonJob` now rescues `OpenAustraliaApiError` (excluding the `OpenAustraliaRateLimitError` subclass) separately from generic `StandardError` — logs an `ApiLog` entry but does **not** re-raise, since the API told us something deterministic about that specific request and retrying gets the same answer every time. `OpenAustraliaRateLimitError` still re-raises (transient, worth retrying).
 
 6. **Specs:**
    - `ingest_person_spec.rb` — window-filtering case (above).
    - `raw_term_dates_spec.rb` — none exists today (currently only covered indirectly via `extract_periods_spec.rb`/`resolve_party_affiliations_spec.rb`); no new requirement here, just noting the move doesn't orphan test coverage.
    - `max_known_person_id_spec.rb` — returns the max id across both chambers' rosters.
-   - `api_client_spec.rb` — 429 response raises `OpenAustraliaRateLimitError`.
-   - `backfill_historical_politicians_task_spec.rb` — `collection` size/type; `process` enqueues `IngestPersonJob` via `perform_in` with the flat `SPACING` delay (stub the job's `perform_in`, don't let it actually enqueue — see repo convention on stubbing job enqueues in specs). The class-level `max_person_id` memo needs explicit resetting between examples that stub it differently — implementation detail, not spelled out further here.
+   - `api_client_spec.rb` — 429 raises `OpenAustraliaRateLimitError`; roster (`expect_array: true`) Hash+error payload raises `OpenAustraliaApiError`; per-person Hash+error payload (`"Unknown person ID"`) does *not* raise.
+   - `ingest_person_job_spec.rb` — `OpenAustraliaRateLimitError` re-raises; non-rate-limit `OpenAustraliaApiError` does not re-raise but still logs.
+   - `backfill_historical_politicians_task_spec.rb` — `collection` size/type; `process` enqueues `IngestPersonJob` via `perform_in`, spaced further apart on consecutive calls to the same instance, restarting from a fresh instance (stub the job's `perform_in`, don't let it actually enqueue — see repo convention on stubbing job enqueues in specs). The class-level `max_person_id` memo needs explicit resetting between examples that stub it differently — implementation detail, not spelled out further here.
 
 7. **Update this doc** once shipped: flip this section's status, and keep the rejected election-date-sampling approach summarized above as a permanent record (this file is never deleted per the `docs/plans/` taxonomy).
 

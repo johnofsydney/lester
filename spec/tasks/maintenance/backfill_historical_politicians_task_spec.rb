@@ -35,12 +35,35 @@ RSpec.describe Maintenance::BackfillHistoricalPoliticiansTask do
   end
 
   describe '#process' do
-    it 'enqueues OpenAustralia::IngestPersonJob with a flat SPACING delay' do
+    it 'enqueues OpenAustralia::IngestPersonJob, delayed by SPACING' do
       allow(OpenAustralia::IngestPersonJob).to receive(:perform_in)
 
       described_class.new.process(3)
 
       expect(OpenAustralia::IngestPersonJob).to have_received(:perform_in).with(described_class::SPACING, 3)
+    end
+
+    it 'spaces consecutive calls on the same instance further apart, so a batch does not all become due at once' do
+      allow(OpenAustralia::IngestPersonJob).to receive(:perform_in)
+
+      task = described_class.new
+      task.process(1)
+      task.process(2)
+      task.process(3)
+
+      expect(OpenAustralia::IngestPersonJob).to have_received(:perform_in).with(described_class::SPACING, 1)
+      expect(OpenAustralia::IngestPersonJob).to have_received(:perform_in).with(described_class::SPACING * 2, 2)
+      expect(OpenAustralia::IngestPersonJob).to have_received(:perform_in).with(described_class::SPACING * 3, 3)
+    end
+
+    it 'restarts the delay counter on a fresh instance, so a new batch after a pause is not over-delayed' do
+      allow(OpenAustralia::IngestPersonJob).to receive(:perform_in)
+
+      described_class.new.process(1)
+      described_class.new.process(2)
+
+      expect(OpenAustralia::IngestPersonJob).to have_received(:perform_in).with(described_class::SPACING, 1)
+      expect(OpenAustralia::IngestPersonJob).to have_received(:perform_in).with(described_class::SPACING, 2)
     end
   end
 end

@@ -66,11 +66,19 @@ RSpec.describe OpenAustralia::ApiClient, type: :service do
     end
   end
 
-  context 'when the API responds 200 with an error payload instead of the expected data' do
+  context 'when a roster call (getRepresentatives/getSenators) responds 200 with an error payload' do
     let(:response) { instance_double(Faraday::Response, success?: true, status: 200, body: '{"error": "Please provide an API key"}') }
 
     it 'raises OpenAustraliaApiError instead of returning the raw error Hash' do
       expect { client.get_representatives }.to raise_error(OpenAustraliaApiError, 'getRepresentatives: Please provide an API key')
+    end
+  end
+
+  context 'when a per-person call (getRepresentative/getSenator) responds 200 with "Unknown person ID"' do
+    let(:response) { instance_double(Faraday::Response, success?: true, status: 200, body: '{"error": "Unknown person ID"}') }
+
+    it 'does not raise -- this is the expected outcome for most ids in a historical id sweep' do
+      expect(client.get_representative('999999')).to eq({ 'error' => 'Unknown person ID' })
     end
   end
 end

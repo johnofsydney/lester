@@ -14,12 +14,18 @@ module Maintenance
     delegate :count, to: :collection
 
     # Enqueues rather than ingesting inline, so a single id's failure retries and dead-letters via
-    # Sidekiq's own machinery instead of halting the task run. A flat per-item delay (not one
-    # accumulated off this id's position in the range) is deliberate -- this task can be paused
-    # and resumed from the maintenance_tasks UI, and an accumulating delay computed relative to
-    # run start would over- or under-delay whatever resumes after a pause.
+    # Sidekiq's own machinery instead of halting the task run.
+    #
+    # The delay is spaced by an instance-level counter, not a flat SPACING for every item --
+    # job-iteration reuses one Task instance for every #process call within a single job
+    # execution (a batch), calling it in a tight loop, so a flat delay would make a whole batch
+    # due at the same instant instead of trickling out. The counter deliberately does NOT track
+    # this item's position in the full 1..max_person_id range: that would accumulate into a very
+    # long delay for anything resumed after this task is paused from the maintenance_tasks UI.
+    # Restarting the counter at 0 for every new job execution/batch keeps each batch internally
+    # polite without assuming anything about how much of the run has happened before it.
     def process(person_id)
-      OpenAustralia::IngestPersonJob.perform_in(SPACING, person_id)
+      OpenAustralia::IngestPersonJob.perform_in(next_delay, person_id)
     end
 
     # Memoized at the class level, not the instance level: job-iteration calls #collection fresh
@@ -30,6 +36,13 @@ module Maintenance
     # fresh number, which is an accepted tradeoff (see the design doc).
     def self.max_person_id
       @max_person_id ||= OpenAustralia::MaxKnownPersonId.call
+    end
+
+    private
+
+    def next_delay
+      @item_count = (@item_count || 0) + 1
+      @item_count * SPACING
     end
   end
 end
