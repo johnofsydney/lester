@@ -511,12 +511,6 @@ Rails/WhereMissing:
     - 'app/sidekiq/ingest_twenty_charities_missing_people_job.rb'
 
 # Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/BlockComments:
-  Exclude:
-    - 'spec/spec_helper.rb'
-
-# Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 # Configuration parameters: MinBranchesCount.
 Style/CaseLikeIf:
