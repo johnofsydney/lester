@@ -160,7 +160,10 @@ module NodeMethods
     as_owner = memberships.where(member_type: 'Group').includes(:positions, :member).map { |m| [m, m.member] }
     as_member = Membership.where(member: self, member_type: 'Group').includes(:positions, :group).map { |m| [m, m.group] }
 
+    # `other_group` can be nil for a Membership whose polymorphic member/group reference is
+    # orphaned (e.g. the referenced Group was destroyed without cleaning up its memberships).
     (as_owner + as_member)
+      .reject { |_membership, other_group| other_group.nil? }
       .group_by { |_membership, other_group| other_group.id }
       .values
       .map { |pairs| pairs.min_by { |membership, _| membership_recency_key(membership) } }
