@@ -1,4 +1,5 @@
 class OpenAustraliaApiError < StandardError; end
+class OpenAustraliaRateLimitError < OpenAustraliaApiError; end
 
 class OpenAustralia::ApiClient
   BASE_URL = 'https://www.openaustralia.org.au/api/'.freeze
@@ -27,6 +28,7 @@ class OpenAustralia::ApiClient
 
   def get(action, params = {})
     response = connection.get(action, params.merge(key: api_key, output: 'js'))
+    raise OpenAustraliaRateLimitError, "#{response.status}: #{response.body}" if response.status == 429
     raise OpenAustraliaApiError, "#{response.status}: #{response.body}" unless response.success?
 
     JSON.parse(response.body)

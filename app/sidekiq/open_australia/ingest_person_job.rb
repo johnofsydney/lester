@@ -1,5 +1,6 @@
 class OpenAustralia::IngestPersonJob
   include Sidekiq::Job
+  sidekiq_options lock: :until_executed, on_conflict: :log
 
   def perform(person_id)
     person = OpenAustralia::IngestPerson.call(person_id:)

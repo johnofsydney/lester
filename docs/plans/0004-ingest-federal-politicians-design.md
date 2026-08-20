@@ -76,18 +76,70 @@ Added the DB-side half of need #2: politicians who've left the roster entirely (
 
 ---
 
-## Increment 4 — Historical backfill (after Interpretation is proven)
+## Increment 4 — Historical backfill (design finalized 2026-08-20, not yet implemented)
 
 Goal: ingest *all* federal politicians within the 50-year window (ADR 0004), not just current ones.
 
-This needs its own design pass — it's a genuinely different problem from Increment 1, not just "run the same thing on a bigger list":
+**Rejected approach:** sampling roster snapshots at each election date (`getRepresentatives`/`getSenators` with a `date` param). Two problems: the project owner considers this API path unreliable in practice, and even in principle it has a coverage gap — a by-election winner who both entered and left between two general elections would never appear in any snapshot.
 
-- There's no single "everyone who's ever served" roster endpoint. `getRepresentatives`/`getSenators` take an optional `date` param and return the roster *as it stood on that date* — historical discovery means querying across many historical dates and deduplicating `person_id`s.
-- A naive approach (one query per election date) has a real gap: someone who won a by-election and then lost their seat (or died, or resigned) entirely between two general elections would never appear in any election-day snapshot. Sampling more densely (e.g. every few months) reduces but may not eliminate this risk — worth explicitly deciding what risk is acceptable rather than discovering it by omission.
-- Whatever discovery strategy is chosen, it only needs to produce a list of `person_id`s — `OpenAustralia::IngestPerson` (already built) handles the rest unchanged, since it always fetches a person's *entire* Term history regardless of which date surfaced them.
-- Volume is much larger than 226 — worth revisiting whether throttling is still unnecessary (Increment 1 deliberately skipped it for a one-off ~226-person run; that reasoning doesn't automatically extend to a much larger historical run).
+**Chosen approach: brute-force sweep of `person_id`.** `OpenAustralia::IngestPerson` already fetches a person's *entire* Term history regardless of how the `person_id` was discovered, and already no-ops (`nil`) when an id has no terms. So instead of discovering ids by date, sweep every `person_id` from 1 up to the highest id currently seen on the live roster, and let the existing ingest/interpret pipeline do the rest unchanged.
 
-Run `/grill-with-docs` for this increment specifically before implementing — the discovery-strategy question above needs a real decision, not an assumption.
+This design went through a `grill-me` pass after the first draft; several of the sub-steps below reflect real bugs/gaps that pass surfaced (noted inline), not just the original sketch.
+
+### Sub-steps
+
+1. **Enforce ADR 0004's 50-year window inside `OpenAustralia::IngestPerson`.** Nothing in the codebase enforces this today — Increment 1 achieved it only as a side effect of ingesting exclusively the current roster. Brute-forcing from id 1 will otherwise sweep in politicians back to Federation (1901) — exactly the Frederick Holder edge case ADR 0004 exists to dodge. Add a `WINDOW_YEARS = 50` guard: `call` returns `nil` (same as the existing empty-terms case) unless at least one Term's `entered_house`/`left_house` falls within the last 50 years. This is a no-op for every existing caller (current-roster ingest, monthly refresh) — it only changes behavior for genuinely-historical people this backfill discovers. Add a spec case to `spec/services/open_australia/ingest_person_spec.rb`.
+
+   **Date parsing: reuse, and extract, don't duplicate.** `OpenAustralia::Interpretation::RawTermDates#parse_date` already handles this exact problem (treats the `"9999-12-31"` sentinel as "still ongoing" → `nil`, handles blank/malformed dates) — don't re-derive sentinel-date logic in `IngestPerson`. But it's currently namespaced under `Interpretation`, and constraint #5 (`CONTEXT.md`) keeps Ingest free of interpretation judgment calls. Resolution: **extract the module up a level**, `OpenAustralia::Interpretation::RawTermDates` → `OpenAustralia::RawTermDates` (move `app/services/open_australia/interpretation/raw_term_dates.rb` → `app/services/open_australia/raw_term_dates.rb`), since date parsing is a shared utility, not an interpretation judgment call. Update the two existing includers (`OpenAustralia::Interpretation::ExtractPeriods`, `OpenAustralia::Interpretation::ResolvePartyAffiliations`) to the new namespace; `IngestPerson` includes it too, for the window guard only.
+
+2. **Determine the id ceiling from the live roster.** New small service `OpenAustralia::MaxKnownPersonId`, reusing the same `get_representatives`/`get_senators` calls `OpenAustralia::IngestCurrentPoliticians#roster_person_ids` already makes, returning `.map(&:to_i).max`. Current known ids run up to ~10,350 (Barnaby Joyce) — no need for precision on the floor (1), since out-of-range/no-data ids already no-op safely.
+
+3. **429 handling in `OpenAustralia::ApiClient`.** The client currently has no rate-limit handling at all (contrast `AusTender::ScrapeSingleContractAmendment`, which explicitly checks `response.status == 429`). This backfill makes ~20-30k requests (2 per id) against an API with an unknown rate limit — worth being able to tell a 429 apart from a genuine failure. Add a distinct `OpenAustraliaRateLimitError < OpenAustraliaApiError` raised on a 429 response, so it's visible in logs/`ApiLog` as its own thing. **No custom backoff** — Sidekiq's default exponential retry is enough given app-wide Sidekiq concurrency is capped at 5, so even a retry storm can't fan out into a real burst. Revisit only if the first staging run shows 429s piling up.
+
+4. **Backfill driver: `MaintenanceTasks::Task`, not a rake task.** Post-deploy backfills in this codebase always go through the `maintenance_tasks` gem (pause/resume/run-history for free), never `lib/tasks/*.rake` — confirmed convention, see `Maintenance::DedupeLobbyistPeopleTask` and `Maintenance::BackfillVicCouncilElectionResultsTask`.
+
+   Two bugs found in the first draft (modeled too literally on `BackfillVicCouncilElectionResultsTask`'s index-based delay) and their fixes:
+   - **`collection` must return an `Array` or `ActiveRecord::Relation`, not a bare `Range`.** `maintenance_tasks` is built on the `job-iteration` gem, whose enumerator builder rejects anything else. Fix: `.to_a`.
+   - **Per-item delay must not accumulate off an absolute index.** `job-iteration` calls `@task.collection` fresh on every batch of a run, including after a pause/resume — a `delay = index * SPACING` formula computed relative to run start breaks the moment a run is paused and resumed later (wildly over- or under-delays whatever resumes). Fix: a **flat** `perform_in(SPACING, person_id)` per item — spreads out a burst without assuming an uninterrupted run.
+   - **`max_person_id` must not be computed live inside `collection`.** Each job-iteration batch instantiates a new `Task`, so an instance-level `@max_person_id ||=` memo doesn't survive between batches — `collection` would hit the live roster API on every batch, and worse, a mid-run roster change would change `collection`'s size between batches, which can break cursor-based resumption (it assumes a stable, reproducible sequence). Fix, per the project owner (accepting the staleness risk, and explicitly not wanting a manual console step before starting a run): memoize at the **class** level instead of the instance level. It's computed once per Sidekiq process lifetime; a redeploy mid-run just picks up a fresh number, which is fine.
+
+   ```ruby
+   module Maintenance
+     class BackfillHistoricalPoliticiansTask < MaintenanceTasks::Task
+       SPACING = 2.seconds
+
+       def collection
+         (1..self.class.max_person_id).to_a
+       end
+       delegate :count, to: :collection
+
+       def process(person_id)
+         OpenAustralia::IngestPersonJob.perform_in(SPACING, person_id)
+       end
+
+       def self.max_person_id
+         @max_person_id ||= OpenAustralia::MaxKnownPersonId.call
+       end
+     end
+   end
+   ```
+
+   Enqueuing (not processing inline) mirrors `BackfillVicCouncilElectionResultsTask`'s reasoning: a single id's failure retries and dead-letters via Sidekiq's own machinery rather than halting the task run. Run from `/maintenance_tasks`.
+
+5. **Add `sidekiq_options(lock: :until_executed, on_conflict: :log)` to `OpenAustralia::IngestPersonJob`.** It currently has none, which is a pre-existing gap against the hard convention that any write/idempotency-sensitive job needs this lock (`sidekiq-unique-jobs` is already a dependency). Worth closing as part of this work rather than as drive-by cleanup: this backfill runs this job at far higher volume than before, and can plausibly overlap the existing monthly `IngestCurrentPoliticiansJob` re-ingesting the same ids concurrently.
+
+6. **Specs:**
+   - `ingest_person_spec.rb` — window-filtering case (above).
+   - `raw_term_dates_spec.rb` — none exists today (currently only covered indirectly via `extract_periods_spec.rb`/`resolve_party_affiliations_spec.rb`); no new requirement here, just noting the move doesn't orphan test coverage.
+   - `max_known_person_id_spec.rb` — returns the max id across both chambers' rosters.
+   - `api_client_spec.rb` — 429 response raises `OpenAustraliaRateLimitError`.
+   - `backfill_historical_politicians_task_spec.rb` — `collection` size/type; `process` enqueues `IngestPersonJob` via `perform_in` with the flat `SPACING` delay (stub the job's `perform_in`, don't let it actually enqueue — see repo convention on stubbing job enqueues in specs). The class-level `max_person_id` memo needs explicit resetting between examples that stub it differently — implementation detail, not spelled out further here.
+
+7. **Update this doc** once shipped: flip this section's status, and keep the rejected election-date-sampling approach summarized above as a permanent record (this file is never deleted per the `docs/plans/` taxonomy).
+
+### Still open
+
+- Volume: ~10-15k ids is much larger than Increment 1's one-off ~226-person run, which deliberately skipped throttling. `SPACING` above is a starting guess, not a measured value — worth watching `/maintenance_tasks` run progress and `ApiLog` error volume on the first real run (staging first) and adjusting.
 
 ---
 

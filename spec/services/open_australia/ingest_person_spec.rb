@@ -113,4 +113,39 @@ RSpec.describe OpenAustralia::IngestPerson, type: :service do
       expect(call).to be_nil
     end
   end
+
+  describe 'a person whose only terms predate the 50-year window (ADR 0004)' do
+    subject(:call) { described_class.call(person_id: '1') }
+
+    let(:old_term) do
+      { 'person_id' => '1', 'full_name' => 'Old Timer', 'house' => '1',
+        'entered_house' => 60.years.ago.to_date.to_s, 'left_house' => 55.years.ago.to_date.to_s }
+    end
+
+    before do
+      allow(api_client).to receive_messages(get_representative: [old_term], get_senator: [])
+    end
+
+    it 'returns nil and creates no person' do
+      expect { call }.not_to change(Person, :count)
+      expect(call).to be_nil
+    end
+  end
+
+  describe 'a person with a term inside the 50-year window but still open (still serving)' do
+    subject(:call) { described_class.call(person_id: '2') }
+
+    let(:current_term) do
+      { 'person_id' => '2', 'full_name' => 'Still Serving', 'house' => '1',
+        'entered_house' => 30.years.ago.to_date.to_s, 'left_house' => '9999-12-31' }
+    end
+
+    before do
+      allow(api_client).to receive_messages(get_representative: [current_term], get_senator: [])
+    end
+
+    it 'creates the person' do
+      expect { call }.to change(Person, :count).by(1)
+    end
+  end
 end

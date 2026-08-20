@@ -57,4 +57,12 @@ RSpec.describe OpenAustralia::ApiClient, type: :service do
       expect { client.get_representative('10007') }.to raise_error(OpenAustraliaApiError, '500: boom')
     end
   end
+
+  context 'when the API responds with 429 Too Many Requests' do
+    let(:response) { instance_double(Faraday::Response, success?: false, status: 429, body: 'slow down') }
+
+    it 'raises OpenAustraliaRateLimitError' do
+      expect { client.get_representative('10007') }.to raise_error(OpenAustraliaRateLimitError, '429: slow down')
+    end
+  end
 end
