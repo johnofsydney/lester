@@ -26,7 +26,7 @@ module Maintenance
     private
 
     def orphaned_ids
-      %w[Person Group].flat_map do |member_type|
+      @orphaned_ids ||= %w[Person Group].flat_map do |member_type|
         klass = member_type.constantize
         # reselect, not select: Person/Group's `lazy_columns` already applies a default select,
         # so a plain .select(:id) would append rather than replace it and break the subquery.
