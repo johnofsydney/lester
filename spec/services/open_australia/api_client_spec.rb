@@ -65,4 +65,12 @@ RSpec.describe OpenAustralia::ApiClient, type: :service do
       expect { client.get_representative('10007') }.to raise_error(OpenAustraliaRateLimitError, '429: slow down')
     end
   end
+
+  context 'when the API responds 200 with an error payload instead of the expected data' do
+    let(:response) { instance_double(Faraday::Response, success?: true, status: 200, body: '{"error": "Please provide an API key"}') }
+
+    it 'raises OpenAustraliaApiError instead of returning the raw error Hash' do
+      expect { client.get_representatives }.to raise_error(OpenAustraliaApiError, 'getRepresentatives: Please provide an API key')
+    end
+  end
 end

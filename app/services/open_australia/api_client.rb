@@ -31,7 +31,14 @@ class OpenAustralia::ApiClient
     raise OpenAustraliaRateLimitError, "#{response.status}: #{response.body}" if response.status == 429
     raise OpenAustraliaApiError, "#{response.status}: #{response.body}" unless response.success?
 
-    JSON.parse(response.body)
+    parsed = JSON.parse(response.body)
+    # A 200 response can still carry an error payload (e.g. a missing/invalid API key) as a
+    # JSON object instead of the expected Array -- surface that clearly here rather than letting
+    # every caller hit a confusing NoMethodError further downstream when it tries to treat the
+    # object as a list of terms.
+    raise OpenAustraliaApiError, "#{action}: #{parsed['error']}" if parsed.is_a?(Hash) && parsed['error']
+
+    parsed
   end
 
   def connection
