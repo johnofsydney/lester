@@ -20,8 +20,7 @@ module Maintenance
         return
       end
 
-      Position.where(membership: membership).delete_all
-      membership.delete
+      membership.destroy
     end
 
     private
