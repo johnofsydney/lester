@@ -65,14 +65,14 @@ Confirmed with the project owner: this ships as two PRs, and the two needs colla
 - Scheduled monthly in `config/sidekiq.yml`, cron `'0 14 4 * *'` — lands at 00:00 AEST on the 5th (cron day is 4, not 5, because hour 14 UTC rolls into the next AEST day per the file's own conversion table; this is commented inline both in the cron entry and in `IngestPersonJob`). Day 5 was chosen to avoid the 1st/2nd, where ACNC/lobbyist/AusTender-backfill jobs already run.
 - This alone covers need #1 (new politicians via the roster) and *most* of need #2 (anyone still on the roster gets refreshed) — but not the case where someone drops off the roster entirely. That's 3b.
 
-### Increment 3b — not started
+### Increment 3b — done
 
-Add the DB-side half of need #2: politicians who've left the roster entirely (retirement, lost seat, disqualification) and so are never re-ingested by 3a's roster-only job, even though our DB still shows them as current.
+Added the DB-side half of need #2: politicians who've left the roster entirely (retirement, lost seat, disqualification) and so were never re-ingested by 3a's roster-only job, even though our DB still shows them as current.
 
-- **"Politicians our database considers current" already has a precise definition, no new schema needed**: people with an open (`end_date: nil`) `Membership` in `Group.federal_parliament` (id 877).
-- **Extend the existing scheduled job, don't add a second one.** Union the OpenAustralia live roster's `person_id`s (already fetched by `OpenAustralia::IngestCurrentPoliticians`) with the `person_id`s of everyone our DB currently considers a sitting politician (the query above), dedupe, enqueue one `IngestPersonJob` per person. The two sources diverge exactly where it matters — someone who dropped off the live roster is only in the DB-side set (the "they left" case), a fresh by-election winner is only in the roster-side set (the "new politician" case) — so the union covers both needs with the one job 3a already scheduled monthly.
+- New `Membership.person_currently_in_federal_parliament` scope — `Person` members with an open (`end_date: nil`) `Membership` in `Group.federal_parliament` (id 877), mirroring the existing `person_in_lobbyists`/`person_in_charity` scope pattern.
+- `OpenAustralia::IngestCurrentPoliticians#person_ids` now unions `roster_person_ids` (unchanged, from the live API) with `db_current_person_ids` (`Person`s matching the new scope, mapped to `open_australia_id`, dropping anyone without one), deduped, before the existing per-id `IngestPersonJob.perform_async` fan-out — no change to the fan-out itself, each id still gets its own async job.
 - No new Ingest or Interpretation logic needed — `IngestPersonJob` (as of 3a) already does ingest-then-interpret for whatever `person_id` it's given, regardless of which side of the union surfaced it.
-- Likely lands as a change to `OpenAustralia::IngestCurrentPoliticians` (or the job wrapping it) to also pull the DB-side `person_id` set before enqueuing, plus a spec covering the "dropped off the roster" case specifically.
+- Covered by spec: dropped-off-roster person still enqueued, current-on-both-sides person enqueued only once, and a person whose Membership has since closed (`end_date` set) is not enqueued via the DB side.
 
 ---
 

@@ -67,7 +67,6 @@ class PeopleController < ApplicationController
   def increment_views
     return if Current.user
 
-    @person.increment(:views)
-    @person.save
+    @person.increment!(:views)
   end
 end

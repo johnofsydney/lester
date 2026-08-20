@@ -32,7 +32,7 @@ class AuLobbyists::FileDownloader
     # Verify it worked
     if response.success?
       # The API returns raw CSV content in the body
-      path = Rails.root.join('tmp', 'lobbyists.xlsx')
+      path = Rails.root.join('tmp/lobbyists.xlsx')
       # write as binary so Ruby doesn't try to transcode
       File.open(path, 'wb') do |f|
         f.write(response.body)
