@@ -44,6 +44,7 @@ ActiveAdmin.register Group do
       row :type
       row :created_at
       row :updated_at
+      row :attributed_to
       row('Memberships (as owning group)') { Membership.where(group: resource).count }
       row('Memberships (as member)') { Membership.where(member: resource).count }
       row('Direct Transfers In') { number_to_currency resource.incoming_transfers.sum(:amount), precision: 0 }
