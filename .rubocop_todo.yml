@@ -463,7 +463,12 @@ Rails/Output:
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Rails/RedundantPresenceValidationOnBelongsTo:
+  # belongs_to's automatic presence check only catches an unset association,
+  # not the foreign key column set to nil directly, and specs assert the
+  # latter (see spec/models/membership_spec.rb; transfer.rb follows the same
+  # pattern).
   Exclude:
+    - 'app/models/membership.rb'
     - 'app/models/transfer.rb'
 
 # Offense count: 8
