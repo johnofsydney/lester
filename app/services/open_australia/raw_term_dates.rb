@@ -1,4 +1,4 @@
-module OpenAustralia::Interpretation::RawTermDates
+module OpenAustralia::RawTermDates
   def contiguous?(prev, curr)
     prev['left_house'] == curr['entered_house']
   end

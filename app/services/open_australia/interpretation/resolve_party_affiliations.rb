@@ -1,5 +1,5 @@
 class OpenAustralia::Interpretation::ResolvePartyAffiliations
-  include OpenAustralia::Interpretation::RawTermDates
+  include OpenAustralia::RawTermDates
   private :contiguous?, :parse_date
 
   # Checked in order, first match wins. Liberal National Party is checked ahead of the bare
