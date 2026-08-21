@@ -1,6 +1,5 @@
 module Constants
   extend ActiveSupport::Concern
-  PAGE_LIMIT = 25
   MAX_SEARCH_DEPTH = 4
 
   TOO_MANY_CONNECTIONS_THRESHOLD = 3000
