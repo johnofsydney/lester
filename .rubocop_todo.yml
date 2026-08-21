@@ -277,10 +277,11 @@ Lint/ShadowingOuterLocalVariable:
     - 'app/services/build_queue.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
 
-# Offense count: 4
+# Offense count: 3
 Lint/UnreachableCode:
   Exclude:
     - 'app/controllers/groups_controller.rb'
+    - 'app/controllers/transfers_controller.rb'
     - 'app/services/build_queue.rb'
 
 # Offense count: 2
