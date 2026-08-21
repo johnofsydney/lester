@@ -460,17 +460,6 @@ Rails/Output:
     - 'app/services/record_group.rb'
     - 'app/services/record_person.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Rails/RedundantPresenceValidationOnBelongsTo:
-  # belongs_to's automatic presence check only catches an unset association,
-  # not the foreign key column set to nil directly, and specs assert the
-  # latter (see spec/models/membership_spec.rb; transfer.rb follows the same
-  # pattern).
-  Exclude:
-    - 'app/models/membership.rb'
-    - 'app/models/transfer.rb'
-
 # Offense count: 8
 # Configuration parameters: ForbiddenMethods, AllowedMethods.
 # ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
