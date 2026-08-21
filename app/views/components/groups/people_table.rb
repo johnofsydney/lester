@@ -1,15 +1,13 @@
 class Groups::PeopleTable < ApplicationView
   include Constants
 
-	 def initialize(people: nil, exclude_group: nil, page: nil, pages: nil)
-     # leaving pagination related args in place for now. exclude_group is better named as current_group
-     @people = people
-     @exclude_group = exclude_group
-     @page = page
-     @pages = pages
- 	end
+  def initialize(people: nil, exclude_group: nil)
+    # exclude_group is better named as current_group
+    @people = people
+    @exclude_group = exclude_group
+  end
 
-  attr_reader :people, :exclude_group, :page, :pages
+  attr_reader :people, :exclude_group
 
   def view_template
     turbo_frame(id: 'people') do
@@ -17,7 +15,7 @@ class Groups::PeopleTable < ApplicationView
         div(class: 'row mt-3 mb-3') do
           h4(class: 'font-italic') { 'People' }
 
-          # TODO: wire up Common::PageNav here (pagination re-enabled in a follow-up PR)
+          render Common::PageNav.new(collection: people, path: "/groups/group_people/#{exclude_group.id}")
 
           table(class: 'table table-striped responsive-table') do
             tr do

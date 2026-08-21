@@ -30,7 +30,7 @@ class Groups::ShowView < ApplicationView
       ##################################################
       # TODO: these no longer need to be in turbo frames
       # all these components need pagination
-      turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}/page=#{page_number}", loading: :lazy) do
+      turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}", loading: :lazy) do
         p(class: 'grey') { 'Fetching People...'  }
       end
 
