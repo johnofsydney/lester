@@ -1,5 +1,5 @@
 class OpenAustralia::Interpretation::ExtractPeriods
-  include OpenAustralia::Interpretation::RawTermDates
+  include OpenAustralia::RawTermDates
   private :contiguous?, :parse_date
 
   ParliamentPeriod = Struct.new(:house, :position, :constituency, :start_date, :end_date, keyword_init: true)

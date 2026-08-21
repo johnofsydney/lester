@@ -1,4 +1,11 @@
 class OpenAustralia::IngestPerson
+  include OpenAustralia::RawTermDates
+
+  # ADR 0004: ingestion is scoped to the last 50 years. Nothing else in this service enforces
+  # that window, so a person whose terms are all older than this is treated the same as a person
+  # with no terms at all.
+  WINDOW_YEARS = 50
+
   def self.call(person_id:) = new(person_id:).call
 
   def initialize(person_id:)
@@ -6,7 +13,7 @@ class OpenAustralia::IngestPerson
   end
 
   def call
-    return nil if terms.empty?
+    return nil if terms.empty? || outside_window?
 
     People::RecordPerson
       .call(terms.last['full_name'], open_australia_id: person_id)
@@ -21,6 +28,20 @@ class OpenAustralia::IngestPerson
 
   def terms
     @terms ||= (representative_terms + senator_terms).sort_by { |term| term['entered_house'] }
+  end
+
+  # A term counts as within the window if it's still ongoing (parse_date treats the "9999-12-31"
+  # sentinel as nil) or if it entered or left within the last WINDOW_YEARS.
+  def outside_window?
+    terms.none? { |term| term_within_window?(term) }
+  end
+
+  def term_within_window?(term)
+    left_date = parse_date(term['left_house'])
+    return true if left_date.nil? # still ongoing
+
+    entered_date = parse_date(term['entered_house'])
+    left_date >= WINDOW_YEARS.years.ago || entered_date&.>=(WINDOW_YEARS.years.ago)
   end
 
   def representative_terms

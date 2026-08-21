@@ -262,11 +262,6 @@ Lint/EmptyFile:
 Lint/MissingSuper:
   Enabled: false
 
-# Offense count: 1
-Lint/NonLocalExitFromIterator:
-  Exclude:
-    - 'app/views/components/common/page_nav.rb'
-
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowedMethods.
@@ -286,8 +281,6 @@ Lint/ShadowingOuterLocalVariable:
 Lint/UnreachableCode:
   Exclude:
     - 'app/controllers/groups_controller.rb'
-    - 'app/controllers/people_controller.rb'
-    - 'app/controllers/transfers_controller.rb'
     - 'app/services/build_queue.rb'
 
 # Offense count: 2
@@ -509,12 +502,6 @@ Rails/UnknownEnv:
 Rails/WhereMissing:
   Exclude:
     - 'app/sidekiq/ingest_twenty_charities_missing_people_job.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Style/BlockComments:
-  Exclude:
-    - 'spec/spec_helper.rb'
 
 # Offense count: 1
 # This cop supports unsafe autocorrection (--autocorrect-all).

@@ -70,8 +70,6 @@ class Group < ApplicationRecord
 
   has_many :trading_names, as: :owner, dependent: :destroy
 
-  # TODO: memberships are only working on one direction, need to fix this
-  # affiliated groups are not being followed from child to parent to other child
   has_many :memberships, dependent: :destroy
   has_many :memberships_as_member, as: :member, class_name: 'Membership', dependent: :destroy
   has_many :people, through: :memberships, source: :member, source_type: 'Person'

@@ -1,49 +1,57 @@
 class Common::PageNav < ApplicationView
-  attr_reader :pages
-
-  def initialize(pages:, page:, klass:)
-    @page = page
-    @klass = klass
-    @pages = pages
+  def initialize(collection:, path:)
+    @collection = collection
+    @path = path
   end
 
   def view_template
-    return unless pages > 1
+    return unless total_pages > 1
 
-    nav(aria: { label: 'Page navigation example' }) do
+    nav(aria: { label: 'Page navigation' }) do
       ul(class: 'pagination') do
-
-        previous_page = [@page - 1, 1].max
-        item_class = @page == 0 ? 'page-item disabled' : 'page-item'
+        previous_page = [current_page - 1, 1].max
+        item_class = current_page == 1 ? 'page-item disabled' : 'page-item'
         li(class: item_class) do
-          a(class: 'page-link', href: "/#{@klass.pluralize}/page=#{previous_page}") { 'Previous' }
+          a(class: 'page-link', href: page_href(previous_page)) { 'Previous' }
         end
 
-        pagination_range.each do |index|
-          li(class: 'page-item') do
-            page_number = index + 1
-            return if page_number > pages
-
-            a(class: 'page-link', href: "/#{@klass.pluralize}/page=#{page_number}") do
-              page_number
-            end
+        pagination_range.each do |page_number|
+          item_class = page_number == current_page ? 'page-item active' : 'page-item'
+          li(class: item_class) do
+            a(class: 'page-link', href: page_href(page_number)) { page_number.to_s }
           end
         end
 
-        next_page = @page + 1
-        item_class = (next_page >= pages) ? 'page-item disabled' : 'page-item'
+        next_page = [current_page + 1, total_pages].min
+        item_class = current_page == total_pages ? 'page-item disabled' : 'page-item'
         li(class: item_class) do
-          a(class: 'page-link', href: "/#{@klass.pluralize}/page=#{next_page}") { 'Next' }
+          a(class: 'page-link', href: page_href(next_page)) { 'Next' }
         end
       end
     end
   end
 
-  def pagination_range
-    return (0...pages) if pages < 5
-    return (0..4) if @page < 3
-    return ((pages - 5)...pages) if @page > pages - 3
+  private
 
-    ((@page - 2)..(@page + 2))
+  attr_reader :collection, :path
+
+  def current_page
+    collection.current_page
+  end
+
+  def total_pages
+    collection.total_pages
+  end
+
+  def page_href(page_number)
+    "#{path}?page=#{page_number}"
+  end
+
+  def pagination_range
+    return (1..total_pages) if total_pages <= 5
+    return (1..5) if current_page <= 3
+    return ((total_pages - 4)..total_pages) if current_page >= total_pages - 2
+
+    ((current_page - 2)..(current_page + 2))
   end
 end
