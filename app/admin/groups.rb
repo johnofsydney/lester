@@ -196,7 +196,7 @@ ActiveAdmin.register Group do
       begin
         target_group.merge!(group)
         merged_names << group.name
-      rescue StandardError => e
+      rescue RuntimeError => e
         failed << "#{group.name} (#{e.message})"
       end
     end
