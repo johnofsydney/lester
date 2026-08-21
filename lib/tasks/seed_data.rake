@@ -13,10 +13,11 @@
 namespace :seed_data do
   desc 'Extract a small curated subset of the current database into db/seed_data/*.yml'
   task extract: :environment do
-    unless %w[staging production].include?(Rails.env)
+    unless %w[staging production].include?(Rails.env) || ENV['ALLOW_EXTRACT_FROM_DEV']
       abort "Refusing to extract from RAILS_ENV=#{Rails.env} — this task is meant to run " \
             'against a database that holds the full dataset (staging/production), not an ' \
-            'already-small local/test DB.'
+            'already-small local/test DB. Set ALLOW_EXTRACT_FROM_DEV=1 if this dev DB ' \
+            'genuinely holds a full data copy right now.'
     end
 
     top_groups_limit = 30
