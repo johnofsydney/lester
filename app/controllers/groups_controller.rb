@@ -47,15 +47,8 @@ class GroupsController < ApplicationController
   def group_people
     group = Group.find(params[:group_id])
 
-    people = Kaminari.paginate_array(
-      group.cached
-           .direct_connections
-           .filter { |c| c['klass'] == 'Person' }
-           .sort_by { |c| c['name'] }
-    ).page(params[:page])
-
     #  passing an array of hashes to the view
-    render Groups::PeopleTable.new(people:, exclude_group: group)
+    render Groups::PeopleTable.new(people: paginated_people_in(group), exclude_group: group)
   end
 
   private
@@ -89,5 +82,11 @@ class GroupsController < ApplicationController
     return if Current.user
 
     @group.increment!(:views)
+  end
+
+  def paginated_people_in(group)
+    people = group.cached.direct_connections.filter { |c| c['klass'] == 'Person' }.sort_by { |c| c['name'] }
+
+    Kaminari.paginate_array(people).page(params[:page])
   end
 end
