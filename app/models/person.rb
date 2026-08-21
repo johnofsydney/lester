@@ -2,6 +2,7 @@ class Person < ApplicationRecord
   include TransferMethods
   include NodeMethods
   include CachedMethods
+  include Attributable
 
   include ExternalIdentifiable
 
