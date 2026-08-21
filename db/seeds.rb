@@ -4,7 +4,11 @@
 #
 # Safe to run against an empty database only — it does not clear existing data first.
 
-abort('Refusing to run db:seed against RAILS_ENV=production.') if Rails.env.production?
+unless %w[development staging].include?(Rails.env)
+  puts "Skipping db:seed for RAILS_ENV=#{Rails.env} (only development/staging load seed data; " \
+       'the test DB should start empty, and production must never load it).'
+  return
+end
 
 SEED_DATA_DIR = Rails.root.join('db/seed_data')
 
