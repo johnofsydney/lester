@@ -55,9 +55,7 @@ class PeopleController < ApplicationController
   end
 
   def page_size
-    return 250
-
-    @page_size ||= Constants::PAGE_LIMIT
+    250
   end
 
   def set_page
