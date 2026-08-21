@@ -95,7 +95,6 @@ class GroupsController < ApplicationController
   def increment_views
     return if Current.user
 
-    @group.increment(:views)
-    @group.save
+    @group.increment!(:views)
   end
 end

@@ -30,6 +30,8 @@ class Membership < ApplicationRecord
 
   scope :person_in_lobbyists, -> { where(member_type: 'Person', group_id: Group.lobbyists_tag.id) }
 
+  scope :person_currently_in_federal_parliament, -> { where(member_type: 'Person', group_id: Group.federal_parliament.id, end_date: nil) }
+
   def self.ransackable_scopes(_auth_object = nil)
     [:by_ids]
   end

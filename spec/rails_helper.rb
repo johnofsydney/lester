@@ -74,6 +74,7 @@ RSpec.configure do |config|
   config.example_status_persistence_file_path = 'tmp/spec_examples.txt'
 
   config.include FactoryBot::Syntax::Methods
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end
 
 require 'shoulda/matchers'

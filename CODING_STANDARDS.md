@@ -110,6 +110,25 @@ comment, a rework) or a stated preference on record — not as a preemptive styl
   `app/sidekiq/au_aec_donations/import_donation_row_job.rb:4-8`,
   `app/sidekiq/cache/build_person_cached_data_job.rb:4`.
 
+### Post-deployment tasks
+
+- **Always the `maintenance_tasks` gem, never a plain `lib/tasks/*.rake` task.** A one-off
+  backfill/cleanup/migration meant to run in production after a deploy belongs in
+  `app/tasks/maintenance/*_task.rb` as a `MaintenanceTasks::Task` subclass, run from the
+  `/maintenance_tasks` route — not a rake task run from the console. The gem gives pause/cancel/resume,
+  run history, and a UI for free; a rake task throws all of that away. `lib/tasks/*.rake` stays fine
+  for genuinely dev/local-only helpers that are never meant to run against prod. See
+  `app/tasks/maintenance/dedupe_lobbyist_people_task.rb` and
+  `app/tasks/maintenance/cleanup_orphaned_memberships_task.rb` for the shape: `attribute :dry_run,
+  :boolean, default: true`, `collection`, `count`, `process`.
+- **Consider, don't default to, an async job per item when `process` fans out.** If a task's
+  `process(item)` would trigger meaningfully expensive or external per-item work, weigh enqueuing a
+  Sidekiq job per item (for retry/backoff/spacing — see
+  `app/tasks/maintenance/backfill_vic_council_election_results_task.rb`) against doing the work
+  inline. Inline is the right call when the per-item work is cheap and has no external calls (e.g.
+  `cleanup_orphaned_memberships_task.rb`'s in-process `delete`) — this isn't a hard rule in either
+  direction, just a question worth asking per task.
+
 ## Testing
 
 - **API client wrapper specs**: a wrapper class around an external API (AEC, ACNC, AusTender, ABN

@@ -47,7 +47,6 @@ class TransfersController < ApplicationController
   def increment_views
     return if Current.user
 
-    @transfer.increment(:views)
-    @transfer.save
+    @transfer.increment!(:views)
   end
 end
