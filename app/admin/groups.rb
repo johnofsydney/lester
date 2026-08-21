@@ -177,6 +177,37 @@ ActiveAdmin.register Group do
     redirect_to collection_path, alert: "Groups added to #{tag.name}."
   end
 
+  batch_action :merge_selected,
+               confirm: 'Are you sure you want to merge the selected groups into the target group? This cannot be undone.',
+               form: -> { { target_group_id: :number } } do |ids, inputs|
+    target_group = Group.find_by(id: inputs[:target_group_id])
+
+    if target_group.nil?
+      redirect_to collection_path, alert: "Target group with ID #{inputs[:target_group_id]} not found."
+      next
+    end
+
+    merged_names = []
+    failed = []
+
+    Group.where(id: ids).find_each do |group|
+      next if group.id == target_group.id
+
+      begin
+        target_group.merge!(group)
+        merged_names << group.name
+      rescue StandardError => e
+        failed << "#{group.name} (#{e.message})"
+      end
+    end
+
+    if failed.any?
+      redirect_to collection_path, alert: "Merged: #{merged_names.join(', ')}. Failed: #{failed.join('; ')}."
+    else
+      redirect_to admin_group_path(target_group), notice: "Merged #{merged_names.join(', ')} into #{target_group.name}."
+    end
+  end
+
   batch_action :destroy, confirm: 'Are you sure you want to delete these groups?' do |ids|
     blocked_names = []
 
