@@ -4,6 +4,8 @@
 #
 # Safe to run against an empty database only — it does not clear existing data first.
 
+abort('Refusing to run db:seed against RAILS_ENV=production.') if Rails.env.production?
+
 SEED_DATA_DIR = Rails.root.join('db/seed_data')
 
 # Order matters: memberships/positions/transfers/external_identifiers/trading_names
