@@ -1,23 +1,26 @@
 # Produces and loads a small, curated subset of production data for local/staging use.
 #
 # Workflow:
-#   1. On a machine/console with access to the *full* dataset (currently: staging, since
-#      it's a full prod copy — see docs/runbooks/creating-prod-dump-as-staging.md), run:
-#        RAILS_ENV=staging bin/rails seed_data:extract
+#   1. Load a full production data dump into your *local* development database (see
+#      docs/runbooks/creating-prod-dump-as-staging.md for how to get a dump), then run:
+#        bin/rails seed_data:extract
 #      This writes YAML fixtures to db/seed_data/*.yml.
 #   2. Commit those files.
-#   3. On any other environment (fresh local dev DB, a rebuilt staging DB), run:
+#   3. Anywhere else (a fresh local dev DB, staging), run:
 #        bin/rails db:seed
 #      which loads db/seed_data/*.yml, preserving primary keys (several tag/group IDs
 #      are hardcoded — see Group.charities_tag etc. — so IDs must survive the round trip).
+#
+# extract is intentionally local-only: it must never run against a deployed environment
+# (staging or production), even by accident. seed is intentionally development/staging-only
+# (see db/seeds.rb) and is only ever invoked via `db:seed` — never exposed in the UI.
 namespace :seed_data do
   desc 'Extract a small curated subset of the current database into db/seed_data/*.yml'
   task extract: :environment do
-    unless %w[staging production].include?(Rails.env) || ENV['ALLOW_EXTRACT_FROM_DEV']
-      abort "Refusing to extract from RAILS_ENV=#{Rails.env} — this task is meant to run " \
-            'against a database that holds the full dataset (staging/production), not an ' \
-            'already-small local/test DB. Set ALLOW_EXTRACT_FROM_DEV=1 if this dev DB ' \
-            'genuinely holds a full data copy right now.'
+    unless Rails.env.development?
+      abort "Refusing to extract from RAILS_ENV=#{Rails.env} — this task must only run " \
+            'against a local development database (temporarily loaded with a full data ' \
+            'copy), never against a deployed environment.'
     end
 
     top_groups_limit = 30
