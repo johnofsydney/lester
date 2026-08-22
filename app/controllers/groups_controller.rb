@@ -34,10 +34,13 @@ class GroupsController < ApplicationController
   end
 
   def affiliated_groups
-    @group = Group.find(params[:group_id])
-    @page = params[:page].to_i
+    group = Group.find(params[:group_id])
 
-    render Groups::AffiliatedGroups.new(group: @group)
+    render Groups::AffiliatedGroups.new(
+      group: group,
+      affiliated_groups: paginated_affiliated_groups_in(group),
+      tags: paginated_tags_in(group)
+    )
   end
 
   def money_summary
@@ -56,10 +59,6 @@ class GroupsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_group
     @group = Group.find(params[:id])
-  end
-
-  def set_page
-    @page = (params[:page] || 0).to_i
   end
 
   # Only allow a list of trusted parameters through.
@@ -88,5 +87,17 @@ class GroupsController < ApplicationController
     people = group.cached.direct_connections.filter { |c| c['klass'] == 'Person' }.sort_by { |c| c['name'] }
 
     Kaminari.paginate_array(people).page(params[:page])
+  end
+
+  def paginated_affiliated_groups_in(group)
+    groups = group.cached.direct_connections.filter { |c| (c['klass'] == 'Group') && !c['is_tag'] }.sort_by { |c| c['name'] }
+
+    Kaminari.paginate_array(groups).page(params[:groups_page])
+  end
+
+  def paginated_tags_in(group)
+    tags = group.cached.direct_connections.filter { |c| c['klass'] == 'Tag' }.sort_by { |c| c['name'] }
+
+    Kaminari.paginate_array(tags).page(params[:tags_page])
   end
 end
