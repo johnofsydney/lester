@@ -1,17 +1,15 @@
 require 'capitalize_names'
 
 class People::IndexView < ApplicationView
-  def initialize(people:, page:, pages:)
+  def initialize(people:)
     @people = people
-    @page = page
-    @pages = pages
   end
 
   def view_template
     div(class: 'mt-3 mb-3') do
       h2 { 'People' }
 
-      render Common::PageNav.new(pages:, page:, klass: 'person')
+      render Common::PageNav.new(collection: people, path: '/people')
 
       div(class: 'list-group') do
         people.each do |person|
@@ -29,13 +27,13 @@ class People::IndexView < ApplicationView
         end
       end
 
-      render Common::PageNav.new(pages:, page:, klass: 'person')
+      render Common::PageNav.new(collection: people, path: '/people')
     end
   end
 
   private
 
-  attr_reader :people, :page, :pages
+  attr_reader :people
 
   def person_name_link(person)
     link_for(

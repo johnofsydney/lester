@@ -262,11 +262,6 @@ Lint/EmptyFile:
 Lint/MissingSuper:
   Enabled: false
 
-# Offense count: 1
-Lint/NonLocalExitFromIterator:
-  Exclude:
-    - 'app/views/components/common/page_nav.rb'
-
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowedMethods.
