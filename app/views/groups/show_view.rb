@@ -27,9 +27,6 @@ class Groups::ShowView < ApplicationView
       )
       render Common::GraphSummary.new(entity: group.cached)
 
-      ##################################################
-      # TODO: these no longer need to be in turbo frames
-      # all these components need pagination
       turbo_frame(id: 'people', src: "/groups/group_people/#{group.id}", loading: :lazy) do
         p(class: 'grey') { 'Fetching People...'  }
       end
@@ -37,8 +34,6 @@ class Groups::ShowView < ApplicationView
       turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}/page=#{page_number}", loading: :lazy) do
         p(class: 'grey') { 'Fetching Affiliated Groups...'  }
       end
-      # TODO: these no longer need to be in turbo frames
-      ##################################################
 
       render TransfersTableComponent.new(
         entity: group,
