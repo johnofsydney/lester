@@ -627,2247 +627,2456 @@
     time: *100
   type:
   views: 53
-- id: 100
-  name: hawker britton group pty limited
+- id: 124504
+  name: banking
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &101 2024-09-16 01:00:31.690603000 Z
+    utc: &101 2026-02-25 23:21:28.968963000 Z
     zone: *2
     time: *101
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &102 2026-08-20 12:16:21.384584000 Z
+    utc: &102 2026-08-21 10:14:29.003594000 Z
     zone: *2
     time: *102
+  category: false
+  business_number:
+  nodes_count_cached: 10
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &103 2026-08-20 20:15:32.264899000 Z
+    zone: *2
+    time: *103
+  type: Tag
+  views: 411
+- id: 100
+  name: hawker britton group pty limited
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &104 2024-09-16 01:00:31.690603000 Z
+    zone: *2
+    time: *104
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &105 2026-08-20 12:16:21.384584000 Z
+    zone: *2
+    time: *105
   category: false
   business_number: '79109681405'
   nodes_count_cached: 179
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &103 2026-08-20 12:16:21.207816000 Z
+    utc: &106 2026-08-20 12:16:21.207816000 Z
     zone: *2
-    time: *103
+    time: *106
   type:
   views: 13
 - id: 535
   name: centre alliance
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &104 2024-09-16 01:01:52.650236000 Z
+    utc: &107 2024-09-16 01:01:52.650236000 Z
     zone: *2
-    time: *104
+    time: *107
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &105 2026-08-18 10:24:48.087771000 Z
+    utc: &108 2026-08-18 10:24:48.087771000 Z
     zone: *2
-    time: *105
+    time: *108
   category: false
   business_number:
   nodes_count_cached: 3
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &106 2026-08-20 21:15:07.787373000 Z
+    utc: &109 2026-08-20 21:15:07.787373000 Z
     zone: *2
-    time: *106
+    time: *109
   type:
   views: 19
 - id: 207
   name: the greens (tas)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &107 2024-09-16 01:00:43.845573000 Z
+    utc: &110 2024-09-16 01:00:43.845573000 Z
     zone: *2
-    time: *107
+    time: *110
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &108 2026-08-18 07:06:23.097319000 Z
+    utc: &111 2026-08-18 07:06:23.097319000 Z
     zone: *2
-    time: *108
+    time: *111
   category: false
   business_number:
   nodes_count_cached: 4
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &109 2026-08-20 12:16:22.951396000 Z
+    utc: &112 2026-08-20 12:16:22.951396000 Z
     zone: *2
-    time: *109
+    time: *112
   type:
   views: 90
 - id: 38
   name: liberal democratic party
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &110 2024-09-16 01:00:25.466299000 Z
+    utc: &113 2024-09-16 01:00:25.466299000 Z
     zone: *2
-    time: *110
+    time: *113
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &111 2026-08-18 03:28:52.248314000 Z
+    utc: &114 2026-08-18 03:28:52.248314000 Z
     zone: *2
-    time: *111
+    time: *114
   category: false
   business_number:
   nodes_count_cached: 2
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &112 2026-08-20 21:52:36.813197000 Z
+    utc: &115 2026-08-20 21:52:36.813197000 Z
     zone: *2
-    time: *112
+    time: *115
   type:
   views: 75
 - id: 20
   name: alp (qld)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &113 2024-09-16 01:00:23.955380000 Z
+    utc: &116 2024-09-16 01:00:23.955380000 Z
     zone: *2
-    time: *113
+    time: *116
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &114 2026-08-18 20:49:16.858282000 Z
+    utc: &117 2026-08-18 20:49:16.858282000 Z
     zone: *2
-    time: *114
+    time: *117
   category: false
   business_number:
   nodes_count_cached: 25
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &115 2026-08-20 21:52:36.743944000 Z
+    utc: &118 2026-08-20 21:52:36.743944000 Z
     zone: *2
-    time: *115
+    time: *118
   type:
   views: 158
 - id: 2
   name: liberals (federal)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &116 2024-09-16 01:00:23.266297000 Z
+    utc: &119 2024-09-16 01:00:23.266297000 Z
     zone: *2
-    time: *116
+    time: *119
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &117 2026-08-18 03:41:03.299801000 Z
+    utc: &120 2026-08-18 03:41:03.299801000 Z
     zone: *2
-    time: *117
+    time: *120
   category: false
   business_number:
   nodes_count_cached: 64
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &118 2026-08-20 20:16:00.009517000 Z
+    utc: &121 2026-08-20 20:16:00.009517000 Z
     zone: *2
-    time: *118
+    time: *121
   type:
   views: 196
 - id: 1380
   name: michael johnson associates pty limited
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &119 2024-11-11 09:10:54.097058000 Z
+    utc: &122 2024-11-11 09:10:54.097058000 Z
     zone: *2
-    time: *119
+    time: *122
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &120 2026-08-20 21:15:18.396604000 Z
+    utc: &123 2026-08-20 21:15:18.396604000 Z
     zone: *2
-    time: *120
+    time: *123
   category: false
   business_number: '65003644657'
   nodes_count_cached: 9
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &121 2026-08-20 21:15:18.253199000 Z
+    utc: &124 2026-08-20 21:15:18.253199000 Z
     zone: *2
-    time: *121
+    time: *124
   type:
   views: 2
 - id: 3847
   name: south eastern sydney area health service
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &122 2025-04-14 10:58:53.590859000 Z
+    utc: &125 2025-04-14 10:58:53.590859000 Z
     zone: *2
-    time: *122
+    time: *125
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &123 2026-08-16 09:30:50.464187000 Z
+    utc: &126 2026-08-16 09:30:50.464187000 Z
     zone: *2
-    time: *123
+    time: *126
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &124 2026-08-20 10:16:19.017707000 Z
+    utc: &127 2026-08-20 10:16:19.017707000 Z
     zone: *2
-    time: *124
+    time: *127
   type:
   views: 24
 - id: 70
   name: country liberal party (nt)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &125 2024-09-16 01:00:28.963401000 Z
+    utc: &128 2024-09-16 01:00:28.963401000 Z
     zone: *2
-    time: *125
+    time: *128
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &126 2026-08-18 08:00:39.601809000 Z
+    utc: &129 2026-08-18 08:00:39.601809000 Z
     zone: *2
-    time: *126
+    time: *129
   category: false
   business_number:
   nodes_count_cached: 3
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &127 2026-08-20 21:15:59.617466000 Z
+    utc: &130 2026-08-20 21:15:59.617466000 Z
     zone: *2
-    time: *127
+    time: *130
   type:
   views: 42
 - id: 69980
   name: nambour lind lane theatre incorporated
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &128 2025-11-11 01:40:50.395834000 Z
+    utc: &131 2025-11-11 01:40:50.395834000 Z
     zone: *2
-    time: *128
+    time: *131
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &129 2026-08-19 20:15:14.742632000 Z
+    utc: &132 2026-08-19 20:15:14.742632000 Z
     zone: *2
-    time: *129
+    time: *132
   category: false
   business_number: '83190266799'
   nodes_count_cached: 10
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &130 2026-08-20 12:16:49.391604000 Z
+    utc: &133 2026-08-20 12:16:49.391604000 Z
     zone: *2
-    time: *130
+    time: *133
   type:
   views: 1
 - id: 3855
   name: cpac australia august 2023
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &131 2025-04-21 12:31:24.319660000 Z
+    utc: &134 2025-04-21 12:31:24.319660000 Z
     zone: *2
-    time: *131
+    time: *134
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &132 2026-08-20 00:05:01.252776000 Z
+    utc: &135 2026-08-20 00:05:01.252776000 Z
     zone: *2
-    time: *132
+    time: *135
   category: false
   business_number:
   nodes_count_cached: 41
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &133 2026-08-20 20:46:37.678034000 Z
+    utc: &136 2026-08-20 20:46:37.678034000 Z
     zone: *2
-    time: *133
+    time: *136
   type:
   views: 44
 - id: 1383
   name: the agenda group pty ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &134 2024-11-11 09:10:54.211237000 Z
+    utc: &137 2024-11-11 09:10:54.211237000 Z
     zone: *2
-    time: *134
+    time: *137
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &135 2026-08-20 20:46:49.858740000 Z
+    utc: &138 2026-08-20 20:46:49.858740000 Z
     zone: *2
-    time: *135
+    time: *138
   category: false
   business_number: '92118248892'
   nodes_count_cached: 20
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &136 2026-08-20 20:46:49.721674000 Z
+    utc: &139 2026-08-20 20:46:49.721674000 Z
     zone: *2
-    time: *136
+    time: *139
   type:
   views: 45
+- id: 124515
+  name: recruitment and labour hire
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &140 2026-02-25 23:21:31.515024000 Z
+    zone: *2
+    time: *140
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &141 2026-08-18 03:05:04.515647000 Z
+    zone: *2
+    time: *141
+  category: false
+  business_number:
+  nodes_count_cached: 116
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &142 2026-08-20 20:47:09.576271000 Z
+    zone: *2
+    time: *142
+  type: Tag
+  views: 433
 - id: 128827
   name: palmer united party
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &137 2026-03-14 08:02:26.372232000 Z
+    utc: &143 2026-03-14 08:02:26.372232000 Z
     zone: *2
-    time: *137
+    time: *143
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &138 2026-08-18 19:28:54.948673000 Z
+    utc: &144 2026-08-18 19:28:54.948673000 Z
     zone: *2
-    time: *138
+    time: *144
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &139 2026-08-20 12:22:01.324001000 Z
+    utc: &145 2026-08-20 12:22:01.324001000 Z
     zone: *2
-    time: *139
+    time: *145
   type:
   views: 46
 - id: 3844
   name: edelman
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &140 2025-04-14 10:58:53.491121000 Z
-    zone: *2
-    time: *140
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &141 2026-08-16 11:21:17.802173000 Z
-    zone: *2
-    time: *141
-  category: false
-  business_number:
-  nodes_count_cached: 1
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &142 2026-08-20 12:22:03.267400000 Z
-    zone: *2
-    time: *142
-  type:
-  views: 22
-- id: 3983
-  name: australian electoral commission
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &143 2025-08-22 07:43:30.396962000 Z
-    zone: *2
-    time: *143
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &144 2026-08-18 09:06:15.934608000 Z
-    zone: *2
-    time: *144
-  category: false
-  business_number: '21133285851'
-  nodes_count_cached: 0
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &145 2026-08-20 12:22:05.672911000 Z
-    zone: *2
-    time: *145
-  type:
-  views: 139
-- id: 3827
-  name: north sydney federal electorate
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &146 2025-04-14 10:58:53.156841000 Z
+    utc: &146 2025-04-14 10:58:53.491121000 Z
     zone: *2
     time: *146
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &147 2026-08-17 18:52:13.538621000 Z
+    utc: &147 2026-08-16 11:21:17.802173000 Z
     zone: *2
     time: *147
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &148 2026-08-20 19:37:02.046920000 Z
+    utc: &148 2026-08-20 12:22:03.267400000 Z
     zone: *2
     time: *148
   type:
-  views: 25
-- id: 3828
-  name: harrison riedel foundation
+  views: 22
+- id: 3983
+  name: australian electoral commission
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &149 2025-04-14 10:58:53.193496000 Z
+    utc: &149 2025-08-22 07:43:30.396962000 Z
     zone: *2
     time: *149
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &150 2026-08-17 18:52:15.475653000 Z
+    utc: &150 2026-08-18 09:06:15.934608000 Z
     zone: *2
     time: *150
   category: false
-  business_number:
-  nodes_count_cached: 1
+  business_number: '21133285851'
+  nodes_count_cached: 0
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &151 2026-08-20 19:37:02.072865000 Z
+    utc: &151 2026-08-20 12:22:05.672911000 Z
     zone: *2
     time: *151
   type:
-  views: 23
-- id: 3834
-  name: kylea tink & associates
+  views: 139
+- id: 3827
+  name: north sydney federal electorate
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &152 2025-04-14 10:58:53.310030000 Z
+    utc: &152 2025-04-14 10:58:53.156841000 Z
     zone: *2
     time: *152
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &153 2026-08-17 19:37:00.683717000 Z
+    utc: &153 2026-08-17 18:52:13.538621000 Z
     zone: *2
     time: *153
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &154 2026-08-20 19:37:02.168011000 Z
+    utc: &154 2026-08-20 19:37:02.046920000 Z
     zone: *2
     time: *154
   type:
   views: 25
-- id: 3833
-  name: camp quality
+- id: 3828
+  name: harrison riedel foundation
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &155 2025-04-14 10:58:53.272884000 Z
+    utc: &155 2025-04-14 10:58:53.193496000 Z
     zone: *2
     time: *155
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &156 2026-08-17 19:58:02.068823000 Z
+    utc: &156 2026-08-17 18:52:15.475653000 Z
     zone: *2
     time: *156
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &157 2026-08-20 19:37:02.402535000 Z
+    utc: &157 2026-08-20 19:37:02.072865000 Z
     zone: *2
     time: *157
   type:
-  views: 22
-- id: 4253
-  name: department of foreign affairs & trade
+  views: 23
+- id: 3834
+  name: kylea tink & associates
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &158 2025-08-22 07:43:44.094391000 Z
+    utc: &158 2025-04-14 10:58:53.310030000 Z
     zone: *2
     time: *158
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &159 2026-08-18 21:19:24.049759000 Z
+    utc: &159 2026-08-17 19:37:00.683717000 Z
     zone: *2
     time: *159
   category: false
-  business_number: '47065634525'
+  business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &160 2026-08-20 19:21:32.334222000 Z
+    utc: &160 2026-08-20 19:37:02.168011000 Z
     zone: *2
     time: *160
   type:
-  views: 208
-- id: 3836
-  name: we're better than this australia (#wbttaus)
+  views: 25
+- id: 3833
+  name: camp quality
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &161 2025-04-14 10:58:53.342354000 Z
+    utc: &161 2025-04-14 10:58:53.272884000 Z
     zone: *2
     time: *161
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &162 2026-08-17 21:14:27.154394000 Z
+    utc: &162 2026-08-17 19:58:02.068823000 Z
     zone: *2
     time: *162
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &163 2026-08-20 19:37:02.597890000 Z
+    utc: &163 2026-08-20 19:37:02.402535000 Z
     zone: *2
     time: *163
   type:
-  views: 23
-- id: 3993
-  name: department of veterans' affairs & the repatriation commission and the military
-    rehabilitation and compensation commission
+  views: 22
+- id: 4253
+  name: department of foreign affairs & trade
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &164 2025-08-22 07:43:30.981240000 Z
+    utc: &164 2025-08-22 07:43:44.094391000 Z
     zone: *2
     time: *164
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &165 2026-08-18 02:56:31.399204000 Z
+    utc: &165 2026-08-18 21:19:24.049759000 Z
     zone: *2
     time: *165
   category: false
-  business_number: '23964290824'
+  business_number: '47065634525'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &166 2026-08-20 19:21:34.149869000 Z
+    utc: &166 2026-08-20 19:21:32.334222000 Z
     zone: *2
     time: *166
   type:
-  views: 256
-- id: 3842
-  name: economics group
+  views: 208
+- id: 3836
+  name: we're better than this australia (#wbttaus)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &167 2025-04-14 10:58:53.454584000 Z
+    utc: &167 2025-04-14 10:58:53.342354000 Z
     zone: *2
     time: *167
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &168 2026-08-16 18:57:01.960882000 Z
+    utc: &168 2026-08-17 21:14:27.154394000 Z
     zone: *2
     time: *168
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &169 2026-08-20 19:21:37.052842000 Z
+    utc: &169 2026-08-20 19:37:02.597890000 Z
     zone: *2
     time: *169
   type:
-  views: 20
-- id: 3822
-  name: federal seat of north sydney
+  views: 23
+- id: 3993
+  name: department of veterans' affairs & the repatriation commission and the military
+    rehabilitation and compensation commission
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &170 2025-04-14 10:58:53.007077000 Z
+    utc: &170 2025-08-22 07:43:30.981240000 Z
     zone: *2
     time: *170
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &171 2026-08-16 20:15:29.696238000 Z
+    utc: &171 2026-08-18 02:56:31.399204000 Z
     zone: *2
     time: *171
   category: false
-  business_number:
+  business_number: '23964290824'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &172 2026-08-20 20:31:05.489697000 Z
+    utc: &172 2026-08-20 19:21:34.149869000 Z
     zone: *2
     time: *172
   type:
-  views: 24
-- id: 3824
-  name: chicks in the hood
+  views: 256
+- id: 3842
+  name: economics group
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &173 2025-04-14 10:58:53.119923000 Z
+    utc: &173 2025-04-14 10:58:53.454584000 Z
     zone: *2
     time: *173
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &174 2026-08-16 20:29:05.053041000 Z
+    utc: &174 2026-08-16 18:57:01.960882000 Z
     zone: *2
     time: *174
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &175 2026-08-20 20:31:13.384122000 Z
+    utc: &175 2026-08-20 19:21:37.052842000 Z
     zone: *2
     time: *175
+  type:
+  views: 20
+- id: 3822
+  name: federal seat of north sydney
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &176 2025-04-14 10:58:53.007077000 Z
+    zone: *2
+    time: *176
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &177 2026-08-16 20:15:29.696238000 Z
+    zone: *2
+    time: *177
+  category: false
+  business_number:
+  nodes_count_cached: 1
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &178 2026-08-20 20:31:05.489697000 Z
+    zone: *2
+    time: *178
+  type:
+  views: 24
+- id: 3824
+  name: chicks in the hood
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &179 2025-04-14 10:58:53.119923000 Z
+    zone: *2
+    time: *179
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &180 2026-08-16 20:29:05.053041000 Z
+    zone: *2
+    time: *180
+  category: false
+  business_number:
+  nodes_count_cached: 1
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &181 2026-08-20 20:31:13.384122000 Z
+    zone: *2
+    time: *181
   type:
   views: 23
 - id: 124507
   name: australian labor party
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &176 2026-02-25 23:21:29.085934000 Z
+    utc: &182 2026-02-25 23:21:29.085934000 Z
     zone: *2
-    time: *176
+    time: *182
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &177 2026-08-18 03:30:10.534446000 Z
+    utc: &183 2026-08-18 03:30:10.534446000 Z
     zone: *2
-    time: *177
+    time: *183
   category: false
   business_number:
   nodes_count_cached: 9
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &178 2026-08-20 19:22:01.567863000 Z
+    utc: &184 2026-08-20 19:22:01.567863000 Z
     zone: *2
-    time: *178
+    time: *184
   type: Tag
   views: 830
 - id: 4298
   name: attorney-generals department
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &179 2025-08-22 07:43:46.919287000 Z
+    utc: &185 2025-08-22 07:43:46.919287000 Z
     zone: *2
-    time: *179
+    time: *185
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &180 2026-08-18 02:49:52.328220000 Z
+    utc: &186 2026-08-18 02:49:52.328220000 Z
     zone: *2
-    time: *180
+    time: *186
   category: false
   business_number: '92661124436'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &181 2026-08-20 20:31:21.251151000 Z
+    utc: &187 2026-08-20 20:31:21.251151000 Z
     zone: *2
-    time: *181
+    time: *187
   type:
   views: 171
 - id: 5246
   name: australian taxation office
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &182 2025-08-22 07:44:52.042085000 Z
+    utc: &188 2025-08-22 07:44:52.042085000 Z
     zone: *2
-    time: *182
+    time: *188
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &183 2026-08-18 10:51:20.164551000 Z
+    utc: &189 2026-08-18 10:51:20.164551000 Z
     zone: *2
-    time: *183
+    time: *189
   category: false
   business_number: '51824753556'
   nodes_count_cached: 0
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &184 2026-08-20 20:31:27.104807000 Z
+    utc: &190 2026-08-20 20:31:27.104807000 Z
     zone: *2
-    time: *184
+    time: *190
   type:
   views: 183
 - id: 9
   name: alp (sa)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &185 2024-09-16 01:00:23.503405000 Z
+    utc: &191 2024-09-16 01:00:23.503405000 Z
     zone: *2
-    time: *185
+    time: *191
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &186 2026-08-18 10:48:10.929449000 Z
+    utc: &192 2026-08-18 10:48:10.929449000 Z
     zone: *2
-    time: *186
+    time: *192
   category: false
   business_number:
   nodes_count_cached: 15
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &187 2026-08-20 20:31:30.809900000 Z
+    utc: &193 2026-08-20 20:31:30.809900000 Z
     zone: *2
-    time: *187
+    time: *193
   type:
   views: 141
 - id: 4000
   name: australian competition & consumer commission
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &188 2025-08-22 07:43:31.232982000 Z
+    utc: &194 2025-08-22 07:43:31.232982000 Z
     zone: *2
-    time: *188
+    time: *194
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &189 2026-08-20 17:44:17.541434000 Z
+    utc: &195 2026-08-20 17:44:17.541434000 Z
     zone: *2
-    time: *189
+    time: *195
   category: false
   business_number: '94410483623'
   nodes_count_cached: 0
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &190 2026-08-20 20:31:32.233282000 Z
+    utc: &196 2026-08-20 20:31:32.233282000 Z
     zone: *2
-    time: *190
+    time: *196
   type:
   views: 141
 - id: 643
   name: sas consulting group pty ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &191 2024-09-16 01:02:11.010559000 Z
+    utc: &197 2024-09-16 01:02:11.010559000 Z
     zone: *2
-    time: *191
+    time: *197
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &192 2026-08-20 20:57:21.153620000 Z
+    utc: &198 2026-08-20 20:57:21.153620000 Z
     zone: *2
-    time: *192
+    time: *198
   category: false
   business_number: '33136520548'
   nodes_count_cached: 56
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &193 2026-08-20 20:57:20.963786000 Z
+    utc: &199 2026-08-20 20:57:20.963786000 Z
     zone: *2
-    time: *193
+    time: *199
   type:
   views: 37
 - id: 8
   name: alp (federal)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &194 2024-09-16 01:00:23.464638000 Z
+    utc: &200 2024-09-16 01:00:23.464638000 Z
     zone: *2
-    time: *194
+    time: *200
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &195 2026-08-18 10:03:39.265355000 Z
+    utc: &201 2026-08-18 10:03:39.265355000 Z
     zone: *2
-    time: *195
+    time: *201
   category: false
   business_number:
   nodes_count_cached: 133
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &196 2026-08-20 20:57:31.326098000 Z
+    utc: &202 2026-08-20 20:57:31.326098000 Z
     zone: *2
-    time: *196
+    time: *202
   type:
   views: 206
 - id: 35240
   name: ipswich kindergarten association incorporated
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &197 2025-11-11 00:48:16.402529000 Z
+    utc: &203 2025-11-11 00:48:16.402529000 Z
     zone: *2
-    time: *197
+    time: *203
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &198 2026-08-16 11:26:05.326546000 Z
+    utc: &204 2026-08-16 11:26:05.326546000 Z
     zone: *2
-    time: *198
+    time: *204
   category: false
   business_number: '24246239042'
   nodes_count_cached: 6
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &199 2026-08-20 12:22:21.155919000 Z
+    utc: &205 2026-08-20 12:22:21.155919000 Z
     zone: *2
-    time: *199
+    time: *205
   type:
   views: 1
 - id: 1301
   name: gracosway pty ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &200 2024-11-11 09:10:50.100581000 Z
+    utc: &206 2024-11-11 09:10:50.100581000 Z
     zone: *2
-    time: *200
+    time: *206
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &201 2026-08-20 20:57:59.646406000 Z
+    utc: &207 2026-08-20 20:57:59.646406000 Z
     zone: *2
-    time: *201
+    time: *207
   category: false
   business_number: '50082123822'
   nodes_count_cached: 155
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &202 2026-08-20 20:57:59.479170000 Z
+    utc: &208 2026-08-20 20:57:59.479170000 Z
     zone: *2
-    time: *202
+    time: *208
   type:
   views: 33
 - id: 4132
   name: australian federal police
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &203 2025-08-22 07:43:37.094500000 Z
+    utc: &209 2025-08-22 07:43:37.094500000 Z
     zone: *2
-    time: *203
+    time: *209
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &204 2026-08-18 02:09:21.263626000 Z
+    utc: &210 2026-08-18 02:09:21.263626000 Z
     zone: *2
-    time: *204
+    time: *210
   category: false
   business_number: '17864931143'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &205 2026-08-20 20:58:12.287905000 Z
+    utc: &211 2026-08-20 20:58:12.287905000 Z
     zone: *2
-    time: *205
+    time: *211
   type:
   views: 154
 - id: 18
   name: alp (nsw)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &206 2024-09-16 01:00:23.870715000 Z
+    utc: &212 2024-09-16 01:00:23.870715000 Z
     zone: *2
-    time: *206
+    time: *212
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &207 2026-08-20 19:37:21.566277000 Z
+    utc: &213 2026-08-20 19:37:21.566277000 Z
     zone: *2
-    time: *207
+    time: *213
   category: false
   business_number:
   nodes_count_cached: 406
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &208 2026-08-20 19:37:21.565407000 Z
+    utc: &214 2026-08-20 19:37:21.565407000 Z
     zone: *2
-    time: *208
+    time: *214
   type:
   views: 191
 - id: 1474
   name: influence corporation pty ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &209 2024-11-11 09:10:59.374249000 Z
+    utc: &215 2024-11-11 09:10:59.374249000 Z
     zone: *2
-    time: *209
+    time: *215
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &210 2026-08-16 19:18:01.363582000 Z
+    utc: &216 2026-08-16 19:18:01.363582000 Z
     zone: *2
-    time: *210
+    time: *216
   category: false
   business_number: '79671703156'
   nodes_count_cached: 25
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &211 2026-08-20 19:37:25.188410000 Z
+    utc: &217 2026-08-20 19:37:25.188410000 Z
     zone: *2
-    time: *211
+    time: *217
   type:
   views: 0
 - id: 12
   name: liberals (sa)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &212 2024-09-16 01:00:23.554987000 Z
+    utc: &218 2024-09-16 01:00:23.554987000 Z
     zone: *2
-    time: *212
+    time: *218
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &213 2026-08-18 07:58:44.635309000 Z
+    utc: &219 2026-08-18 07:58:44.635309000 Z
     zone: *2
-    time: *213
+    time: *219
   category: false
   business_number:
   nodes_count_cached: 14
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &214 2026-08-20 12:22:29.632677000 Z
+    utc: &220 2026-08-20 12:22:29.632677000 Z
     zone: *2
-    time: *214
+    time: *220
   type:
   views: 136
 - id: 28830
   name: sydney youth musical theatre (hornsby) inc
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &215 2025-11-11 00:41:33.947613000 Z
+    utc: &221 2025-11-11 00:41:33.947613000 Z
     zone: *2
-    time: *215
+    time: *221
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &216 2026-08-20 03:29:39.324664000 Z
+    utc: &222 2026-08-20 03:29:39.324664000 Z
     zone: *2
-    time: *216
+    time: *222
   category: false
   business_number: '29581005304'
   nodes_count_cached: 11
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &217 2026-08-20 19:37:34.361462000 Z
+    utc: &223 2026-08-20 19:37:34.361462000 Z
     zone: *2
-    time: *217
+    time: *223
   type:
   views: 5
+- id: 124503
+  name: insurance
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &224 2026-02-25 23:21:28.927593000 Z
+    zone: *2
+    time: *224
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &225 2026-08-21 06:08:54.993065000 Z
+    zone: *2
+    time: *225
+  category: false
+  business_number:
+  nodes_count_cached: 36
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &226 2026-08-20 21:11:34.420941000 Z
+    zone: *2
+    time: *226
+  type: Tag
+  views: 387
 - id: 124514
   name: government departments (au, federal & state)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &218 2026-02-25 23:21:31.474688000 Z
+    utc: &227 2026-02-25 23:21:31.474688000 Z
     zone: *2
-    time: *218
+    time: *227
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &219 2026-08-18 10:54:15.010944000 Z
+    utc: &228 2026-08-18 10:54:15.010944000 Z
     zone: *2
-    time: *219
+    time: *228
   category: false
   business_number:
   nodes_count_cached: 156
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &220 2026-08-20 21:11:34.416733000 Z
+    utc: &229 2026-08-20 21:11:34.416733000 Z
     zone: *2
-    time: *220
+    time: *229
   type: Tag
   views: 475
+- id: 124500
+  name: consulting
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &230 2026-02-25 23:21:28.810937000 Z
+    zone: *2
+    time: *230
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &231 2026-08-19 11:45:36.130224000 Z
+    zone: *2
+    time: *231
+  category: false
+  business_number:
+  nodes_count_cached: 17
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &232 2026-08-20 21:11:34.374111000 Z
+    zone: *2
+    time: *232
+  type: Tag
+  views: 488
+- id: 124499
+  name: gambling
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &233 2026-02-25 23:21:28.773251000 Z
+    zone: *2
+    time: *233
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &234 2026-08-18 03:14:39.314676000 Z
+    zone: *2
+    time: *234
+  category: false
+  business_number:
+  nodes_count_cached: 19
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &235 2026-08-20 21:11:33.934783000 Z
+    zone: *2
+    time: *235
+  type: Tag
+  views: 561
 - id: 3879
   name: services australia
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &221 2025-08-22 07:43:20.922662000 Z
+    utc: &236 2025-08-22 07:43:20.922662000 Z
     zone: *2
-    time: *221
+    time: *236
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &222 2026-08-18 04:58:17.294800000 Z
+    utc: &237 2026-08-18 04:58:17.294800000 Z
     zone: *2
-    time: *222
+    time: *237
   category: false
   business_number: '90794605008'
   nodes_count_cached: 0
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &223 2026-08-20 21:11:37.747695000 Z
+    utc: &238 2026-08-20 21:11:37.747695000 Z
     zone: *2
-    time: *223
+    time: *238
   type:
   views: 187
 - id: 4093
   name: department of health, disability and ageing
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &224 2025-08-22 07:43:35.340873000 Z
+    utc: &239 2025-08-22 07:43:35.340873000 Z
     zone: *2
-    time: *224
+    time: *239
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &225 2026-08-18 02:59:29.004092000 Z
+    utc: &240 2026-08-18 02:59:29.004092000 Z
     zone: *2
-    time: *225
+    time: *240
   category: false
   business_number: '83605426759'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &226 2026-08-20 19:37:58.693236000 Z
+    utc: &241 2026-08-20 19:37:58.693236000 Z
     zone: *2
-    time: *226
+    time: *241
   type:
   views: 445
 - id: 4051
   name: australian trade and investment commission
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &227 2025-08-22 07:43:33.370162000 Z
+    utc: &242 2025-08-22 07:43:33.370162000 Z
     zone: *2
-    time: *227
+    time: *242
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &228 2026-08-21 03:48:17.952139000 Z
+    utc: &243 2026-08-21 03:48:17.952139000 Z
     zone: *2
-    time: *228
+    time: *243
   category: false
   business_number: '11764698227'
   nodes_count_cached: 0
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &229 2026-08-20 20:19:10.759666000 Z
+    utc: &244 2026-08-20 20:19:10.759666000 Z
     zone: *2
-    time: *229
+    time: *244
   type:
   views: 139
 - id: 124508
   name: the greens
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &230 2026-02-25 23:21:29.120087000 Z
+    utc: &245 2026-02-25 23:21:29.120087000 Z
     zone: *2
-    time: *230
+    time: *245
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &231 2026-08-21 02:47:42.485301000 Z
+    utc: &246 2026-08-21 02:47:42.485301000 Z
     zone: *2
-    time: *231
+    time: *246
   category: false
   business_number:
   nodes_count_cached: 9
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &232 2026-08-20 21:18:38.216753000 Z
+    utc: &247 2026-08-20 21:18:38.216753000 Z
     zone: *2
-    time: *232
+    time: *247
   type: Tag
   views: 566
 - id: 57014
   name: bunbury primary school parents and citizens' association incorporated
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &233 2025-11-11 01:17:59.976598000 Z
+    utc: &248 2025-11-11 01:17:59.976598000 Z
     zone: *2
-    time: *233
+    time: *248
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &234 2026-08-16 20:36:54.646238000 Z
+    utc: &249 2026-08-16 20:36:54.646238000 Z
     zone: *2
-    time: *234
+    time: *249
   category: false
   business_number: '66572988711'
   nodes_count_cached: 8
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &235 2026-08-20 21:18:46.021582000 Z
+    utc: &250 2026-08-20 21:18:46.021582000 Z
     zone: *2
-    time: *235
+    time: *250
   type:
   views: 0
 - id: 68425
   name: the trustee for non nobis solum fund
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &236 2025-11-11 01:37:54.316049000 Z
+    utc: &251 2025-11-11 01:37:54.316049000 Z
     zone: *2
-    time: *236
+    time: *251
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &237 2026-08-16 11:20:49.326680000 Z
+    utc: &252 2026-08-16 11:20:49.326680000 Z
     zone: *2
-    time: *237
+    time: *252
   category: false
   business_number: '70639571820'
   nodes_count_cached: 9
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &238 2026-08-20 12:26:53.497154000 Z
+    utc: &253 2026-08-20 12:26:53.497154000 Z
     zone: *2
-    time: *238
+    time: *253
   type:
   views: 0
 - id: 47569
   name: wildcare queanbeyan inc
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &239 2025-11-11 01:03:48.338689000 Z
+    utc: &254 2025-11-11 01:03:48.338689000 Z
     zone: *2
-    time: *239
+    time: *254
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &240 2026-08-16 11:15:32.127396000 Z
+    utc: &255 2026-08-16 11:15:32.127396000 Z
     zone: *2
-    time: *240
+    time: *255
   category: false
   business_number: '50551249939'
   nodes_count_cached: 3
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &241 2026-08-20 12:26:53.948591000 Z
+    utc: &256 2026-08-20 12:26:53.948591000 Z
     zone: *2
-    time: *241
+    time: *256
   type:
   views: 0
 - id: 4145
   name: department of social services
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &242 2025-08-22 07:43:37.597425000 Z
+    utc: &257 2025-08-22 07:43:37.597425000 Z
     zone: *2
-    time: *242
+    time: *257
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &243 2026-08-18 10:15:09.754377000 Z
+    utc: &258 2026-08-18 10:15:09.754377000 Z
     zone: *2
-    time: *243
+    time: *258
   category: false
   business_number: '36342015855'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &244 2026-08-20 21:22:45.256045000 Z
+    utc: &259 2026-08-20 21:22:45.256045000 Z
     zone: *2
-    time: *244
+    time: *259
   type:
   views: 162
 - id: 29117
   name: australian dairy conference ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &245 2025-11-11 00:41:50.723330000 Z
+    utc: &260 2025-11-11 00:41:50.723330000 Z
     zone: *2
-    time: *245
+    time: *260
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &246 2026-08-17 22:04:30.474430000 Z
+    utc: &261 2026-08-17 22:04:30.474430000 Z
     zone: *2
-    time: *246
+    time: *261
   category: false
   business_number: '31099697248'
   nodes_count_cached: 11
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &247 2026-08-20 20:52:08.088538000 Z
+    utc: &262 2026-08-20 20:52:08.088538000 Z
     zone: *2
-    time: *247
+    time: *262
   type:
   views: 5
 - id: 1323
   name: banksia strategic partners pty ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &248 2024-11-11 09:10:51.334875000 Z
+    utc: &263 2024-11-11 09:10:51.334875000 Z
     zone: *2
-    time: *248
+    time: *263
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &249 2026-08-20 20:52:16.300781000 Z
+    utc: &264 2026-08-20 20:52:16.300781000 Z
     zone: *2
-    time: *249
+    time: *264
   category: false
   business_number: '50660359866'
   nodes_count_cached: 41
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &250 2026-08-20 20:52:16.158611000 Z
+    utc: &265 2026-08-20 20:52:16.158611000 Z
     zone: *2
-    time: *250
+    time: *265
   type:
   views: 3
 - id: 90033
   name: department of finance
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &251 2025-12-13 11:36:25.962473000 Z
+    utc: &266 2025-12-13 11:36:25.962473000 Z
     zone: *2
-    time: *251
+    time: *266
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &252 2026-08-20 12:22:49.815772000 Z
+    utc: &267 2026-08-20 12:22:49.815772000 Z
     zone: *2
-    time: *252
+    time: *267
   category: false
   business_number: '61970632495'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &253 2026-08-20 20:52:55.430348000 Z
+    utc: &268 2026-08-20 20:52:55.430348000 Z
     zone: *2
-    time: *253
+    time: *268
   type:
   views: 165
 - id: 49824
   name: catholic education western australia limited
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &254 2025-11-11 01:07:01.070551000 Z
+    utc: &269 2025-11-11 01:07:01.070551000 Z
     zone: *2
-    time: *254
+    time: *269
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &255 2026-08-18 13:21:23.525738000 Z
+    utc: &270 2026-08-18 13:21:23.525738000 Z
     zone: *2
-    time: *255
+    time: *270
   category: false
   business_number: '47634504135'
   nodes_count_cached: 13
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &256 2026-08-20 21:22:49.951978000 Z
+    utc: &271 2026-08-20 21:22:49.951978000 Z
     zone: *2
-    time: *256
+    time: *271
   type:
   views: 2
 - id: 5510
   name: department of parliamentary services
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &257 2025-08-22 07:45:15.887952000 Z
+    utc: &272 2025-08-22 07:45:15.887952000 Z
     zone: *2
-    time: *257
+    time: *272
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &258 2026-08-20 00:41:06.137184000 Z
+    utc: &273 2026-08-20 00:41:06.137184000 Z
     zone: *2
-    time: *258
+    time: *273
   category: false
   business_number: '52997141147'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &259 2026-08-20 21:23:09.044236000 Z
+    utc: &274 2026-08-20 21:23:09.044236000 Z
     zone: *2
-    time: *259
+    time: *274
   type:
   views: 94
 - id: 3975
   name: department of agriculture, fisheries and forestry
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &260 2025-08-22 07:43:29.985461000 Z
+    utc: &275 2025-08-22 07:43:29.985461000 Z
     zone: *2
-    time: *260
+    time: *275
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &261 2026-08-19 11:50:01.089847000 Z
+    utc: &276 2026-08-19 11:50:01.089847000 Z
     zone: *2
-    time: *261
+    time: *276
   category: false
   business_number: '34190894983'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &262 2026-08-20 21:23:15.947379000 Z
+    utc: &277 2026-08-20 21:23:15.947379000 Z
     zone: *2
-    time: *262
+    time: *277
   type:
   views: 183
 - id: 21
   name: liberals (tas)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &263 2024-09-16 01:00:24.084326000 Z
+    utc: &278 2024-09-16 01:00:24.084326000 Z
     zone: *2
-    time: *263
+    time: *278
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &264 2026-08-19 00:43:14.482669000 Z
+    utc: &279 2026-08-19 00:43:14.482669000 Z
     zone: *2
-    time: *264
+    time: *279
   category: false
   business_number:
   nodes_count_cached: 10
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &265 2026-08-20 12:27:09.568852000 Z
+    utc: &280 2026-08-20 12:27:09.568852000 Z
     zone: *2
-    time: *265
+    time: *280
   type:
   views: 160
 - id: 68149
   name: the trustee for liangis family foundation
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &266 2025-11-11 01:37:23.109694000 Z
+    utc: &281 2025-11-11 01:37:23.109694000 Z
     zone: *2
-    time: *266
+    time: *281
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &267 2026-08-19 17:32:32.242372000 Z
+    utc: &282 2026-08-19 17:32:32.242372000 Z
     zone: *2
-    time: *267
+    time: *282
   category: false
   business_number: '70030205471'
   nodes_count_cached: 2
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &268 2026-08-20 21:33:23.377191000 Z
+    utc: &283 2026-08-20 21:33:23.377191000 Z
     zone: *2
-    time: *268
+    time: *283
   type:
   views: 5
 - id: 133
   name: alp (nt)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &269 2024-09-16 01:00:36.618235000 Z
+    utc: &284 2024-09-16 01:00:36.618235000 Z
     zone: *2
-    time: *269
+    time: *284
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &270 2026-08-18 04:30:40.682055000 Z
+    utc: &285 2026-08-18 04:30:40.682055000 Z
     zone: *2
-    time: *270
+    time: *285
   category: false
   business_number:
   nodes_count_cached: 5
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &271 2026-08-20 20:45:16.100200000 Z
+    utc: &286 2026-08-20 20:45:16.100200000 Z
     zone: *2
-    time: *271
+    time: *286
   type:
   views: 111
-- id: 124506
-  name: liberal / national coalition
+- id: 124511
+  name: alcohol
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &272 2026-02-25 23:21:29.045901000 Z
+    utc: &287 2026-02-25 23:21:29.454908000 Z
     zone: *2
-    time: *272
+    time: *287
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &273 2026-08-18 07:59:35.803125000 Z
+    utc: &288 2026-08-19 11:45:29.939474000 Z
     zone: *2
-    time: *273
+    time: *288
   category: false
   business_number:
   nodes_count_cached: 17
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &274 2026-08-20 19:47:35.437241000 Z
+    utc: &289 2026-08-20 20:45:26.016563000 Z
     zone: *2
-    time: *274
+    time: *289
+  type: Tag
+  views: 589
+- id: 124506
+  name: liberal / national coalition
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &290 2026-02-25 23:21:29.045901000 Z
+    zone: *2
+    time: *290
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &291 2026-08-18 07:59:35.803125000 Z
+    zone: *2
+    time: *291
+  category: false
+  business_number:
+  nodes_count_cached: 17
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &292 2026-08-20 19:47:35.437241000 Z
+    zone: *2
+    time: *292
   type: Tag
   views: 645
+- id: 124505
+  name: defence
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &293 2026-02-25 23:21:29.004829000 Z
+    zone: *2
+    time: *293
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &294 2026-08-19 11:47:13.854449000 Z
+    zone: *2
+    time: *294
+  category: false
+  business_number:
+  nodes_count_cached: 27
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &295 2026-08-20 19:47:35.393376000 Z
+    zone: *2
+    time: *295
+  type: Tag
+  views: 472
+- id: 124502
+  name: energy
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &296 2026-02-25 23:21:28.884342000 Z
+    zone: *2
+    time: *296
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &297 2026-08-18 14:42:52.734155000 Z
+    zone: *2
+    time: *297
+  category: false
+  business_number:
+  nodes_count_cached: 151
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &298 2026-08-20 19:47:35.262000000 Z
+    zone: *2
+    time: *298
+  type: Tag
+  views: 531
 - id: 2886
   name: national catholic education commission
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &275 2025-02-02 01:18:27.359070000 Z
+    utc: &299 2025-02-02 01:18:27.359070000 Z
     zone: *2
-    time: *275
+    time: *299
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &276 2026-08-16 20:12:44.067664000 Z
+    utc: &300 2026-08-16 20:12:44.067664000 Z
     zone: *2
-    time: *276
+    time: *300
   category: false
   business_number: '98732490221'
   nodes_count_cached: 19
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &277 2026-08-20 20:26:05.551551000 Z
+    utc: &301 2026-08-20 20:26:05.551551000 Z
     zone: *2
-    time: *277
+    time: *301
   type:
   views: 3
 - id: 19
   name: nationals (federal)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &278 2024-09-16 01:00:23.930356000 Z
+    utc: &302 2024-09-16 01:00:23.930356000 Z
     zone: *2
-    time: *278
+    time: *302
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &279 2026-08-18 10:51:03.209470000 Z
+    utc: &303 2026-08-18 10:51:03.209470000 Z
     zone: *2
-    time: *279
+    time: *303
   category: false
   business_number:
   nodes_count_cached: 19
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &280 2026-08-20 20:26:18.458772000 Z
+    utc: &304 2026-08-20 20:26:18.458772000 Z
     zone: *2
-    time: *280
+    time: *304
   type:
   views: 132
 - id: 880
   name: family first party
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &281 2024-09-16 01:02:49.939836000 Z
+    utc: &305 2024-09-16 01:02:49.939836000 Z
     zone: *2
-    time: *281
+    time: *305
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &282 2026-08-16 19:02:59.183590000 Z
+    utc: &306 2026-08-16 19:02:59.183590000 Z
     zone: *2
-    time: *282
+    time: *306
   category: false
   business_number:
   nodes_count_cached: 2
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &283 2026-08-20 19:48:14.389719000 Z
+    utc: &307 2026-08-20 19:48:14.389719000 Z
     zone: *2
-    time: *283
+    time: *307
   type:
   views: 42
 - id: 278
   name: the greens (nsw)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &284 2024-09-16 01:00:54.899690000 Z
+    utc: &308 2024-09-16 01:00:54.899690000 Z
     zone: *2
-    time: *284
+    time: *308
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &285 2026-08-20 21:35:20.139040000 Z
+    utc: &309 2026-08-20 21:35:20.139040000 Z
     zone: *2
-    time: *285
+    time: *309
   category: false
   business_number:
   nodes_count_cached: 113
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &286 2026-08-20 21:35:20.138192000 Z
+    utc: &310 2026-08-20 21:35:20.138192000 Z
     zone: *2
-    time: *286
+    time: *310
   type:
   views: 89
 - id: 8180
   name: children and young people with disability australia
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &287 2025-08-22 07:52:15.496929000 Z
+    utc: &311 2025-08-22 07:52:15.496929000 Z
     zone: *2
-    time: *287
+    time: *311
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &288 2026-08-18 07:26:17.534665000 Z
+    utc: &312 2026-08-18 07:26:17.534665000 Z
     zone: *2
-    time: *288
+    time: *312
   category: false
   business_number: '42140529273'
   nodes_count_cached: 13
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &289 2026-08-20 19:32:18.744671000 Z
+    utc: &313 2026-08-20 19:32:18.744671000 Z
     zone: *2
-    time: *289
+    time: *313
   type:
   views: 35
 - id: 34
   name: pauline hanson's one nation
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &290 2024-09-16 01:00:25.128007000 Z
+    utc: &314 2024-09-16 01:00:25.128007000 Z
     zone: *2
-    time: *290
+    time: *314
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &291 2026-08-18 09:08:07.212789000 Z
+    utc: &315 2026-08-18 09:08:07.212789000 Z
     zone: *2
-    time: *291
+    time: *315
   category: false
   business_number:
   nodes_count_cached: 13
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &292 2026-08-20 21:37:10.735608000 Z
+    utc: &316 2026-08-20 21:37:10.735608000 Z
     zone: *2
-    time: *292
+    time: *316
   type:
   views: 128
 - id: 4116
   name: department of industry, science and resources
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &293 2025-08-22 07:43:36.456724000 Z
+    utc: &317 2025-08-22 07:43:36.456724000 Z
     zone: *2
-    time: *293
+    time: *317
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &294 2026-08-18 10:44:47.773254000 Z
+    utc: &318 2026-08-18 10:44:47.773254000 Z
     zone: *2
-    time: *294
+    time: *318
   category: false
   business_number: '74599608295'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &295 2026-08-20 20:14:10.391239000 Z
+    utc: &319 2026-08-20 20:14:10.391239000 Z
     zone: *2
-    time: *295
+    time: *319
   type:
   views: 151
 - id: 1584
   name: speakers at never again is now rally october 2024
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &296 2024-11-13 11:05:53.743211000 Z
+    utc: &320 2024-11-13 11:05:53.743211000 Z
     zone: *2
-    time: *296
+    time: *320
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &297 2026-08-21 21:23:40.202097000 Z
+    utc: &321 2026-08-21 21:23:40.202097000 Z
     zone: *2
-    time: *297
+    time: *321
   category: false
   business_number:
   nodes_count_cached: 10
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &298 2026-08-20 21:38:42.864424000 Z
+    utc: &322 2026-08-20 21:38:42.864424000 Z
     zone: *2
-    time: *298
+    time: *322
   type:
   views: 15
 - id: 3887
   name: department of infrastructure, transport, regional development, communications,
     sport and the arts
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &299 2025-08-22 07:43:21.478016000 Z
+    utc: &323 2025-08-22 07:43:21.478016000 Z
     zone: *2
-    time: *299
+    time: *323
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &300 2026-08-18 03:12:57.114653000 Z
+    utc: &324 2026-08-18 03:12:57.114653000 Z
     zone: *2
-    time: *300
+    time: *324
   category: false
   business_number: '86267354017'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &301 2026-08-20 19:52:40.368535000 Z
+    utc: &325 2026-08-20 19:52:40.368535000 Z
     zone: *2
-    time: *301
+    time: *325
   type:
   views: 170
 - id: 3740
   name: nsw parliament
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &302 2025-03-13 22:40:50.610010000 Z
+    utc: &326 2025-03-13 22:40:50.610010000 Z
     zone: *2
-    time: *302
+    time: *326
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &303 2026-08-18 09:43:50.654298000 Z
+    utc: &327 2026-08-18 09:43:50.654298000 Z
     zone: *2
-    time: *303
+    time: *327
   category: false
   business_number:
   nodes_count_cached: 512
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &304 2026-08-20 21:38:51.580732000 Z
+    utc: &328 2026-08-20 21:38:51.580732000 Z
     zone: *2
-    time: *304
+    time: *328
   type:
   views: 126
 - id: 14
   name: nationals (wa)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &305 2024-09-16 01:00:23.680492000 Z
+    utc: &329 2024-09-16 01:00:23.680492000 Z
     zone: *2
-    time: *305
+    time: *329
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &306 2026-08-18 20:28:42.520175000 Z
+    utc: &330 2026-08-18 20:28:42.520175000 Z
     zone: *2
-    time: *306
+    time: *330
   category: false
   business_number:
   nodes_count_cached: 5
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &307 2026-08-20 10:20:32.134639000 Z
+    utc: &331 2026-08-20 10:20:32.134639000 Z
     zone: *2
-    time: *307
+    time: *331
   type:
   views: 85
 - id: 324
   name: united australia party
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &308 2024-09-16 01:01:02.760651000 Z
-    zone: *2
-    time: *308
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &309 2026-08-18 09:44:10.240938000 Z
-    zone: *2
-    time: *309
-  category: false
-  business_number:
-  nodes_count_cached: 2
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &310 2026-08-20 19:53:46.088557000 Z
-    zone: *2
-    time: *310
-  type:
-  views: 48
-- id: 124154
-  name: australia's voice
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &311 2026-02-02 22:05:37.000286000 Z
-    zone: *2
-    time: *311
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &312 2026-08-19 01:10:34.114637000 Z
-    zone: *2
-    time: *312
-  category: false
-  business_number:
-  nodes_count_cached: 1
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &313 2026-08-20 20:39:33.289004000 Z
-    zone: *2
-    time: *313
-  type:
-  views: 32
-- id: 729
-  name: australians for unity ltd
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &314 2024-09-16 01:02:31.832573000 Z
-    zone: *2
-    time: *314
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &315 2026-08-18 10:51:26.569855000 Z
-    zone: *2
-    time: *315
-  category: false
-  business_number:
-  nodes_count_cached: 2
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &316 2026-08-20 20:40:07.582392000 Z
-    zone: *2
-    time: *316
-  type:
-  views: 76
-- id: 4039
-  name: department of employment and workplace relations
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &317 2025-08-22 07:43:32.785683000 Z
-    zone: *2
-    time: *317
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &318 2026-08-18 10:33:04.908543000 Z
-    zone: *2
-    time: *318
-  category: false
-  business_number: '96584957427'
-  nodes_count_cached: 1
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &319 2026-08-20 20:41:26.064907000 Z
-    zone: *2
-    time: *319
-  type:
-  views: 149
-- id: 1309
-  name: wilkinson butler pty ltd
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &320 2024-11-11 09:10:50.614046000 Z
-    zone: *2
-    time: *320
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &321 2026-08-20 20:41:35.823765000 Z
-    zone: *2
-    time: *321
-  category: false
-  business_number: '95164204111'
-  nodes_count_cached: 30
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &322 2026-08-20 20:41:35.740860000 Z
-    zone: *2
-    time: *322
-  type:
-  views: 4
-- id: 1641
-  name: australians for prosperity
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &323 2025-01-15 11:40:41.538857000 Z
-    zone: *2
-    time: *323
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &324 2026-08-19 04:35:29.437669000 Z
-    zone: *2
-    time: *324
-  category: false
-  business_number:
-  nodes_count_cached: 7
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &325 2026-08-20 20:41:38.524948000 Z
-    zone: *2
-    time: *325
-  type:
-  views: 40
-- id: 4997
-  name: bureau of meteorology
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &326 2025-08-22 07:44:33.855853000 Z
-    zone: *2
-    time: *326
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &327 2026-08-20 06:17:43.944072000 Z
-    zone: *2
-    time: *327
-  category: false
-  business_number: '92637533532'
-  nodes_count_cached: 0
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &328 2026-08-20 20:41:46.375944000 Z
-    zone: *2
-    time: *328
-  type:
-  views: 126
-- id: 4269
-  name: australian signals directorate
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &329 2025-08-22 07:43:45.289199000 Z
-    zone: *2
-    time: *329
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &330 2026-08-18 08:43:02.252201000 Z
-    zone: *2
-    time: *330
-  category: false
-  business_number: '22323254583'
-  nodes_count_cached: 0
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &331 2026-08-20 20:56:07.250093000 Z
-    zone: *2
-    time: *331
-  type:
-  views: 146
-- id: 35
-  name: liberals (act)
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &332 2024-09-16 01:00:25.202731000 Z
+    utc: &332 2024-09-16 01:01:02.760651000 Z
     zone: *2
     time: *332
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &333 2026-08-18 17:33:10.836079000 Z
+    utc: &333 2026-08-18 09:44:10.240938000 Z
     zone: *2
     time: *333
   category: false
   business_number:
   nodes_count_cached: 2
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &334 2026-08-20 21:24:00.576527000 Z
+    utc: &334 2026-08-20 19:53:46.088557000 Z
     zone: *2
     time: *334
+  type:
+  views: 48
+- id: 124154
+  name: australia's voice
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &335 2026-02-02 22:05:37.000286000 Z
+    zone: *2
+    time: *335
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &336 2026-08-19 01:10:34.114637000 Z
+    zone: *2
+    time: *336
+  category: false
+  business_number:
+  nodes_count_cached: 1
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &337 2026-08-20 20:39:33.289004000 Z
+    zone: *2
+    time: *337
+  type:
+  views: 32
+- id: 729
+  name: australians for unity ltd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &338 2024-09-16 01:02:31.832573000 Z
+    zone: *2
+    time: *338
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &339 2026-08-18 10:51:26.569855000 Z
+    zone: *2
+    time: *339
+  category: false
+  business_number:
+  nodes_count_cached: 2
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &340 2026-08-20 20:40:07.582392000 Z
+    zone: *2
+    time: *340
+  type:
+  views: 76
+- id: 4039
+  name: department of employment and workplace relations
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &341 2025-08-22 07:43:32.785683000 Z
+    zone: *2
+    time: *341
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &342 2026-08-18 10:33:04.908543000 Z
+    zone: *2
+    time: *342
+  category: false
+  business_number: '96584957427'
+  nodes_count_cached: 1
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &343 2026-08-20 20:41:26.064907000 Z
+    zone: *2
+    time: *343
+  type:
+  views: 149
+- id: 1309
+  name: wilkinson butler pty ltd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &344 2024-11-11 09:10:50.614046000 Z
+    zone: *2
+    time: *344
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &345 2026-08-20 20:41:35.823765000 Z
+    zone: *2
+    time: *345
+  category: false
+  business_number: '95164204111'
+  nodes_count_cached: 30
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &346 2026-08-20 20:41:35.740860000 Z
+    zone: *2
+    time: *346
+  type:
+  views: 4
+- id: 1641
+  name: australians for prosperity
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &347 2025-01-15 11:40:41.538857000 Z
+    zone: *2
+    time: *347
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &348 2026-08-19 04:35:29.437669000 Z
+    zone: *2
+    time: *348
+  category: false
+  business_number:
+  nodes_count_cached: 7
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &349 2026-08-20 20:41:38.524948000 Z
+    zone: *2
+    time: *349
+  type:
+  views: 40
+- id: 4997
+  name: bureau of meteorology
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &350 2025-08-22 07:44:33.855853000 Z
+    zone: *2
+    time: *350
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &351 2026-08-20 06:17:43.944072000 Z
+    zone: *2
+    time: *351
+  category: false
+  business_number: '92637533532'
+  nodes_count_cached: 0
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &352 2026-08-20 20:41:46.375944000 Z
+    zone: *2
+    time: *352
+  type:
+  views: 126
+- id: 4269
+  name: australian signals directorate
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &353 2025-08-22 07:43:45.289199000 Z
+    zone: *2
+    time: *353
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &354 2026-08-18 08:43:02.252201000 Z
+    zone: *2
+    time: *354
+  category: false
+  business_number: '22323254583'
+  nodes_count_cached: 0
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &355 2026-08-20 20:56:07.250093000 Z
+    zone: *2
+    time: *355
+  type:
+  views: 146
+- id: 35
+  name: liberals (act)
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &356 2024-09-16 01:00:25.202731000 Z
+    zone: *2
+    time: *356
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &357 2026-08-18 17:33:10.836079000 Z
+    zone: *2
+    time: *357
+  category: false
+  business_number:
+  nodes_count_cached: 2
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &358 2026-08-20 21:24:00.576527000 Z
+    zone: *2
+    time: *358
   type:
   views: 93
 - id: 54
   name: the greens (wa)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &335 2024-09-16 01:00:27.887931000 Z
+    utc: &359 2024-09-16 01:00:27.887931000 Z
     zone: *2
-    time: *335
+    time: *359
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &336 2026-08-18 05:44:43.805654000 Z
+    utc: &360 2026-08-18 05:44:43.805654000 Z
     zone: *2
-    time: *336
+    time: *360
   category: false
   business_number:
   nodes_count_cached: 5
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &337 2026-08-20 20:36:43.245742000 Z
+    utc: &361 2026-08-20 20:36:43.245742000 Z
     zone: *2
-    time: *337
+    time: *361
   type:
   views: 80
 - id: 594
   name: keldoulis investments pty ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &338 2024-09-16 01:02:00.033607000 Z
+    utc: &362 2024-09-16 01:02:00.033607000 Z
     zone: *2
-    time: *338
+    time: *362
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &339 2026-08-18 08:21:46.517072000 Z
+    utc: &363 2026-08-18 08:21:46.517072000 Z
     zone: *2
-    time: *339
+    time: *363
   category: false
   business_number:
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &340 2026-08-20 20:36:57.565330000 Z
+    utc: &364 2026-08-20 20:36:57.565330000 Z
     zone: *2
-    time: *340
+    time: *364
   type:
   views: 69
 - id: 77330
   name: post office projects incorporated
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &341 2025-11-11 01:55:27.210083000 Z
+    utc: &365 2025-11-11 01:55:27.210083000 Z
     zone: *2
-    time: *341
+    time: *365
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &342 2026-08-16 20:33:56.747475000 Z
+    utc: &366 2026-08-16 20:33:56.747475000 Z
     zone: *2
-    time: *342
+    time: *366
   category: false
   business_number: '79822449048'
   nodes_count_cached: 10
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &343 2026-08-20 20:37:04.986511000 Z
+    utc: &367 2026-08-20 20:37:04.986511000 Z
     zone: *2
-    time: *343
+    time: *367
   type:
   views: 0
 - id: 65876
   name: adelaide hills kangaroo rescue
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &344 2025-11-11 01:33:12.252281000 Z
+    utc: &368 2025-11-11 01:33:12.252281000 Z
     zone: *2
-    time: *344
+    time: *368
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &345 2026-08-16 20:38:15.191323000 Z
+    utc: &369 2026-08-16 20:38:15.191323000 Z
     zone: *2
-    time: *345
+    time: *369
   category: false
   business_number: '82265426410'
   nodes_count_cached: 4
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &346 2026-08-20 21:39:59.073374000 Z
+    utc: &370 2026-08-20 21:39:59.073374000 Z
     zone: *2
-    time: *346
+    time: *370
   type:
   views: 0
 - id: 4897
   name: geoscience australia
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &347 2025-08-22 07:44:26.636832000 Z
+    utc: &371 2025-08-22 07:44:26.636832000 Z
     zone: *2
-    time: *347
+    time: *371
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &348 2026-08-18 10:05:26.644833000 Z
+    utc: &372 2026-08-18 10:05:26.644833000 Z
     zone: *2
-    time: *348
+    time: *372
   category: false
   business_number: '80091799039'
   nodes_count_cached: 0
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &349 2026-08-20 21:40:11.888745000 Z
+    utc: &373 2026-08-20 21:40:11.888745000 Z
     zone: *2
-    time: *349
+    time: *373
   type:
   views: 146
 - id: 55368
   name: creative broadcasters limited
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &350 2025-11-11 01:15:22.434155000 Z
+    utc: &374 2025-11-11 01:15:22.434155000 Z
     zone: *2
-    time: *350
+    time: *374
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &351 2026-08-16 20:39:39.613375000 Z
+    utc: &375 2026-08-16 20:39:39.613375000 Z
     zone: *2
-    time: *351
+    time: *375
   category: false
   business_number: '62009950958'
   nodes_count_cached: 10
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &352 2026-08-20 21:06:09.103116000 Z
+    utc: &376 2026-08-20 21:06:09.103116000 Z
     zone: *2
-    time: *352
+    time: *376
   type:
   views: 0
 - id: 4406
   name: department of the treasury
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &353 2025-08-22 07:43:52.865482000 Z
+    utc: &377 2025-08-22 07:43:52.865482000 Z
     zone: *2
-    time: *353
+    time: *377
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &354 2026-08-18 10:51:12.801035000 Z
+    utc: &378 2026-08-18 10:51:12.801035000 Z
     zone: *2
-    time: *354
+    time: *378
   category: false
   business_number: '92802414793'
   nodes_count_cached: 0
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &355 2026-08-20 21:06:14.905770000 Z
+    utc: &379 2026-08-20 21:06:14.905770000 Z
     zone: *2
-    time: *355
+    time: *379
   type:
   views: 156
 - id: 39351
   name: care for africa foundation inc
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &356 2025-11-11 00:53:04.233725000 Z
+    utc: &380 2025-11-11 00:53:04.233725000 Z
     zone: *2
-    time: *356
+    time: *380
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &357 2026-08-16 20:39:51.232382000 Z
+    utc: &381 2026-08-16 20:39:51.232382000 Z
     zone: *2
-    time: *357
+    time: *381
   category: false
   business_number: '44524878796'
   nodes_count_cached: 10
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &358 2026-08-20 21:06:19.986386000 Z
+    utc: &382 2026-08-20 21:06:19.986386000 Z
     zone: *2
-    time: *358
+    time: *382
   type:
   views: 0
 - id: 64983
   name: foundation enterprise number one ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &359 2025-11-11 01:31:34.775943000 Z
+    utc: &383 2025-11-11 01:31:34.775943000 Z
     zone: *2
-    time: *359
+    time: *383
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &360 2026-08-16 19:44:07.552521000 Z
+    utc: &384 2026-08-16 19:44:07.552521000 Z
     zone: *2
-    time: *360
+    time: *384
   category: false
   business_number: '60163969668'
   nodes_count_cached: 9
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &361 2026-08-20 21:42:07.460292000 Z
+    utc: &385 2026-08-20 21:42:07.460292000 Z
     zone: *2
-    time: *361
+    time: *385
   type:
   views: 0
 - id: 1636
   name: megan irene anwyl (sole trader)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &362 2025-01-03 03:02:08.892552000 Z
+    utc: &386 2025-01-03 03:02:08.892552000 Z
     zone: *2
-    time: *362
+    time: *386
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &363 2026-08-16 19:44:51.572464000 Z
+    utc: &387 2026-08-16 19:44:51.572464000 Z
     zone: *2
-    time: *363
+    time: *387
   category: false
   business_number: '13159060561'
   nodes_count_cached: 12
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &364 2026-08-20 21:44:09.612389000 Z
+    utc: &388 2026-08-20 21:44:09.612389000 Z
     zone: *2
-    time: *364
+    time: *388
   type:
   views: 0
+- id: 124501
+  name: pharmaceuticals
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &389 2026-02-25 23:21:28.845975000 Z
+    zone: *2
+    time: *389
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &390 2026-08-18 03:30:51.829247000 Z
+    zone: *2
+    time: *390
+  category: false
+  business_number:
+  nodes_count_cached: 10
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &391 2026-08-20 21:44:48.052558000 Z
+    zone: *2
+    time: *391
+  type: Tag
+  views: 613
 - id: 124510
   name: client of lobbyists
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &365 2026-02-25 23:21:29.278052000 Z
+    utc: &392 2026-02-25 23:21:29.278052000 Z
     zone: *2
-    time: *365
+    time: *392
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &366 2026-08-20 21:44:57.552861000 Z
+    utc: &393 2026-08-20 21:44:57.552861000 Z
     zone: *2
-    time: *366
+    time: *393
   category: false
   business_number:
   nodes_count_cached: 3561
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &367 2026-08-20 21:44:57.551286000 Z
+    utc: &394 2026-08-20 21:44:57.551286000 Z
     zone: *2
-    time: *367
+    time: *394
   type: Tag
   views: 687
 - id: 82
   name: alp (act)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &368 2024-09-16 01:00:30.554588000 Z
-    zone: *2
-    time: *368
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &369 2026-08-18 05:39:09.446333000 Z
-    zone: *2
-    time: *369
-  category: false
-  business_number:
-  nodes_count_cached: 7
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &370 2026-08-20 21:45:26.575786000 Z
-    zone: *2
-    time: *370
-  type:
-  views: 107
-- id: 27421
-  name: domestic violence advocacy australia ltd
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &371 2025-11-11 00:40:12.702172000 Z
-    zone: *2
-    time: *371
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &372 2026-08-16 20:08:28.895214000 Z
-    zone: *2
-    time: *372
-  category: false
-  business_number: '22677473826'
-  nodes_count_cached: 6
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &373 2026-08-20 21:45:30.227070000 Z
-    zone: *2
-    time: *373
-  type:
-  views: 0
-- id: 889
-  name: barnaby's maiden speech
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &374 2024-09-16 01:02:52.555019000 Z
-    zone: *2
-    time: *374
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &375 2026-08-19 16:52:25.851351000 Z
-    zone: *2
-    time: *375
-  category: false
-  business_number:
-  nodes_count_cached: 4
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &376 2026-08-20 21:45:34.201061000 Z
-    zone: *2
-    time: *376
-  type:
-  views: 10
-- id: 949
-  name: the greens (act)
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &377 2024-09-16 01:02:55.589709000 Z
-    zone: *2
-    time: *377
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &378 2026-08-18 09:39:16.982929000 Z
-    zone: *2
-    time: *378
-  category: false
-  business_number:
-  nodes_count_cached: 1
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &379 2026-08-20 21:45:40.855334000 Z
-    zone: *2
-    time: *379
-  type:
-  views: 83
-- id: 60071
-  name: the trustee for carla zampatti foundation
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &380 2025-11-11 01:22:59.731581000 Z
-    zone: *2
-    time: *380
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &381 2026-08-20 10:18:06.972712000 Z
-    zone: *2
-    time: *381
-  category: false
-  business_number: '49052163451'
-  nodes_count_cached: 5
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &382 2026-08-20 21:45:49.188639000 Z
-    zone: *2
-    time: *382
-  type:
-  views: 3
-- id: 124513
-  name: charities
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &383 2026-02-25 23:21:29.526558000 Z
-    zone: *2
-    time: *383
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &384 2026-08-16 20:42:29.404513000 Z
-    zone: *2
-    time: *384
-  category: false
-  business_number:
-  nodes_count_cached: 64897
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &385 2026-08-20 21:45:50.590661000 Z
-    zone: *2
-    time: *385
-  type: Tag
-  views: 294
-- id: 1642
-  name: brisbane city council
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &386 2025-01-15 11:40:41.606667000 Z
-    zone: *2
-    time: *386
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &387 2026-08-18 10:46:56.005193000 Z
-    zone: *2
-    time: *387
-  category: false
-  business_number: '72002765795'
-  nodes_count_cached: 1
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &388 2026-08-20 21:47:19.705379000 Z
-    zone: *2
-    time: *388
-  type:
-  views: 4
-- id: 563
-  name: the greens (nt)
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &389 2024-09-16 01:01:55.988093000 Z
-    zone: *2
-    time: *389
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &390 2026-08-19 18:14:53.878917000 Z
-    zone: *2
-    time: *390
-  category: false
-  business_number:
-  nodes_count_cached: 1
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &391 2026-08-20 21:47:20.829824000 Z
-    zone: *2
-    time: *391
-  type:
-  views: 6
-- id: 2488
-  name: harry perkins institute of medical research inc
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &392 2025-02-02 01:18:14.094574000 Z
-    zone: *2
-    time: *392
-  updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &393 2026-08-16 20:49:31.673207000 Z
-    zone: *2
-    time: *393
-  category: false
-  business_number: '16823190402'
-  nodes_count_cached: 14
-  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &394 2026-08-20 21:48:58.921637000 Z
-    zone: *2
-    time: *394
-  type:
-  views: 1
-- id: 97
-  name: the greens (qld)
-  created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &395 2024-09-16 01:00:31.505139000 Z
+    utc: &395 2024-09-16 01:00:30.554588000 Z
     zone: *2
     time: *395
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &396 2026-08-18 09:39:18.762943000 Z
+    utc: &396 2026-08-18 05:39:09.446333000 Z
     zone: *2
     time: *396
   category: false
   business_number:
   nodes_count_cached: 7
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &397 2026-08-20 21:50:04.185181000 Z
+    utc: &397 2026-08-20 21:45:26.575786000 Z
     zone: *2
     time: *397
+  type:
+  views: 107
+- id: 27421
+  name: domestic violence advocacy australia ltd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &398 2025-11-11 00:40:12.702172000 Z
+    zone: *2
+    time: *398
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &399 2026-08-16 20:08:28.895214000 Z
+    zone: *2
+    time: *399
+  category: false
+  business_number: '22677473826'
+  nodes_count_cached: 6
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &400 2026-08-20 21:45:30.227070000 Z
+    zone: *2
+    time: *400
+  type:
+  views: 0
+- id: 889
+  name: barnaby's maiden speech
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &401 2024-09-16 01:02:52.555019000 Z
+    zone: *2
+    time: *401
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &402 2026-08-19 16:52:25.851351000 Z
+    zone: *2
+    time: *402
+  category: false
+  business_number:
+  nodes_count_cached: 4
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &403 2026-08-20 21:45:34.201061000 Z
+    zone: *2
+    time: *403
+  type:
+  views: 10
+- id: 949
+  name: the greens (act)
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &404 2024-09-16 01:02:55.589709000 Z
+    zone: *2
+    time: *404
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &405 2026-08-18 09:39:16.982929000 Z
+    zone: *2
+    time: *405
+  category: false
+  business_number:
+  nodes_count_cached: 1
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &406 2026-08-20 21:45:40.855334000 Z
+    zone: *2
+    time: *406
+  type:
+  views: 83
+- id: 60071
+  name: the trustee for carla zampatti foundation
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &407 2025-11-11 01:22:59.731581000 Z
+    zone: *2
+    time: *407
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &408 2026-08-20 10:18:06.972712000 Z
+    zone: *2
+    time: *408
+  category: false
+  business_number: '49052163451'
+  nodes_count_cached: 5
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &409 2026-08-20 21:45:49.188639000 Z
+    zone: *2
+    time: *409
+  type:
+  views: 3
+- id: 124513
+  name: charities
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &410 2026-02-25 23:21:29.526558000 Z
+    zone: *2
+    time: *410
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &411 2026-08-16 20:42:29.404513000 Z
+    zone: *2
+    time: *411
+  category: false
+  business_number:
+  nodes_count_cached: 64897
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &412 2026-08-20 21:45:50.590661000 Z
+    zone: *2
+    time: *412
+  type: Tag
+  views: 294
+- id: 124512
+  name: superannuation
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &413 2026-02-25 23:21:29.490997000 Z
+    zone: *2
+    time: *413
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &414 2026-08-19 11:45:40.972388000 Z
+    zone: *2
+    time: *414
+  category: false
+  business_number:
+  nodes_count_cached: 13
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &415 2026-08-20 21:45:52.444736000 Z
+    zone: *2
+    time: *415
+  type: Tag
+  views: 458
+- id: 1642
+  name: brisbane city council
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &416 2025-01-15 11:40:41.606667000 Z
+    zone: *2
+    time: *416
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &417 2026-08-18 10:46:56.005193000 Z
+    zone: *2
+    time: *417
+  category: false
+  business_number: '72002765795'
+  nodes_count_cached: 1
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &418 2026-08-20 21:47:19.705379000 Z
+    zone: *2
+    time: *418
+  type:
+  views: 4
+- id: 563
+  name: the greens (nt)
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &419 2024-09-16 01:01:55.988093000 Z
+    zone: *2
+    time: *419
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &420 2026-08-19 18:14:53.878917000 Z
+    zone: *2
+    time: *420
+  category: false
+  business_number:
+  nodes_count_cached: 1
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &421 2026-08-20 21:47:20.829824000 Z
+    zone: *2
+    time: *421
+  type:
+  views: 6
+- id: 2488
+  name: harry perkins institute of medical research inc
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &422 2025-02-02 01:18:14.094574000 Z
+    zone: *2
+    time: *422
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &423 2026-08-16 20:49:31.673207000 Z
+    zone: *2
+    time: *423
+  category: false
+  business_number: '16823190402'
+  nodes_count_cached: 14
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &424 2026-08-20 21:48:58.921637000 Z
+    zone: *2
+    time: *424
+  type:
+  views: 1
+- id: 97
+  name: the greens (qld)
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &425 2024-09-16 01:00:31.505139000 Z
+    zone: *2
+    time: *425
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &426 2026-08-18 09:39:18.762943000 Z
+    zone: *2
+    time: *426
+  category: false
+  business_number:
+  nodes_count_cached: 7
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &427 2026-08-20 21:50:04.185181000 Z
+    zone: *2
+    time: *427
   type:
   views: 101
 - id: 11
   name: liberal national party (qld)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &398 2024-09-16 01:00:23.537657000 Z
+    utc: &428 2024-09-16 01:00:23.537657000 Z
     zone: *2
-    time: *398
+    time: *428
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &399 2026-08-18 08:37:13.152552000 Z
+    utc: &429 2026-08-18 08:37:13.152552000 Z
     zone: *2
-    time: *399
+    time: *429
   category: false
   business_number:
   nodes_count_cached: 47
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &400 2026-08-20 21:51:14.289202000 Z
+    utc: &430 2026-08-20 21:51:14.289202000 Z
     zone: *2
-    time: *400
+    time: *430
   type:
   views: 174
 - id: 5
   name: liberals (vic)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &401 2024-09-16 01:00:23.339797000 Z
+    utc: &431 2024-09-16 01:00:23.339797000 Z
     zone: *2
-    time: *401
+    time: *431
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &402 2026-08-20 07:14:22.641697000 Z
+    utc: &432 2026-08-20 07:14:22.641697000 Z
     zone: *2
-    time: *402
+    time: *432
   category: false
   business_number:
   nodes_count_cached: 30
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &403 2026-08-20 21:51:18.114262000 Z
+    utc: &433 2026-08-20 21:51:18.114262000 Z
     zone: *2
-    time: *403
+    time: *433
   type:
   views: 183
 - id: 47
   name: nationals (vic)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &404 2024-09-16 01:00:27.255695000 Z
+    utc: &434 2024-09-16 01:00:27.255695000 Z
     zone: *2
-    time: *404
+    time: *434
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &405 2026-08-21 11:17:56.977553000 Z
+    utc: &435 2026-08-21 11:17:56.977553000 Z
     zone: *2
-    time: *405
+    time: *435
   category: false
   business_number:
   nodes_count_cached: 14
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &406 2026-08-20 21:51:20.468453000 Z
+    utc: &436 2026-08-20 21:51:20.468453000 Z
     zone: *2
-    time: *406
+    time: *436
   type:
   views: 105
 - id: 24160
   name: the copland foundation pty ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &407 2025-11-11 00:37:14.814913000 Z
+    utc: &437 2025-11-11 00:37:14.814913000 Z
     zone: *2
-    time: *407
+    time: *437
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &408 2026-08-16 20:21:01.169899000 Z
+    utc: &438 2026-08-16 20:21:01.169899000 Z
     zone: *2
-    time: *408
+    time: *438
   category: false
   business_number: '16029520255'
   nodes_count_cached: 7
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &409 2026-08-20 21:52:39.459529000 Z
+    utc: &439 2026-08-20 21:52:39.459529000 Z
     zone: *2
-    time: *409
+    time: *439
   type:
   views: 0
+- id: 124498
+  name: mining
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &440 2026-02-25 23:21:28.674223000 Z
+    zone: *2
+    time: *440
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &441 2026-08-19 11:45:58.486585000 Z
+    zone: *2
+    time: *441
+  category: false
+  business_number:
+  nodes_count_cached: 132
+  nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &442 2026-08-20 21:52:56.304454000 Z
+    zone: *2
+    time: *442
+  type: Tag
+  views: 504
 - id: 16
   name: liberals (wa)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &410 2024-09-16 01:00:23.723673000 Z
+    utc: &443 2024-09-16 01:00:23.723673000 Z
     zone: *2
-    time: *410
+    time: *443
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &411 2026-08-18 09:49:34.012927000 Z
+    utc: &444 2026-08-18 09:49:34.012927000 Z
     zone: *2
-    time: *411
+    time: *444
   category: false
   business_number:
   nodes_count_cached: 22
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &412 2026-08-20 21:54:21.847153000 Z
+    utc: &445 2026-08-20 21:54:21.847153000 Z
     zone: *2
-    time: *412
+    time: *445
   type:
   views: 185
 - id: 1599
   name: bisalloy steel group
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &413 2024-11-29 06:31:31.927675000 Z
+    utc: &446 2024-11-29 06:31:31.927675000 Z
     zone: *2
-    time: *413
+    time: *446
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &414 2026-08-17 04:13:11.673528000 Z
+    utc: &447 2026-08-17 04:13:11.673528000 Z
     zone: *2
-    time: *414
+    time: *447
   category: false
   business_number:
   nodes_count_cached: 10
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &415 2026-08-20 21:07:42.047375000 Z
+    utc: &448 2026-08-20 21:07:42.047375000 Z
     zone: *2
-    time: *415
+    time: *448
   type:
   views: 3
 - id: 80
   name: the greens (vic)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &416 2024-09-16 01:00:29.956028000 Z
+    utc: &449 2024-09-16 01:00:29.956028000 Z
     zone: *2
-    time: *416
+    time: *449
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &417 2026-08-18 09:39:19.065245000 Z
+    utc: &450 2026-08-18 09:39:19.065245000 Z
     zone: *2
-    time: *417
+    time: *450
   category: false
   business_number:
   nodes_count_cached: 6
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &418 2026-08-20 21:07:43.085726000 Z
+    utc: &451 2026-08-20 21:07:43.085726000 Z
     zone: *2
-    time: *418
+    time: *451
   type:
   views: 125
 - id: 905
   name: the department of the prime minister and cabinet
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &419 2024-09-16 01:02:53.637789000 Z
+    utc: &452 2024-09-16 01:02:53.637789000 Z
     zone: *2
-    time: *419
+    time: *452
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &420 2026-08-18 09:38:23.311153000 Z
+    utc: &453 2026-08-18 09:38:23.311153000 Z
     zone: *2
-    time: *420
+    time: *453
   category: false
   business_number: '18108001191'
   nodes_count_cached: 2
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &421 2026-08-20 10:21:15.054738000 Z
+    utc: &454 2026-08-20 10:21:15.054738000 Z
     zone: *2
-    time: *421
+    time: *454
   type:
   views: 164
 - id: 877
   name: australian federal parliament
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &422 2024-09-16 01:02:38.508666000 Z
+    utc: &455 2024-09-16 01:02:38.508666000 Z
     zone: *2
-    time: *422
+    time: *455
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &423 2026-08-18 09:05:54.258083000 Z
+    utc: &456 2026-08-18 09:05:54.258083000 Z
     zone: *2
-    time: *423
+    time: *456
   category: false
   business_number:
   nodes_count_cached: 249
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &424 2026-08-20 10:21:19.890873000 Z
+    utc: &457 2026-08-20 10:21:19.890873000 Z
     zone: *2
-    time: *424
+    time: *457
   type:
   views: 74
 - id: 1018
   name: fairfield city council
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &425 2024-10-18 00:50:34.167270000 Z
+    utc: &458 2024-10-18 00:50:34.167270000 Z
     zone: *2
-    time: *425
+    time: *458
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &426 2026-08-19 23:31:36.868010000 Z
+    utc: &459 2026-08-19 23:31:36.868010000 Z
     zone: *2
-    time: *426
+    time: *459
   category: false
   business_number: '83140439239'
   nodes_count_cached: 6
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &427 2026-08-20 21:29:41.517604000 Z
+    utc: &460 2026-08-20 21:29:41.517604000 Z
     zone: *2
-    time: *427
+    time: *460
   type:
   views: 12
 - id: 3917
   name: department of education
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &428 2025-08-22 07:43:25.628163000 Z
+    utc: &461 2025-08-22 07:43:25.628163000 Z
     zone: *2
-    time: *428
+    time: *461
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &429 2026-08-18 10:38:32.406302000 Z
+    utc: &462 2026-08-18 10:38:32.406302000 Z
     zone: *2
-    time: *429
+    time: *462
   category: false
   business_number: '12862898150'
   nodes_count_cached: 1
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &430 2026-08-20 19:42:51.607213000 Z
+    utc: &463 2026-08-20 19:42:51.607213000 Z
     zone: *2
-    time: *430
+    time: *463
   type:
   views: 131
 - id: 4233
   name: australian securities & investments commission
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &431 2025-08-22 07:43:42.507917000 Z
+    utc: &464 2025-08-22 07:43:42.507917000 Z
     zone: *2
-    time: *431
+    time: *464
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &432 2026-08-18 09:04:36.122417000 Z
+    utc: &465 2026-08-18 09:04:36.122417000 Z
     zone: *2
-    time: *432
+    time: *465
   category: false
   business_number: '86768265615'
   nodes_count_cached: 0
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &433 2026-08-20 19:42:56.626182000 Z
+    utc: &466 2026-08-20 19:42:56.626182000 Z
     zone: *2
-    time: *433
+    time: *466
   type:
   views: 163
 - id: 94
   name: the greens (federal)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &434 2024-09-16 01:00:31.357287000 Z
+    utc: &467 2024-09-16 01:00:31.357287000 Z
     zone: *2
-    time: *434
+    time: *467
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &435 2026-08-18 06:12:19.206059000 Z
+    utc: &468 2026-08-18 06:12:19.206059000 Z
     zone: *2
-    time: *435
+    time: *468
   category: false
   business_number:
   nodes_count_cached: 15
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &436 2026-08-20 21:20:55.793427000 Z
+    utc: &469 2026-08-20 21:20:55.793427000 Z
     zone: *2
-    time: *436
+    time: *469
   type:
   views: 137
 - id: 7
   name: alp (tas)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &437 2024-09-16 01:00:23.399949000 Z
+    utc: &470 2024-09-16 01:00:23.399949000 Z
     zone: *2
-    time: *437
+    time: *470
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &438 2026-08-18 02:37:30.730849000 Z
+    utc: &471 2026-08-18 02:37:30.730849000 Z
     zone: *2
-    time: *438
+    time: *471
   category: false
   business_number:
   nodes_count_cached: 15
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &439 2026-08-20 21:20:57.037715000 Z
+    utc: &472 2026-08-20 21:20:57.037715000 Z
     zone: *2
-    time: *439
+    time: *472
   type:
   views: 119
 - id: 1367
   name: christopher patrick hayes (sole trader)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &440 2024-11-11 09:10:53.423509000 Z
+    utc: &473 2024-11-11 09:10:53.423509000 Z
     zone: *2
-    time: *440
+    time: *473
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &441 2026-08-18 08:23:40.074521000 Z
+    utc: &474 2026-08-18 08:23:40.074521000 Z
     zone: *2
-    time: *441
+    time: *474
   category: false
   business_number: '83684527602'
   nodes_count_cached: 8
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &442 2026-08-20 21:20:57.772296000 Z
+    utc: &475 2026-08-20 21:20:57.772296000 Z
     zone: *2
-    time: *442
+    time: *475
   type:
   views: 14
 - id: 243
   name: the greens (sa)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &443 2024-09-16 01:00:49.877172000 Z
+    utc: &476 2024-09-16 01:00:49.877172000 Z
     zone: *2
-    time: *443
+    time: *476
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &444 2026-08-18 09:39:18.064674000 Z
+    utc: &477 2026-08-18 09:39:18.064674000 Z
     zone: *2
-    time: *444
+    time: *477
   category: false
   business_number:
   nodes_count_cached: 3
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &445 2026-08-20 21:21:02.635454000 Z
+    utc: &478 2026-08-20 21:21:02.635454000 Z
     zone: *2
-    time: *445
+    time: *478
   type:
   views: 82
 - id: 1463
   name: insight strategy pty ltd
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &446 2024-11-11 09:10:58.809540000 Z
+    utc: &479 2024-11-11 09:10:58.809540000 Z
     zone: *2
-    time: *446
+    time: *479
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &447 2026-08-16 20:27:11.993972000 Z
+    utc: &480 2026-08-16 20:27:11.993972000 Z
     zone: *2
-    time: *447
+    time: *480
   category: false
   business_number: '47609028015'
   nodes_count_cached: 11
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &448 2026-08-20 21:21:02.746638000 Z
+    utc: &481 2026-08-20 21:21:02.746638000 Z
     zone: *2
-    time: *448
+    time: *481
   type:
   views: 0
 - id: 49677
   name: blackheath & thornburgh college
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &449 2025-11-11 01:06:48.180401000 Z
+    utc: &482 2025-11-11 01:06:48.180401000 Z
     zone: *2
-    time: *449
+    time: *482
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &450 2026-08-19 20:16:52.978889000 Z
+    utc: &483 2026-08-19 20:16:52.978889000 Z
     zone: *2
-    time: *450
+    time: *483
   category: false
   business_number: '57107444011'
   nodes_count_cached: 8
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &451 2026-08-20 21:28:15.574158000 Z
+    utc: &484 2026-08-20 21:28:15.574158000 Z
     zone: *2
-    time: *451
+    time: *484
   type:
   views: 1
 - id: 10
   name: alp (vic)
   created_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &452 2024-09-16 01:00:23.520907000 Z
+    utc: &485 2024-09-16 01:00:23.520907000 Z
     zone: *2
-    time: *452
+    time: *485
   updated_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &453 2026-08-19 00:18:15.091328000 Z
+    utc: &486 2026-08-19 00:18:15.091328000 Z
     zone: *2
-    time: *453
+    time: *486
   category: false
   business_number:
   nodes_count_cached: 51
   nodes_count_cached_at: !ruby/object:ActiveSupport::TimeWithZone
-    utc: &454 2026-08-20 20:20:35.305144000 Z
+    utc: &487 2026-08-20 20:20:35.305144000 Z
     zone: *2
-    time: *454
+    time: *487
   type:
   views: 179
