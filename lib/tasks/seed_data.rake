@@ -26,8 +26,10 @@ namespace :seed_data do
     transfers_limit = 2000
 
     # Groups whose IDs are hardcoded elsewhere in the codebase (Group.charities_tag and
-    # friends) plus the major party tags, looked up by name since their IDs aren't fixed.
+    # friends) plus every Tag (party labels, category labels like Charities/Lobbyists) and
+    # the major party tags (redundant with all_tag_ids, but kept explicit for clarity).
     core_group_ids = [124_513, 124_509, 124_510, 124_514, 877, 132_067]
+    all_tag_ids = Tag.pluck(:id)
     major_party_group_ids = Group.where(name: Group.all_named_parties).pluck(:id)
 
     top_group_ids = Group.joins(
@@ -35,7 +37,7 @@ namespace :seed_data do
       'OR (t.taker_type = \'Group\' AND t.taker_id = groups.id)'
     ).group('groups.id').order(Arel.sql('COUNT(t.id) DESC')).limit(top_groups_limit).pluck(:id)
 
-    selected_group_ids = (core_group_ids + major_party_group_ids + top_group_ids).uniq
+    selected_group_ids = (core_group_ids + all_tag_ids + major_party_group_ids + top_group_ids).uniq
 
     federal_member_ids = Membership.where(group_id: 877, member_type: 'Person')
                                    .order(start_date: :desc)
@@ -93,7 +95,8 @@ namespace :seed_data do
     dump(seed_data_dir, 'external_identifiers', external_identifiers)
     dump(seed_data_dir, 'trading_names', trading_names)
 
-    puts "Extracted #{selected_group_ids.size} groups, #{selected_person_ids.size} people, " \
+    puts "Extracted #{selected_group_ids.size} groups (incl. #{all_tag_ids.size} tags), " \
+         "#{selected_person_ids.size} people, " \
          "#{memberships.count} memberships, #{positions.count} positions, " \
          "#{transfers.count} transfers into #{seed_data_dir}"
   end

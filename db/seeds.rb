@@ -42,3 +42,10 @@ SEED_TABLES.each do |table|
   ActiveRecord::Base.connection.reset_pk_sequence!(table)
   puts "Loaded #{rows.size} rows into #{table}"
 end
+
+# Dev/staging login for exercising /admin — not real credentials, never extracted from prod.
+admin_user = AdminUser.find_or_initialize_by(email: 'user@example.org')
+admin_user.password = 'chicken'
+admin_user.password_confirmation = 'chicken'
+admin_user.save!
+puts "Ensured admin user #{admin_user.email}"
