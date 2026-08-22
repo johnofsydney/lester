@@ -12,7 +12,7 @@ Rails.application.routes.draw do
 
   mount Prettytodo::Engine => '/prettytodo' if Rails.env.development?
 
-  get 'groups/group_people/:group_id/page=:page' => 'groups#group_people'
+  get 'groups/group_people/:group_id' => 'groups#group_people'
   get 'groups/affiliated_groups/:group_id/page=:page' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
   get 'groups/:id/reload' => 'groups#reload'

@@ -277,10 +277,11 @@ Lint/ShadowingOuterLocalVariable:
     - 'app/services/build_queue.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
 
-# Offense count: 4
+# Offense count: 3
 Lint/UnreachableCode:
   Exclude:
     - 'app/controllers/groups_controller.rb'
+    - 'app/controllers/transfers_controller.rb'
     - 'app/services/build_queue.rb'
 
 # Offense count: 2
@@ -453,12 +454,6 @@ Rails/Output:
     - 'app/services/file_ingestor.rb'
     - 'app/services/record_group.rb'
     - 'app/services/record_person.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Rails/RedundantPresenceValidationOnBelongsTo:
-  Exclude:
-    - 'app/models/transfer.rb'
 
 # Offense count: 8
 # Configuration parameters: ForbiddenMethods, AllowedMethods.

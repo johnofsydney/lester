@@ -45,18 +45,10 @@ class GroupsController < ApplicationController
   end
 
   def group_people
-    # This action used to have pagination. TODO: re-add pagination into the new format?
     group = Group.find(params[:group_id])
-    page = params[:page].to_i
-    pages = (group.people.count.to_f / page_size).ceil
-
-    people = group.cached
-                  .direct_connections
-                  .filter { |c| c['klass'] == 'Person' }
-                  .sort_by { |c| c['name'] }
 
     #  passing an array of hashes to the view
-    render Groups::PeopleTable.new(people:, exclude_group: group, page:, pages:)
+    render Groups::PeopleTable.new(people: paginated_people_in(group), exclude_group: group)
   end
 
   private
@@ -86,15 +78,15 @@ class GroupsController < ApplicationController
     group
   end
 
-  def page_size
-    return 250
-
-    @page_size ||= Constants::PAGE_LIMIT
-  end
-
   def increment_views
     return if Current.user
 
     @group.increment!(:views)
+  end
+
+  def paginated_people_in(group)
+    people = group.cached.direct_connections.filter { |c| c['klass'] == 'Person' }.sort_by { |c| c['name'] }
+
+    Kaminari.paginate_array(people).page(params[:page])
   end
 end
