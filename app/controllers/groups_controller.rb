@@ -35,11 +35,12 @@ class GroupsController < ApplicationController
 
   def affiliated_groups
     group = Group.find(params[:group_id])
+    direct_connections = group.cached.direct_connections
 
     render Groups::AffiliatedGroups.new(
       group: group,
-      affiliated_groups: paginated_affiliated_groups_in(group),
-      tags: paginated_tags_in(group)
+      affiliated_groups: paginate(direct_connections.filter { |c| (c['klass'] == 'Group') && !c['is_tag'] }, params[:groups_page]),
+      tags: paginate(direct_connections.filter { |c| c['klass'] == 'Tag' }, params[:tags_page])
     )
   end
 
@@ -84,20 +85,12 @@ class GroupsController < ApplicationController
   end
 
   def paginated_people_in(group)
-    people = group.cached.direct_connections.filter { |c| c['klass'] == 'Person' }.sort_by { |c| c['name'] }
+    people = group.cached.direct_connections.filter { |c| c['klass'] == 'Person' }
 
-    Kaminari.paginate_array(people).page(params[:page])
+    paginate(people, params[:page])
   end
 
-  def paginated_affiliated_groups_in(group)
-    groups = group.cached.direct_connections.filter { |c| (c['klass'] == 'Group') && !c['is_tag'] }.sort_by { |c| c['name'] }
-
-    Kaminari.paginate_array(groups).page(params[:groups_page])
-  end
-
-  def paginated_tags_in(group)
-    tags = group.cached.direct_connections.filter { |c| c['klass'] == 'Tag' }.sort_by { |c| c['name'] }
-
-    Kaminari.paginate_array(tags).page(params[:tags_page])
+  def paginate(records, page)
+    Kaminari.paginate_array(records.sort_by { |c| c['name'] }).page(page)
   end
 end

@@ -13,7 +13,12 @@ class Groups::AffiliatedGroups < ApplicationView
       if tags.present?
         h4(class: 'font-italic mt-3') { 'Tags' }
 
-        render Common::PageNav.new(collection: tags, path: "/groups/affiliated_groups/#{group.id}", param_name: 'tags_page')
+        render Common::PageNav.new(
+          collection: tags,
+          path: "/groups/affiliated_groups/#{group.id}",
+          param_name: 'tags_page',
+          extra_params: { groups_page: affiliated_groups.current_page }
+        )
 
         table(class: 'table table-striped responsive-table') do
           tr do
@@ -29,7 +34,12 @@ class Groups::AffiliatedGroups < ApplicationView
       if affiliated_groups.present?
         h4(class: 'font-italic mt-3') { 'Affiliated Groups' }
 
-        render Common::PageNav.new(collection: affiliated_groups, path: "/groups/affiliated_groups/#{group.id}", param_name: 'groups_page')
+        render Common::PageNav.new(
+          collection: affiliated_groups,
+          path: "/groups/affiliated_groups/#{group.id}",
+          param_name: 'groups_page',
+          extra_params: { tags_page: tags.current_page }
+        )
 
         table(class: 'table table-striped responsive-table') do
           tr do
