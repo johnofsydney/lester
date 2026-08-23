@@ -9,8 +9,6 @@ class Groups::ShowView < ApplicationView
   end
 
   def view_template
-    page_number = 0
-
     turbo_cable_stream_source(
       channel: 'Turbo::StreamsChannel',
       signed_stream_name: Turbo::StreamsChannel.signed_stream_name(group)
@@ -31,7 +29,7 @@ class Groups::ShowView < ApplicationView
         p(class: 'grey') { 'Fetching People...'  }
       end
 
-      turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}/page=#{page_number}", loading: :lazy) do
+      turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}", loading: :lazy) do
         p(class: 'grey') { 'Fetching Affiliated Groups...'  }
       end
 
