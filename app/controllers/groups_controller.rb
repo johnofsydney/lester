@@ -91,6 +91,9 @@ class GroupsController < ApplicationController
   end
 
   def paginate(records, page)
+    # Sort before slicing into pages, not after - sorting each page independently
+    # would produce inconsistent ordering, and possibly duplicate/missing rows,
+    # across page boundaries.
     Kaminari.paginate_array(records.sort_by { |c| c['name'] }).page(page)
   end
 end
