@@ -57,6 +57,7 @@ gem 'devise'
 
 gem 'sassc-rails'
 gem 'activeadmin', '~> 3.5'
+gem 'kaminari'
 
 gem 'money-rails', '~> 1.12'
 gem 'capitalize-names'

@@ -539,6 +539,7 @@ DEPENDENCIES
   importmap-rails
   inertia_rails
   jbuilder
+  kaminari
   maintenance_tasks
   money-rails (~> 1.12)
   newrelic_rpm

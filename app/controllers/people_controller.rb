@@ -4,19 +4,14 @@ class PeopleController < ApplicationController
   include Constants
 
   before_action :set_person, only: %i[ show post_to_socials]
-  before_action :set_page, only: %i[ index ]
   before_action :increment_views, only: %i[ show ]
 
   def index
     people = Person.order(:name)
-                   .limit(page_size)
-                   .offset(paginate_offset)
                    .includes([:groups])
-                   .to_a
+                   .page(params[:page])
 
-    pages = (Person.count.to_f / page_size).ceil
-
-    render People::IndexView.new(people:, page: @page, pages:)
+    render People::IndexView.new(people:)
   end
 
   def show
@@ -52,14 +47,6 @@ class PeopleController < ApplicationController
   # Only allow a list of trusted parameters through. Including nested params for memberships
   def person_params
     params.require(:person).permit(:name, memberships_attributes: [:id, :title, :start_date, :end_date, :_destroy])
-  end
-
-  def page_size
-    250
-  end
-
-  def set_page
-    @page = (params[:page] || 0).to_i
   end
 
   def increment_views
