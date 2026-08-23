@@ -61,5 +61,11 @@ RSpec.describe 'Group affiliated groups tab pagination' do
       expect(page_one_tags & page_two_tags).to be_empty
       expect(groups_still_page_one.size).to eq(25)
     end
+
+    it "preserves each list's page in the other list's pagination links, so paging one doesn't reset the other" do
+      get "/groups/affiliated_groups/#{group.id}", params: { tags_page: 2 }
+
+      expect(response.body).to include('groups_page=1&tags_page=2')
+    end
   end
 end
