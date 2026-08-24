@@ -16,7 +16,7 @@ class PeopleController < ApplicationController
 
   def show
     if @person.cache_fresh?
-      render People::ShowView.new(person: @person, groups: paginated_groups_for(@person))
+      render People::ShowView.new(person: @person, groups: paginated_groups_for(@person), transfers_page: params[:transfers_page])
     else
       Cache::BuildPersonCachedDataJob.perform_async(@person.id)
       render Common::PleaseRefreshLater.new(entity: @person)
@@ -28,7 +28,7 @@ class PeopleController < ApplicationController
     Cache::BuildPersonCachedDataJob.perform_async(@person.id)
     @person.reload
 
-    render People::ShowView.new(person: @person, groups: paginated_groups_for(@person))
+    render People::ShowView.new(person: @person, groups: paginated_groups_for(@person), transfers_page: params[:transfers_page])
   end
 
   def post_to_socials

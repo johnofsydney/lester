@@ -1,11 +1,12 @@
 class Groups::ShowView < ApplicationView
   include Phlex::Rails::Helpers::ContentFor
 
-  attr_reader :group
+  attr_reader :group, :transfers_page
 
-  def initialize(group:)
+  def initialize(group:, transfers_page: nil)
     # TODO: push the .cached version further up the stack. stop passing around group
     @group = group
+    @transfers_page = transfers_page
   end
 
   def view_template
@@ -37,7 +38,8 @@ class Groups::ShowView < ApplicationView
         entity: group,
         transfers: group.cached.consolidated_transfers,
         heading: "Connected to #{Nodes::NameCapitalizer.capitalize(group.name)}",
-        summarise_for: Group.summarise_for(group)
+        summarise_for: Group.summarise_for(group),
+        page: transfers_page
       )
 
       if Current.admin_user?
