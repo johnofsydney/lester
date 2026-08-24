@@ -57,5 +57,18 @@ RSpec.describe 'Group people tab pagination' do
       body = response.body
       expect(body.index('Zoe Present Member')).to be < body.index('Aaron Former Member')
     end
+
+    it 'renders ex-members in italics, and current members without that styling' do
+      get "/groups/group_people/#{group.id}"
+
+      doc = Nokogiri::HTML(response.body)
+      rows = doc.css('tr').select { |row| row.text.include?('Present Member') || row.text.include?('Former Member') }
+
+      current_row = rows.find { |row| row.text.include?('Present Member') }
+      ex_row = rows.find { |row| row.text.include?('Former Member') }
+
+      expect(current_row['class'].to_s).not_to include('fst-italic')
+      expect(ex_row['class'].to_s).to include('fst-italic')
+    end
   end
 end
