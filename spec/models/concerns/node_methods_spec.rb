@@ -103,6 +103,19 @@ RSpec.describe NodeMethods do
 
       expect(connections.size).to eq(1)
     end
+
+    it 'marks a connection as current when its Membership has no end_date, and not current otherwise' do
+      current_person = create(:person, name: 'current person')
+      create(:membership, member: current_person, group: group, start_date: Date.new(2020, 1, 1))
+
+      ex_person = create(:person, name: 'ex person')
+      create(:membership, member: ex_person, group: group, start_date: Date.new(2010, 1, 1), end_date: Date.new(2015, 1, 1))
+
+      connections = group.direct_connections.select { |c| c[:klass] == 'Person' }.index_by { |c| c[:id] }
+
+      expect(connections[current_person.id][:current]).to be(true)
+      expect(connections[ex_person.id][:current]).to be(false)
+    end
   end
 
   describe '#direct_connections group-to-group connections' do

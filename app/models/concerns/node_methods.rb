@@ -136,11 +136,11 @@ module NodeMethods
   def direct_connections
     if is_a?(Person)
       memberships.order(start_date: :desc).includes(:positions, :group).map do |membership|
-        node_connection(membership.group, membership.last_position)
+        node_connection(membership.group, membership.last_position, membership)
       end
     else
-      best_person_memberships.map { |membership| node_connection(membership.member, membership.last_position) } +
-        best_group_memberships.map { |membership, other_group| node_connection(other_group, membership.last_position) }
+      best_person_memberships.map { |membership| node_connection(membership.member, membership.last_position, membership) } +
+        best_group_memberships.map { |membership, other_group| node_connection(other_group, membership.last_position, membership) }
     end
   end
 
@@ -173,13 +173,14 @@ module NodeMethods
     membership.end_date.nil? ? [0, 0] : [1, -membership.end_date.to_time.to_i]
   end
 
-  def node_connection(node, position)
+  def node_connection(node, position, membership = nil)
     basic_info = {
       klass: node.class.name,
       id: node.id,
       name: node.name,
       nodes_count: node.nodes_count,
-      is_tag: node.is_tag?
+      is_tag: node.is_tag?,
+      current: membership.nil? || membership.end_date.nil?
     }
 
     formatted_position = format_position(position)
