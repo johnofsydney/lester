@@ -1,0 +1,4058 @@
+---
+- id: 1094
+  owner_type: Person
+  owner_id: 741
+  source: acnc
+  value: 6a93009a-63c9-ee11-907a-00224893b304
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &1 2026-04-13 08:33:40.023290000 Z
+    zone: &2 !ruby/object:ActiveSupport::TimeZone
+      name: Etc/UTC
+    time: *1
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &3 2026-04-13 08:33:40.023290000 Z
+    zone: *2
+    time: *3
+- id: 1548
+  owner_type: Person
+  owner_id: 803
+  source: acnc
+  value: 3854b4d8-dc33-f111-88b4-7ced8da109bc
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &4 2026-04-13 08:41:39.634634000 Z
+    zone: *2
+    time: *4
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &5 2026-04-13 08:41:39.634634000 Z
+    zone: *2
+    time: *5
+- id: 3676
+  owner_type: Person
+  owner_id: 788
+  source: acnc
+  value: ec6bcb54-1fa1-ed11-aad1-0022489733de
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &6 2026-04-13 09:10:50.474844000 Z
+    zone: *2
+    time: *6
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &7 2026-04-13 09:10:50.474844000 Z
+    zone: *2
+    time: *7
+- id: 7355
+  owner_type: Person
+  owner_id: 760
+  source: acnc
+  value: 95d5db8a-c61b-ee11-8f6d-00224893b8c7
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &8 2026-04-13 10:13:29.818379000 Z
+    zone: *2
+    time: *8
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &9 2026-04-13 10:13:29.818379000 Z
+    zone: *2
+    time: *9
+- id: 7837
+  owner_type: Group
+  owner_id: 2
+  source: aec
+  value: '46932'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &10 2026-06-29 07:10:27.281439000 Z
+    zone: *2
+    time: *10
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &11 2026-06-29 07:10:27.281439000 Z
+    zone: *2
+    time: *11
+- id: 7838
+  owner_type: Group
+  owner_id: 3
+  source: aec
+  value: '46'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &12 2026-06-29 07:10:27.308922000 Z
+    zone: *2
+    time: *12
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &13 2026-06-29 07:10:27.308922000 Z
+    zone: *2
+    time: *13
+- id: 7840
+  owner_type: Group
+  owner_id: 5
+  source: aec
+  value: '43'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &14 2026-06-29 07:10:27.353891000 Z
+    zone: *2
+    time: *14
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &15 2026-06-29 07:10:27.353891000 Z
+    zone: *2
+    time: *15
+- id: 7842
+  owner_type: Group
+  owner_id: 7
+  source: aec
+  value: '27'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &16 2026-06-29 07:10:27.389853000 Z
+    zone: *2
+    time: *16
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &17 2026-06-29 07:10:27.389853000 Z
+    zone: *2
+    time: *17
+- id: 7843
+  owner_type: Group
+  owner_id: 8
+  source: aec
+  value: '47093'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &18 2026-06-29 07:10:27.403525000 Z
+    zone: *2
+    time: *18
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &19 2026-06-29 07:10:27.403525000 Z
+    zone: *2
+    time: *19
+- id: 7844
+  owner_type: Group
+  owner_id: 9
+  source: aec
+  value: '54'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &20 2026-06-29 07:10:27.411867000 Z
+    zone: *2
+    time: *20
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &21 2026-06-29 07:10:27.411867000 Z
+    zone: *2
+    time: *21
+- id: 7845
+  owner_type: Group
+  owner_id: 10
+  source: aec
+  value: '51'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &22 2026-06-29 07:10:27.423723000 Z
+    zone: *2
+    time: *22
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &23 2026-06-29 07:10:27.423723000 Z
+    zone: *2
+    time: *23
+- id: 7846
+  owner_type: Group
+  owner_id: 11
+  source: aec
+  value: '211'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &24 2026-06-29 07:10:27.432403000 Z
+    zone: *2
+    time: *24
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &25 2026-06-29 07:10:27.432403000 Z
+    zone: *2
+    time: *25
+- id: 7847
+  owner_type: Group
+  owner_id: 12
+  source: aec
+  value: '44'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &26 2026-06-29 07:10:27.441097000 Z
+    zone: *2
+    time: *26
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &27 2026-06-29 07:10:27.441097000 Z
+    zone: *2
+    time: *27
+- id: 7849
+  owner_type: Group
+  owner_id: 14
+  source: aec
+  value: '49'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &28 2026-06-29 07:10:27.457703000 Z
+    zone: *2
+    time: *28
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &29 2026-06-29 07:10:27.457703000 Z
+    zone: *2
+    time: *29
+- id: 7850
+  owner_type: Group
+  owner_id: 15
+  source: aec
+  value: '53'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &30 2026-06-29 07:10:27.470509000 Z
+    zone: *2
+    time: *30
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &31 2026-06-29 07:10:27.470509000 Z
+    zone: *2
+    time: *31
+- id: 7851
+  owner_type: Group
+  owner_id: 16
+  source: aec
+  value: '41'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &32 2026-06-29 07:10:27.479476000 Z
+    zone: *2
+    time: *32
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &33 2026-06-29 07:10:27.479476000 Z
+    zone: *2
+    time: *33
+- id: 7852
+  owner_type: Group
+  owner_id: 18
+  source: aec
+  value: '50'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &34 2026-06-29 07:10:27.488071000 Z
+    zone: *2
+    time: *34
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &35 2026-06-29 07:10:27.488071000 Z
+    zone: *2
+    time: *35
+- id: 7853
+  owner_type: Group
+  owner_id: 19
+  source: aec
+  value: '47173'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &36 2026-06-29 07:10:27.496362000 Z
+    zone: *2
+    time: *36
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &37 2026-06-29 07:10:27.496362000 Z
+    zone: *2
+    time: *37
+- id: 7854
+  owner_type: Group
+  owner_id: 20
+  source: aec
+  value: '52'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &38 2026-06-29 07:10:27.505029000 Z
+    zone: *2
+    time: *38
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &39 2026-06-29 07:10:27.505029000 Z
+    zone: *2
+    time: *39
+- id: 7855
+  owner_type: Group
+  owner_id: 21
+  source: aec
+  value: '36'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &40 2026-06-29 07:10:27.514210000 Z
+    zone: *2
+    time: *40
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &41 2026-06-29 07:10:27.514210000 Z
+    zone: *2
+    time: *41
+- id: 7856
+  owner_type: Group
+  owner_id: 22
+  source: aec
+  value: '37'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &42 2026-06-29 07:10:27.523156000 Z
+    zone: *2
+    time: *42
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &43 2026-06-29 07:10:27.523156000 Z
+    zone: *2
+    time: *43
+- id: 7865
+  owner_type: Group
+  owner_id: 34
+  source: aec
+  value: '154'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &44 2026-06-29 07:10:27.608442000 Z
+    zone: *2
+    time: *44
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &45 2026-06-29 07:10:27.608442000 Z
+    zone: *2
+    time: *45
+- id: 7866
+  owner_type: Group
+  owner_id: 35
+  source: aec
+  value: '40'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &46 2026-06-29 07:10:27.617394000 Z
+    zone: *2
+    time: *46
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &47 2026-06-29 07:10:27.617394000 Z
+    zone: *2
+    time: *47
+- id: 7867
+  owner_type: Group
+  owner_id: 36
+  source: aec
+  value: '28910'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &48 2026-06-29 07:10:27.626319000 Z
+    zone: *2
+    time: *48
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &49 2026-06-29 07:10:27.626319000 Z
+    zone: *2
+    time: *49
+- id: 7869
+  owner_type: Group
+  owner_id: 38
+  source: aec
+  value: '183'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &50 2026-06-29 07:10:27.643077000 Z
+    zone: *2
+    time: *50
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &51 2026-06-29 07:10:27.643077000 Z
+    zone: *2
+    time: *51
+- id: 7875
+  owner_type: Group
+  owner_id: 47
+  source: aec
+  value: '39'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &52 2026-06-29 07:10:27.697450000 Z
+    zone: *2
+    time: *52
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &53 2026-06-29 07:10:27.697450000 Z
+    zone: *2
+    time: *53
+- id: 7879
+  owner_type: Group
+  owner_id: 54
+  source: aec
+  value: '31'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &54 2026-06-29 07:10:27.735327000 Z
+    zone: *2
+    time: *54
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &55 2026-06-29 07:10:27.735327000 Z
+    zone: *2
+    time: *55
+- id: 7892
+  owner_type: Group
+  owner_id: 70
+  source: aec
+  value: '47494'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &56 2026-06-29 07:10:27.856232000 Z
+    zone: *2
+    time: *56
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &57 2026-06-29 07:10:27.856232000 Z
+    zone: *2
+    time: *57
+- id: 7897
+  owner_type: Group
+  owner_id: 80
+  source: aec
+  value: '34701'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &58 2026-06-29 07:10:27.904724000 Z
+    zone: *2
+    time: *58
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &59 2026-06-29 07:10:27.904724000 Z
+    zone: *2
+    time: *59
+- id: 7899
+  owner_type: Group
+  owner_id: 82
+  source: aec
+  value: '55'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &60 2026-06-29 07:10:27.924627000 Z
+    zone: *2
+    time: *60
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &61 2026-06-29 07:10:27.924627000 Z
+    zone: *2
+    time: *61
+- id: 7906
+  owner_type: Group
+  owner_id: 94
+  source: aec
+  value: '32'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &62 2026-06-29 07:10:27.992921000 Z
+    zone: *2
+    time: *62
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &63 2026-06-29 07:10:27.992921000 Z
+    zone: *2
+    time: *63
+- id: 7909
+  owner_type: Group
+  owner_id: 97
+  source: aec
+  value: '186'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &64 2026-06-29 07:10:28.029809000 Z
+    zone: *2
+    time: *64
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &65 2026-06-29 07:10:28.029809000 Z
+    zone: *2
+    time: *65
+- id: 7930
+  owner_type: Group
+  owner_id: 133
+  source: aec
+  value: '47365'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &66 2026-06-29 07:10:28.254135000 Z
+    zone: *2
+    time: *66
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &67 2026-06-29 07:10:28.254135000 Z
+    zone: *2
+    time: *67
+- id: 7977
+  owner_type: Group
+  owner_id: 207
+  source: aec
+  value: '138'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &68 2026-06-29 07:10:28.693459000 Z
+    zone: *2
+    time: *68
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &69 2026-06-29 07:10:28.693459000 Z
+    zone: *2
+    time: *69
+- id: 8000
+  owner_type: Group
+  owner_id: 243
+  source: aec
+  value: '158'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &70 2026-06-29 07:10:28.904221000 Z
+    zone: *2
+    time: *70
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &71 2026-06-29 07:10:28.904221000 Z
+    zone: *2
+    time: *71
+- id: 8030
+  owner_type: Group
+  owner_id: 278
+  source: aec
+  value: '97'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &72 2026-06-29 07:10:29.171189000 Z
+    zone: *2
+    time: *72
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &73 2026-06-29 07:10:29.171189000 Z
+    zone: *2
+    time: *73
+- id: 8065
+  owner_type: Group
+  owner_id: 324
+  source: aec
+  value: '48460'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &74 2026-06-29 07:10:29.462599000 Z
+    zone: *2
+    time: *74
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &75 2026-06-29 07:10:29.462599000 Z
+    zone: *2
+    time: *75
+- id: 8198
+  owner_type: Group
+  owner_id: 490
+  source: aec
+  value: '42256'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &76 2026-06-29 07:10:30.795381000 Z
+    zone: *2
+    time: *76
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &77 2026-06-29 07:10:30.795381000 Z
+    zone: *2
+    time: *77
+- id: 8285
+  owner_type: Group
+  owner_id: 594
+  source: aec
+  value: '45114'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &78 2026-06-29 07:10:31.674466000 Z
+    zone: *2
+    time: *78
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &79 2026-06-29 07:10:31.674466000 Z
+    zone: *2
+    time: *79
+- id: 8324
+  owner_type: Group
+  owner_id: 643
+  source: aec
+  value: '45782'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &80 2026-06-29 07:10:32.029895000 Z
+    zone: *2
+    time: *80
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &81 2026-06-29 07:10:32.029895000 Z
+    zone: *2
+    time: *81
+- id: 8389
+  owner_type: Group
+  owner_id: 729
+  source: aec
+  value: '47121'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &82 2026-06-29 07:10:32.613747000 Z
+    zone: *2
+    time: *82
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &83 2026-06-29 07:10:32.613747000 Z
+    zone: *2
+    time: *83
+- id: 8511
+  owner_type: Group
+  owner_id: 879
+  source: aec
+  value: '33980'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &84 2026-06-29 07:10:33.713460000 Z
+    zone: *2
+    time: *84
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &85 2026-06-29 07:10:33.713460000 Z
+    zone: *2
+    time: *85
+- id: 8512
+  owner_type: Group
+  owner_id: 880
+  source: aec
+  value: '29764'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &86 2026-06-29 07:10:33.724613000 Z
+    zone: *2
+    time: *86
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &87 2026-06-29 07:10:33.724613000 Z
+    zone: *2
+    time: *87
+- id: 8513
+  owner_type: Group
+  owner_id: 882
+  source: aec
+  value: '30410'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &88 2026-06-29 07:10:33.734065000 Z
+    zone: *2
+    time: *88
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &89 2026-06-29 07:10:33.734065000 Z
+    zone: *2
+    time: *89
+- id: 8515
+  owner_type: Group
+  owner_id: 949
+  source: aec
+  value: '137'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &90 2026-06-29 07:10:33.752504000 Z
+    zone: *2
+    time: *90
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &91 2026-06-29 07:10:33.752504000 Z
+    zone: *2
+    time: *91
+- id: 8553
+  owner_type: Group
+  owner_id: 1641
+  source: aec
+  value: '48499'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &92 2026-06-29 07:10:34.103403000 Z
+    zone: *2
+    time: *92
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &93 2026-06-29 07:10:34.103403000 Z
+    zone: *2
+    time: *93
+- id: 8714
+  owner_type: Group
+  owner_id: 124154
+  source: aec
+  value: '48184'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &94 2026-06-29 07:10:35.974436000 Z
+    zone: *2
+    time: *94
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &95 2026-06-29 07:10:35.974436000 Z
+    zone: *2
+    time: *95
+- id: 11869
+  owner_type: Group
+  owner_id: 128827
+  source: aec
+  value: '30420'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &96 2026-06-29 07:11:06.730675000 Z
+    zone: *2
+    time: *96
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &97 2026-06-29 07:11:06.730675000 Z
+    zone: *2
+    time: *97
+- id: 11964
+  owner_type: Group
+  owner_id: 128922
+  source: aec
+  value: '34719'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &98 2026-06-29 07:11:07.715466000 Z
+    zone: *2
+    time: *98
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &99 2026-06-29 07:11:07.715466000 Z
+    zone: *2
+    time: *99
+- id: 22561
+  owner_type: Person
+  owner_id: 257218
+  source: acnc
+  value: 947614a5-f762-f111-a825-7ced8da0c6e5
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &100 2026-07-01 01:49:30.615947000 Z
+    zone: *2
+    time: *100
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &101 2026-07-01 01:49:30.615947000 Z
+    zone: *2
+    time: *101
+- id: 33936
+  owner_type: Person
+  owner_id: 268575
+  source: acnc
+  value: f7838a03-b50a-ef11-9f8a-00224893bffb
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &102 2026-07-01 04:04:16.762661000 Z
+    zone: *2
+    time: *102
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &103 2026-07-01 04:04:16.762661000 Z
+    zone: *2
+    time: *103
+- id: 45895
+  owner_type: Person
+  owner_id: 729
+  source: acnc
+  value: 4c8d27d4-237a-ef11-ac20-6045bde4f376
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &104 2026-07-01 06:28:46.230483000 Z
+    zone: *2
+    time: *104
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &105 2026-07-01 06:28:46.230483000 Z
+    zone: *2
+    time: *105
+- id: 53548
+  owner_type: Person
+  owner_id: 378
+  source: acnc
+  value: e4394b66-2009-f011-bae2-000d3acc3c51
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &106 2026-07-01 08:07:31.877853000 Z
+    zone: *2
+    time: *106
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &107 2026-07-01 08:07:31.877853000 Z
+    zone: *2
+    time: *107
+- id: 68685
+  owner_type: Person
+  owner_id: 104
+  source: acnc
+  value: 3057dc21-7c2e-ed11-9db1-00224893bfad
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &108 2026-07-01 11:15:34.505523000 Z
+    zone: *2
+    time: *108
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &109 2026-07-01 11:15:34.505523000 Z
+    zone: *2
+    time: *109
+- id: 79731
+  owner_type: Person
+  owner_id: 758
+  source: acnc
+  value: f34ca16d-edf6-ea11-a817-000d3ad1f497
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &110 2026-07-01 13:29:04.137442000 Z
+    zone: *2
+    time: *110
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &111 2026-07-01 13:29:04.137442000 Z
+    zone: *2
+    time: *111
+- id: 91105
+  owner_type: Person
+  owner_id: 510
+  source: acnc
+  value: f48ad63b-f9a3-f011-bbd2-00224894e55a
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &112 2026-07-01 15:53:47.387479000 Z
+    zone: *2
+    time: *112
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &113 2026-07-01 15:53:47.387479000 Z
+    zone: *2
+    time: *113
+- id: 92936
+  owner_type: Person
+  owner_id: 327498
+  source: acnc
+  value: 618349e8-bcfd-f011-8406-6045bde523ce
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &114 2026-07-01 16:15:28.142684000 Z
+    zone: *2
+    time: *114
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &115 2026-07-01 16:15:28.142684000 Z
+    zone: *2
+    time: *115
+- id: 96090
+  owner_type: Person
+  owner_id: 479
+  source: acnc
+  value: 57425865-3714-f011-9989-6045bdc4abc4
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &116 2026-07-01 17:02:40.108186000 Z
+    zone: *2
+    time: *116
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &117 2026-07-01 17:02:40.108186000 Z
+    zone: *2
+    time: *117
+- id: 97364
+  owner_type: Person
+  owner_id: 725
+  source: acnc
+  value: a1fc17f0-20bc-e811-a961-000d3ad24282
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &118 2026-07-01 17:25:33.072160000 Z
+    zone: *2
+    time: *118
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &119 2026-07-01 17:25:33.072160000 Z
+    zone: *2
+    time: *119
+- id: 100236
+  owner_type: Person
+  owner_id: 401
+  source: acnc
+  value: 87d8cf04-24bc-e811-a962-000d3ad24182
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &120 2026-07-01 18:01:49.783529000 Z
+    zone: *2
+    time: *120
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &121 2026-07-01 18:01:49.783529000 Z
+    zone: *2
+    time: *121
+- id: 112090
+  owner_type: Person
+  owner_id: 495
+  source: acnc
+  value: 3a2b36d7-921d-eb11-a813-000d3ad1f9f4
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &122 2026-07-01 20:41:52.512105000 Z
+    zone: *2
+    time: *122
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &123 2026-07-01 20:41:52.512105000 Z
+    zone: *2
+    time: *123
+- id: 117360
+  owner_type: Person
+  owner_id: 481
+  source: acnc
+  value: c8d2cb5e-01bc-e811-a964-000d3ad24077
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &124 2026-07-01 21:54:21.418022000 Z
+    zone: *2
+    time: *124
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &125 2026-07-01 21:54:21.418022000 Z
+    zone: *2
+    time: *125
+- id: 131485
+  owner_type: Person
+  owner_id: 761
+  source: acnc
+  value: 39062932-c1cb-ee11-907a-00224893b0ed
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &126 2026-07-02 00:51:53.552512000 Z
+    zone: *2
+    time: *126
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &127 2026-07-02 00:51:53.552512000 Z
+    zone: *2
+    time: *127
+- id: 140208
+  owner_type: Person
+  owner_id: 374713
+  source: acnc
+  value: 6d60a1eb-17bc-e811-a964-000d3ad244fd
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &128 2026-07-02 02:40:20.639233000 Z
+    zone: *2
+    time: *128
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &129 2026-07-02 02:40:20.639233000 Z
+    zone: *2
+    time: *129
+- id: 153400
+  owner_type: Person
+  owner_id: 756
+  source: acnc
+  value: d900cd5b-530b-ee11-8f6e-00224893b8c7
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &130 2026-07-02 05:33:38.596434000 Z
+    zone: *2
+    time: *130
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &131 2026-07-02 05:33:38.596434000 Z
+    zone: *2
+    time: *131
+- id: 154949
+  owner_type: Person
+  owner_id: 767
+  source: acnc
+  value: a040cae9-0ebc-e811-a963-000d3ad24a0d
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &132 2026-07-02 06:00:13.746538000 Z
+    zone: *2
+    time: *132
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &133 2026-07-02 06:00:13.746538000 Z
+    zone: *2
+    time: *133
+- id: 214132
+  owner_type: Person
+  owner_id: 722
+  source: open_australia
+  value: '10882'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &134 2026-08-21 10:54:29.698258000 Z
+    zone: *2
+    time: *134
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &135 2026-08-21 10:54:29.698258000 Z
+    zone: *2
+    time: *135
+- id: 214135
+  owner_type: Person
+  owner_id: 451101
+  source: open_australia
+  value: '10889'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &136 2026-08-21 10:54:45.743117000 Z
+    zone: *2
+    time: *136
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &137 2026-08-21 10:54:45.743117000 Z
+    zone: *2
+    time: *137
+- id: 214136
+  owner_type: Person
+  owner_id: 724
+  source: open_australia
+  value: '10891'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &138 2026-08-21 10:54:49.167446000 Z
+    zone: *2
+    time: *138
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &139 2026-08-21 10:54:49.167446000 Z
+    zone: *2
+    time: *139
+- id: 214154
+  owner_type: Person
+  owner_id: 758
+  source: open_australia
+  value: '10928'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &140 2026-08-21 10:56:04.257339000 Z
+    zone: *2
+    time: *140
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &141 2026-08-21 10:56:04.257339000 Z
+    zone: *2
+    time: *141
+- id: 214157
+  owner_type: Person
+  owner_id: 759
+  source: open_australia
+  value: '10939'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &142 2026-08-21 10:56:25.440594000 Z
+    zone: *2
+    time: *142
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &143 2026-08-21 10:56:25.440594000 Z
+    zone: *2
+    time: *143
+- id: 214164
+  owner_type: Person
+  owner_id: 815
+  source: open_australia
+  value: '10966'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &144 2026-08-21 10:57:21.439866000 Z
+    zone: *2
+    time: *144
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &145 2026-08-21 10:57:21.439866000 Z
+    zone: *2
+    time: *145
+- id: 214167
+  owner_type: Person
+  owner_id: 497
+  source: open_australia
+  value: '10980'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &146 2026-08-21 10:57:49.046576000 Z
+    zone: *2
+    time: *146
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &147 2026-08-21 10:57:49.046576000 Z
+    zone: *2
+    time: *147
+- id: 213128
+  owner_type: Group
+  owner_id: 877
+  source: open_australia
+  value: federal_parliament
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &148 2026-07-13 07:02:16.108506000 Z
+    zone: *2
+    time: *148
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &149 2026-07-13 07:02:16.108506000 Z
+    zone: *2
+    time: *149
+- id: 213167
+  owner_type: Person
+  owner_id: 476
+  source: open_australia
+  value: '10863'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &150 2026-07-25 05:56:02.972938000 Z
+    zone: *2
+    time: *150
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &151 2026-07-25 05:56:02.972938000 Z
+    zone: *2
+    time: *151
+- id: 213169
+  owner_type: Person
+  owner_id: 569
+  source: open_australia
+  value: '10866'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &152 2026-07-25 05:56:03.222542000 Z
+    zone: *2
+    time: *152
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &153 2026-07-25 05:56:03.222542000 Z
+    zone: *2
+    time: *153
+- id: 213172
+  owner_type: Person
+  owner_id: 599
+  source: open_australia
+  value: '10876'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &154 2026-07-25 05:56:03.411799000 Z
+    zone: *2
+    time: *154
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &155 2026-07-25 05:56:03.411799000 Z
+    zone: *2
+    time: *155
+- id: 213179
+  owner_type: Person
+  owner_id: 552
+  source: open_australia
+  value: '10890'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &156 2026-07-25 05:56:03.831377000 Z
+    zone: *2
+    time: *156
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &157 2026-07-25 05:56:03.831377000 Z
+    zone: *2
+    time: *157
+- id: 213185
+  owner_type: Person
+  owner_id: 619
+  source: open_australia
+  value: '10893'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &158 2026-07-25 05:56:04.371164000 Z
+    zone: *2
+    time: *158
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &159 2026-07-25 05:56:04.371164000 Z
+    zone: *2
+    time: *159
+- id: 213190
+  owner_type: Person
+  owner_id: 565
+  source: open_australia
+  value: '10925'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &160 2026-07-25 05:56:04.656783000 Z
+    zone: *2
+    time: *160
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &161 2026-07-25 05:56:04.656783000 Z
+    zone: *2
+    time: *161
+- id: 213193
+  owner_type: Person
+  owner_id: 273
+  source: open_australia
+  value: '10929'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &162 2026-07-25 05:56:04.890209000 Z
+    zone: *2
+    time: *162
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &163 2026-07-25 05:56:04.890209000 Z
+    zone: *2
+    time: *163
+- id: 176797
+  owner_type: Person
+  owner_id: 700
+  source: acnc
+  value: 42379443-7520-ee11-9966-00224893cef4
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &164 2026-07-02 11:30:36.680887000 Z
+    zone: *2
+    time: *164
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &165 2026-07-02 11:30:36.680887000 Z
+    zone: *2
+    time: *165
+- id: 213164
+  owner_type: Person
+  owner_id: 529
+  source: open_australia
+  value: '10843'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &166 2026-07-25 05:56:02.845778000 Z
+    zone: *2
+    time: *166
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &167 2026-07-25 05:56:02.845778000 Z
+    zone: *2
+    time: *167
+- id: 213241
+  owner_type: Person
+  owner_id: 495
+  source: open_australia
+  value: '11016'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &168 2026-07-25 05:56:08.448057000 Z
+    zone: *2
+    time: *168
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &169 2026-07-25 05:56:08.448057000 Z
+    zone: *2
+    time: *169
+- id: 213242
+  owner_type: Person
+  owner_id: 483
+  source: open_australia
+  value: '11018'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &170 2026-07-25 05:56:08.659767000 Z
+    zone: *2
+    time: *170
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &171 2026-07-25 05:56:08.659767000 Z
+    zone: *2
+    time: *171
+- id: 213251
+  owner_type: Person
+  owner_id: 447589
+  source: open_australia
+  value: '11031'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &172 2026-07-25 05:56:09.326629000 Z
+    zone: *2
+    time: *172
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &173 2026-07-25 05:56:09.326629000 Z
+    zone: *2
+    time: *173
+- id: 213255
+  owner_type: Person
+  owner_id: 447593
+  source: open_australia
+  value: '11035'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &174 2026-07-25 05:56:09.701475000 Z
+    zone: *2
+    time: *174
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &175 2026-07-25 05:56:09.701475000 Z
+    zone: *2
+    time: *175
+- id: 213258
+  owner_type: Person
+  owner_id: 268575
+  source: open_australia
+  value: '11039'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &176 2026-07-25 05:56:09.867161000 Z
+    zone: *2
+    time: *176
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &177 2026-07-25 05:56:09.867161000 Z
+    zone: *2
+    time: *177
+- id: 213261
+  owner_type: Person
+  owner_id: 447598
+  source: open_australia
+  value: '11041'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &178 2026-07-25 05:56:10.221985000 Z
+    zone: *2
+    time: *178
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &179 2026-07-25 05:56:10.221985000 Z
+    zone: *2
+    time: *179
+- id: 213268
+  owner_type: Person
+  owner_id: 447604
+  source: open_australia
+  value: '11048'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &180 2026-07-25 05:56:10.707564000 Z
+    zone: *2
+    time: *180
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &181 2026-07-25 05:56:10.707564000 Z
+    zone: *2
+    time: *181
+- id: 213274
+  owner_type: Person
+  owner_id: 447609
+  source: open_australia
+  value: '11053'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &182 2026-07-25 05:56:11.105775000 Z
+    zone: *2
+    time: *182
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &183 2026-07-25 05:56:11.105775000 Z
+    zone: *2
+    time: *183
+- id: 213278
+  owner_type: Person
+  owner_id: 447610
+  source: open_australia
+  value: '10894'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &184 2026-07-25 05:56:11.437735000 Z
+    zone: *2
+    time: *184
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &185 2026-07-25 05:56:11.437735000 Z
+    zone: *2
+    time: *185
+- id: 213296
+  owner_type: Person
+  owner_id: 639
+  source: open_australia
+  value: '10849'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &186 2026-07-25 05:56:12.775409000 Z
+    zone: *2
+    time: *186
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &187 2026-07-25 05:56:12.775409000 Z
+    zone: *2
+    time: *187
+- id: 213301
+  owner_type: Person
+  owner_id: 698
+  source: open_australia
+  value: '10857'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &188 2026-07-25 05:56:13.297678000 Z
+    zone: *2
+    time: *188
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &189 2026-07-25 05:56:13.297678000 Z
+    zone: *2
+    time: *189
+- id: 213308
+  owner_type: Person
+  owner_id: 626
+  source: open_australia
+  value: '10954'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &190 2026-07-25 05:56:13.750094000 Z
+    zone: *2
+    time: *190
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &191 2026-07-25 05:56:13.750094000 Z
+    zone: *2
+    time: *191
+- id: 213311
+  owner_type: Person
+  owner_id: 638
+  source: open_australia
+  value: '10955'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &192 2026-07-25 05:56:14.025883000 Z
+    zone: *2
+    time: *192
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &193 2026-07-25 05:56:14.025883000 Z
+    zone: *2
+    time: *193
+- id: 213316
+  owner_type: Person
+  owner_id: 447615
+  source: open_australia
+  value: '10951'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &194 2026-07-25 05:56:14.412779000 Z
+    zone: *2
+    time: *194
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &195 2026-07-25 05:56:14.412779000 Z
+    zone: *2
+    time: *195
+- id: 213318
+  owner_type: Person
+  owner_id: 685
+  source: open_australia
+  value: '10944'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &196 2026-07-25 05:56:14.572722000 Z
+    zone: *2
+    time: *196
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &197 2026-07-25 05:56:14.572722000 Z
+    zone: *2
+    time: *197
+- id: 213323
+  owner_type: Person
+  owner_id: 655
+  source: open_australia
+  value: '10790'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &198 2026-07-25 05:56:14.870883000 Z
+    zone: *2
+    time: *198
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &199 2026-07-25 05:56:14.870883000 Z
+    zone: *2
+    time: *199
+- id: 213329
+  owner_type: Person
+  owner_id: 675
+  source: open_australia
+  value: '11008'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &200 2026-07-25 05:56:15.369370000 Z
+    zone: *2
+    time: *200
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &201 2026-07-25 05:56:15.369370000 Z
+    zone: *2
+    time: *201
+- id: 213332
+  owner_type: Person
+  owner_id: 691
+  source: open_australia
+  value: '11011'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &202 2026-07-25 05:56:15.641764000 Z
+    zone: *2
+    time: *202
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &203 2026-07-25 05:56:15.641764000 Z
+    zone: *2
+    time: *203
+- id: 213337
+  owner_type: Person
+  owner_id: 650
+  source: open_australia
+  value: '11017'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &204 2026-07-25 05:56:15.959742000 Z
+    zone: *2
+    time: *204
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &205 2026-07-25 05:56:15.959742000 Z
+    zone: *2
+    time: *205
+- id: 213338
+  owner_type: Person
+  owner_id: 693
+  source: open_australia
+  value: '11012'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &206 2026-07-25 05:56:16.188532000 Z
+    zone: *2
+    time: *206
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &207 2026-07-25 05:56:16.188532000 Z
+    zone: *2
+    time: *207
+- id: 213343
+  owner_type: Person
+  owner_id: 673
+  source: open_australia
+  value: '11007'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &208 2026-07-25 05:56:16.465995000 Z
+    zone: *2
+    time: *208
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &209 2026-07-25 05:56:16.465995000 Z
+    zone: *2
+    time: *209
+- id: 214165
+  owner_type: Person
+  owner_id: 481
+  source: open_australia
+  value: '10970'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &210 2026-08-21 10:57:27.579472000 Z
+    zone: *2
+    time: *210
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &211 2026-08-21 10:57:27.579472000 Z
+    zone: *2
+    time: *211
+- id: 214170
+  owner_type: Person
+  owner_id: 606
+  source: open_australia
+  value: '10992'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &212 2026-08-21 10:58:12.041796000 Z
+    zone: *2
+    time: *212
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &213 2026-08-21 10:58:12.041796000 Z
+    zone: *2
+    time: *213
+- id: 213168
+  owner_type: Person
+  owner_id: 557
+  source: open_australia
+  value: '10864'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &214 2026-07-25 05:56:03.056822000 Z
+    zone: *2
+    time: *214
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &215 2026-07-25 05:56:03.056822000 Z
+    zone: *2
+    time: *215
+- id: 213170
+  owner_type: Person
+  owner_id: 519
+  source: open_australia
+  value: '10872'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &216 2026-07-25 05:56:03.236272000 Z
+    zone: *2
+    time: *216
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &217 2026-07-25 05:56:03.236272000 Z
+    zone: *2
+    time: *217
+- id: 213173
+  owner_type: Person
+  owner_id: 527
+  source: open_australia
+  value: '10877'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &218 2026-07-25 05:56:03.432232000 Z
+    zone: *2
+    time: *218
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &219 2026-07-25 05:56:03.432232000 Z
+    zone: *2
+    time: *219
+- id: 213177
+  owner_type: Person
+  owner_id: 541
+  source: open_australia
+  value: '10887'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &220 2026-07-25 05:56:03.738543000 Z
+    zone: *2
+    time: *220
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &221 2026-07-25 05:56:03.738543000 Z
+    zone: *2
+    time: *221
+- id: 213181
+  owner_type: Person
+  owner_id: 596
+  source: open_australia
+  value: '10895'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &222 2026-07-25 05:56:03.979955000 Z
+    zone: *2
+    time: *222
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &223 2026-07-25 05:56:03.979955000 Z
+    zone: *2
+    time: *223
+- id: 213186
+  owner_type: Person
+  owner_id: 447578
+  source: open_australia
+  value: '10911'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &224 2026-07-25 05:56:04.372509000 Z
+    zone: *2
+    time: *224
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &225 2026-07-25 05:56:04.372509000 Z
+    zone: *2
+    time: *225
+- id: 213188
+  owner_type: Person
+  owner_id: 504
+  source: open_australia
+  value: '10921'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &226 2026-07-25 05:56:04.562307000 Z
+    zone: *2
+    time: *226
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &227 2026-07-25 05:56:04.562307000 Z
+    zone: *2
+    time: *227
+- id: 213191
+  owner_type: Person
+  owner_id: 604
+  source: open_australia
+  value: '10927'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &228 2026-07-25 05:56:04.758121000 Z
+    zone: *2
+    time: *228
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &229 2026-07-25 05:56:04.758121000 Z
+    zone: *2
+    time: *229
+- id: 213195
+  owner_type: Person
+  owner_id: 605
+  source: open_australia
+  value: '10930'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &230 2026-07-25 05:56:05.044819000 Z
+    zone: *2
+    time: *230
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &231 2026-07-25 05:56:05.044819000 Z
+    zone: *2
+    time: *231
+- id: 213200
+  owner_type: Person
+  owner_id: 482
+  source: open_australia
+  value: '10936'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &232 2026-07-25 05:56:05.496383000 Z
+    zone: *2
+    time: *232
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &233 2026-07-25 05:56:05.496383000 Z
+    zone: *2
+    time: *233
+- id: 213207
+  owner_type: Person
+  owner_id: 447581
+  source: open_australia
+  value: '10910'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &234 2026-07-25 05:56:05.970098000 Z
+    zone: *2
+    time: *234
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &235 2026-07-25 05:56:05.970098000 Z
+    zone: *2
+    time: *235
+- id: 213209
+  owner_type: Person
+  owner_id: 546
+  source: open_australia
+  value: '10967'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &236 2026-07-25 05:56:06.161628000 Z
+    zone: *2
+    time: *236
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &237 2026-07-25 05:56:06.161628000 Z
+    zone: *2
+    time: *237
+- id: 213216
+  owner_type: Person
+  owner_id: 618
+  source: open_australia
+  value: '10975'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &238 2026-07-25 05:56:06.627868000 Z
+    zone: *2
+    time: *238
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &239 2026-07-25 05:56:06.627868000 Z
+    zone: *2
+    time: *239
+- id: 213219
+  owner_type: Person
+  owner_id: 547
+  source: open_australia
+  value: '10978'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &240 2026-07-25 05:56:06.897741000 Z
+    zone: *2
+    time: *240
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &241 2026-07-25 05:56:06.897741000 Z
+    zone: *2
+    time: *241
+- id: 213224
+  owner_type: Person
+  owner_id: 591
+  source: open_australia
+  value: '10988'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &242 2026-07-25 05:56:07.284547000 Z
+    zone: *2
+    time: *242
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &243 2026-07-25 05:56:07.284547000 Z
+    zone: *2
+    time: *243
+- id: 213228
+  owner_type: Person
+  owner_id: 499
+  source: open_australia
+  value: '10993'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &244 2026-07-25 05:56:07.521196000 Z
+    zone: *2
+    time: *244
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &245 2026-07-25 05:56:07.521196000 Z
+    zone: *2
+    time: *245
+- id: 213232
+  owner_type: Person
+  owner_id: 614
+  source: open_australia
+  value: '10997'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &246 2026-07-25 05:56:07.874723000 Z
+    zone: *2
+    time: *246
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &247 2026-07-25 05:56:07.874723000 Z
+    zone: *2
+    time: *247
+- id: 213236
+  owner_type: Person
+  owner_id: 401
+  source: open_australia
+  value: '11001'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &248 2026-07-25 05:56:08.144903000 Z
+    zone: *2
+    time: *248
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &249 2026-07-25 05:56:08.144903000 Z
+    zone: *2
+    time: *249
+- id: 213240
+  owner_type: Person
+  owner_id: 512
+  source: open_australia
+  value: '11015'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &250 2026-07-25 05:56:08.358035000 Z
+    zone: *2
+    time: *250
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &251 2026-07-25 05:56:08.358035000 Z
+    zone: *2
+    time: *251
+- id: 213244
+  owner_type: Person
+  owner_id: 447584
+  source: open_australia
+  value: '11023'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &252 2026-07-25 05:56:08.741982000 Z
+    zone: *2
+    time: *252
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &253 2026-07-25 05:56:08.741982000 Z
+    zone: *2
+    time: *253
+- id: 213247
+  owner_type: Person
+  owner_id: 374713
+  source: open_australia
+  value: '11026'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &254 2026-07-25 05:56:09.058555000 Z
+    zone: *2
+    time: *254
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &255 2026-07-25 05:56:09.058555000 Z
+    zone: *2
+    time: *255
+- id: 213264
+  owner_type: Person
+  owner_id: 447601
+  source: open_australia
+  value: '11044'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &256 2026-07-25 05:56:10.374040000 Z
+    zone: *2
+    time: *256
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &257 2026-07-25 05:56:10.374040000 Z
+    zone: *2
+    time: *257
+- id: 213267
+  owner_type: Person
+  owner_id: 447603
+  source: open_australia
+  value: '11047'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &258 2026-07-25 05:56:10.672370000 Z
+    zone: *2
+    time: *258
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &259 2026-07-25 05:56:10.672370000 Z
+    zone: *2
+    time: *259
+- id: 213271
+  owner_type: Person
+  owner_id: 447607
+  source: open_australia
+  value: '11051'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &260 2026-07-25 05:56:10.922658000 Z
+    zone: *2
+    time: *260
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &261 2026-07-25 05:56:10.922658000 Z
+    zone: *2
+    time: *261
+- id: 213279
+  owner_type: Person
+  owner_id: 447611
+  source: open_australia
+  value: '11063'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &262 2026-07-25 05:56:11.515587000 Z
+    zone: *2
+    time: *262
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &263 2026-07-25 05:56:11.515587000 Z
+    zone: *2
+    time: *263
+- id: 213291
+  owner_type: Person
+  owner_id: 662
+  source: open_australia
+  value: '10839'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &264 2026-07-25 05:56:12.484343000 Z
+    zone: *2
+    time: *264
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &265 2026-07-25 05:56:12.484343000 Z
+    zone: *2
+    time: *265
+- id: 213294
+  owner_type: Person
+  owner_id: 645
+  source: open_australia
+  value: '10847'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &266 2026-07-25 05:56:12.755104000 Z
+    zone: *2
+    time: *266
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &267 2026-07-25 05:56:12.755104000 Z
+    zone: *2
+    time: *267
+- id: 213299
+  owner_type: Person
+  owner_id: 657
+  source: open_australia
+  value: '10853'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &268 2026-07-25 05:56:12.993466000 Z
+    zone: *2
+    time: *268
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &269 2026-07-25 05:56:12.993466000 Z
+    zone: *2
+    time: *269
+- id: 213302
+  owner_type: Person
+  owner_id: 689
+  source: open_australia
+  value: '10901'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &270 2026-07-25 05:56:13.323451000 Z
+    zone: *2
+    time: *270
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &271 2026-07-25 05:56:13.323451000 Z
+    zone: *2
+    time: *271
+- id: 213305
+  owner_type: Person
+  owner_id: 697
+  source: open_australia
+  value: '10764'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &272 2026-07-25 05:56:13.594980000 Z
+    zone: *2
+    time: *272
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &273 2026-07-25 05:56:13.594980000 Z
+    zone: *2
+    time: *273
+- id: 213309
+  owner_type: Person
+  owner_id: 628
+  source: open_australia
+  value: '10946'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &274 2026-07-25 05:56:13.824057000 Z
+    zone: *2
+    time: *274
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &275 2026-07-25 05:56:13.824057000 Z
+    zone: *2
+    time: *275
+- id: 213312
+  owner_type: Person
+  owner_id: 649
+  source: open_australia
+  value: '10838'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &276 2026-07-25 05:56:14.049120000 Z
+    zone: *2
+    time: *276
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &277 2026-07-25 05:56:14.049120000 Z
+    zone: *2
+    time: *277
+- id: 213317
+  owner_type: Person
+  owner_id: 683
+  source: open_australia
+  value: '10949'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &278 2026-07-25 05:56:14.504895000 Z
+    zone: *2
+    time: *278
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &279 2026-07-25 05:56:14.504895000 Z
+    zone: *2
+    time: *279
+- id: 213321
+  owner_type: Person
+  owner_id: 696
+  source: open_australia
+  value: '10956'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &280 2026-07-25 05:56:14.780538000 Z
+    zone: *2
+    time: *280
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &281 2026-07-25 05:56:14.780538000 Z
+    zone: *2
+    time: *281
+- id: 213325
+  owner_type: Person
+  owner_id: 629
+  source: open_australia
+  value: '11003'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &282 2026-07-25 05:56:14.971361000 Z
+    zone: *2
+    time: *282
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &283 2026-07-25 05:56:14.971361000 Z
+    zone: *2
+    time: *283
+- id: 213328
+  owner_type: Person
+  owner_id: 678
+  source: open_australia
+  value: '11006'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &284 2026-07-25 05:56:15.308840000 Z
+    zone: *2
+    time: *284
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &285 2026-07-25 05:56:15.308840000 Z
+    zone: *2
+    time: *285
+- id: 213331
+  owner_type: Person
+  owner_id: 686
+  source: open_australia
+  value: '11010'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &286 2026-07-25 05:56:15.588155000 Z
+    zone: *2
+    time: *286
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &287 2026-07-25 05:56:15.588155000 Z
+    zone: *2
+    time: *287
+- id: 213335
+  owner_type: Person
+  owner_id: 658
+  source: open_australia
+  value: '11014'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &288 2026-07-25 05:56:15.820798000 Z
+    zone: *2
+    time: *288
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &289 2026-07-25 05:56:15.820798000 Z
+    zone: *2
+    time: *289
+- id: 213339
+  owner_type: Person
+  owner_id: 447617
+  source: open_australia
+  value: '11021'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &290 2026-07-25 05:56:16.190036000 Z
+    zone: *2
+    time: *290
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &291 2026-07-25 05:56:16.190036000 Z
+    zone: *2
+    time: *291
+- id: 213347
+  owner_type: Person
+  owner_id: 447622
+  source: open_australia
+  value: '11056'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &292 2026-07-25 05:56:16.810866000 Z
+    zone: *2
+    time: *292
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &293 2026-07-25 05:56:16.810866000 Z
+    zone: *2
+    time: *293
+- id: 213351
+  owner_type: Person
+  owner_id: 447625
+  source: open_australia
+  value: '11060'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &294 2026-07-25 05:56:17.137283000 Z
+    zone: *2
+    time: *294
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &295 2026-07-25 05:56:17.137283000 Z
+    zone: *2
+    time: *295
+- id: 213175
+  owner_type: Person
+  owner_id: 531
+  source: open_australia
+  value: '10885'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &296 2026-07-25 05:56:03.578854000 Z
+    zone: *2
+    time: *296
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &297 2026-07-25 05:56:03.578854000 Z
+    zone: *2
+    time: *297
+- id: 213180
+  owner_type: Person
+  owner_id: 568
+  source: open_australia
+  value: '10892'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &298 2026-07-25 05:56:03.912103000 Z
+    zone: *2
+    time: *298
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &299 2026-07-25 05:56:03.912103000 Z
+    zone: *2
+    time: *299
+- id: 213187
+  owner_type: Person
+  owner_id: 573
+  source: open_australia
+  value: '10919'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &300 2026-07-25 05:56:04.395870000 Z
+    zone: *2
+    time: *300
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &301 2026-07-25 05:56:04.395870000 Z
+    zone: *2
+    time: *301
+- id: 213189
+  owner_type: Person
+  owner_id: 507
+  source: open_australia
+  value: '10922'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &302 2026-07-25 05:56:04.652472000 Z
+    zone: *2
+    time: *302
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &303 2026-07-25 05:56:04.652472000 Z
+    zone: *2
+    time: *303
+- id: 213194
+  owner_type: Person
+  owner_id: 617
+  source: open_australia
+  value: '10931'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &304 2026-07-25 05:56:05.043783000 Z
+    zone: *2
+    time: *304
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &305 2026-07-25 05:56:05.043783000 Z
+    zone: *2
+    time: *305
+- id: 213198
+  owner_type: Person
+  owner_id: 492
+  source: open_australia
+  value: '10934'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &306 2026-07-25 05:56:05.269454000 Z
+    zone: *2
+    time: *306
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &307 2026-07-25 05:56:05.269454000 Z
+    zone: *2
+    time: *307
+- id: 213202
+  owner_type: Person
+  owner_id: 522
+  source: open_australia
+  value: '10245'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &308 2026-07-25 05:56:05.592726000 Z
+    zone: *2
+    time: *308
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &309 2026-07-25 05:56:05.592726000 Z
+    zone: *2
+    time: *309
+- id: 213205
+  owner_type: Person
+  owner_id: 538
+  source: open_australia
+  value: '10907'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &310 2026-07-25 05:56:05.820863000 Z
+    zone: *2
+    time: *310
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &311 2026-07-25 05:56:05.820863000 Z
+    zone: *2
+    time: *311
+- id: 213208
+  owner_type: Person
+  owner_id: 528
+  source: open_australia
+  value: '10963'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &312 2026-07-25 05:56:06.098443000 Z
+    zone: *2
+    time: *312
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &313 2026-07-25 05:56:06.098443000 Z
+    zone: *2
+    time: *313
+- id: 213212
+  owner_type: Person
+  owner_id: 611
+  source: open_australia
+  value: '10971'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &314 2026-07-25 05:56:06.329053000 Z
+    zone: *2
+    time: *314
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &315 2026-07-25 05:56:06.329053000 Z
+    zone: *2
+    time: *315
+- id: 213215
+  owner_type: Person
+  owner_id: 498
+  source: open_australia
+  value: '10974'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &316 2026-07-25 05:56:06.549462000 Z
+    zone: *2
+    time: *316
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &317 2026-07-25 05:56:06.549462000 Z
+    zone: *2
+    time: *317
+- id: 213218
+  owner_type: Person
+  owner_id: 486
+  source: open_australia
+  value: '10977'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &318 2026-07-25 05:56:06.827623000 Z
+    zone: *2
+    time: *318
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &319 2026-07-25 05:56:06.827623000 Z
+    zone: *2
+    time: *319
+- id: 213222
+  owner_type: Person
+  owner_id: 517
+  source: open_australia
+  value: '10984'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &320 2026-07-25 05:56:07.059781000 Z
+    zone: *2
+    time: *320
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &321 2026-07-25 05:56:07.059781000 Z
+    zone: *2
+    time: *321
+- id: 213226
+  owner_type: Person
+  owner_id: 590
+  source: open_australia
+  value: '10989'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &322 2026-07-25 05:56:07.410113000 Z
+    zone: *2
+    time: *322
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &323 2026-07-25 05:56:07.410113000 Z
+    zone: *2
+    time: *323
+- id: 213230
+  owner_type: Person
+  owner_id: 593
+  source: open_australia
+  value: '10995'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &324 2026-07-25 05:56:07.649444000 Z
+    zone: *2
+    time: *324
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &325 2026-07-25 05:56:07.649444000 Z
+    zone: *2
+    time: *325
+- id: 213233
+  owner_type: Person
+  owner_id: 490
+  source: open_australia
+  value: '10998'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &326 2026-07-25 05:56:07.881926000 Z
+    zone: *2
+    time: *326
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &327 2026-07-25 05:56:07.881926000 Z
+    zone: *2
+    time: *327
+- id: 213238
+  owner_type: Person
+  owner_id: 521
+  source: open_australia
+  value: '10883'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &328 2026-07-25 05:56:08.297012000 Z
+    zone: *2
+    time: *328
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &329 2026-07-25 05:56:08.297012000 Z
+    zone: *2
+    time: *329
+- id: 213245
+  owner_type: Person
+  owner_id: 447585
+  source: open_australia
+  value: '11024'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &330 2026-07-25 05:56:08.888719000 Z
+    zone: *2
+    time: *330
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &331 2026-07-25 05:56:08.888719000 Z
+    zone: *2
+    time: *331
+- id: 213249
+  owner_type: Person
+  owner_id: 447587
+  source: open_australia
+  value: '11027'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &332 2026-07-25 05:56:09.150187000 Z
+    zone: *2
+    time: *332
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &333 2026-07-25 05:56:09.150187000 Z
+    zone: *2
+    time: *333
+- id: 213253
+  owner_type: Person
+  owner_id: 447591
+  source: open_australia
+  value: '11033'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &334 2026-07-25 05:56:09.499212000 Z
+    zone: *2
+    time: *334
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &335 2026-07-25 05:56:09.499212000 Z
+    zone: *2
+    time: *335
+- id: 213259
+  owner_type: Person
+  owner_id: 447596
+  source: open_australia
+  value: '11038'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &336 2026-07-25 05:56:09.928735000 Z
+    zone: *2
+    time: *336
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &337 2026-07-25 05:56:09.928735000 Z
+    zone: *2
+    time: *337
+- id: 213262
+  owner_type: Person
+  owner_id: 447599
+  source: open_australia
+  value: '11042'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &338 2026-07-25 05:56:10.236231000 Z
+    zone: *2
+    time: *338
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &339 2026-07-25 05:56:10.236231000 Z
+    zone: *2
+    time: *339
+- id: 213266
+  owner_type: Person
+  owner_id: 447602
+  source: open_australia
+  value: '11045'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &340 2026-07-25 05:56:10.538294000 Z
+    zone: *2
+    time: *340
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &341 2026-07-25 05:56:10.538294000 Z
+    zone: *2
+    time: *341
+- id: 213270
+  owner_type: Person
+  owner_id: 447606
+  source: open_australia
+  value: '11050'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &342 2026-07-25 05:56:10.915888000 Z
+    zone: *2
+    time: *342
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &343 2026-07-25 05:56:10.915888000 Z
+    zone: *2
+    time: *343
+- id: 213272
+  owner_type: Person
+  owner_id: 816
+  source: open_australia
+  value: '10962'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &344 2026-07-25 05:56:11.081783000 Z
+    zone: *2
+    time: *344
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &345 2026-07-25 05:56:11.081783000 Z
+    zone: *2
+    time: *345
+- id: 213276
+  owner_type: Person
+  owner_id: 536
+  source: open_australia
+  value: '10350'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &346 2026-07-25 05:56:11.354585000 Z
+    zone: *2
+    time: *346
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &347 2026-07-25 05:56:11.354585000 Z
+    zone: *2
+    time: *347
+- id: 213304
+  owner_type: Person
+  owner_id: 647
+  source: open_australia
+  value: '10912'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &348 2026-07-25 05:56:13.406167000 Z
+    zone: *2
+    time: *348
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &349 2026-07-25 05:56:13.406167000 Z
+    zone: *2
+    time: *349
+- id: 213307
+  owner_type: Person
+  owner_id: 640
+  source: open_australia
+  value: '10915'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &350 2026-07-25 05:56:13.680649000 Z
+    zone: *2
+    time: *350
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &351 2026-07-25 05:56:13.680649000 Z
+    zone: *2
+    time: *351
+- id: 213310
+  owner_type: Person
+  owner_id: 632
+  source: open_australia
+  value: '10945'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &352 2026-07-25 05:56:13.937581000 Z
+    zone: *2
+    time: *352
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &353 2026-07-25 05:56:13.937581000 Z
+    zone: *2
+    time: *353
+- id: 213314
+  owner_type: Person
+  owner_id: 659
+  source: open_australia
+  value: '10830'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &354 2026-07-25 05:56:14.205677000 Z
+    zone: *2
+    time: *354
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &355 2026-07-25 05:56:14.205677000 Z
+    zone: *2
+    time: *355
+- id: 213319
+  owner_type: Person
+  owner_id: 447616
+  source: open_australia
+  value: '10856'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &356 2026-07-25 05:56:14.585068000 Z
+    zone: *2
+    time: *356
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &357 2026-07-25 05:56:14.585068000 Z
+    zone: *2
+    time: *357
+- id: 213324
+  owner_type: Person
+  owner_id: 625
+  source: open_australia
+  value: '11002'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &358 2026-07-25 05:56:14.938096000 Z
+    zone: *2
+    time: *358
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &359 2026-07-25 05:56:14.938096000 Z
+    zone: *2
+    time: *359
+- id: 213327
+  owner_type: Person
+  owner_id: 660
+  source: open_australia
+  value: '11005'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &360 2026-07-25 05:56:15.275460000 Z
+    zone: *2
+    time: *360
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &361 2026-07-25 05:56:15.275460000 Z
+    zone: *2
+    time: *361
+- id: 213334
+  owner_type: Person
+  owner_id: 692
+  source: open_australia
+  value: '10961'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &362 2026-07-25 05:56:15.753151000 Z
+    zone: *2
+    time: *362
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &363 2026-07-25 05:56:15.753151000 Z
+    zone: *2
+    time: *363
+- id: 213340
+  owner_type: Person
+  owner_id: 447618
+  source: open_australia
+  value: '11020'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &364 2026-07-25 05:56:16.252304000 Z
+    zone: *2
+    time: *364
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &365 2026-07-25 05:56:16.252304000 Z
+    zone: *2
+    time: *365
+- id: 213345
+  owner_type: Person
+  owner_id: 447620
+  source: open_australia
+  value: '11054'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &366 2026-07-25 05:56:16.646511000 Z
+    zone: *2
+    time: *366
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &367 2026-07-25 05:56:16.646511000 Z
+    zone: *2
+    time: *367
+- id: 213348
+  owner_type: Person
+  owner_id: 447623
+  source: open_australia
+  value: '11057'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &368 2026-07-25 05:56:16.946771000 Z
+    zone: *2
+    time: *368
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &369 2026-07-25 05:56:16.946771000 Z
+    zone: *2
+    time: *369
+- id: 213352
+  owner_type: Person
+  owner_id: 447626
+  source: open_australia
+  value: '11062'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &370 2026-07-25 05:56:17.170698000 Z
+    zone: *2
+    time: *370
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &371 2026-07-25 05:56:17.170698000 Z
+    zone: *2
+    time: *371
+- id: 213165
+  owner_type: Person
+  owner_id: 540
+  source: open_australia
+  value: '10861'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &372 2026-07-25 05:56:02.865692000 Z
+    zone: *2
+    time: *372
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &373 2026-07-25 05:56:02.865692000 Z
+    zone: *2
+    time: *373
+- id: 213171
+  owner_type: Person
+  owner_id: 602
+  source: open_australia
+  value: '10873'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &374 2026-07-25 05:56:03.237463000 Z
+    zone: *2
+    time: *374
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &375 2026-07-25 05:56:03.237463000 Z
+    zone: *2
+    time: *375
+- id: 213174
+  owner_type: Person
+  owner_id: 543
+  source: open_australia
+  value: '10884'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &376 2026-07-25 05:56:03.538569000 Z
+    zone: *2
+    time: *376
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &377 2026-07-25 05:56:03.538569000 Z
+    zone: *2
+    time: *377
+- id: 213178
+  owner_type: Person
+  owner_id: 548
+  source: open_australia
+  value: '10888'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &378 2026-07-25 05:56:03.814017000 Z
+    zone: *2
+    time: *378
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &379 2026-07-25 05:56:03.814017000 Z
+    zone: *2
+    time: *379
+- id: 213184
+  owner_type: Person
+  owner_id: 592
+  source: open_australia
+  value: '10874'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &380 2026-07-25 05:56:04.292128000 Z
+    zone: *2
+    time: *380
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &381 2026-07-25 05:56:04.292128000 Z
+    zone: *2
+    time: *381
+- id: 213192
+  owner_type: Person
+  owner_id: 447579
+  source: open_australia
+  value: '10926'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &382 2026-07-25 05:56:04.883991000 Z
+    zone: *2
+    time: *382
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &383 2026-07-25 05:56:04.883991000 Z
+    zone: *2
+    time: *383
+- id: 213196
+  owner_type: Person
+  owner_id: 559
+  source: open_australia
+  value: '10932'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &384 2026-07-25 05:56:05.129152000 Z
+    zone: *2
+    time: *384
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &385 2026-07-25 05:56:05.129152000 Z
+    zone: *2
+    time: *385
+- id: 213199
+  owner_type: Person
+  owner_id: 616
+  source: open_australia
+  value: '10935'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &386 2026-07-25 05:56:05.415072000 Z
+    zone: *2
+    time: *386
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &387 2026-07-25 05:56:05.415072000 Z
+    zone: *2
+    time: *387
+- id: 213206
+  owner_type: Person
+  owner_id: 556
+  source: open_australia
+  value: '10960'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &388 2026-07-25 05:56:05.961429000 Z
+    zone: *2
+    time: *388
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &389 2026-07-25 05:56:05.961429000 Z
+    zone: *2
+    time: *389
+- id: 213210
+  owner_type: Person
+  owner_id: 561
+  source: open_australia
+  value: '10968'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &390 2026-07-25 05:56:06.183563000 Z
+    zone: *2
+    time: *390
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &391 2026-07-25 05:56:06.183563000 Z
+    zone: *2
+    time: *391
+- id: 213213
+  owner_type: Person
+  owner_id: 520
+  source: open_australia
+  value: '10972'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &392 2026-07-25 05:56:06.460932000 Z
+    zone: *2
+    time: *392
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &393 2026-07-25 05:56:06.460932000 Z
+    zone: *2
+    time: *393
+- id: 213217
+  owner_type: Person
+  owner_id: 560
+  source: open_australia
+  value: '10976'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &394 2026-07-25 05:56:06.693089000 Z
+    zone: *2
+    time: *394
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &395 2026-07-25 05:56:06.693089000 Z
+    zone: *2
+    time: *395
+- id: 213220
+  owner_type: Person
+  owner_id: 545
+  source: open_australia
+  value: '10981'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &396 2026-07-25 05:56:06.922727000 Z
+    zone: *2
+    time: *396
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &397 2026-07-25 05:56:06.922727000 Z
+    zone: *2
+    time: *397
+- id: 213225
+  owner_type: Person
+  owner_id: 447582
+  source: open_australia
+  value: '10986'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &398 2026-07-25 05:56:07.297500000 Z
+    zone: *2
+    time: *398
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &399 2026-07-25 05:56:07.297500000 Z
+    zone: *2
+    time: *399
+- id: 213229
+  owner_type: Person
+  owner_id: 587
+  source: open_australia
+  value: '10994'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &400 2026-07-25 05:56:07.594641000 Z
+    zone: *2
+    time: *400
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &401 2026-07-25 05:56:07.594641000 Z
+    zone: *2
+    time: *401
+- id: 213231
+  owner_type: Person
+  owner_id: 583
+  source: open_australia
+  value: '10996'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &402 2026-07-25 05:56:07.775199000 Z
+    zone: *2
+    time: *402
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &403 2026-07-25 05:56:07.775199000 Z
+    zone: *2
+    time: *403
+- id: 213235
+  owner_type: Person
+  owner_id: 551
+  source: open_australia
+  value: '11000'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &404 2026-07-25 05:56:07.977650000 Z
+    zone: *2
+    time: *404
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &405 2026-07-25 05:56:07.977650000 Z
+    zone: *2
+    time: *405
+- id: 213237
+  owner_type: Person
+  owner_id: 511
+  source: open_australia
+  value: '10880'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &406 2026-07-25 05:56:08.295725000 Z
+    zone: *2
+    time: *406
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &407 2026-07-25 05:56:08.295725000 Z
+    zone: *2
+    time: *407
+- id: 213246
+  owner_type: Person
+  owner_id: 447586
+  source: open_australia
+  value: '11025'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &408 2026-07-25 05:56:08.919796000 Z
+    zone: *2
+    time: *408
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &409 2026-07-25 05:56:08.919796000 Z
+    zone: *2
+    time: *409
+- id: 213248
+  owner_type: Person
+  owner_id: 921
+  source: open_australia
+  value: '11028'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &410 2026-07-25 05:56:09.078125000 Z
+    zone: *2
+    time: *410
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &411 2026-07-25 05:56:09.078125000 Z
+    zone: *2
+    time: *411
+- id: 213252
+  owner_type: Person
+  owner_id: 447590
+  source: open_australia
+  value: '11032'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &412 2026-07-25 05:56:09.461578000 Z
+    zone: *2
+    time: *412
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &413 2026-07-25 05:56:09.461578000 Z
+    zone: *2
+    time: *413
+- id: 213256
+  owner_type: Person
+  owner_id: 447594
+  source: open_australia
+  value: '11036'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &414 2026-07-25 05:56:09.729866000 Z
+    zone: *2
+    time: *414
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &415 2026-07-25 05:56:09.729866000 Z
+    zone: *2
+    time: *415
+- id: 213263
+  owner_type: Person
+  owner_id: 447600
+  source: open_australia
+  value: '11043'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &416 2026-07-25 05:56:10.297877000 Z
+    zone: *2
+    time: *416
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &417 2026-07-25 05:56:10.297877000 Z
+    zone: *2
+    time: *417
+- id: 213265
+  owner_type: Person
+  owner_id: 327498
+  source: open_australia
+  value: '11046'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &418 2026-07-25 05:56:10.512075000 Z
+    zone: *2
+    time: *418
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &419 2026-07-25 05:56:10.512075000 Z
+    zone: *2
+    time: *419
+- id: 213269
+  owner_type: Person
+  owner_id: 447605
+  source: open_australia
+  value: '11049'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &420 2026-07-25 05:56:10.781801000 Z
+    zone: *2
+    time: *420
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &421 2026-07-25 05:56:10.781801000 Z
+    zone: *2
+    time: *421
+- id: 213273
+  owner_type: Person
+  owner_id: 447608
+  source: open_australia
+  value: '11052'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &422 2026-07-25 05:56:11.087087000 Z
+    zone: *2
+    time: *422
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &423 2026-07-25 05:56:11.087087000 Z
+    zone: *2
+    time: *423
+- id: 213275
+  owner_type: Person
+  owner_id: 694
+  source: open_australia
+  value: '10763'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &424 2026-07-25 05:56:11.292442000 Z
+    zone: *2
+    time: *424
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &425 2026-07-25 05:56:11.292442000 Z
+    zone: *2
+    time: *425
+- id: 213295
+  owner_type: Person
+  owner_id: 447614
+  source: open_australia
+  value: '10845'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &426 2026-07-25 05:56:12.757494000 Z
+    zone: *2
+    time: *426
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &427 2026-07-25 05:56:12.757494000 Z
+    zone: *2
+    time: *427
+- id: 213298
+  owner_type: Person
+  owner_id: 653
+  source: open_australia
+  value: '10280'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &428 2026-07-25 05:56:12.939551000 Z
+    zone: *2
+    time: *428
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &429 2026-07-25 05:56:12.939551000 Z
+    zone: *2
+    time: *429
+- id: 213303
+  owner_type: Person
+  owner_id: 641
+  source: open_australia
+  value: '10131'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &430 2026-07-25 05:56:13.347614000 Z
+    zone: *2
+    time: *430
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &431 2026-07-25 05:56:13.347614000 Z
+    zone: *2
+    time: *431
+- id: 213306
+  owner_type: Person
+  owner_id: 627
+  source: open_australia
+  value: '10914'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &432 2026-07-25 05:56:13.659737000 Z
+    zone: *2
+    time: *432
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &433 2026-07-25 05:56:13.659737000 Z
+    zone: *2
+    time: *433
+- id: 213313
+  owner_type: Person
+  owner_id: 651
+  source: open_australia
+  value: '10950'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &434 2026-07-25 05:56:14.126013000 Z
+    zone: *2
+    time: *434
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &435 2026-07-25 05:56:14.126013000 Z
+    zone: *2
+    time: *435
+- id: 213315
+  owner_type: Person
+  owner_id: 671
+  source: open_australia
+  value: '10958'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &436 2026-07-25 05:56:14.405773000 Z
+    zone: *2
+    time: *436
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &437 2026-07-25 05:56:14.405773000 Z
+    zone: *2
+    time: *437
+- id: 213320
+  owner_type: Person
+  owner_id: 688
+  source: open_australia
+  value: '10953'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &438 2026-07-25 05:56:14.609805000 Z
+    zone: *2
+    time: *438
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &439 2026-07-25 05:56:14.609805000 Z
+    zone: *2
+    time: *439
+- id: 213322
+  owner_type: Person
+  owner_id: 652
+  source: open_australia
+  value: '10965'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &440 2026-07-25 05:56:14.865398000 Z
+    zone: *2
+    time: *440
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &441 2026-07-25 05:56:14.865398000 Z
+    zone: *2
+    time: *441
+- id: 213326
+  owner_type: Person
+  owner_id: 635
+  source: open_australia
+  value: '11004'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &442 2026-07-25 05:56:15.203883000 Z
+    zone: *2
+    time: *442
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &443 2026-07-25 05:56:15.203883000 Z
+    zone: *2
+    time: *443
+- id: 213330
+  owner_type: Person
+  owner_id: 257
+  source: open_australia
+  value: '11009'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &444 2026-07-25 05:56:15.457374000 Z
+    zone: *2
+    time: *444
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &445 2026-07-25 05:56:15.457374000 Z
+    zone: *2
+    time: *445
+- id: 213336
+  owner_type: Person
+  owner_id: 684
+  source: open_australia
+  value: '10942'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &446 2026-07-25 05:56:15.948539000 Z
+    zone: *2
+    time: *446
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &447 2026-07-25 05:56:15.948539000 Z
+    zone: *2
+    time: *447
+- id: 213342
+  owner_type: Person
+  owner_id: 447619
+  source: open_australia
+  value: '11022'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &448 2026-07-25 05:56:16.407402000 Z
+    zone: *2
+    time: *448
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &449 2026-07-25 05:56:16.407402000 Z
+    zone: *2
+    time: *449
+- id: 213344
+  owner_type: Person
+  owner_id: 477
+  source: open_australia
+  value: '10983'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &450 2026-07-25 05:56:16.558948000 Z
+    zone: *2
+    time: *450
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &451 2026-07-25 05:56:16.558948000 Z
+    zone: *2
+    time: *451
+- id: 213349
+  owner_type: Person
+  owner_id: 257218
+  source: open_australia
+  value: '11058'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &452 2026-07-25 05:56:16.948303000 Z
+    zone: *2
+    time: *452
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &453 2026-07-25 05:56:16.948303000 Z
+    zone: *2
+    time: *453
+- id: 213354
+  owner_type: Person
+  owner_id: 447627
+  source: open_australia
+  value: '10959'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &454 2026-07-25 05:56:17.202844000 Z
+    zone: *2
+    time: *454
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &455 2026-07-25 05:56:17.202844000 Z
+    zone: *2
+    time: *455
+- id: 185120
+  owner_type: Person
+  owner_id: 619
+  source: acnc
+  value: 53ddc51c-22bc-e811-a961-000d3ad24282
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &456 2026-07-02 13:32:32.980230000 Z
+    zone: *2
+    time: *456
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &457 2026-07-02 13:32:32.980230000 Z
+    zone: *2
+    time: *457
+- id: 213197
+  owner_type: Person
+  owner_id: 623
+  source: open_australia
+  value: '10933'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &458 2026-07-25 05:56:05.256136000 Z
+    zone: *2
+    time: *458
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &459 2026-07-25 05:56:05.256136000 Z
+    zone: *2
+    time: *459
+- id: 213201
+  owner_type: Person
+  owner_id: 274
+  source: open_australia
+  value: '10941'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &460 2026-07-25 05:56:05.497477000 Z
+    zone: *2
+    time: *460
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &461 2026-07-25 05:56:05.497477000 Z
+    zone: *2
+    time: *461
+- id: 213211
+  owner_type: Person
+  owner_id: 577
+  source: open_australia
+  value: '10969'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &462 2026-07-25 05:56:06.265886000 Z
+    zone: *2
+    time: *462
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &463 2026-07-25 05:56:06.265886000 Z
+    zone: *2
+    time: *463
+- id: 213214
+  owner_type: Person
+  owner_id: 494
+  source: open_australia
+  value: '10973'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &464 2026-07-25 05:56:06.526127000 Z
+    zone: *2
+    time: *464
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &465 2026-07-25 05:56:06.526127000 Z
+    zone: *2
+    time: *465
+- id: 213221
+  owner_type: Person
+  owner_id: 581
+  source: open_australia
+  value: '10982'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &466 2026-07-25 05:56:06.997866000 Z
+    zone: *2
+    time: *466
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &467 2026-07-25 05:56:06.997866000 Z
+    zone: *2
+    time: *467
+- id: 213223
+  owner_type: Person
+  owner_id: 378
+  source: open_australia
+  value: '10987'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &468 2026-07-25 05:56:07.281208000 Z
+    zone: *2
+    time: *468
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &469 2026-07-25 05:56:07.281208000 Z
+    zone: *2
+    time: *469
+- id: 213227
+  owner_type: Person
+  owner_id: 484
+  source: open_australia
+  value: '10991'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &470 2026-07-25 05:56:07.473566000 Z
+    zone: *2
+    time: *470
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &471 2026-07-25 05:56:07.473566000 Z
+    zone: *2
+    time: *471
+- id: 213234
+  owner_type: Person
+  owner_id: 555
+  source: open_australia
+  value: '10999'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &472 2026-07-25 05:56:07.884181000 Z
+    zone: *2
+    time: *472
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &473 2026-07-25 05:56:07.884181000 Z
+    zone: *2
+    time: *473
+- id: 213239
+  owner_type: Person
+  owner_id: 447583
+  source: open_australia
+  value: '10896'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &474 2026-07-25 05:56:08.351852000 Z
+    zone: *2
+    time: *474
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &475 2026-07-25 05:56:08.351852000 Z
+    zone: *2
+    time: *475
+- id: 213243
+  owner_type: Person
+  owner_id: 539
+  source: open_australia
+  value: '11019'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &476 2026-07-25 05:56:08.661350000 Z
+    zone: *2
+    time: *476
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &477 2026-07-25 05:56:08.661350000 Z
+    zone: *2
+    time: *477
+- id: 213250
+  owner_type: Person
+  owner_id: 447588
+  source: open_australia
+  value: '11029'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &478 2026-07-25 05:56:09.295650000 Z
+    zone: *2
+    time: *478
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &479 2026-07-25 05:56:09.295650000 Z
+    zone: *2
+    time: *479
+- id: 213254
+  owner_type: Person
+  owner_id: 447592
+  source: open_australia
+  value: '11034'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &480 2026-07-25 05:56:09.561206000 Z
+    zone: *2
+    time: *480
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &481 2026-07-25 05:56:09.561206000 Z
+    zone: *2
+    time: *481
+- id: 213257
+  owner_type: Person
+  owner_id: 447595
+  source: open_australia
+  value: '11037'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &482 2026-07-25 05:56:09.864155000 Z
+    zone: *2
+    time: *482
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &483 2026-07-25 05:56:09.864155000 Z
+    zone: *2
+    time: *483
+- id: 213260
+  owner_type: Person
+  owner_id: 447597
+  source: open_australia
+  value: '11040'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &484 2026-07-25 05:56:10.149903000 Z
+    zone: *2
+    time: *484
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &485 2026-07-25 05:56:10.149903000 Z
+    zone: *2
+    time: *485
+- id: 213293
+  owner_type: Person
+  owner_id: 667
+  source: open_australia
+  value: '10841'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &486 2026-07-25 05:56:12.551565000 Z
+    zone: *2
+    time: *486
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &487 2026-07-25 05:56:12.551565000 Z
+    zone: *2
+    time: *487
+- id: 213297
+  owner_type: Person
+  owner_id: 646
+  source: open_australia
+  value: '10708'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &488 2026-07-25 05:56:12.864671000 Z
+    zone: *2
+    time: *488
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &489 2026-07-25 05:56:12.864671000 Z
+    zone: *2
+    time: *489
+- id: 213300
+  owner_type: Person
+  owner_id: 663
+  source: open_australia
+  value: '10855'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &490 2026-07-25 05:56:13.140127000 Z
+    zone: *2
+    time: *490
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &491 2026-07-25 05:56:13.140127000 Z
+    zone: *2
+    time: *491
+- id: 213341
+  owner_type: Person
+  owner_id: 642
+  source: open_australia
+  value: '10964'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &492 2026-07-25 05:56:16.284297000 Z
+    zone: *2
+    time: *492
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &493 2026-07-25 05:56:16.284297000 Z
+    zone: *2
+    time: *493
+- id: 213346
+  owner_type: Person
+  owner_id: 447621
+  source: open_australia
+  value: '11055'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &494 2026-07-25 05:56:16.788968000 Z
+    zone: *2
+    time: *494
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &495 2026-07-25 05:56:16.788968000 Z
+    zone: *2
+    time: *495
+- id: 213350
+  owner_type: Person
+  owner_id: 447624
+  source: open_australia
+  value: '11059'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &496 2026-07-25 05:56:17.097932000 Z
+    zone: *2
+    time: *496
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &497 2026-07-25 05:56:17.097932000 Z
+    zone: *2
+    time: *497
+- id: 213353
+  owner_type: Person
+  owner_id: 633
+  source: open_australia
+  value: '10900'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &498 2026-07-25 05:56:17.180205000 Z
+    zone: *2
+    time: *498
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &499 2026-07-25 05:56:17.180205000 Z
+    zone: *2
+    time: *499
+- id: 213381
+  owner_type: Person
+  owner_id: 767
+  source: open_australia
+  value: '10029'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &500 2026-08-21 10:26:04.045068000 Z
+    zone: *2
+    time: *500
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &501 2026-08-21 10:26:04.045068000 Z
+    zone: *2
+    time: *501
+- id: 213546
+  owner_type: Person
+  owner_id: 2454
+  source: open_australia
+  value: '10204'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &502 2026-08-21 10:31:55.282336000 Z
+    zone: *2
+    time: *502
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &503 2026-08-21 10:31:55.282336000 Z
+    zone: *2
+    time: *503
+- id: 213694
+  owner_type: Person
+  owner_id: 734
+  source: open_australia
+  value: '10359'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &504 2026-08-21 10:37:04.647113000 Z
+    zone: *2
+    time: *504
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &505 2026-08-21 10:37:04.647113000 Z
+    zone: *2
+    time: *505
+- id: 198557
+  owner_type: Person
+  owner_id: 814
+  source: acnc
+  value: 7dd31207-7a28-eb11-bbf3-000d3ad1cd99
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &506 2026-07-02 16:38:33.959834000 Z
+    zone: *2
+    time: *506
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &507 2026-07-02 16:38:33.959834000 Z
+    zone: *2
+    time: *507
+- id: 214035
+  owner_type: Person
+  owner_id: 803
+  source: open_australia
+  value: '10715'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &508 2026-08-21 10:49:01.168716000 Z
+    zone: *2
+    time: *508
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &509 2026-08-21 10:49:01.168716000 Z
+    zone: *2
+    time: *509
+- id: 214118
+  owner_type: Person
+  owner_id: 786
+  source: open_australia
+  value: '10851'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &510 2026-08-21 10:53:27.865177000 Z
+    zone: *2
+    time: *510
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &511 2026-08-21 10:53:27.865177000 Z
+    zone: *2
+    time: *511
+- id: 214129
+  owner_type: Person
+  owner_id: 716
+  source: open_australia
+  value: '10875'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &512 2026-08-21 10:54:15.751097000 Z
+    zone: *2
+    time: *512
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &513 2026-08-21 10:54:15.751097000 Z
+    zone: *2
+    time: *513
+- id: 214020
+  owner_type: Person
+  owner_id: 235838
+  source: open_australia
+  value: '10696'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &514 2026-08-21 10:48:20.107792000 Z
+    zone: *2
+    time: *514
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &515 2026-08-21 10:48:20.107792000 Z
+    zone: *2
+    time: *515
+- id: 214034
+  owner_type: Person
+  owner_id: 677
+  source: open_australia
+  value: '10714'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &516 2026-08-21 10:48:54.487891000 Z
+    zone: *2
+    time: *516
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &517 2026-08-21 10:48:54.487891000 Z
+    zone: *2
+    time: *517
+- id: 214090
+  owner_type: Person
+  owner_id: 525
+  source: open_australia
+  value: '10804'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &518 2026-08-21 10:51:57.555191000 Z
+    zone: *2
+    time: *518
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &519 2026-08-21 10:51:57.555191000 Z
+    zone: *2
+    time: *519
+- id: 214117
+  owner_type: Person
+  owner_id: 777
+  source: open_australia
+  value: '10850'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &520 2026-08-21 10:53:27.849100000 Z
+    zone: *2
+    time: *520
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &521 2026-08-21 10:53:27.849100000 Z
+    zone: *2
+    time: *521
+- id: 214120
+  owner_type: Person
+  owner_id: 788
+  source: open_australia
+  value: '10854'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &522 2026-08-21 10:53:34.751559000 Z
+    zone: *2
+    time: *522
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &523 2026-08-21 10:53:34.751559000 Z
+    zone: *2
+    time: *523
+- id: 214133
+  owner_type: Person
+  owner_id: 451100
+  source: open_australia
+  value: '10881'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &524 2026-08-21 10:54:29.725789000 Z
+    zone: *2
+    time: *524
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &525 2026-08-21 10:54:29.725789000 Z
+    zone: *2
+    time: *525
+- id: 214140
+  owner_type: Person
+  owner_id: 765
+  source: open_australia
+  value: '10902'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &526 2026-08-21 10:55:09.706840000 Z
+    zone: *2
+    time: *526
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &527 2026-08-21 10:55:09.706840000 Z
+    zone: *2
+    time: *527
+- id: 214141
+  owner_type: Person
+  owner_id: 801
+  source: open_australia
+  value: '10903'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &528 2026-08-21 10:55:12.455733000 Z
+    zone: *2
+    time: *528
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &529 2026-08-21 10:55:12.455733000 Z
+    zone: *2
+    time: *529
+- id: 214142
+  owner_type: Person
+  owner_id: 669
+  source: open_australia
+  value: '10904'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &530 2026-08-21 10:55:17.614648000 Z
+    zone: *2
+    time: *530
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &531 2026-08-21 10:55:17.614648000 Z
+    zone: *2
+    time: *531
+- id: 214145
+  owner_type: Person
+  owner_id: 810
+  source: open_australia
+  value: '10908'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &532 2026-08-21 10:55:25.324225000 Z
+    zone: *2
+    time: *532
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &533 2026-08-21 10:55:25.324225000 Z
+    zone: *2
+    time: *533
+- id: 214147
+  owner_type: Person
+  owner_id: 746
+  source: open_australia
+  value: '10913'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &534 2026-08-21 10:55:33.749651000 Z
+    zone: *2
+    time: *534
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &535 2026-08-21 10:55:33.749651000 Z
+    zone: *2
+    time: *535
+- id: 214166
+  owner_type: Person
+  owner_id: 510
+  source: open_australia
+  value: '10979'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &536 2026-08-21 10:57:49.034463000 Z
+    zone: *2
+    time: *536
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &537 2026-08-21 10:57:49.034463000 Z
+    zone: *2
+    time: *537
+- id: 214168
+  owner_type: Person
+  owner_id: 613
+  source: open_australia
+  value: '10985'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &538 2026-08-21 10:57:56.925865000 Z
+    zone: *2
+    time: *538
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &539 2026-08-21 10:57:56.925865000 Z
+    zone: *2
+    time: *539
+- id: 214171
+  owner_type: Person
+  owner_id: 700
+  source: open_australia
+  value: '11013'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &540 2026-08-21 10:58:57.129970000 Z
+    zone: *2
+    time: *540
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &541 2026-08-21 10:58:57.129970000 Z
+    zone: *2
+    time: *541
+- id: 214172
+  owner_type: Person
+  owner_id: 451104
+  source: open_australia
+  value: '11061'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &542 2026-08-21 11:00:30.912254000 Z
+    zone: *2
+    time: *542
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &543 2026-08-21 11:00:30.912254000 Z
+    zone: *2
+    time: *543
+- id: 205303
+  owner_type: Person
+  owner_id: 587
+  source: acnc
+  value: 11626b5e-66ae-ed11-83ff-002248935564
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &544 2026-07-02 18:15:28.012646000 Z
+    zone: *2
+    time: *544
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &545 2026-07-02 18:15:28.012646000 Z
+    zone: *2
+    time: *545
+- id: 214113
+  owner_type: Person
+  owner_id: 451097
+  source: open_australia
+  value: '10842'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &546 2026-08-21 10:53:10.691510000 Z
+    zone: *2
+    time: *546
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &547 2026-08-21 10:53:10.691510000 Z
+    zone: *2
+    time: *547
+- id: 214115
+  owner_type: Person
+  owner_id: 451098
+  source: open_australia
+  value: '10846'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &548 2026-08-21 10:53:19.138204000 Z
+    zone: *2
+    time: *548
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &549 2026-08-21 10:53:19.138204000 Z
+    zone: *2
+    time: *549
+- id: 214046
+  owner_type: Person
+  owner_id: 451068
+  source: open_australia
+  value: '10725'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &550 2026-08-21 10:49:19.868933000 Z
+    zone: *2
+    time: *550
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &551 2026-08-21 10:49:19.868933000 Z
+    zone: *2
+    time: *551
+- id: 214112
+  owner_type: Person
+  owner_id: 451096
+  source: open_australia
+  value: '10840'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &552 2026-08-21 10:53:07.381354000 Z
+    zone: *2
+    time: *552
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &553 2026-08-21 10:53:07.381354000 Z
+    zone: *2
+    time: *553
+- id: 214114
+  owner_type: Person
+  owner_id: 756
+  source: open_australia
+  value: '10844'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &554 2026-08-21 10:53:13.695482000 Z
+    zone: *2
+    time: *554
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &555 2026-08-21 10:53:13.695482000 Z
+    zone: *2
+    time: *555
+- id: 214116
+  owner_type: Person
+  owner_id: 770
+  source: open_australia
+  value: '10848'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &556 2026-08-21 10:53:23.793822000 Z
+    zone: *2
+    time: *556
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &557 2026-08-21 10:53:23.793822000 Z
+    zone: *2
+    time: *557
+- id: 214119
+  owner_type: Person
+  owner_id: 787
+  source: open_australia
+  value: '10852'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &558 2026-08-21 10:53:34.677563000 Z
+    zone: *2
+    time: *558
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &559 2026-08-21 10:53:34.677563000 Z
+    zone: *2
+    time: *559
+- id: 214123
+  owner_type: Person
+  owner_id: 731
+  source: open_australia
+  value: '10860'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &560 2026-08-21 10:53:46.426567000 Z
+    zone: *2
+    time: *560
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &561 2026-08-21 10:53:46.426567000 Z
+    zone: *2
+    time: *561
+- id: 214125
+  owner_type: Person
+  owner_id: 744
+  source: open_australia
+  value: '10867'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &562 2026-08-21 10:54:03.569535000 Z
+    zone: *2
+    time: *562
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &563 2026-08-21 10:54:03.569535000 Z
+    zone: *2
+    time: *563
+- id: 214137
+  owner_type: Person
+  owner_id: 791
+  source: open_australia
+  value: '10897'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &564 2026-08-21 10:55:03.402310000 Z
+    zone: *2
+    time: *564
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &565 2026-08-21 10:55:03.402310000 Z
+    zone: *2
+    time: *565
+- id: 214139
+  owner_type: Person
+  owner_id: 785
+  source: open_australia
+  value: '10899'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &566 2026-08-21 10:55:09.653807000 Z
+    zone: *2
+    time: *566
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &567 2026-08-21 10:55:09.653807000 Z
+    zone: *2
+    time: *567
+- id: 214144
+  owner_type: Person
+  owner_id: 451102
+  source: open_australia
+  value: '10905'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &568 2026-08-21 10:55:17.699583000 Z
+    zone: *2
+    time: *568
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &569 2026-08-21 10:55:17.699583000 Z
+    zone: *2
+    time: *569
+- id: 214148
+  owner_type: Person
+  owner_id: 809
+  source: open_australia
+  value: '10916'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &570 2026-08-21 10:55:38.083418000 Z
+    zone: *2
+    time: *570
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &571 2026-08-21 10:55:38.083418000 Z
+    zone: *2
+    time: *571
+- id: 214149
+  owner_type: Person
+  owner_id: 479
+  source: open_australia
+  value: '10917'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &572 2026-08-21 10:55:45.208268000 Z
+    zone: *2
+    time: *572
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &573 2026-08-21 10:55:45.208268000 Z
+    zone: *2
+    time: *573
+- id: 214152
+  owner_type: Person
+  owner_id: 760
+  source: open_australia
+  value: '10923'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &574 2026-08-21 10:55:53.465531000 Z
+    zone: *2
+    time: *574
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &575 2026-08-21 10:55:53.465531000 Z
+    zone: *2
+    time: *575
+- id: 214153
+  owner_type: Person
+  owner_id: 566
+  source: open_australia
+  value: '10924'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &576 2026-08-21 10:55:58.860017000 Z
+    zone: *2
+    time: *576
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &577 2026-08-21 10:55:58.860017000 Z
+    zone: *2
+    time: *577
+- id: 214169
+  owner_type: Person
+  owner_id: 621
+  source: open_australia
+  value: '10990'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &578 2026-08-21 10:58:06.670513000 Z
+    zone: *2
+    time: *578
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &579 2026-08-21 10:58:06.670513000 Z
+    zone: *2
+    time: *579
+- id: 212739
+  owner_type: Person
+  owner_id: 785
+  source: acnc
+  value: 36a27d68-f10f-f111-8406-7ced8d33fdea
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &580 2026-07-02 20:10:53.656881000 Z
+    zone: *2
+    time: *580
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &581 2026-07-02 20:10:53.656881000 Z
+    zone: *2
+    time: *581
+- id: 214121
+  owner_type: Person
+  owner_id: 491
+  source: open_australia
+  value: '10858'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &582 2026-08-21 10:53:46.381779000 Z
+    zone: *2
+    time: *582
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &583 2026-08-21 10:53:46.381779000 Z
+    zone: *2
+    time: *583
+- id: 214124
+  owner_type: Person
+  owner_id: 704
+  source: open_australia
+  value: '10862'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &584 2026-08-21 10:53:50.680106000 Z
+    zone: *2
+    time: *584
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &585 2026-08-21 10:53:50.680106000 Z
+    zone: *2
+    time: *585
+- id: 214126
+  owner_type: Person
+  owner_id: 729
+  source: open_australia
+  value: '10869'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &586 2026-08-21 10:54:03.597644000 Z
+    zone: *2
+    time: *586
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &587 2026-08-21 10:54:03.597644000 Z
+    zone: *2
+    time: *587
+- id: 214127
+  owner_type: Person
+  owner_id: 735
+  source: open_australia
+  value: '10870'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &588 2026-08-21 10:54:06.274945000 Z
+    zone: *2
+    time: *588
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &589 2026-08-21 10:54:06.274945000 Z
+    zone: *2
+    time: *589
+- id: 214128
+  owner_type: Person
+  owner_id: 451099
+  source: open_australia
+  value: '10871'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &590 2026-08-21 10:54:09.414086000 Z
+    zone: *2
+    time: *590
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &591 2026-08-21 10:54:09.414086000 Z
+    zone: *2
+    time: *591
+- id: 214138
+  owner_type: Person
+  owner_id: 784
+  source: open_australia
+  value: '10898'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &592 2026-08-21 10:55:03.435289000 Z
+    zone: *2
+    time: *592
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &593 2026-08-21 10:55:03.435289000 Z
+    zone: *2
+    time: *593
+- id: 214155
+  owner_type: Person
+  owner_id: 761
+  source: open_australia
+  value: '10937'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &594 2026-08-21 10:56:20.327222000 Z
+    zone: *2
+    time: *594
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &595 2026-08-21 10:56:20.327222000 Z
+    zone: *2
+    time: *595
+- id: 214156
+  owner_type: Person
+  owner_id: 762
+  source: open_australia
+  value: '10938'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &596 2026-08-21 10:56:25.428441000 Z
+    zone: *2
+    time: *596
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &597 2026-08-21 10:56:25.428441000 Z
+    zone: *2
+    time: *597
+- id: 214158
+  owner_type: Person
+  owner_id: 597
+  source: open_australia
+  value: '10940'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &598 2026-08-21 10:56:30.551718000 Z
+    zone: *2
+    time: *598
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &599 2026-08-21 10:56:30.551718000 Z
+    zone: *2
+    time: *599
+- id: 214159
+  owner_type: Person
+  owner_id: 656
+  source: open_australia
+  value: '10943'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &600 2026-08-21 10:56:33.369714000 Z
+    zone: *2
+    time: *600
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &601 2026-08-21 10:56:33.369714000 Z
+    zone: *2
+    time: *601
+- id: 214160
+  owner_type: Person
+  owner_id: 643
+  source: open_australia
+  value: '10947'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &602 2026-08-21 10:56:41.204069000 Z
+    zone: *2
+    time: *602
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &603 2026-08-21 10:56:41.204069000 Z
+    zone: *2
+    time: *603
+- id: 214161
+  owner_type: Person
+  owner_id: 814
+  source: open_australia
+  value: '10948'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &604 2026-08-21 10:56:45.915525000 Z
+    zone: *2
+    time: *604
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &605 2026-08-21 10:56:45.915525000 Z
+    zone: *2
+    time: *605
+- id: 214162
+  owner_type: Person
+  owner_id: 231
+  source: open_australia
+  value: '10952'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &606 2026-08-21 10:56:51.916081000 Z
+    zone: *2
+    time: *606
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &607 2026-08-21 10:56:51.916081000 Z
+    zone: *2
+    time: *607
+- id: 214163
+  owner_type: Person
+  owner_id: 695
+  source: open_australia
+  value: '10957'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &608 2026-08-21 10:57:00.512661000 Z
+    zone: *2
+    time: *608
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &609 2026-08-21 10:57:00.512661000 Z
+    zone: *2
+    time: *609
+- id: 214122
+  owner_type: Person
+  owner_id: 725
+  source: open_australia
+  value: '10859'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &610 2026-08-21 10:53:46.400009000 Z
+    zone: *2
+    time: *610
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &611 2026-08-21 10:53:46.400009000 Z
+    zone: *2
+    time: *611
+- id: 214130
+  owner_type: Person
+  owner_id: 719
+  source: open_australia
+  value: '10878'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &612 2026-08-21 10:54:21.704137000 Z
+    zone: *2
+    time: *612
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &613 2026-08-21 10:54:21.704137000 Z
+    zone: *2
+    time: *613
+- id: 214131
+  owner_type: Person
+  owner_id: 714
+  source: open_australia
+  value: '10879'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &614 2026-08-21 10:54:24.893094000 Z
+    zone: *2
+    time: *614
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &615 2026-08-21 10:54:24.893094000 Z
+    zone: *2
+    time: *615
+- id: 214134
+  owner_type: Person
+  owner_id: 741
+  source: open_australia
+  value: '10886'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &616 2026-08-21 10:54:38.934802000 Z
+    zone: *2
+    time: *616
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &617 2026-08-21 10:54:38.934802000 Z
+    zone: *2
+    time: *617
+- id: 214143
+  owner_type: Person
+  owner_id: 789
+  source: open_australia
+  value: '10906'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &618 2026-08-21 10:55:17.660745000 Z
+    zone: *2
+    time: *618
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &619 2026-08-21 10:55:17.660745000 Z
+    zone: *2
+    time: *619
+- id: 214146
+  owner_type: Person
+  owner_id: 811
+  source: open_australia
+  value: '10909'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &620 2026-08-21 10:55:25.335597000 Z
+    zone: *2
+    time: *620
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &621 2026-08-21 10:55:25.335597000 Z
+    zone: *2
+    time: *621
+- id: 214150
+  owner_type: Person
+  owner_id: 574
+  source: open_australia
+  value: '10918'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &622 2026-08-21 10:55:45.255339000 Z
+    zone: *2
+    time: *622
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &623 2026-08-21 10:55:45.255339000 Z
+    zone: *2
+    time: *623
+- id: 214151
+  owner_type: Person
+  owner_id: 451103
+  source: open_australia
+  value: '10920'
+  created_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &624 2026-08-21 10:55:48.049593000 Z
+    zone: *2
+    time: *624
+  updated_at: !ruby/object:ActiveSupport::TimeWithZone
+    utc: &625 2026-08-21 10:55:48.049593000 Z
+    zone: *2
+    time: *625
