@@ -14,9 +14,7 @@ class Common::ExternalIdentifiersTable < ApplicationView
         tbody do
           external_identifiers.each do |external_identifier|
             tr do
-              td(class: 'py-1 pe-2') do
-                span(class: 'badge text-secondary-emphasis', style: '--bs-badge-padding-x: 0;') { external_identifier.source }
-              end
+              td(class: 'py-1 pe-2 text-secondary-emphasis fw-bold text-uppercase', style: 'font-size: 0.75em;') { external_identifier.source }
               td(class: 'py-1 text-break', style: 'font-size: 0.75em;') { external_identifier.value }
             end
           end
