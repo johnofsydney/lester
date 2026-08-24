@@ -48,6 +48,7 @@ class Groups::ShowView < ApplicationView
           ) do
             a(href: "/admin/groups/#{group.id}", class: 'btn btn-sm btn-outline-primary mb-2 w-100') { 'Edit Group in Admin' }
             a(href: "/admin/groups/#{group.id}/merge_with?source_group_id=#{group.id}", class: 'btn btn-sm btn-outline-danger w-100') { 'Merge Group in Admin' }
+            render Common::ExternalIdentifiersTable.new(external_identifiers: group.external_identifiers)
           end
         end
       end

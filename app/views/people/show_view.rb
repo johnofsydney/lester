@@ -42,6 +42,7 @@ class People::ShowView < ApplicationView
           style: 'min-width: 250px; min-height: 100vh;'
         ) do
           a(href: "/admin/people/#{person.id}", class: 'btn btn-sm btn-outline-primary mb-2 w-100') { 'Edit Person in Admin' }
+          render Common::ExternalIdentifiersTable.new(external_identifiers: person.external_identifiers)
         end
       end
     end
