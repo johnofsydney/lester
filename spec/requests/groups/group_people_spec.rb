@@ -37,4 +37,25 @@ RSpec.describe 'Group people tab pagination' do
       expect((page_one_names + page_two_names).uniq.size).to eq(30)
     end
   end
+
+  describe 'ordering' do
+    let(:group) { create(:group) }
+
+    before do
+      group.cached_summary = {
+        'direct_connections' => [
+          { 'klass' => 'Person', 'id' => 1, 'name' => 'Aaron Former Member', 'current' => false },
+          { 'klass' => 'Person', 'id' => 2, 'name' => 'Zoe Present Member', 'current' => true }
+        ]
+      }
+      group.save!
+    end
+
+    it 'lists current members before ex-members, regardless of name' do
+      get "/groups/group_people/#{group.id}"
+
+      body = response.body
+      expect(body.index('Zoe Present Member')).to be < body.index('Aaron Former Member')
+    end
+  end
 end
