@@ -23,18 +23,16 @@ RSpec.describe 'Group transfers list pagination' do
 
       group.cached_summary = { 'direct_connections' => [], 'consolidated_transfers' => transfers }
       group.cached_summary_timestamp = Time.current
+      # avoids GroupsController#show's nodes_count falling through to a live
+      # Sidekiq::Queue.new('default').size call (hits Redis, not stubbed by
+      # Sidekiq::Testing.fake!) when nodes_count isn't already cached
+      group.nodes_count_cached = 0
+      group.nodes_count_cached_at = Time.current
       group.save!
     end
 
     it 'shows the first page of results at the default page size' do
       get "/groups/#{group.id}"
-
-      if response.status == 500
-        warn '===CI DEBUG BODY START==='
-        body_start = response.body.index('<body')
-        warn response.body[body_start..].gsub(/<[^>]+>/, ' ').squeeze(' ')[0..3000]
-        warn '===CI DEBUG BODY END==='
-      end
 
       expect(response).to have_http_status(:ok)
       expect(response.body.scan(/Group Transfer Taker \d\d/).uniq.size).to eq(25)
