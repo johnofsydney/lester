@@ -29,6 +29,13 @@ RSpec.describe 'Group transfers list pagination' do
     it 'shows the first page of results at the default page size' do
       get "/groups/#{group.id}"
 
+      if response.status == 500
+        warn '===CI DEBUG BODY START==='
+        body_start = response.body.index('<body')
+        warn response.body[body_start..].gsub(/<[^>]+>/, ' ').squeeze(' ')[0..3000]
+        warn '===CI DEBUG BODY END==='
+      end
+
       expect(response).to have_http_status(:ok)
       expect(response.body.scan(/Group Transfer Taker \d\d/).uniq.size).to eq(25)
     end
