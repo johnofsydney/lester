@@ -1,7 +1,9 @@
 class Common::PageNav < ApplicationView
-  def initialize(collection:, path:)
+  def initialize(collection:, path:, param_name: 'page', extra_params: {})
     @collection = collection
     @path = path
+    @param_name = param_name
+    @extra_params = extra_params
   end
 
   def view_template
@@ -33,7 +35,7 @@ class Common::PageNav < ApplicationView
 
   private
 
-  attr_reader :collection, :path
+  attr_reader :collection, :path, :param_name, :extra_params
 
   def current_page
     collection.current_page
@@ -44,7 +46,7 @@ class Common::PageNav < ApplicationView
   end
 
   def page_href(page_number)
-    "#{path}?page=#{page_number}"
+    "#{path}?#{extra_params.merge(param_name => page_number).to_query}"
   end
 
   def pagination_range

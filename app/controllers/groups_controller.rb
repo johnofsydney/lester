@@ -34,10 +34,14 @@ class GroupsController < ApplicationController
   end
 
   def affiliated_groups
-    @group = Group.find(params[:group_id])
-    @page = params[:page].to_i
+    group = Group.find(params[:group_id])
+    direct_connections = group.cached.direct_connections
 
-    render Groups::AffiliatedGroups.new(group: @group)
+    render Groups::AffiliatedGroups.new(
+      group: group,
+      affiliated_groups: paginate(direct_connections.filter { |c| (c['klass'] == 'Group') && !c['is_tag'] }, params[:groups_page]),
+      tags: paginate(direct_connections.filter { |c| c['klass'] == 'Tag' }, params[:tags_page])
+    )
   end
 
   def money_summary
@@ -56,10 +60,6 @@ class GroupsController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_group
     @group = Group.find(params[:id])
-  end
-
-  def set_page
-    @page = (params[:page] || 0).to_i
   end
 
   # Only allow a list of trusted parameters through.
@@ -85,8 +85,15 @@ class GroupsController < ApplicationController
   end
 
   def paginated_people_in(group)
-    people = group.cached.direct_connections.filter { |c| c['klass'] == 'Person' }.sort_by { |c| c['name'] }
+    people = group.cached.direct_connections.filter { |c| c['klass'] == 'Person' }
 
-    Kaminari.paginate_array(people).page(params[:page])
+    paginate(people, params[:page])
+  end
+
+  def paginate(records, page)
+    # Sort before slicing into pages, not after - sorting each page independently
+    # would produce inconsistent ordering, and possibly duplicate/missing rows,
+    # across page boundaries. Ex-members sort after current members.
+    Kaminari.paginate_array(records.sort_by { |c| [c['current'] ? 0 : 1, c['name']] }).page(page)
   end
 end
