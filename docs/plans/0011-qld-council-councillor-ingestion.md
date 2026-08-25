@@ -1,6 +1,6 @@
 # QLD Council Councillor Ingestion
 
-**Status:** Draft — not yet implemented
+**Status:** Design finalised via `/grill-me` walkthrough — ready for implementation
 
 ## Context
 
@@ -89,11 +89,13 @@ contest's council via **longest-matching-prefix** against that cached list. One 
 uniformly across general-election and by-election files, no dependence on `parentElectorateId` or
 free text.
 
-Party is given as a clean `declaredCandidatePartyCode` (e.g. `LNP`) — better than NSW/VIC's
-free-text ballot label, no `Councils::PartyMapper` regex-matching needed for QLD; a direct code
-lookup will do. `Group::NAMES` already has `qld:` branches for labor/liberals/nationals/greens
-(`liberal national party (qld)` — QLD's LNP is a merged party, so `PartyMapper`'s existing
-liberal/national keyword split collapses to the same group either way, which is correct for QLD).
+Party is given both as a clean `declaredCandidatePartyCode` (e.g. `LNP`) and a free-text
+`declaredCandidateParty` label (e.g. `"Liberal National Party of Queensland"`). **Decision: use the
+text label, unchanged, through the existing `Councils::PartyMapper`** — its `/liberal/i`/`/national/i`
+keyword regexes both already fire on QLD's label and both resolve to the same
+`Group::NAMES.liberals.qld` / `.nationals.qld` group (`'liberal national party (qld)'`, since QLD's
+LNP is a merged party) either way. No new code, no QLD-specific party-code mapping to build or
+maintain — the code field goes unused.
 
 **Party coverage, confirmed — mostly absent, and that's expected.** Checked across 2020 and 2024
 (identical both years): of 285 single-winner contests (mayors + single-seat councillor by-elections),
@@ -109,28 +111,93 @@ join is failing to surface.**
 ## Design
 
 Mirrors the existing `Councils::{Nsw,Vic}` split, minus the per-council HTTP fan-out (there's
-nothing to fan out to — one file has everything):
+nothing to fan out to — one file has everything), plus one extra job layer NSW/VIC don't need
+(see "Job/error granularity" below).
 
 - **`Councils::Qld::Elections`** — replaces the NSW/VIC hardcoded `ALL` array. Instead of a static
-  list, fetches and filters live `elections.json` for QLD local election types. Should still cache
-  the result per-run (one job, one fetch) rather than one `Elections.all` call per contest.
+  list, fetches and filters live `elections.json` for QLD local election types
+  (`Local Quadrennial`, `Local Councillor By-election`, `Local Mayoral By-election`). Cached
+  per-run (one job, one fetch) rather than re-fetched per contest.
+- **`Councils::Qld::KnownCouncils`** — resolves and caches the 77 QLD council names, sourced from
+  the *latest* `Local Quadrennial` election's `-electorates.json` (selected by max `electionDay`
+  among `electionType == 'Local Quadrennial'` entries in `elections.json` — `current` is `false`
+  for both 2020 and 2024 general elections, so it can't be used to pick "latest"; this makes the
+  choice self-updating when a 2028 stub appears, no code change needed). Exposes a
+  longest-matching-prefix lookup: given any contest's `electorateName`, returns the council name it
+  belongs to.
 - **`Councils::Qld::DeclaredResultsParser`** — takes an election `stub`, fetches
-  `<stub>-declared_candidates.json` + `<stub>-electorates.json`, joins on `areaCode`, and yields one
-  normalised contest record per mayoral/councillor entry (council name, division name or nil,
-  contest type, declared candidate(s), party code, declaration date).
-- **`Councils::Qld::ImportElectionResultsJob`** — one job per election `stub` (not per council —
-  there's no per-council page to fetch). Iterates the parsed contests and calls the same
-  `Group::RecordRow` / `Councils::RecordCandidatePerson` / `People::RecordCouncilElectionData` /
-  `Councils::PartyMapper` machinery NSW/VIC already use unchanged.
+  `<stub>-declared_candidates.json` + `<stub>-electorates.json`, joins on `electorateId`, resolves
+  each contest's council name via `KnownCouncils`, and yields one normalised contest record per
+  mayoral/councillor entry (council name, division/ward name, contest type, declared candidate(s),
+  party label, declaration date).
+- **`Councils::Qld::ImportElectionResultsJob`** — one job per election `stub`. Fetches + parses
+  that stub's JSON (via `DeclaredResultsParser`) and fans out one
+  `Councils::Qld::RecordContestResultJob` per parsed contest — it does not record anything itself.
+- **`Councils::Qld::RecordContestResultJob`** — records one contest (`lock: :until_executed,
+  retry: 3`, same as NSW/VIC's per-council job). Calls the same `Group::RecordRow` /
+  `Councils::RecordCandidatePerson` / `People::RecordCouncilElectionData` / `Councils::PartyMapper`
+  machinery NSW/VIC already use, unchanged.
 - **Top-level ingest job** — replaces `IngestElectionResultsJob`'s "discover councils, fan out
   per-council" shape with "discover election stubs from `elections.json`, fan out one
-  `ImportElectionResultsJob` per stub." Spacing exists to be polite to the council results *within*
-  a cycle for NSW/VIC; QLD has no equivalent per-council fetch to space out, so spacing (if any)
-  only needs to cover the handful of `elections.json`-derived stub fetches, not hundreds of
-  requests — likely no `IMPORT_SPACING` needed at all, or a token one.
+  `ImportElectionResultsJob` per stub," spaced `5.seconds` apart (matching VIC's existing
+  `IMPORT_SPACING`, not NSW's `90.seconds` — QLD's 45 stub fetches are lightweight JSON GETs, not
+  HTML page-scrapes, but 45 near-simultaneous requests to a government API is still worth avoiding).
 - **No `ResultsIndexParser`/`ResultsPageParser`/`CouncillorResultsParser` equivalents needed** —
   those exist in NSW/VIC to walk from an index page down to a per-ward results page; QLD's
   `<stub>-declared_candidates.json` already is that end state for every contest at once.
+
+### Job/error granularity
+
+NSW/VIC's per-council job (`lock: :until_executed, retry: 3`) means one council's parse failure
+never blocks or retry-poisons the other 127. A naive QLD design — one job per stub, recording all
+of that stub's contests inline — would lose this: a single malformed contest inside
+`2024QLGE-declared_candidates.json` (343 contests) would raise and retry-loop the *entire* general
+election, re-processing 342 already-good contests every retry until the one bad row is fixed
+(idempotent, so not incorrect, but wasteful, and Sidekiq would eventually dead-letter the whole
+stub over one bad row). **Decision: split fetch/parse from record** — `ImportElectionResultsJob`
+does the one cheap HTTP fetch and fans out; `RecordContestResultJob` does the actual recording, one
+contest at a time, so a bad contest only ever blocks itself.
+
+### Mayors — in scope from day one
+
+Unlike NSW/VIC, QLD mayoral contests are included in v1: recorded with title `'Mayor'` (not lumped
+into `'Councillor'`) via the same `Group::RecordRow` `title:` param — no new recording machinery,
+just a title distinction driven by the parsed contest's `contestType`. NSW deliberately excludes
+mayoral contests today (`Councils::Nsw::ResultsPageParser` — "direct mayoral elections are out of
+scope for this phase"), and VIC excludes VEC's "Leadership Team" (Lord Mayor/Deputy Lord Mayor)
+contest via `EXCLUDED_CONTEST_REGEX`. That gap predates this plan and was never tracked — filed as
+[johnofsydney/lester#289](https://github.com/johnofsydney/lester/issues/289) so it doesn't stay
+indefinitely deferred now that QLD is setting the precedent of including mayors from day one.
+
+### Council naming
+
+QLD's `lgaName`/resolved council name is bare (`"Aurukun Shire"`, `"Brisbane City"`) — QLD's own
+API omits the "Council" suffix that both NSW's and VIC's recorded Group names always include
+(`"Albury City Council"`, `"Alpine Shire Council"`), and that matches these councils' actual
+official names. **Decision: append `" Council"` when recording the Group** — restores the suffix
+QLD's API happens to omit, keeps naming consistent across all three states' recorded entities.
+
+### `council_election_data` observation shape
+
+`People::RecordCouncilElectionData` dedups on `[state, council_slug, cycle]` — `council_slug` is
+not validated as an actual URL slug, just an opaque per-council identifying string (NSW/VIC use
+their source's URL slug only because that's what's available, not because the field is
+semantically required to be one). **Decision:** QLD passes the *resolved council name* (from
+`KnownCouncils`) as `council_slug`, and the election `stub` (e.g. `"2024QLGE"`, `"MSC24"`) as
+`cycle` — stable, human-readable when eyeballing a person's stored `council_election_data`, and
+unique enough given `cycle` already disambiguates elections.
+
+### Evidence / source URL
+
+NSW/VIC's `evidence`/`source_url` point to a per-contest results page URL — real per-contest
+provenance. QLD has no per-contest URL; the finest-grained real URL is the stub's shared JSON file,
+covering all of that election's contests at once. **Decision:** use the shared JSON URL as
+`source_url`/`evidence`, with the specific council/division/contest-type named in the evidence text
+itself (since the URL alone can't disambiguate which of up to 343 entries it refers to) — e.g.
+`"Electoral Commission of Queensland 2024 Local Government election declared results for Aurukun
+Shire Division 1 (councillor) (https://resultsdata.elections.qld.gov.au/2024QLGE-declared_candidates.json)"`.
+Less precise than NSW's per-page link, but an honest reflection of what QLD's source actually
+offers.
 
 ### Scheduling / backfill / by-elections — one mechanism, not three
 
@@ -141,7 +208,27 @@ stub *is* all three at once, every run — new by-elections simply appear as new
 time `elections.json` is re-fetched. A single `sidekiq-scheduler` entry (monthly, matching NSW/VIC
 cadence) should be enough from day one — no separate backfill task, no separate by-election
 handling. `Group::RecordRow`/`Membership.find_or_create_by`-style idempotency (already relied on by
-NSW/VIC) means re-processing already-seen stubs is safe and cheap.
+NSW/VIC) means re-processing already-seen stubs is safe and cheap. **Decision: by-elections are in
+scope for v1** — they're mechanically free (same schema, same join, same parser, no separate code
+path to defer), so excluding them would only mean writing a filter to exclude now and another to
+re-include later. What *is* split off into a fast-follow: wiring the `sidekiq-scheduler` cron entry
+itself — ship the ingest job manually callable first, schedule it in a small separate PR, same as
+NSW/VIC's own Goal 1 → Goal 3 split.
+
+## Testing
+
+No WebMock/VCR in this codebase's council specs — NSW/VIC parsers are tested as pure functions of
+a raw fixture string (`spec/fixtures/councils/{nsw,vic}/*.html`, trimmed to a handful of councils
+rather than the full page), with HTTP isolated to a separate, thin `PageDownloader` service. QLD
+parsers should follow the same shape — take the raw JSON string(s), no network inside the parser.
+
+Fixtures: trim the real ~850KB/~200KB JSON down to a small set covering every shape found during
+verification — `spec/fixtures/councils/qld/`:
+- an undivided-mayor council (e.g. Aurukun)
+- a divided-mayor council
+- the one hybrid council (Ipswich — only 1 in the state)
+- a contest with a populated party (Brisbane's mayor)
+- a by-election-shaped file (single electorate, no `lgaName`, no `parentElectorateId`)
 
 ## Verified against real data (2020 + 2024 general elections, 5 sampled by-elections)
 
