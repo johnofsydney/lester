@@ -4,7 +4,9 @@
 
 ## Background
 
-There was a one-time copy/paste import of NSW politicians into the DB. It's not repeatable and its Memberships/Positions (Group = NSW Parliament) need to be destroyed before this work lands real data — mirrors the "manual pre-step" pattern from [0004](0004-ingest-federal-politicians-design.md)'s Federal Branch cleanup.
+**One `Group` for the whole of NSW Parliament, not one per house.** Mirrors [0004](0004-ingest-federal-politicians-design.md)'s federal precedent — `Group.federal_parliament` is a single Group covering both the House and Senate, with a `Position` (`title:`) distinguishing which house a given Membership represents, not separate Groups. Same here: LA and LC members both get a Membership in `Group.find(3740)`; `title:` (e.g. `'Member of the Legislative Assembly'` vs `'Member of the Legislative Council'`) is what distinguishes them.
+
+There was a one-time copy/paste import of NSW politicians into the DB — confirmed as `Group.find(3740)` ("nsw parliament"), currently holding 512 Memberships, no dates, no evidence. It's not repeatable and needs to be destroyed before this work lands real data — mirrors the "manual pre-step" pattern from [0004](0004-ingest-federal-politicians-design.md)'s Federal Branch cleanup, with one addition: unlike the federal cleanup (which only ever deleted Memberships/Positions, never People), this cleanup also deletes any Person left with zero Memberships once the legacy ones are removed — see [the cleanup runbook](../runbooks/nsw-state-politicians-legacy-cleanup.md) for the full reasoning and sketch.
 
 Issue #248 scopes the project to NSW and Victoria, most recent election cycles first, backfilling backwards in time. Other states out of scope. This doc covers **NSW only** — Victoria's data source (VEC) is different and needs its own design pass when picked up.
 
@@ -14,13 +16,17 @@ Issue #248 scopes the project to NSW and Victoria, most recent election cycles f
 
 - **`/{event}/LA/state/elected`** (e.g. `/SG2301/LA/state/elected`) — one table, one row per electorate: `District | Candidate | Representation (party)`. This is the full statewide winners roster in a single page fetch — no need to derive winners from the per-electorate summary pages.
 - **`/{event}/LA/{electorate}/cc/fp_summary`** (e.g. `/SG2301/LA/auburn/cc/fp_summary`) — first-preference results table for one electorate: every candidate (winner and unsuccessful) with their declared party.
-- Same shape exists under `/LC/` for the Legislative Council — not yet confirmed live, needs a check when LC ingestion is built (LC is proportional/multi-member, so the `elected`-equivalent page may differ in structure).
+
+**LC (Legislative Council) confirmed live — structurally different from LA, not a same-shape sibling:**
+- There is **no** `/LC/state/elected` page (404) — LC is a proportional, multi-member, group-ticket system, so "winners per electorate" doesn't apply. The actual winners page is **`/{event}/LC/state/candidates_elected`** (found via the `/LC/results` hub page's links, not guessable from the LA pattern) — one row per elected member: `Candidate Name | Group letter | Group Name | Elected at Count`. Confirmed live for `SG2301`: 21 rows. Party is given as a short ballot label (`LABOR`, `THE GREENS`, `ONE NATION`, `LIBERAL / THE NATIONALS` for a joint ticket) — visibly different formatting from the LA `elected` page's full legal party names, so `PartyMapper`'s keyword-matching needs verifying against this format specifically, not assumed to transfer from LA tuning.
+- `/{event}/LC/state/cc/fp_summary` **does** exist (200, confirmed) but is a first-preference-by-group-ticket table (candidates nested under ballot Group letters, quota fractions, not a flat per-candidate table like LA's) — using it for "unsuccessful LC candidates whose party already has a Group" needs its own parser, not a reuse of whatever parses LA's `fp_summary`.
+- LC ingestion is still not designed beyond this — the pages exist and are confirmed, but "who counts as an unsuccessful-but-worth-ingesting LC candidate" under a quota system is a different question than LA's simple win/lose, not yet thought through.
 
 Other candidates considered and rejected:
 - `elections.nsw.gov.au` main site and `data.nsw.gov.au` — checked; the open datasets there are depersonalised voting-transaction logs (postal/pre-poll/iVote), not candidate/party/result rosters. Not useful for this.
 - Guessed direct XLSX candidate-list URLs (`SGE2023 LA Candidates.xlsx`) — 404'd. Not pursued further since the HTML tables above already cover the need.
 
-`SG2301` is the 2023 NSW state general election's event code on pastvtr; each election cycle has its own code, discovered per-cycle (not yet inventoried — needed before backfill can proceed past the most recent election).
+**Election event codes confirmed** via `elections.nsw.gov.au/elections/past-results/state-election-results`'s per-year pages, which each link their pastvtr event code: `SG2301` (2023), `SG1901` (2019) — both confirmed live on the current `LA/state/elected` and `LC/state/candidates_elected` page shapes above. **2015 and earlier live under a structurally different legacy path** (`pastvtr.elections.nsw.gov.au/SGE2015/home.htm`, `SGE2011/Vtrhome.htm` — old `SGE{year}` naming, not `SG{yy}{seq}`) — same "legacy site, different structure" situation `Councils::Nsw::Elections`' own comment already documents for council data pre-2016. Backfill past 2019 needs a second parser for that legacy shape, not assumed to be a drop-in.
 
 ## Reuse: this is a sibling of the NSW local council ingestion, not a fresh problem
 
@@ -35,10 +41,14 @@ The `Councils::*` namespace (shipped, see [0002](0002-local-council-councillor-i
 
 ## Who gets ingested
 
-1. **Every winning candidate**, regardless of party — sourced from the `elected` page. Always creates their party Group if it doesn't already exist (winners aren't gated on existing-Group; only losers are).
-2. **Unsuccessful candidates, but only if `PartyMapper` resolves their declared party to an existing Group** — sourced from each electorate's `fp_summary` page. This naturally excludes independents (no party to resolve) and micro-parties (no matching `Group::NAMES` family, or a family match with no existing Group row) without maintaining a separate whitelist anywhere. Confirmed real examples: The Greens NSW, Liberal Democratic Party (once the bug above is fixed), and The Liberal Party of Australia (NSW Division) would be included; a one-off micro-party like "Sustainable Australia Party - Stop Overdevelopment / Corruption" would be excluded.
+Same rule for both houses — **decided:** LC uses the identical existing-party-Group gate as LA, just read off LC's own pages, not a quota-specific rule (e.g. not "only those within N quotas of winning").
 
-Expect `PartyMapper`'s 4-family keyword coverage to need extending for state-specific party strings not seen in council data — extend its table in place rather than forking a parallel mapper, same reasoning as for the LDP bug fix above.
+1. **Every winning candidate**, regardless of party — LA from the `elected` page, LC from `candidates_elected`. Always creates their party Group if it doesn't already exist (winners aren't gated on existing-Group; only losers are).
+2. **Unsuccessful candidates, but only if `PartyMapper` resolves their declared party to an existing Group** — LA from each electorate's `fp_summary` page; LC from `/LC/state/cc/fp_summary`'s group-ticket table (needs its own parser — see LC section above — but the same gate once a candidate row is extracted from it). This naturally excludes independents (no party to resolve) and micro-parties (no matching `Group::NAMES` family, or a family match with no existing Group row) without maintaining a separate whitelist anywhere. Confirmed real examples: The Greens NSW, Liberal Democratic Party (once the bug above is fixed), and The Liberal Party of Australia (NSW Division) would be included; a one-off micro-party like "Sustainable Australia Party - Stop Overdevelopment / Corruption" would be excluded.
+
+Expect `PartyMapper`'s 4-family keyword coverage to need extending for state-specific party strings not seen in council data — extend its table in place rather than forking a parallel mapper, same reasoning as for the LDP bug fix above. LC's short ballot-label format (`LABOR`, `THE GREENS`, joint tickets like `LIBERAL / THE NATIONALS`) is a second format `PartyMapper` needs to handle correctly alongside LA's full legal names.
+
+**Decided: joint-ticket labels resolve to whichever family is named first.** `LIBERAL / THE NATIONALS` → Liberals (single Membership, not two, not "unresolvable"). General rule for any other joint-ticket string this or future elections surface: always take the first-named party as the group — don't special-case Liberal/Nationals specifically in `PartyMapper`, implement the "first match wins" ordering generically (e.g. check the string up to the first `/` before falling through to the rest) so it holds for tickets not yet seen.
 
 ## Disambiguation
 
@@ -52,7 +62,7 @@ Confirmed live sample from the `elected` page: `DAVIES Tanya` — surname first,
 
 For every ingested person (winner, or unsuccessful candidate whose party already has a Group in the DB):
 - The `Person` record, via the generalized `RecordCandidatePerson` (see above), scoped to the NSW Parliament Group.
-- **A `Membership` (and `Position`, e.g. `title: 'Member of the Legislative Assembly'`) linking them to the NSW Parliament Group itself — created immediately, permanently undated**, via `Group::RecordRow`, mirroring `Councils::{Nsw,Vic}::ImportCouncilResultRowJob`'s `Group::RecordRow.new(group: council, person:, title: 'Councillor', evidence:).call`. This is required, not optional — issue #248 and the project owner are explicit that this process must create the Parliament Membership, not just stage raw data for a future step to create it from scratch.
+- **A `Membership` (and `Position`, `title: 'Member of the Legislative Assembly'` or `'Member of the Legislative Council'` depending on house) linking them to the single NSW Parliament Group (`Group.find(3740)`) — created immediately, permanently undated**, via `Group::RecordRow`, mirroring `Councils::{Nsw,Vic}::ImportCouncilResultRowJob`'s `Group::RecordRow.new(group: council, person:, title: 'Councillor', evidence:).call`. This is required, not optional — issue #248 and the project owner are explicit that this process must create the Parliament Membership, not just stage raw data for a future step to create it from scratch.
 - If they have a party, a `Membership` linking them to that party's Group (find-or-create for winners; already guaranteed to exist for ingested losers) — also undated, same reasoning.
 - A dated raw observation appended to a new `Person#state_election_data` jsonb column (mirroring `Person#council_election_data` / `People::RecordCouncilElectionData` — append-only, deduped by a key tuple such as `(state, event_id, electorate, house)`, not overwrite-on-fetch, since pastvtr data arrives piecemeal — one import run per electorate/cycle — the same way council data does, not in one full-history shot the way OpenAustralia's does (ADR 0001 vs ADR 0006 is the same fork; this follows ADR 0006's side of it).
 
@@ -60,9 +70,30 @@ For every ingested person (winner, or unsuccessful candidate whose party already
 
 **Interpretation itself (a future `Interpretation::RecordMembershipsAndPositions`-style pass deriving real start/end dates from `state_election_data`, mirroring the still-not-built council equivalent) is out of scope for this ticket**, per issue #248 — this doc only commits to the raw data existing in a shape that pass can consume later.
 
+## Election cycles (`NswStatePoliticians::Elections`-equivalent)
+
+Confirmed live, mirroring `Councils::Nsw::Elections`' shape:
+
+```ruby
+module NswStatePoliticians::Elections
+  ALL = [
+    { id: 'SG1901', year: 2019 },
+    { id: 'SG2301', year: 2023 }
+  ].freeze
+  # 2015 and earlier live under a structurally different legacy path
+  # (pastvtr.elections.nsw.gov.au/SGE{year}/...) -- not covered here, see docs/plans/0011.
+
+  def self.find(event_id) = ALL.find { |e| e[:id] == event_id } || raise(ArgumentError, "Unknown NSW state election_id: #{event_id}")
+  def self.latest = ALL.last
+end
+```
+
+Both confirmed live on the current page structure (`LA/state/elected`, `LC/state/candidates_elected`). By-elections (e.g. the 2024 Epping/Hornsby/Pittwater, 2025 Kiama/Port Macquarie ones listed on `elections.nsw.gov.au`) are **not covered by this list** — they're single-electorate events with their own separate result pages, not part of a general-election `SG*` sweep; whether/how to fold by-election winners into this ingestion (they're real MPs, but discovered a different way) is not designed here.
+
 ## Not yet designed
 
-- Legislative Council ingestion (multi-member proportional — the `elected`/`fp_summary` page shapes need separate confirmation).
-- The state-election equivalent of `Councils::Nsw::Elections` — actual event codes and dates for past NSW state election cycles beyond `SG2301` (2023), needed before backfill can proceed past the most recent election.
-- The manual pre-step to destroy the legacy one-time-import Memberships/Positions (needs the actual Group id for NSW Parliament, analogous to [0004](0004-ingest-federal-politicians-design.md)'s `Group.find(877)` for Federal Parliament).
+- LC's `fp_summary` group-ticket parser, and how `PartyMapper` should resolve joint-ticket labels like `LIBERAL / THE NATIONALS` (which family, or both, or neither) — the *rule* for who's ingested is decided (same existing-Group gate as LA), but extracting a clean candidate+party row from LC's page shape isn't.
+- By-election handling (see above) — separate discovery mechanism from the general-election sweep.
+- The legacy pre-2019 (`SGE2015` and earlier) page structure — different enough from the current `SG*` shape that it needs its own parser before backfill can reach it, not assumed to be a drop-in. Tracked separately, deliberately not blocking this doc's initial implementation: [issue #290](https://github.com/johnofsydney/lester/issues/290).
+- The manual pre-step to destroy the legacy one-time-import Memberships/Positions/orphaned People — Group id confirmed (`Group.find(3740)`), full design and rake-task sketch in [the cleanup runbook](../runbooks/nsw-state-politicians-legacy-cleanup.md); not yet implemented, and worth reconciling the runbook's "expected ~93 electorates but found 512 memberships" gap before running it for real.
 - Victoria (VEC) state election ingestion itself — separate source, separate design pass. (Note: this is distinct from the VIC *council* pipeline referenced above, which already exists and already shares `RecordCandidatePerson`.)
