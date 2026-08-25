@@ -1,0 +1,967 @@
+{
+  "electorates": [
+    {
+      "electorateId": 547,
+      "parentElectorateId": null,
+      "areaCode": "001",
+      "lgaName": "Aurukun Shire",
+      "electorateName": "Aurukun Shire",
+      "contestType": "Mayor",
+      "electorateType": "Council - Undivided",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": null,
+      "votingSystemMayor": "Optional Preferential Voting",
+      "votingSystemCouncillor": "First Past the Post",
+      "indicativeCount": false,
+      "candidatesMayorCount": 3,
+      "candidatesMayor": [
+        {
+          "ballotName": "BANDICOOTCHA, Barbara Sue",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "BANDICOOTCHA",
+          "candidateGivenNames": "BARBARA SUE"
+        },
+        {
+          "ballotName": "WALPO, Dereck",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "WALPO",
+          "candidateGivenNames": "DERECK JAMES"
+        },
+        {
+          "ballotName": "TAMWOY, Keri",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "TAMWOY",
+          "candidateGivenNames": "KERRIE PAULINE"
+        }
+      ],
+      "enrolment": 934,
+      "divisions": [
+        {
+          "areaCode": "00101",
+          "electorateName": "Aurukun Shire Division 1",
+          "contestType": "Councillor",
+          "votingMethod": "Attendance Ballot",
+          "votingSystemCouncillor": "First Past the Post",
+          "enrolment": 934,
+          "indicativecount": true,
+          "numElectedCandidates": 4,
+          "candidatesCouncillorCount": 6,
+          "candidatesCouncillor": [
+            {
+              "ballotName": "MARROTT, Jayden",
+              "ballotOrderNumber": 1,
+              "candidateSurname": "MARROTT",
+              "candidateGivenNames": "JAYDEN ISAAC"
+            },
+            {
+              "ballotName": "YUNKAPORTA, Leona Nanette",
+              "ballotOrderNumber": 2,
+              "candidateSurname": "YUNKAPORTA",
+              "candidateGivenNames": "LEONA NANETTE"
+            },
+            {
+              "ballotName": "KOOMEETA, Craig",
+              "ballotOrderNumber": 3,
+              "candidateSurname": "KOOMEETA",
+              "candidateGivenNames": "CRAIG ALLAN"
+            },
+            {
+              "ballotName": "YUNKAPORTA, Eloise",
+              "ballotOrderNumber": 4,
+              "candidateSurname": "YUNKAPORTA",
+              "candidateGivenNames": "ELOISE SUSIE GLADYS N"
+            },
+            {
+              "ballotName": "TAMWOY, Kemuel",
+              "ballotOrderNumber": 5,
+              "candidateSurname": "TAMWOY",
+              "candidateGivenNames": "KEMUEL MIKA"
+            },
+            {
+              "ballotName": "ADIDI, Bobby",
+              "ballotOrderNumber": 6,
+              "candidateSurname": "ADIDI",
+              "candidateGivenNames": "ROBERT"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "electorateId": 548,
+      "parentElectorateId": 547,
+      "areaCode": "00101",
+      "electorateName": "Aurukun Shire Division 1",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "First Past the Post",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 6,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "MARROTT, Jayden",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "MARROTT",
+          "candidateGivenNames": "JAYDEN ISAAC"
+        },
+        {
+          "ballotName": "YUNKAPORTA, Leona Nanette",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "YUNKAPORTA",
+          "candidateGivenNames": "LEONA NANETTE"
+        },
+        {
+          "ballotName": "KOOMEETA, Craig",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "KOOMEETA",
+          "candidateGivenNames": "CRAIG ALLAN"
+        },
+        {
+          "ballotName": "YUNKAPORTA, Eloise",
+          "ballotOrderNumber": 4,
+          "candidateSurname": "YUNKAPORTA",
+          "candidateGivenNames": "ELOISE SUSIE GLADYS N"
+        },
+        {
+          "ballotName": "TAMWOY, Kemuel",
+          "ballotOrderNumber": 5,
+          "candidateSurname": "TAMWOY",
+          "candidateGivenNames": "KEMUEL MIKA"
+        },
+        {
+          "ballotName": "ADIDI, Bobby",
+          "ballotOrderNumber": 6,
+          "candidateSurname": "ADIDI",
+          "candidateGivenNames": "ROBERT"
+        }
+      ],
+      "numberToElect": 4,
+      "enrolment": 934,
+      "divisions": []
+    },
+    {
+      "electorateId": 551,
+      "parentElectorateId": null,
+      "areaCode": "003",
+      "lgaName": "Banana Shire",
+      "electorateName": "Banana Shire",
+      "contestType": "Mayor",
+      "electorateType": "Council - Divided",
+      "votingMethod": "Full Postal Ballot",
+      "votingSystem": null,
+      "votingSystemMayor": "Optional Preferential Voting",
+      "votingSystemCouncillor": "Optional Preferential Voting",
+      "indicativeCount": false,
+      "candidatesMayorCount": 1,
+      "candidatesMayor": [
+        {
+          "ballotName": "FERRIER, Nev",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "FERRIER",
+          "candidateGivenNames": "NEVILLE GEORGE"
+        }
+      ],
+      "enrolment": 9672,
+      "divisions": [
+        {
+          "areaCode": "00301",
+          "electorateName": "Banana Shire Division 1",
+          "contestType": "Councillor",
+          "votingMethod": "Full Postal Ballot",
+          "votingSystemCouncillor": "Optional Preferential Voting",
+          "enrolment": 1721,
+          "indicativecount": true,
+          "numElectedCandidates": 1,
+          "candidatesCouncillorCount": 3,
+          "candidatesCouncillor": [
+            {
+              "ballotName": "RAMSEY, John Clifford",
+              "ballotOrderNumber": 1,
+              "candidateSurname": "RAMSEY",
+              "candidateGivenNames": "JOHN CLIFFORD"
+            },
+            {
+              "ballotName": "BURLING, Adam",
+              "ballotOrderNumber": 2,
+              "candidateSurname": "BURLING",
+              "candidateGivenNames": "ADAM CECIL"
+            },
+            {
+              "ballotName": "WILLIAMS, Jason",
+              "ballotOrderNumber": 3,
+              "candidateSurname": "WILLIAMS",
+              "candidateGivenNames": "JASON PATRICK"
+            }
+          ]
+        },
+        {
+          "areaCode": "00302",
+          "electorateName": "Banana Shire Division 2",
+          "contestType": "Councillor",
+          "votingMethod": "Full Postal Ballot",
+          "votingSystemCouncillor": "Optional Preferential Voting",
+          "enrolment": 1799,
+          "indicativecount": true,
+          "numElectedCandidates": 1,
+          "candidatesCouncillorCount": 2,
+          "candidatesCouncillor": [
+            {
+              "ballotName": "NEVELL, Col",
+              "ballotOrderNumber": 1,
+              "candidateSurname": "NEVELL",
+              "candidateGivenNames": "COLIN JAMES"
+            },
+            {
+              "ballotName": "JENSEN, Ashley",
+              "ballotOrderNumber": 2,
+              "candidateSurname": "JENSEN",
+              "candidateGivenNames": "ASHLEY VICTOR"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "electorateId": 552,
+      "parentElectorateId": 551,
+      "areaCode": "00301",
+      "electorateName": "Banana Shire Division 1",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Full Postal Ballot",
+      "votingSystem": "Optional Preferential Voting",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 3,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "RAMSEY, John Clifford",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "RAMSEY",
+          "candidateGivenNames": "JOHN CLIFFORD"
+        },
+        {
+          "ballotName": "BURLING, Adam",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "BURLING",
+          "candidateGivenNames": "ADAM CECIL"
+        },
+        {
+          "ballotName": "WILLIAMS, Jason",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "WILLIAMS",
+          "candidateGivenNames": "JASON PATRICK"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 1721,
+      "divisions": []
+    },
+    {
+      "electorateId": 553,
+      "parentElectorateId": 551,
+      "areaCode": "00302",
+      "electorateName": "Banana Shire Division 2",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Full Postal Ballot",
+      "votingSystem": "Optional Preferential Voting",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 2,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "NEVELL, Col",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "NEVELL",
+          "candidateGivenNames": "COLIN JAMES"
+        },
+        {
+          "ballotName": "JENSEN, Ashley",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "JENSEN",
+          "candidateGivenNames": "ASHLEY VICTOR"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 1799,
+      "divisions": []
+    },
+    {
+      "electorateId": 554,
+      "parentElectorateId": 551,
+      "areaCode": "00303",
+      "electorateName": "Banana Shire Division 3",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Full Postal Ballot",
+      "votingSystem": "Optional Preferential Voting",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 1,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "CASEY, Phillip",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "CASEY",
+          "candidateGivenNames": "PHILLIP JOHN"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 1603,
+      "divisions": []
+    },
+    {
+      "electorateId": 555,
+      "parentElectorateId": 551,
+      "areaCode": "00304",
+      "electorateName": "Banana Shire Division 4",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Full Postal Ballot",
+      "votingSystem": "Optional Preferential Voting",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 1,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "BAILEY, Kerrith",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "BAILEY",
+          "candidateGivenNames": "KERRITH ELIZABETH"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 1388,
+      "divisions": []
+    },
+    {
+      "electorateId": 556,
+      "parentElectorateId": 551,
+      "areaCode": "00305",
+      "electorateName": "Banana Shire Division 5",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Full Postal Ballot",
+      "votingSystem": "Optional Preferential Voting",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 1,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "LEO, Brooke",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "LEO",
+          "candidateGivenNames": "BROOKE"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 1533,
+      "divisions": []
+    },
+    {
+      "electorateId": 557,
+      "parentElectorateId": 551,
+      "areaCode": "00306",
+      "electorateName": "Banana Shire Division 6",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Full Postal Ballot",
+      "votingSystem": "Optional Preferential Voting",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 2,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "BOYCE, Terri",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "BOYCE",
+          "candidateGivenNames": "TERRI SUSAN"
+        },
+        {
+          "ballotName": "BALL, Harold",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "BALL",
+          "candidateGivenNames": "HAROLD ERIC"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 1628,
+      "divisions": []
+    },
+    {
+      "electorateId": 566,
+      "parentElectorateId": null,
+      "areaCode": "008",
+      "lgaName": "Brisbane City",
+      "electorateName": "Brisbane City",
+      "contestType": "Mayor",
+      "electorateType": "Council - Divided",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": null,
+      "votingSystemMayor": "Optional Preferential Voting",
+      "votingSystemCouncillor": "Optional Preferential Voting",
+      "indicativeCount": false,
+      "candidatesMayorCount": 6,
+      "candidatesMayor": [
+        {
+          "ballotName": "TANTI, Bruce",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "TANTI",
+          "candidateGivenNames": "BRUCE EDWARD VINCENT"
+        },
+        {
+          "ballotName": "PRICE, Tracey",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "PRICE",
+          "candidateGivenNames": "TRACEY LEANNE",
+          "party": "Australian Labor Party (State of Queensland)",
+          "partyCode": "Australian Labor Party"
+        },
+        {
+          "ballotName": "SCHRINNER, Adrian",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "SCHRINNER",
+          "candidateGivenNames": "ADRIAN JURGEN",
+          "party": "Liberal National Party of Queensland",
+          "partyCode": "LNP"
+        },
+        {
+          "ballotName": "HOLMES, Gilbert",
+          "ballotOrderNumber": 4,
+          "candidateSurname": "HOLMES",
+          "candidateGivenNames": "GILBERT ADRIAN"
+        },
+        {
+          "ballotName": "BRAZIER, Clive",
+          "ballotOrderNumber": 5,
+          "candidateSurname": "BRAZIER",
+          "candidateGivenNames": "CLIVE KENNETH",
+          "party": "Legalise Cannabis Qld (Party)"
+        },
+        {
+          "ballotName": "SRIRANGANATHAN, Jonathan",
+          "ballotOrderNumber": 6,
+          "candidateSurname": "SRIRANGANATHAN",
+          "candidateGivenNames": "JONATHAN",
+          "party": "Queensland Greens",
+          "partyCode": "The Greens"
+        }
+      ],
+      "enrolment": 845501,
+      "divisions": [
+        {
+          "areaCode": "00801",
+          "electorateName": "Brisbane City Bracken Ridge",
+          "contestType": "Councillor",
+          "votingMethod": "Attendance Ballot",
+          "votingSystemCouncillor": "Optional Preferential Voting",
+          "enrolment": 31445,
+          "indicativecount": true,
+          "numElectedCandidates": 1,
+          "candidatesCouncillorCount": 3,
+          "candidatesCouncillor": [
+            {
+              "ballotName": "LANDERS, Sandy",
+              "ballotOrderNumber": 1,
+              "candidateSurname": "LANDERS",
+              "candidateGivenNames": "SANDRA JANE MARIE",
+              "party": "Liberal National Party of Queensland",
+              "partyCode": "LNP"
+            },
+            {
+              "ballotName": "STEPHEN, Thomas",
+              "ballotOrderNumber": 2,
+              "candidateSurname": "STEPHEN",
+              "candidateGivenNames": "THOMAS ANDREW",
+              "party": "Australian Labor Party (State of Queensland)",
+              "partyCode": "Australian Labor Party"
+            },
+            {
+              "ballotName": "HARBISON, John",
+              "ballotOrderNumber": 3,
+              "candidateSurname": "HARBISON",
+              "candidateGivenNames": "JOHN EDWIN",
+              "party": "Queensland Greens",
+              "partyCode": "The Greens"
+            }
+          ]
+        },
+        {
+          "areaCode": "00802",
+          "electorateName": "Brisbane City Calamvale",
+          "contestType": "Councillor",
+          "votingMethod": "Attendance Ballot",
+          "votingSystemCouncillor": "Optional Preferential Voting",
+          "enrolment": 35712,
+          "indicativecount": true,
+          "numElectedCandidates": 1,
+          "candidatesCouncillorCount": 3,
+          "candidatesCouncillor": [
+            {
+              "ballotName": "OWEN, Angela",
+              "ballotOrderNumber": 1,
+              "candidateSurname": "OWEN",
+              "candidateGivenNames": "ANGELA CAROLYN",
+              "party": "Liberal National Party of Queensland",
+              "partyCode": "LNP"
+            },
+            {
+              "ballotName": "WILDIN, Andrea",
+              "ballotOrderNumber": 2,
+              "candidateSurname": "WILDIN",
+              "candidateGivenNames": "ANDREA SUSAN",
+              "party": "Queensland Greens",
+              "partyCode": "The Greens"
+            },
+            {
+              "ballotName": "KIM, Emily",
+              "ballotOrderNumber": 3,
+              "candidateSurname": "KIM",
+              "candidateGivenNames": "EMILY JI-YOUN",
+              "party": "Australian Labor Party (State of Queensland)",
+              "partyCode": "Australian Labor Party"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "electorateId": 567,
+      "parentElectorateId": 566,
+      "areaCode": "00801",
+      "electorateName": "Brisbane City Bracken Ridge",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "Optional Preferential Voting",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 3,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "LANDERS, Sandy",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "LANDERS",
+          "candidateGivenNames": "SANDRA JANE MARIE",
+          "party": "Liberal National Party of Queensland",
+          "partyCode": "LNP"
+        },
+        {
+          "ballotName": "STEPHEN, Thomas",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "STEPHEN",
+          "candidateGivenNames": "THOMAS ANDREW",
+          "party": "Australian Labor Party (State of Queensland)",
+          "partyCode": "Australian Labor Party"
+        },
+        {
+          "ballotName": "HARBISON, John",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "HARBISON",
+          "candidateGivenNames": "JOHN EDWIN",
+          "party": "Queensland Greens",
+          "partyCode": "The Greens"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 31445,
+      "divisions": []
+    },
+    {
+      "electorateId": 578,
+      "parentElectorateId": 566,
+      "areaCode": "00802",
+      "electorateName": "Brisbane City Calamvale",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "Optional Preferential Voting",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 3,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "OWEN, Angela",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "OWEN",
+          "candidateGivenNames": "ANGELA CAROLYN",
+          "party": "Liberal National Party of Queensland",
+          "partyCode": "LNP"
+        },
+        {
+          "ballotName": "WILDIN, Andrea",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "WILDIN",
+          "candidateGivenNames": "ANDREA SUSAN",
+          "party": "Queensland Greens",
+          "partyCode": "The Greens"
+        },
+        {
+          "ballotName": "KIM, Emily",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "KIM",
+          "candidateGivenNames": "EMILY JI-YOUN",
+          "party": "Australian Labor Party (State of Queensland)",
+          "partyCode": "Australian Labor Party"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 35712,
+      "divisions": []
+    },
+    {
+      "electorateId": 694,
+      "parentElectorateId": null,
+      "areaCode": "034",
+      "lgaName": "Ipswich City",
+      "electorateName": "Ipswich City",
+      "contestType": "Mayor",
+      "electorateType": "Council - Hybrid",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": null,
+      "votingSystemMayor": "Optional Preferential Voting",
+      "votingSystemCouncillor": "First Past the Post",
+      "indicativeCount": false,
+      "candidatesMayorCount": 6,
+      "candidatesMayor": [
+        {
+          "ballotName": "HARDING, Teresa",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "HARDING",
+          "candidateGivenNames": "TERESA JANE"
+        },
+        {
+          "ballotName": "SALTER, Ken",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "SALTER",
+          "candidateGivenNames": "KENNETH VIDAR"
+        },
+        {
+          "ballotName": "ROBINSON, Peter",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "ROBINSON",
+          "candidateGivenNames": "PETER ERASMUS"
+        },
+        {
+          "ballotName": "KOCHARDY, Karakan Karoly",
+          "ballotOrderNumber": 4,
+          "candidateSurname": "KOCHARDY",
+          "candidateGivenNames": "KAROLY KARAKAN"
+        },
+        {
+          "ballotName": "MARTIN, David",
+          "ballotOrderNumber": 5,
+          "candidateSurname": "MARTIN",
+          "candidateGivenNames": "DAVID"
+        },
+        {
+          "ballotName": "IRELAND, Sheila",
+          "ballotOrderNumber": 6,
+          "candidateSurname": "IRELAND",
+          "candidateGivenNames": "SHEILA ANN"
+        }
+      ],
+      "enrolment": 155753,
+      "divisions": [
+        {
+          "areaCode": "03401",
+          "electorateName": "Ipswich City Division 1",
+          "contestType": "Councillor",
+          "votingMethod": "Attendance Ballot",
+          "votingSystemCouncillor": "First Past the Post",
+          "enrolment": 38756,
+          "indicativecount": true,
+          "numElectedCandidates": 2,
+          "candidatesCouncillorCount": 4,
+          "candidatesCouncillor": [
+            {
+              "ballotName": "ADDISON, Josh",
+              "ballotOrderNumber": 1,
+              "candidateSurname": "ADDISON",
+              "candidateGivenNames": "JOSHUA JONAS"
+            },
+            {
+              "ballotName": "MADSEN, Jacob",
+              "ballotOrderNumber": 2,
+              "candidateSurname": "MADSEN",
+              "candidateGivenNames": "JACOB GORDON"
+            },
+            {
+              "ballotName": "INGRAM, Simon",
+              "ballotOrderNumber": 3,
+              "candidateSurname": "INGRAM",
+              "candidateGivenNames": "SIMON"
+            },
+            {
+              "ballotName": "AUGUSTINE, Pye",
+              "ballotOrderNumber": 4,
+              "candidateSurname": "AUGUSTINE",
+              "candidateGivenNames": "PYE"
+            }
+          ]
+        },
+        {
+          "areaCode": "03402",
+          "electorateName": "Ipswich City Division 2",
+          "contestType": "Councillor",
+          "votingMethod": "Attendance Ballot",
+          "votingSystemCouncillor": "First Past the Post",
+          "enrolment": 41375,
+          "indicativecount": true,
+          "numElectedCandidates": 2,
+          "candidatesCouncillorCount": 6,
+          "candidatesCouncillor": [
+            {
+              "ballotName": "DO, Vincent",
+              "ballotOrderNumber": 1,
+              "candidateSurname": "DO",
+              "candidateGivenNames": "VINCENT"
+            },
+            {
+              "ballotName": "YOUNGBERRY, Helen",
+              "ballotOrderNumber": 2,
+              "candidateSurname": "YOUNGBERRY",
+              "candidateGivenNames": "HELEN FRANCIS"
+            },
+            {
+              "ballotName": "TULLY, Paul Gregory",
+              "ballotOrderNumber": 3,
+              "candidateSurname": "TULLY",
+              "candidateGivenNames": "PAUL GREGORY"
+            },
+            {
+              "ballotName": "JONIC, Nicole Kay",
+              "ballotOrderNumber": 4,
+              "candidateSurname": "JONIC",
+              "candidateGivenNames": "NICOLE KAY"
+            },
+            {
+              "ballotName": "SUHAG, Neetu Singh",
+              "ballotOrderNumber": 5,
+              "candidateSurname": "SUHAG",
+              "candidateGivenNames": "NEETU SINGH"
+            },
+            {
+              "ballotName": "PURCELL, Steven",
+              "ballotOrderNumber": 6,
+              "candidateSurname": "PURCELL",
+              "candidateGivenNames": "STEVEN ANTHONY"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "electorateId": 695,
+      "parentElectorateId": 694,
+      "areaCode": "03401",
+      "electorateName": "Ipswich City Division 1",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "First Past the Post",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 4,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "ADDISON, Josh",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "ADDISON",
+          "candidateGivenNames": "JOSHUA JONAS"
+        },
+        {
+          "ballotName": "MADSEN, Jacob",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "MADSEN",
+          "candidateGivenNames": "JACOB GORDON"
+        },
+        {
+          "ballotName": "INGRAM, Simon",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "INGRAM",
+          "candidateGivenNames": "SIMON"
+        },
+        {
+          "ballotName": "AUGUSTINE, Pye",
+          "ballotOrderNumber": 4,
+          "candidateSurname": "AUGUSTINE",
+          "candidateGivenNames": "PYE"
+        }
+      ],
+      "numberToElect": 2,
+      "enrolment": 38756,
+      "divisions": []
+    },
+    {
+      "electorateId": 696,
+      "parentElectorateId": 694,
+      "areaCode": "03402",
+      "electorateName": "Ipswich City Division 2",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "First Past the Post",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 6,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "DO, Vincent",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "DO",
+          "candidateGivenNames": "VINCENT"
+        },
+        {
+          "ballotName": "YOUNGBERRY, Helen",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "YOUNGBERRY",
+          "candidateGivenNames": "HELEN FRANCIS"
+        },
+        {
+          "ballotName": "TULLY, Paul Gregory",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "TULLY",
+          "candidateGivenNames": "PAUL GREGORY"
+        },
+        {
+          "ballotName": "JONIC, Nicole Kay",
+          "ballotOrderNumber": 4,
+          "candidateSurname": "JONIC",
+          "candidateGivenNames": "NICOLE KAY"
+        },
+        {
+          "ballotName": "SUHAG, Neetu Singh",
+          "ballotOrderNumber": 5,
+          "candidateSurname": "SUHAG",
+          "candidateGivenNames": "NEETU SINGH"
+        },
+        {
+          "ballotName": "PURCELL, Steven",
+          "ballotOrderNumber": 6,
+          "candidateSurname": "PURCELL",
+          "candidateGivenNames": "STEVEN ANTHONY"
+        }
+      ],
+      "numberToElect": 2,
+      "enrolment": 41375,
+      "divisions": []
+    },
+    {
+      "electorateId": 697,
+      "parentElectorateId": 694,
+      "areaCode": "03403",
+      "electorateName": "Ipswich City Division 3",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "First Past the Post",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 6,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "BOX, David",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "BOX",
+          "candidateGivenNames": "DAVID PAUL"
+        },
+        {
+          "ballotName": "DOYLE, Marnie",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "DOYLE",
+          "candidateGivenNames": "MARNIE LOUISE"
+        },
+        {
+          "ballotName": "ANTONIOLLI, Andrew",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "ANTONIOLLI",
+          "candidateGivenNames": "ANDREW FRANCIS"
+        },
+        {
+          "ballotName": "MUTTON, Danielle",
+          "ballotOrderNumber": 4,
+          "candidateSurname": "MUTTON",
+          "candidateGivenNames": "DANIELLE LUISA",
+          "party": "Queensland Greens",
+          "partyCode": "The Greens"
+        },
+        {
+          "ballotName": "FECHNER, Andrew",
+          "ballotOrderNumber": 5,
+          "candidateSurname": "FECHNER",
+          "candidateGivenNames": "ANDREW DALE"
+        },
+        {
+          "ballotName": "NAYLER, Tracey",
+          "ballotOrderNumber": 6,
+          "candidateSurname": "NAYLER",
+          "candidateGivenNames": "TRACEY LOUISE",
+          "party": "Queensland Greens",
+          "partyCode": "The Greens"
+        }
+      ],
+      "numberToElect": 2,
+      "enrolment": 40166,
+      "divisions": []
+    },
+    {
+      "electorateId": 698,
+      "parentElectorateId": 694,
+      "areaCode": "03404",
+      "electorateName": "Ipswich City Division 4",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "First Past the Post",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 4,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "CULLEN, David",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "CULLEN",
+          "candidateGivenNames": "DAVID WILLIAM"
+        },
+        {
+          "ballotName": "MADDEN, Jim",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "MADDEN",
+          "candidateGivenNames": "JAMES EDWARD"
+        },
+        {
+          "ballotName": "MILLIGAN, Russell",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "MILLIGAN",
+          "candidateGivenNames": "RUSSELL WILLIAM GEORGE"
+        },
+        {
+          "ballotName": "DUNNE, Sue",
+          "ballotOrderNumber": 4,
+          "candidateSurname": "DUNNE",
+          "candidateGivenNames": "SUSAN JANE"
+        }
+      ],
+      "numberToElect": 2,
+      "enrolment": 35456,
+      "divisions": []
+    }
+  ]
+}
