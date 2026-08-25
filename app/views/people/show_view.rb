@@ -2,11 +2,12 @@ class People::ShowView < ApplicationView
   include ActionView::Helpers::NumberHelper
   include Phlex::Rails::Helpers::ContentFor
 
-  attr_reader :person
+  attr_reader :person, :groups
 
-  def initialize(person:)
+  def initialize(person:, groups:)
     # TODO: push the .cached version further up the stack. stop passing around person
     @person = person
+    @groups = groups
   end
 
   def view_template
@@ -25,7 +26,7 @@ class People::ShowView < ApplicationView
     )
     render Common::GraphSummary.new(entity: person.cached)
 
-    render People::GroupsTable.new(person:)
+    render People::GroupsTable.new(person:, groups:)
 
     render TransfersTableComponent.new(
       entity: person,
