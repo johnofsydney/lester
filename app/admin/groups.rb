@@ -166,14 +166,7 @@ ActiveAdmin.register Group do
   } do |ids, inputs|
     tag = Group.find(inputs[:tag_id])
 
-    # TODO: use a service
-    Group.where(id: ids).find_each do |group|
-      Membership.create(
-        group: tag,
-        member: group,
-        member_type: 'Group'
-      )
-    end
+    Groups::AddToTag.call(group_ids: ids, tag: tag)
 
     redirect_to collection_path, alert: "Groups added to #{tag.name}."
   end
