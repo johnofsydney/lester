@@ -57,7 +57,7 @@ class Councils::Vic::ImportCouncilResultRowJob
   end
 
   def record_candidate(council:, council_slug:, candidate:, declared_date:, evidence:, election:, source_url:)
-    person = Councils::RecordCandidatePerson.call(name: candidate[:name], council:)
+    person = RecordCandidatePerson.call(name: candidate[:name], scope_group: council)
 
     Group::RecordRow.new(group: council, person:, title: 'Councillor', evidence:).call
     record_election_data(person:, council:, council_slug:, declared_date:, election:, source_url:)
