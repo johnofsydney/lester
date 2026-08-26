@@ -1,5 +1,4 @@
 class Groups::AffiliatedGroups < ApplicationView
-
   attr_reader :group, :affiliated_groups, :tags
 
   def initialize(group:, affiliated_groups:, tags:)
