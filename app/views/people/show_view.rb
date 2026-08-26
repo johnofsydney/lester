@@ -2,11 +2,13 @@ class People::ShowView < ApplicationView
   include ActionView::Helpers::NumberHelper
   include Phlex::Rails::Helpers::ContentFor
 
-  attr_reader :person
+  attr_reader :person, :groups, :transfers_page
 
-  def initialize(person:)
+  def initialize(person:, groups:, transfers_page: nil)
     # TODO: push the .cached version further up the stack. stop passing around person
     @person = person
+    @groups = groups
+    @transfers_page = transfers_page
   end
 
   def view_template
@@ -25,13 +27,14 @@ class People::ShowView < ApplicationView
     )
     render Common::GraphSummary.new(entity: person.cached)
 
-    render People::GroupsTable.new(person:)
+    render People::GroupsTable.new(person:, groups:)
 
     render TransfersTableComponent.new(
       entity: person,
       transfers: person.cached.consolidated_transfers,
-      heading: "Directly connected to #{person.name}"
+      heading: "Directly connected to #{person.name}",
       # summarise_for: Group.summarise_for
+      page: transfers_page
     )
 
     if Current.admin_user?
@@ -41,6 +44,7 @@ class People::ShowView < ApplicationView
           style: 'min-width: 250px; min-height: 100vh;'
         ) do
           a(href: "/admin/people/#{person.id}", class: 'btn btn-sm btn-outline-primary mb-2 w-100') { 'Edit Person in Admin' }
+          render Common::ExternalIdentifiersTable.new(external_identifiers: person.external_identifiers)
         end
       end
     end

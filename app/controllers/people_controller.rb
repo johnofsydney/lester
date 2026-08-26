@@ -16,7 +16,7 @@ class PeopleController < ApplicationController
 
   def show
     if @person.cache_fresh?
-      render People::ShowView.new(person: @person)
+      render People::ShowView.new(person: @person, groups: paginated_groups_for(@person), transfers_page: params[:transfers_page])
     else
       Cache::BuildPersonCachedDataJob.perform_async(@person.id)
       render Common::PleaseRefreshLater.new(entity: @person)
@@ -26,8 +26,9 @@ class PeopleController < ApplicationController
   def reload
     @person = Person.find(params[:id])
     Cache::BuildPersonCachedDataJob.perform_async(@person.id)
+    @person.reload
 
-    render People::ShowView.new(person: @person.reload)
+    render People::ShowView.new(person: @person, groups: paginated_groups_for(@person), transfers_page: params[:transfers_page])
   end
 
   def post_to_socials
@@ -53,5 +54,9 @@ class PeopleController < ApplicationController
     return if Current.user
 
     @person.increment!(:views)
+  end
+
+  def paginated_groups_for(person)
+    Kaminari.paginate_array(person.cached.affiliated_groups).page(params[:groups_page])
   end
 end

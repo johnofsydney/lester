@@ -7,7 +7,8 @@ class TradingNamesController < ApplicationController
       # redirect_to person_path(owner)
 
       if owner.cache_fresh?
-        render People::ShowView.new(person: owner)
+        groups = Kaminari.paginate_array(owner.cached.affiliated_groups).page(params[:groups_page])
+        render People::ShowView.new(person: owner, groups: groups, transfers_page: params[:transfers_page])
       else
         Cache::BuildPersonCachedDataJob.perform_async(owner.id)
         render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok
@@ -16,7 +17,7 @@ class TradingNamesController < ApplicationController
       # redirect_to group_path(owner)
 
       if owner.cache_fresh?
-        render Groups::ShowView.new(group: owner)
+        render Groups::ShowView.new(group: owner, transfers_page: params[:transfers_page])
       else
         Cache::BuildGroupCachedDataJob.perform_async(owner.id)
         render plain: Constants::PLEASE_REFRESH_MESSAGE, status: :ok

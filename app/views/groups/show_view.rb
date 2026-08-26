@@ -1,16 +1,15 @@
 class Groups::ShowView < ApplicationView
   include Phlex::Rails::Helpers::ContentFor
 
-  attr_reader :group
+  attr_reader :group, :transfers_page
 
-  def initialize(group:)
+  def initialize(group:, transfers_page: nil)
     # TODO: push the .cached version further up the stack. stop passing around group
     @group = group
+    @transfers_page = transfers_page
   end
 
   def view_template
-    page_number = 0
-
     turbo_cable_stream_source(
       channel: 'Turbo::StreamsChannel',
       signed_stream_name: Turbo::StreamsChannel.signed_stream_name(group)
@@ -31,7 +30,7 @@ class Groups::ShowView < ApplicationView
         p(class: 'grey') { 'Fetching People...'  }
       end
 
-      turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}/page=#{page_number}", loading: :lazy) do
+      turbo_frame(id: 'affiliated_groups', src: "/groups/affiliated_groups/#{group.id}", loading: :lazy) do
         p(class: 'grey') { 'Fetching Affiliated Groups...'  }
       end
 
@@ -39,7 +38,8 @@ class Groups::ShowView < ApplicationView
         entity: group,
         transfers: group.cached.consolidated_transfers,
         heading: "Connected to #{Nodes::NameCapitalizer.capitalize(group.name)}",
-        summarise_for: Group.summarise_for(group)
+        summarise_for: Group.summarise_for(group),
+        page: transfers_page
       )
 
       if Current.admin_user?
@@ -50,6 +50,7 @@ class Groups::ShowView < ApplicationView
           ) do
             a(href: "/admin/groups/#{group.id}", class: 'btn btn-sm btn-outline-primary mb-2 w-100') { 'Edit Group in Admin' }
             a(href: "/admin/groups/#{group.id}/merge_with?source_group_id=#{group.id}", class: 'btn btn-sm btn-outline-danger w-100') { 'Merge Group in Admin' }
+            render Common::ExternalIdentifiersTable.new(external_identifiers: group.external_identifiers)
           end
         end
       end
