@@ -37,10 +37,6 @@ module NodeMethods
     @outbound_transfers ||= is_tag? ? tag_outgoing_transfers : outgoing_transfers
   end
 
-  def is_tag?
-    is_tag?
-  end
-
   def to_h
     {
       id:,
