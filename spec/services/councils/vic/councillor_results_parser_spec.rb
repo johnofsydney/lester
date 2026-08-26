@@ -10,12 +10,12 @@ RSpec.describe Councils::Vic::CouncillorResultsParser, type: :service do
       expect(call_service[:declared_date]).to eq(Date.new(2024, 11, 22))
     end
 
-    it 'extracts each candidate name, stripping the (Nth elected) suffix, with no party' do
+    it 'extracts each candidate name, stripping the (Nth elected) suffix, with no party, titled Councillor' do
       expect(call_service[:candidates]).to eq(
         [
-          { name: 'NICHOLAS, Sarah', party: '' },
-          { name: 'ANDERSEN, John', party: '' },
-          { name: 'RONCO, Jean-Pierre', party: '' }
+          { name: 'NICHOLAS, Sarah', party: '', title: 'Councillor' },
+          { name: 'ANDERSEN, John', party: '', title: 'Councillor' },
+          { name: 'RONCO, Jean-Pierre', party: '', title: 'Councillor' }
         ]
       )
     end
@@ -35,8 +35,8 @@ RSpec.describe Councils::Vic::CouncillorResultsParser, type: :service do
     it 'extracts candidates from every ward, not just the first' do
       expect(call_service[:candidates]).to eq(
         [
-          { name: 'DOWLING, Scott William', party: '' },
-          { name: 'NGUYEN, Damien', party: '' }
+          { name: 'DOWLING, Scott William', party: '', title: 'Councillor' },
+          { name: 'NGUYEN, Damien', party: '', title: 'Councillor' }
         ]
       )
     end
@@ -49,11 +49,13 @@ RSpec.describe Councils::Vic::CouncillorResultsParser, type: :service do
   context 'when the council also has a directly-elected Leadership Team contest' do
     let(:page) { Rails.root.join('spec/fixtures/councils/vic/councillor_declared_with_leadership_team.html').read }
 
-    it 'extracts only the Councillors contest, excluding the Lord Mayor and Deputy Lord Mayor' do
+    it 'extracts the Lord Mayor and Deputy Lord Mayor, titled by their role, alongside the Councillors' do
       expect(call_service[:candidates]).to eq(
         [
-          { name: 'LOUEY, Kevin', party: '' },
-          { name: 'GUEST, Owen', party: '' }
+          { name: 'REECE, Nick', party: '', title: 'Lord Mayor' },
+          { name: 'CAMPBELL, Roshena', party: '', title: 'Deputy Lord Mayor' },
+          { name: 'LOUEY, Kevin', party: '', title: 'Councillor' },
+          { name: 'GUEST, Owen', party: '', title: 'Councillor' }
         ]
       )
     end

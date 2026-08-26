@@ -248,5 +248,34 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
         end
       end
     end
+
+    context 'when the council also has a separate mayoral contest' do
+      let(:council_name) { 'Hornsby Shire Council' }
+      let(:council_slug) { 'hornsby' }
+      let(:page) { nil } # no flat "councillor" page exists for a ward council
+      let(:results_page) { Rails.root.join('spec/fixtures/councils/nsw/results_with_mayor.html').read }
+      let(:ward_a_url) { "https://pastvtr.elections.nsw.gov.au/#{Councils::Nsw::Elections.latest[:id]}/#{council_slug}/ward-a/councillor" }
+      let(:ward_b_url) { "https://pastvtr.elections.nsw.gov.au/#{Councils::Nsw::Elections.latest[:id]}/#{council_slug}/ward-b/councillor" }
+      let(:mayoral_url) { "https://pastvtr.elections.nsw.gov.au/#{Councils::Nsw::Elections.latest[:id]}/#{council_slug}/mayoral" }
+      let(:ward_page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
+      let(:mayoral_page) { Rails.root.join('spec/fixtures/councils/nsw/mayor_declared.html').read }
+
+      before do
+        allow(Councils::PageDownloader).to receive(:call).with(ward_a_url).and_return(ward_page)
+        allow(Councils::PageDownloader).to receive(:call).with(ward_b_url).and_return(ward_page)
+        allow(Councils::PageDownloader).to receive(:call).with(mayoral_url).and_return(mayoral_page)
+      end
+
+      it 'records the mayoral candidate as a Person with a Position titled Mayor, distinct from Councillor' do
+        described_class.new.perform(council_name, council_slug)
+
+        council = Group.find_by(name: council_name)
+        councillor = Person.find_by(name: 'derek schoen')
+        mayor = Person.find_by(name: 'philip ruddock')
+
+        expect(Membership.find_by(group: council, member: councillor).positions.pluck(:title)).to eq(['Councillor'])
+        expect(Membership.find_by(group: council, member: mayor).positions.pluck(:title)).to eq(['Mayor'])
+      end
+    end
   end
 end

@@ -1,13 +1,15 @@
-# Imports one NSW council's declared councillor election results for a given election cycle
-# (Councils::Nsw::Elections): records each declared-elected candidate as a Person with an undated
-# Councillor Membership, links party affiliation where shown, and appends a raw, dated observation
-# to Person#council_election_data for a future interpretation pass to derive real tenure dates
-# from (see People::RecordCouncilElectionData -- NSWEC's declared date only tells us "elected in
-# this cycle," not a councillor's true start, so no date is recorded on the Membership/Position
-# itself). Fetches the council's results page first to discover the actual councillor contest
-# path(s) -- a single "councillor" page for councils elected at-large, or one "ward-x/councillor"
-# page per ward for councils divided into wards (there is no shortcut: a ward council has no flat
-# "councillor" page at all).
+# Imports one NSW council's declared councillor and (where directly elected) mayoral election
+# results for a given election cycle (Councils::Nsw::Elections): records each declared-elected
+# candidate as a Person with an undated Membership and a Position titled 'Councillor' or 'Mayor',
+# links party affiliation where shown, and appends a raw, dated observation to
+# Person#council_election_data for a future interpretation pass to derive real tenure dates from
+# (see People::RecordCouncilElectionData -- NSWEC's declared date only tells us "elected in this
+# cycle," not a councillor's true start, so no date is recorded on the Membership/Position itself).
+# Fetches the council's results page first to discover the actual contest path(s) -- a single
+# "councillor" page for councils elected at-large, or one "ward-x/councillor" page per ward for
+# councils divided into wards (there is no shortcut: a ward council has no flat "councillor" page
+# at all), plus a separate "mayoral" page for councils that directly elect their mayor (most NSW
+# councils instead elect the mayor from among councillors, and simply have no such page).
 class Councils::Nsw::ImportCouncilResultRowJob
   include Sidekiq::Job
 
@@ -28,13 +30,13 @@ class Councils::Nsw::ImportCouncilResultRowJob
     results_page = Councils::PageDownloader.call(url)
     raise "Failed to download NSW council results page: #{url}" if results_page.blank?
 
-    councillor_paths = Councils::Nsw::ResultsPageParser.call(results_page)
-    return if councillor_paths.blank? && Councils::Nsw::ResultsPageParser.no_contest_expected?(results_page) # council was under administration, or runs its own election -- nothing to record
-    raise "No councillor contest found on NSW council results page: #{url}" if councillor_paths.blank?
+    contest_refs = Councils::Nsw::ResultsPageParser.call(results_page)
+    return if contest_refs.blank? && Councils::Nsw::ResultsPageParser.no_contest_expected?(results_page) # council was under administration, or runs its own election -- nothing to record
+    raise "No councillor contest found on NSW council results page: #{url}" if contest_refs.blank?
 
-    contests = councillor_paths.filter_map do |path|
-      url = "https://pastvtr.elections.nsw.gov.au/#{election[:id]}/#{council_slug}/#{path}"
-      fetch_contest(url)
+    contests = contest_refs.filter_map do |ref|
+      url = "https://pastvtr.elections.nsw.gov.au/#{election[:id]}/#{council_slug}/#{ref[:path]}"
+      fetch_contest(url, title: ref[:title])
     end
     return if contests.blank? # not yet declared in any contest -- nothing to record yet
 
@@ -51,28 +53,28 @@ class Councils::Nsw::ImportCouncilResultRowJob
 
   private
 
-  def fetch_contest(url)
+  def fetch_contest(url, title:)
     page = Councils::PageDownloader.call(url)
     raise "Failed to download NSW councillor results: #{url}" if page.blank?
 
     result = Councils::Nsw::CouncillorResultsParser.call(page)
     return nil if result.blank? # not yet declared -- nothing to record yet
 
-    result.merge(url:)
+    result.merge(url:, title:)
   end
 
   def record_contest(council:, council_slug:, contest:, election:)
     evidence = "NSW Electoral Commission #{election[:year]} LG election declared results (#{contest[:url]})"
 
     contest[:candidates].each do |candidate|
-      record_candidate(council:, council_slug:, candidate:, declared_date: contest[:declared_date], evidence:, election:, source_url: contest[:url])
+      record_candidate(council:, council_slug:, candidate:, declared_date: contest[:declared_date], evidence:, election:, source_url: contest[:url], title: contest[:title])
     end
   end
 
-  def record_candidate(council:, council_slug:, candidate:, declared_date:, evidence:, election:, source_url:)
+  def record_candidate(council:, council_slug:, candidate:, declared_date:, evidence:, election:, source_url:, title:)
     person = RecordCandidatePerson.call(name: candidate[:name], scope_group: council)
 
-    Group::RecordRow.new(group: council, person:, title: 'Councillor', evidence:).call
+    Group::RecordRow.new(group: council, person:, title:, evidence:).call
     record_party_membership(person:, candidate:, evidence:)
     record_election_data(person:, council:, council_slug:, candidate:, declared_date:, election:, source_url:)
   end

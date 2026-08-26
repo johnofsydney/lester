@@ -1,9 +1,10 @@
-# Imports one VIC council's declared councillor election results for a given election cycle
-# (Councils::Vic::Elections): records each elected candidate as a Person with an undated
-# Councillor Membership, and appends a raw, dated observation to Person#council_election_data for
-# a future interpretation pass to derive real tenure dates from (see
-# People::RecordCouncilElectionData -- VEC's declared date only tells us "elected in this cycle,"
-# not a councillor's true start, so no date is recorded on the Membership/Position itself).
+# Imports one VIC council's declared councillor and (where directly elected) Lord Mayor/Deputy
+# Lord Mayor election results for a given election cycle (Councils::Vic::Elections): records each
+# elected candidate as a Person with an undated Membership and a Position titled 'Councillor',
+# 'Lord Mayor' or 'Deputy Lord Mayor', and appends a raw, dated observation to
+# Person#council_election_data for a future interpretation pass to derive real tenure dates from
+# (see People::RecordCouncilElectionData -- VEC's declared date only tells us "elected in this
+# cycle," not a councillor's true start, so no date is recorded on the Membership/Position itself).
 # Unlike NSW, VEC results pages don't show party affiliation, so no party membership is recorded
 # here.
 class Councils::Vic::ImportCouncilResultRowJob
@@ -59,7 +60,7 @@ class Councils::Vic::ImportCouncilResultRowJob
   def record_candidate(council:, council_slug:, candidate:, declared_date:, evidence:, election:, source_url:)
     person = RecordCandidatePerson.call(name: candidate[:name], scope_group: council)
 
-    Group::RecordRow.new(group: council, person:, title: 'Councillor', evidence:).call
+    Group::RecordRow.new(group: council, person:, title: candidate[:title], evidence:).call
     record_election_data(person:, council:, council_slug:, declared_date:, election:, source_url:)
   end
 

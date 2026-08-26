@@ -1,9 +1,12 @@
 # Parses a NSW Electoral Commission council results page
 # (https://pastvtr.elections.nsw.gov.au/LG<election_id>/<slug>/results) into the
-# relative councillor-contest path(s) for that council -- a single "councillor" path
-# for councils elected at-large, or one "ward-x/councillor" path per ward for councils
-# divided into wards. Deliberately ignores any separate "Mayor:" contest row -- direct
-# mayoral elections are out of scope for this phase.
+# relative contest path(s) for that council, each tagged with the title to record the
+# contest's winner(s) under -- a single "councillor" path for councils elected at-large,
+# or one "ward-x/councillor" path per ward for councils divided into wards (title:
+# 'Councillor'), plus a "Mayor:" row's path when present (title: 'Mayor'). Most NSW
+# councils elect their mayor from among councillors rather than directly, and simply
+# have no "Mayor:" row at all in that case -- there is no other page shape to detect for
+# "no separate mayoral contest".
 class Councils::Nsw::ResultsPageParser
   COUNCILLOR_LINK_HREF = %r{\A/LG\d+/[a-z0-9-]+/(.+)\z}
 
@@ -33,23 +36,31 @@ class Councils::Nsw::ResultsPageParser
   end
 
   def call
-    row = councillors_row
-    return [] if row.nil?
-
-    row.css('a.contest[href]').filter_map { |link| councillor_path(link) }
+    contests_for_row('Councillors:', title: 'Councillor') + contests_for_row('Mayor:', title: 'Mayor')
   end
 
   private
 
   attr_reader :page
 
-  def councillors_row
-    Nokogiri::HTML(page).css('tr').find do |row|
-      row.at_css('td')&.text&.strip == 'Councillors:'
+  def doc
+    @doc ||= Nokogiri::HTML(page)
+  end
+
+  def contests_for_row(label, title:)
+    row = row_labelled(label)
+    return [] if row.nil?
+
+    row.css('a.contest[href]').filter_map { |link| contest_path(link) }.map { |path| { path:, title: } }
+  end
+
+  def row_labelled(label)
+    doc.css('tr').find do |row|
+      row.at_css('td')&.text&.strip == label
     end
   end
 
-  def councillor_path(link)
+  def contest_path(link)
     match = link['href'].to_s.match(COUNCILLOR_LINK_HREF)
     match && match[1]
   end

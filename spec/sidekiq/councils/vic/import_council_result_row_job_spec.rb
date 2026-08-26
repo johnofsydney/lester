@@ -164,5 +164,24 @@ RSpec.describe Councils::Vic::ImportCouncilResultRowJob, type: :job do
         expect(Membership.where(group: council, member_type: 'Person').count).to eq(2)
       end
     end
+
+    context 'when the council also has a directly-elected Leadership Team contest' do
+      let(:council_name) { 'City of Melbourne' }
+      let(:council_slug) { 'city-of-melbourne' }
+      let(:page) { Rails.root.join('spec/fixtures/councils/vic/councillor_declared_with_leadership_team.html').read }
+
+      it 'records the Lord Mayor and Deputy Lord Mayor with distinct Position titles, alongside the Councillors' do
+        described_class.new.perform(council_name, council_slug)
+
+        council = Group.find_by(name: council_name)
+        lord_mayor = Person.find_by(name: 'nick reece')
+        deputy_lord_mayor = Person.find_by(name: 'roshena campbell')
+        councillor = Person.find_by(name: 'kevin louey')
+
+        expect(Membership.find_by(group: council, member: lord_mayor).positions.pluck(:title)).to eq(['Lord Mayor'])
+        expect(Membership.find_by(group: council, member: deputy_lord_mayor).positions.pluck(:title)).to eq(['Deputy Lord Mayor'])
+        expect(Membership.find_by(group: council, member: councillor).positions.pluck(:title)).to eq(['Councillor'])
+      end
+    end
   end
 end

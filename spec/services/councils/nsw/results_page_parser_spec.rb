@@ -7,7 +7,7 @@ RSpec.describe Councils::Nsw::ResultsPageParser, type: :service do
     let(:page) { Rails.root.join('spec/fixtures/councils/nsw/results_single.html').read }
 
     it 'returns the single councillor path' do
-      expect(call_service).to eq(['councillor'])
+      expect(call_service).to eq([{ path: 'councillor', title: 'Councillor' }])
     end
   end
 
@@ -15,15 +15,26 @@ RSpec.describe Councils::Nsw::ResultsPageParser, type: :service do
     let(:page) { Rails.root.join('spec/fixtures/councils/nsw/results_wards.html').read }
 
     it 'returns each ward councillor path' do
-      expect(call_service).to eq(['ward-1/councillor', 'ward-2/councillor'])
+      expect(call_service).to eq(
+        [
+          { path: 'ward-1/councillor', title: 'Councillor' },
+          { path: 'ward-2/councillor', title: 'Councillor' }
+        ]
+      )
     end
   end
 
   context 'when the council also has a separate mayoral contest' do
     let(:page) { Rails.root.join('spec/fixtures/councils/nsw/results_with_mayor.html').read }
 
-    it 'returns only the ward councillor paths, ignoring the mayoral contest' do
-      expect(call_service).to eq(['ward-a/councillor', 'ward-b/councillor'])
+    it 'returns the ward councillor paths and the mayoral path, tagged with their titles' do
+      expect(call_service).to eq(
+        [
+          { path: 'ward-a/councillor', title: 'Councillor' },
+          { path: 'ward-b/councillor', title: 'Councillor' },
+          { path: 'mayoral', title: 'Mayor' }
+        ]
+      )
     end
   end
 
