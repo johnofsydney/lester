@@ -23,7 +23,10 @@ class Transfer < ApplicationRecord
   scope :donations, -> { where(transfer_type: 'donations') }
 
   def self.financial_years
-    (Transfer.order(:effective_date).first.effective_date.year..Time.zone.now.year).to_a
+    earliest_year = Transfer.minimum(:effective_date)&.year
+    return [] if earliest_year.nil?
+
+    (earliest_year..Time.zone.now.year).to_a
   end
 
   # cached data can be deleted and re-created
