@@ -91,6 +91,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_000000) do
   end
 
   create_table "groups", force: :cascade do |t|
+    t.string "attributed_to"
     t.string "business_number"
     t.json "cached_data", default: {}
     t.boolean "category", default: false
@@ -181,6 +182,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_25_000000) do
   end
 
   create_table "people", force: :cascade do |t|
+    t.string "attributed_to"
     t.json "cached_data", default: {}
     t.jsonb "council_election_data", default: [], null: false
     t.datetime "council_election_data_updated_at"
