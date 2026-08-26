@@ -1,20 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
-  subject(:call_service) { described_class.call(stub) }
+  subject(:call_service) { described_class.call(declared_candidates_page:, electorates_page:, source_url:) }
 
-  let(:stub) { '2024QLGE' }
-  let(:declared_candidates_url) { format(described_class::DECLARED_CANDIDATES_URL, stub:) }
-  let(:electorates_url) { format(described_class::ELECTORATES_URL, stub:) }
+  let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_declared_candidates.json').read }
+  let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_electorates.json').read }
+  let(:source_url) { 'https://resultsdata.elections.qld.gov.au/2024QLGE-declared_candidates.json' }
 
   before do
-    allow(Councils::PageDownloader).to receive(:call)
-      .with(declared_candidates_url)
-      .and_return(Rails.root.join('spec/fixtures/councils/qld/2024qlge_declared_candidates.json').read)
-    allow(Councils::PageDownloader).to receive(:call)
-      .with(electorates_url)
-      .and_return(Rails.root.join('spec/fixtures/councils/qld/2024qlge_electorates.json').read)
-
     allow(Councils::Qld::KnownCouncils).to receive(:resolve) do |electorate_name|
       electorate_name.sub(/\s+Division\s+\d+\z/, '').sub(/\s+(Bracken Ridge|Calamvale)\z/, '')
     end
@@ -29,7 +22,7 @@ RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
       contest_type: 'mayor',
       candidates: [{ name: 'BANDICOOTCHA, Barbara Sue', party: nil }],
       declared_date: Date.new(2024, 3, 28),
-      source_url: declared_candidates_url
+      source_url:
     )
   end
 
@@ -62,16 +55,12 @@ RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
     expect(call_service.size).to eq(17)
   end
 
-  context 'with a by-election stub (single electorate, no lgaName or parentElectorateId to resolve from)' do
-    let(:stub) { 'MSC24' }
+  context 'with a by-election (single electorate, no lgaName or parentElectorateId to resolve from)' do
+    let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/msc24_declared_candidates.json').read }
+    let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/msc24_electorates.json').read }
+    let(:source_url) { 'https://resultsdata.elections.qld.gov.au/MSC24-declared_candidates.json' }
 
     before do
-      allow(Councils::PageDownloader).to receive(:call)
-        .with(declared_candidates_url)
-        .and_return(Rails.root.join('spec/fixtures/councils/qld/msc24_declared_candidates.json').read)
-      allow(Councils::PageDownloader).to receive(:call)
-        .with(electorates_url)
-        .and_return(Rails.root.join('spec/fixtures/councils/qld/msc24_electorates.json').read)
       allow(Councils::Qld::KnownCouncils).to receive(:resolve).with('Mornington Shire Division 1').and_return('Mornington Shire')
     end
 
@@ -84,7 +73,7 @@ RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
             contest_type: 'councillor',
             candidates: [{ name: 'AH KIT, Maureen Jane', party: nil }],
             declared_date: Date.new(2024, 6, 17),
-            source_url: declared_candidates_url
+            source_url:
           }
         ]
       )

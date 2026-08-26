@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Councils::Qld::RecordContestResultJob, type: :job do
   describe '#perform' do
     let(:stub) { '2024QLGE' }
-    let(:source_url) { format(Councils::Qld::DeclaredResultsParser::DECLARED_CANDIDATES_URL, stub:) }
+    let(:source_url) { format(Councils::Qld::ImportElectionResultsJob::DECLARED_CANDIDATES_URL, stub:) }
 
     before do
       FactoryBot.create(:group, name: Group::NAMES.liberals.qld, type: 'Tag')

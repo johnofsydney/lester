@@ -1,32 +1,32 @@
-# Parses one QLD election stub's declared results into one normalised contest record per
-# mayoral/councillor entry -- fetches `<stub>-declared_candidates.json` (the actual declared
+# Parses one QLD election's declared results into one normalised contest record per
+# mayoral/councillor entry -- takes the raw `<stub>-declared_candidates.json` (the actual declared
 # results) and `<stub>-electorates.json` (contest names -- declared_candidates.json only carries
-# electorateId/areaCode, not a human name), and joins them on electorateId (confirmed 100% match,
-# 343/343 entries, on both the 2020 and 2024 general elections, and on every sampled by-election).
+# electorateId/areaCode, not a human name) JSON strings, and joins them on electorateId (confirmed
+# 100% match, 343/343 entries, on both the 2020 and 2024 general elections, and on every sampled
+# by-election). Pure function of its inputs, no network -- fetching is the caller's job (mirrors
+# NSW/VIC, where HTTP lives entirely in the job, e.g. Councils::Nsw::ImportCouncilResultRowJob).
 #
 # Council name is resolved via Councils::Qld::KnownCouncils' longest-prefix match against the
 # contest's electorateName, not via electorates.json's own lgaName field or parentElectorateId --
 # neither is populated on by-election files' division-level entries.
 class Councils::Qld::DeclaredResultsParser
-  DECLARED_CANDIDATES_URL = 'https://resultsdata.elections.qld.gov.au/%<stub>s-declared_candidates.json'.freeze
-  ELECTORATES_URL = 'https://resultsdata.elections.qld.gov.au/%<stub>s-electorates.json'.freeze
+  def self.call(declared_candidates_page:, electorates_page:, source_url:) = new(declared_candidates_page:, electorates_page:, source_url:).call
 
-  def self.call(stub) = new(stub).call
-
-  def initialize(stub)
-    @stub = stub
+  def initialize(declared_candidates_page:, electorates_page:, source_url:)
+    @declared_candidates_page = declared_candidates_page
+    @electorates_page = electorates_page
+    @source_url = source_url
   end
 
   def call
-    electorate_names = fetch_electorate_names
-    fetch_declared_candidates.filter_map { |entry| contest_from(entry, electorate_names) }
+    declared_candidates.filter_map { |entry| contest_from(entry) }
   end
 
   private
 
-  attr_reader :stub
+  attr_reader :declared_candidates_page, :electorates_page, :source_url
 
-  def contest_from(entry, electorate_names)
+  def contest_from(entry)
     electorate_name = electorate_names[entry['electorateId']]
     return nil if electorate_name.blank? # no matching electorate record -- nothing to resolve a council from
 
@@ -42,7 +42,7 @@ class Councils::Qld::DeclaredResultsParser
       contest_type: entry['contest'],
       candidates: candidates_from(entry),
       declared_date:,
-      source_url: declared_candidates_url
+      source_url:
     }
   end
 
@@ -60,21 +60,13 @@ class Councils::Qld::DeclaredResultsParser
     Date.parse(declaration_date)
   end
 
-  def fetch_declared_candidates
-    page = Councils::PageDownloader.call(declared_candidates_url)
-    raise "Failed to download QLD declared candidates: #{declared_candidates_url}" if page.blank?
-
-    JSON.parse(page)['declaredCandidates']
+  def declared_candidates
+    JSON.parse(declared_candidates_page)['declaredCandidates']
   end
 
-  def fetch_electorate_names
-    page = Councils::PageDownloader.call(electorates_url)
-    raise "Failed to download QLD electorates: #{electorates_url}" if page.blank?
-
-    JSON.parse(page)['electorates'].index_by { |electorate| electorate['electorateId'] }
-        .transform_values { |electorate| electorate['electorateName'] }
+  def electorate_names
+    @electorate_names ||= JSON.parse(electorates_page)['electorates']
+                              .index_by { |electorate| electorate['electorateId'] }
+                              .transform_values { |electorate| electorate['electorateName'] }
   end
-
-  def declared_candidates_url = format(DECLARED_CANDIDATES_URL, stub:)
-  def electorates_url = format(ELECTORATES_URL, stub:)
 end

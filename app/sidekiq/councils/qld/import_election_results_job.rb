@@ -1,7 +1,7 @@
-# Fetches and parses one QLD election stub's declared results, then fans out one
-# Councils::Qld::RecordContestResultJob per contest -- deliberately does no recording itself, so a
-# single malformed contest inside a stub's ~343-entry JSON only ever blocks/retries its own
-# RecordContestResultJob, not the whole election.
+# Fetches one QLD election stub's declared-results and electorates JSON, parses them via
+# Councils::Qld::DeclaredResultsParser, then fans out one Councils::Qld::RecordContestResultJob per
+# contest -- deliberately does no recording itself, so a single malformed contest inside a stub's
+# ~343-entry JSON only ever blocks/retries its own RecordContestResultJob, not the whole election.
 class Councils::Qld::ImportElectionResultsJob
   include Sidekiq::Job
   sidekiq_options(
@@ -11,8 +11,15 @@ class Councils::Qld::ImportElectionResultsJob
     retry: 3
   )
 
+  DECLARED_CANDIDATES_URL = 'https://resultsdata.elections.qld.gov.au/%<stub>s-declared_candidates.json'.freeze
+  ELECTORATES_URL = 'https://resultsdata.elections.qld.gov.au/%<stub>s-electorates.json'.freeze
+
   def perform(stub)
-    contests = Councils::Qld::DeclaredResultsParser.call(stub)
+    contests = Councils::Qld::DeclaredResultsParser.call(
+      declared_candidates_page: fetch_declared_candidates(stub),
+      electorates_page: fetch_electorates(stub),
+      source_url: declared_candidates_url(stub)
+    )
     return if contests.blank? # nothing declared yet for this election
 
     contests.each { |contest| record_contest(stub, contest) }
@@ -25,6 +32,22 @@ class Councils::Qld::ImportElectionResultsJob
 
   private
 
+  def fetch_declared_candidates(stub)
+    url = declared_candidates_url(stub)
+    page = Councils::PageDownloader.call(url)
+    raise "Failed to download QLD declared candidates: #{url}" if page.blank?
+
+    page
+  end
+
+  def fetch_electorates(stub)
+    url = electorates_url(stub)
+    page = Councils::PageDownloader.call(url)
+    raise "Failed to download QLD electorates: #{url}" if page.blank?
+
+    page
+  end
+
   def record_contest(stub, contest)
     Councils::Qld::RecordContestResultJob.perform_async(
       stub,
@@ -36,4 +59,7 @@ class Councils::Qld::ImportElectionResultsJob
       contest[:source_url]
     )
   end
+
+  def declared_candidates_url(stub) = format(DECLARED_CANDIDATES_URL, stub:)
+  def electorates_url(stub) = format(ELECTORATES_URL, stub:)
 end

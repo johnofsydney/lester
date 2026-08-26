@@ -3,26 +3,21 @@ require 'rails_helper'
 RSpec.describe Councils::Qld::ImportElectionResultsJob, type: :job do
   describe '#perform' do
     let(:stub) { '2024QLGE' }
+    let(:declared_candidates_url) { format(described_class::DECLARED_CANDIDATES_URL, stub:) }
+    let(:electorates_url) { format(described_class::ELECTORATES_URL, stub:) }
 
     before do
       allow(Councils::Qld::RecordContestResultJob).to receive(:perform_async)
+      allow(Councils::PageDownloader).to receive(:call).with(declared_candidates_url).and_return(declared_candidates_page)
+      allow(Councils::PageDownloader).to receive(:call).with(electorates_url).and_return(electorates_page)
+      allow(Councils::Qld::KnownCouncils).to receive(:resolve) do |electorate_name|
+        electorate_name.sub(/\s+Division\s+\d+\z/, '').sub(/\s+(Bracken Ridge|Calamvale)\z/, '')
+      end
     end
 
-    context 'when the stub has parseable declared results' do
-      before do
-        allow(Councils::Qld::DeclaredResultsParser).to receive(:call).with(stub).and_return(
-          [
-            {
-              council_name: 'Aurukun Shire',
-              contest_name: 'Aurukun Shire',
-              contest_type: 'mayor',
-              candidates: [{ name: 'BANDICOOTCHA, Barbara Sue', party: nil }],
-              declared_date: Date.new(2024, 3, 28),
-              source_url: 'https://resultsdata.elections.qld.gov.au/2024QLGE-declared_candidates.json'
-            }
-          ]
-        )
-      end
+    context 'when both JSON files download and parse successfully' do
+      let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_declared_candidates.json').read }
+      let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_electorates.json').read }
 
       it 'fans out one RecordContestResultJob per parsed contest' do
         described_class.new.perform(stub)
@@ -31,25 +26,28 @@ RSpec.describe Councils::Qld::ImportElectionResultsJob, type: :job do
           stub, 'Aurukun Shire', 'Aurukun Shire', 'mayor',
           [{ 'name' => 'BANDICOOTCHA, Barbara Sue', 'party' => nil }],
           '2024-03-28',
-          'https://resultsdata.elections.qld.gov.au/2024QLGE-declared_candidates.json'
+          declared_candidates_url
         )
       end
     end
 
-    context 'when nothing has been declared yet for this stub' do
-      before { allow(Councils::Qld::DeclaredResultsParser).to receive(:call).with(stub).and_return([]) }
+    context 'when the declared-candidates JSON fails to download' do
+      let(:declared_candidates_page) { nil }
+      let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_electorates.json').read }
 
-      it 'does not raise and enqueues nothing' do
-        expect { described_class.new.perform(stub) }.not_to raise_error
+      it 'logs to ApiLog and re-raises' do
+        expect { described_class.new.perform(stub) }.to raise_error(RuntimeError, /Failed to download QLD declared candidates/)
+        expect(ApiLog.last.endpoint).to eq(stub)
         expect(Councils::Qld::RecordContestResultJob).not_to have_received(:perform_async)
       end
     end
 
-    context 'when parsing raises' do
-      before { allow(Councils::Qld::DeclaredResultsParser).to receive(:call).with(stub).and_raise('boom') }
+    context 'when the electorates JSON fails to download' do
+      let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_declared_candidates.json').read }
+      let(:electorates_page) { nil }
 
       it 'logs to ApiLog and re-raises' do
-        expect { described_class.new.perform(stub) }.to raise_error('boom')
+        expect { described_class.new.perform(stub) }.to raise_error(RuntimeError, /Failed to download QLD electorates/)
         expect(ApiLog.last.endpoint).to eq(stub)
       end
     end
