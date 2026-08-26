@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_25_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -91,6 +91,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
   end
 
   create_table "groups", force: :cascade do |t|
+    t.string "attributed_to"
     t.string "business_number"
     t.json "cached_data", default: {}
     t.boolean "category", default: false
@@ -181,6 +182,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
   end
 
   create_table "people", force: :cascade do |t|
+    t.string "attributed_to"
     t.json "cached_data", default: {}
     t.jsonb "council_election_data", default: [], null: false
     t.datetime "council_election_data_updated_at"
@@ -192,6 +194,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
     t.datetime "nodes_count_cached_at"
     t.jsonb "open_australia_data", default: [], null: false
     t.datetime "open_australia_data_fetched_at"
+    t.jsonb "state_election_data", default: [], null: false
+    t.datetime "state_election_data_updated_at"
     t.datetime "updated_at", null: false
     t.integer "views", default: 0, null: false
     t.index ["name"], name: "index_people_on_name"
