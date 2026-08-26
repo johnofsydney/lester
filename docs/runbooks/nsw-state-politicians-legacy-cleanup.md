@@ -4,7 +4,7 @@ Manual pre-step required before [docs/plans/0011](../plans/0011-ingest-nsw-state
 
 ## What's being cleaned up
 
-`Group.nsw_parliament` ("nsw parliament", confirmed id 3740) — currently holds **512 Memberships** from the one-time copy/paste import described in [issue #248](https://github.com/johnofsydney/lester/issues/248): unreliable, not repeatable, no `evidence`, no dates. This needs to be gone before the new `pastvtr`-sourced Ingest work runs, for the same reason the Federal Branch/Parliament cleanup preceded OpenAustralia Interpretation — the new work assumes a clean slate for this Group, no reconciliation-with-legacy-data logic.
+`Group.nsw_parliament` ("nsw parliament", a name lookup — id observed locally as 3740, but not hardcoded since it isn't a known-stable production id, see docs/plans/0011) — currently holds **512 Memberships** from the one-time copy/paste import described in [issue #248](https://github.com/johnofsydney/lester/issues/248): unreliable, not repeatable, no `evidence`, no dates. This needs to be gone before the new `pastvtr`-sourced Ingest work runs, for the same reason the Federal Branch/Parliament cleanup preceded OpenAustralia Interpretation — the new work assumes a clean slate for this Group, no reconciliation-with-legacy-data logic.
 
 ## How the Federal precedent worked, and where this differs
 
