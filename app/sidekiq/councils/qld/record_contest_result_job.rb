@@ -36,7 +36,7 @@ class Councils::Qld::RecordContestResultJob
   private
 
   def record_candidate(council:, council_slug:, contest_type:, candidate:, declared_date:, evidence:, stub:, source_url:)
-    person = Councils::RecordCandidatePerson.call(name: candidate['name'], council:)
+    person = RecordCandidatePerson.call(name: candidate['name'], scope_group: council)
 
     Group::RecordRow.new(group: council, person:, title: title_for(contest_type), evidence:).call
     record_party_membership(person:, candidate:, evidence:)
