@@ -10,9 +10,7 @@ RSpec.describe Councils::Qld::ImportElectionResultsJob, type: :job do
       allow(Councils::Qld::RecordContestResultJob).to receive(:perform_async)
       allow(Councils::PageDownloader).to receive(:call).with(declared_candidates_url).and_return(declared_candidates_page)
       allow(Councils::PageDownloader).to receive(:call).with(electorates_url).and_return(electorates_page)
-      allow(Councils::Qld::KnownCouncils).to receive(:resolve) do |electorate_name|
-        electorate_name.sub(/\s+Division\s+\d+\z/, '').sub(/\s+(Bracken Ridge|Calamvale)\z/, '')
-      end
+      allow(Councils::Qld::KnownCouncils).to receive(:names).and_return(['Aurukun Shire', 'Banana Shire', 'Brisbane City', 'Ipswich City'])
     end
 
     context 'when both JSON files download and parse successfully' do

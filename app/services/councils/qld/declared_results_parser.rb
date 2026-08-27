@@ -7,15 +7,18 @@
 # NSW/VIC, where HTTP lives entirely in the job, e.g. Councils::Nsw::ImportCouncilResultRowJob).
 #
 # Council name is resolved via Councils::Qld::KnownCouncils' longest-prefix match against the
-# contest's electorateName, not via electorates.json's own lgaName field or parentElectorateId --
-# neither is populated on by-election files' division-level entries.
+# contest's electorateName (not via electorates.json's own lgaName field or parentElectorateId --
+# neither is populated on by-election files' division-level entries), against the
+# `known_council_names:` list the caller passes in -- keeping this parser a pure function of its
+# inputs, with no hidden network call through KnownCouncils' own memoized fetch.
 class Councils::Qld::DeclaredResultsParser
-  def self.call(declared_candidates_page:, electorates_page:, source_url:) = new(declared_candidates_page:, electorates_page:, source_url:).call
+  def self.call(declared_candidates_page:, electorates_page:, source_url:, known_council_names:) = new(declared_candidates_page:, electorates_page:, source_url:, known_council_names:).call
 
-  def initialize(declared_candidates_page:, electorates_page:, source_url:)
+  def initialize(declared_candidates_page:, electorates_page:, source_url:, known_council_names:)
     @declared_candidates_page = declared_candidates_page
     @electorates_page = electorates_page
     @source_url = source_url
+    @known_council_names = known_council_names
   end
 
   def call
@@ -24,13 +27,13 @@ class Councils::Qld::DeclaredResultsParser
 
   private
 
-  attr_reader :declared_candidates_page, :electorates_page, :source_url
+  attr_reader :declared_candidates_page, :electorates_page, :source_url, :known_council_names
 
   def contest_from(entry)
     electorate_name = electorate_names[entry['electorateId']]
     return nil if electorate_name.blank? # no matching electorate record -- nothing to resolve a council from
 
-    council_name = Councils::Qld::KnownCouncils.resolve(electorate_name)
+    council_name = Councils::Qld::KnownCouncils.resolve(electorate_name, within: known_council_names)
     raise "Could not resolve a known QLD council for electorateName: #{electorate_name.inspect}" if council_name.blank?
 
     declared_date = parse_declared_date(entry['declarationDate'])

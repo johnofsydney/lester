@@ -18,14 +18,15 @@ class Councils::Qld::RecordContestResultJob
   LOCAL_COUNCILS_TAG_NAME = 'Australian Local Councils'.freeze
 
   def perform(stub, council_name, contest_name, contest_type, candidates, declared_date, source_url)
-    council = Groups::RecordGroup.call("#{council_name} Council")
+    @stub = stub
+    @council_name = council_name
+    @contest_name = contest_name
+    @contest_type = contest_type
+    @declared_date = declared_date
+    @source_url = source_url
+
     council.add_to_tag(tag_name: LOCAL_COUNCILS_TAG_NAME)
-
-    evidence = "Electoral Commission of Queensland #{Date.parse(declared_date).year} Local Government election declared results for #{contest_name} (#{contest_type}) (#{source_url})"
-
-    candidates.each do |candidate|
-      record_candidate(council:, council_slug: council_name, contest_type:, candidate:, declared_date:, evidence:, stub:, source_url:)
-    end
+    candidates.each { |candidate| record_candidate(candidate) }
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Qld::RecordContestResultJob(#{stub}, #{contest_name}): #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
@@ -35,30 +36,40 @@ class Councils::Qld::RecordContestResultJob
 
   private
 
-  def record_candidate(council:, council_slug:, contest_type:, candidate:, declared_date:, evidence:, stub:, source_url:)
-    person = RecordCandidatePerson.call(name: candidate['name'], scope_group: council)
+  attr_reader :stub, :council_name, :contest_name, :contest_type, :declared_date, :source_url
 
-    Group::RecordRow.new(group: council, person:, title: title_for(contest_type), evidence:).call
-    record_party_membership(person:, candidate:, evidence:)
-    record_election_data(person:, council:, council_slug:, candidate:, declared_date:, stub:, source_url:)
+  def council
+    @council ||= Groups::RecordGroup.call("#{council_name} Council")
   end
 
-  def title_for(contest_type) = contest_type == 'mayor' ? 'Mayor' : 'Councillor'
+  def evidence
+    @evidence ||= "Electoral Commission of Queensland #{Date.parse(declared_date).year} Local Government election declared results for #{contest_name} (#{contest_type}) (#{source_url})"
+  end
 
-  def record_party_membership(person:, candidate:, evidence:)
+  def record_candidate(candidate)
+    person = RecordCandidatePerson.call(name: candidate['name'], scope_group: council)
+
+    Group::RecordRow.new(group: council, person:, title:, evidence:).call
+    record_party_membership(person:, candidate:)
+    record_election_data(person:, candidate:)
+  end
+
+  def title = contest_type == 'mayor' ? 'Mayor' : 'Councillor'
+
+  def record_party_membership(person:, candidate:)
     party_group = Councils::PartyMapper.call(candidate['party'], state: STATE)
     return if party_group.nil?
 
     Group::RecordRow.new(group: party_group, person:, evidence:).call
   end
 
-  def record_election_data(person:, council:, council_slug:, candidate:, declared_date:, stub:, source_url:)
+  def record_election_data(person:, candidate:)
     People::RecordCouncilElectionData.call(
       person:,
       observation: {
         state: STATE,
         council_name: council.name,
-        council_slug:,
+        council_slug: council_name,
         cycle: stub,
         declared_date:,
         party: candidate['party'],

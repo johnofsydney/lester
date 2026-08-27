@@ -16,9 +16,10 @@ class Councils::Qld::ImportElectionResultsJob
 
   def perform(stub)
     contests = Councils::Qld::DeclaredResultsParser.call(
-      declared_candidates_page: fetch_declared_candidates(stub),
-      electorates_page: fetch_electorates(stub),
-      source_url: declared_candidates_url(stub)
+      declared_candidates_page: fetch(declared_candidates_url(stub), 'declared candidates'),
+      electorates_page: fetch(electorates_url(stub), 'electorates'),
+      source_url: declared_candidates_url(stub),
+      known_council_names: Councils::Qld::KnownCouncils.names
     )
     return if contests.blank? # nothing declared yet for this election
 
@@ -32,18 +33,9 @@ class Councils::Qld::ImportElectionResultsJob
 
   private
 
-  def fetch_declared_candidates(stub)
-    url = declared_candidates_url(stub)
+  def fetch(url, label)
     page = Councils::PageDownloader.call(url)
-    raise "Failed to download QLD declared candidates: #{url}" if page.blank?
-
-    page
-  end
-
-  def fetch_electorates(stub)
-    url = electorates_url(stub)
-    page = Councils::PageDownloader.call(url)
-    raise "Failed to download QLD electorates: #{url}" if page.blank?
+    raise "Failed to download QLD #{label}: #{url}" if page.blank?
 
     page
   end

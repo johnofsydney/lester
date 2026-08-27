@@ -1,16 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
-  subject(:call_service) { described_class.call(declared_candidates_page:, electorates_page:, source_url:) }
+  subject(:call_service) { described_class.call(declared_candidates_page:, electorates_page:, source_url:, known_council_names:) }
 
   let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_declared_candidates.json').read }
   let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_electorates.json').read }
   let(:source_url) { 'https://resultsdata.elections.qld.gov.au/2024QLGE-declared_candidates.json' }
+  let(:known_council_names) { ['Aurukun Shire', 'Banana Shire', 'Brisbane City', 'Ipswich City'] }
 
-  before do
-    allow(Councils::Qld::KnownCouncils).to receive(:resolve) do |electorate_name|
-      electorate_name.sub(/\s+Division\s+\d+\z/, '').sub(/\s+(Bracken Ridge|Calamvale)\z/, '')
-    end
+  it 'does no network fetch -- a pure function of its given inputs' do
+    allow(Councils::PageDownloader).to receive(:call)
+
+    call_service
+
+    expect(Councils::PageDownloader).not_to have_received(:call)
   end
 
   it 'normalises a single-winner mayoral contest' do
@@ -45,7 +48,7 @@ RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
     expect(contest[:candidates]).to eq([{ name: 'LANDERS, Sandra Jane Marie', party: 'Liberal National Party of Queensland' }])
   end
 
-  it 'resolves a named-ward contest to its council via KnownCouncils, not a Division-suffix guess' do
+  it 'resolves a named-ward contest to its council via the given known-council names, not a Division-suffix guess' do
     contest = call_service.find { |c| c[:contest_name] == 'Brisbane City Calamvale' }
 
     expect(contest[:council_name]).to eq('Brisbane City')
@@ -59,12 +62,9 @@ RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
     let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/msc24_declared_candidates.json').read }
     let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/msc24_electorates.json').read }
     let(:source_url) { 'https://resultsdata.elections.qld.gov.au/MSC24-declared_candidates.json' }
+    let(:known_council_names) { ['Mornington Shire'] }
 
-    before do
-      allow(Councils::Qld::KnownCouncils).to receive(:resolve).with('Mornington Shire Division 1').and_return('Mornington Shire')
-    end
-
-    it 'still resolves the council name via KnownCouncils and normalises the single-winner contest' do
+    it 'still resolves the council name from the given list and normalises the single-winner contest' do
       expect(call_service).to eq(
         [
           {

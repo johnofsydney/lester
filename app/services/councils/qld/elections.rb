@@ -6,43 +6,46 @@ class Councils::Qld::Elections
   ELECTIONS_URL = 'https://resultsdata.elections.qld.gov.au/elections.json'.freeze
   LOCAL_ELECTION_TYPES = ['Local Quadrennial', 'Local Councillor By-election', 'Local Mayoral By-election'].freeze
 
-  def self.local = new.local
-  def self.latest_general = new.latest_general
+  class << self
+    # Memoized at class level (not per-instance) so a full ingest run's IngestElectionResultsJob and
+    # KnownCouncils calls -- which each need the elections index -- share one fetch instead of two.
+    def local
+      all.select { |election| LOCAL_ELECTION_TYPES.include?(election[:election_type]) }
+    end
 
-  def local
-    all.select { |election| LOCAL_ELECTION_TYPES.include?(election[:election_type]) }
-  end
+    # The most recent general (quadrennial) election -- used as the source for
+    # Councils::Qld::KnownCouncils' council-name list. Picked by election_day, not the API's own
+    # `current` flag (confirmed live: `current` is false for both the 2020 and 2024 general
+    # elections, so it can't distinguish "most recent" from "not currently being counted").
+    def latest_general
+      all.select { |election| election[:election_type] == 'Local Quadrennial' }
+         .max_by { |election| election[:election_day] }
+    end
 
-  # The most recent general (quadrennial) election -- used as the source for
-  # Councils::Qld::KnownCouncils' council-name list. Picked by election_day, not the API's own
-  # `current` flag (confirmed live: `current` is false for both the 2020 and 2024 general
-  # elections, so it can't distinguish "most recent" from "not currently being counted").
-  def latest_general
-    all.select { |election| election[:election_type] == 'Local Quadrennial' }
-       .max_by { |election| election[:election_day] }
-  end
+    def reset! = @all = nil
 
-  private
+    private
 
-  def all
-    @all ||= parse(fetch)
-  end
+    def all
+      @all ||= parse(fetch)
+    end
 
-  def fetch
-    page = Councils::PageDownloader.call(ELECTIONS_URL)
-    raise "Failed to download QLD elections index: #{ELECTIONS_URL}" if page.blank?
+    def fetch
+      page = Councils::PageDownloader.call(ELECTIONS_URL)
+      raise "Failed to download QLD elections index: #{ELECTIONS_URL}" if page.blank?
 
-    page
-  end
+      page
+    end
 
-  def parse(page)
-    JSON.parse(page)['elections'].map do |election|
-      {
-        stub: election['stub'],
-        election_type: election['electionType'],
-        election_name: election['electionName'],
-        election_day: Date.parse(election['electionDay'])
-      }
+    def parse(page)
+      JSON.parse(page)['elections'].map do |election|
+        {
+          stub: election['stub'],
+          election_type: election['electionType'],
+          election_name: election['electionName'],
+          election_day: Date.parse(election['electionDay'])
+        }
+      end
     end
   end
 end

@@ -34,5 +34,10 @@ RSpec.describe Councils::Qld::KnownCouncils, type: :service do
 
       expect(Councils::PageDownloader).to have_received(:call).once
     end
+
+    it 'does no network fetch when an explicit name list is given via within:' do
+      expect(described_class.resolve('Aurukun Shire Division 1', within: ['Aurukun Shire'])).to eq('Aurukun Shire')
+      expect(Councils::PageDownloader).not_to have_received(:call)
+    end
   end
 end
