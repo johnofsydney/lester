@@ -221,6 +221,10 @@ class Group < ApplicationRecord
     Group.find(877)
   end
 
+  def self.nsw_parliament
+    Group.find(3740)
+  end
+
   def self.local_councils_tag
     Group.find(132_067)
   end
