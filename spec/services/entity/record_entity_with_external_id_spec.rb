@@ -38,7 +38,10 @@ RSpec.describe Entity::RecordEntityWithExternalId, type: :service do
             expect { expect(call_service).to eq(group) }.not_to change(Group, :count)
 
             expect(group.reload.public_send(id_attribute)).to eq(identifier)
-            expect(group.trading_names.where(name:).exists?).to be(true)
+          end
+
+          it 'does not add a trading name identical to the group\'s own name' do
+            expect { call_service }.not_to change(TradingName, :count)
           end
 
           context 'when the existing identifier differs' do
@@ -73,13 +76,13 @@ RSpec.describe Entity::RecordEntityWithExternalId, type: :service do
         end
 
         context 'and no group exists with the name' do
-          it 'creates a new group with identifier and trading name' do
+          it 'creates a new group with identifier and no redundant trading name' do
             expect { call_service }.to change(Group, :count).by(1)
 
             group = Group.order(:id).last
             expect(group.name).to eq(name.downcase)
             expect(group.public_send(id_attribute)).to eq(identifier)
-            expect(group.trading_names.where(name:).exists?).to be(true)
+            expect(group.trading_names).to be_empty
           end
         end
       end
@@ -107,18 +110,21 @@ RSpec.describe Entity::RecordEntityWithExternalId, type: :service do
           it 'returns the existing person and appends the identifier' do
             expect { expect(call_service).to eq(person) }.not_to change(Person, :count)
             expect(person.reload.public_send(id_attribute)).to eq(identifier)
-            expect(person.trading_names.where(name:).exists?).to be(true)
+          end
+
+          it 'does not add a trading name identical to the person\'s own name' do
+            expect { call_service }.not_to change(TradingName, :count)
           end
         end
 
         context 'and no person exists with the name' do
-          it 'creates a new person with identifier and trading name' do
+          it 'creates a new person with identifier and no redundant trading name' do
             expect { call_service }.to change(Person, :count).by(1)
 
             person = Person.order(:id).last
             expect(person.name).to eq(name.downcase)
             expect(person.public_send(id_attribute)).to eq(identifier)
-            expect(person.trading_names.where(name:).exists?).to be(true)
+            expect(person.trading_names).to be_empty
           end
         end
       end

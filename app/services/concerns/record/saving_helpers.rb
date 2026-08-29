@@ -14,7 +14,19 @@ module Record::SavingHelpers
     end
   end
 
+  # A trading name identical to the entity's own (normalised) name adds no search or
+  # disambiguation value -- Person/Group are already `multisearchable against: [:name]` -- and
+  # just duplicates every search hit. Skipped here, centrally, rather than trusting each caller to
+  # check first.
   def add_to_trading_names(entity)
+    return if normalize_name(name) == entity.name
+
     entity.trading_names.create!(name:) unless entity.trading_names.where(name:).exists?
+  end
+
+  private
+
+  def normalize_name(value)
+    value.to_s.downcase.strip.delete('.')
   end
 end

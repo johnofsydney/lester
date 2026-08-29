@@ -50,6 +50,40 @@ RSpec.describe Record::SavingHelpers do
     end
   end
 
+  describe '#add_to_trading_names' do
+    it 'does not create a trading name identical to the entity\'s own (normalised) name' do
+      group = FactoryBot.create(:group, name: 'Acme Foundation')
+
+      expect { includer.add_to_trading_names(group) }.not_to change(TradingName, :count)
+    end
+
+    it 'does not create a trading name identical after normalisation (case/whitespace/dots differ only)' do
+      group = FactoryBot.create(:group, name: 'Acme Foundation')
+      includer_with_variant_name = Class.new do
+        include Record::SavingHelpers
+        attr_reader :name
+
+        def initialize(name:) = @name = name
+      end.new(name: '  ACME. Foundation  ')
+
+      expect { includer_with_variant_name.add_to_trading_names(group) }.not_to change(TradingName, :count)
+    end
+
+    it 'creates a trading name that genuinely differs from the entity\'s own name' do
+      group = FactoryBot.create(:group, name: 'Different Group Name')
+
+      expect { includer.add_to_trading_names(group) }.to change(TradingName, :count).by(1)
+      expect(group.trading_names.pluck(:name)).to eq(['acme foundation'])
+    end
+
+    it 'does not duplicate an already-recorded trading name' do
+      group = FactoryBot.create(:group, name: 'Different Group Name')
+      group.trading_names.create!(name: 'Acme Foundation')
+
+      expect { includer.add_to_trading_names(group) }.not_to change(TradingName, :count)
+    end
+  end
+
   describe 'concurrent calls for the same name (TOCTOU race)' do
     self.use_transactional_tests = false
 
