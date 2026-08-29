@@ -78,6 +78,10 @@ gem 'flipper-ui'
 gem 'faraday', '>= 2.14.1'
 gem 'sidekiq'
 
+# CORS support for /api/* — consumed by separately-hosted React frontends.
+# See docs/plans/0003-api-frontend-plan.md
+gem 'rack-cors'
+
 gem 'newrelic_rpm'
 
 gem 'sidekiq-unique-jobs'

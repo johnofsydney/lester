@@ -1,6 +1,12 @@
 # API + Separate React Frontend — Design Plan
 
-**Status:** Proposed
+**Status:** In Progress
+
+**Progress:** Confirmed the React frontend will live in its own repo (see bootstrap instructions
+posted to issue #316). Groundwork landed for Phase 1 step 1: `rack-cors` gem, the CORS initializer,
+`Api::BaseController`, and a `GET /api/v1/health` route as a smoke-test endpoint. The `people` /
+`groups` / `transfers` / `search` / `network_graph` API controllers listed under Phase 1 below are
+not yet implemented.
 
 ## What we're doing
 
@@ -192,9 +198,9 @@ The API namespace makes all of this possible without duplicating backend code. W
 ## Implementation order
 
 ### Phase 1 — API scaffold (backend only, ~1 day)
-1. Add `rack-cors` gem, configure CORS
-2. Create `Api::BaseController`
-3. Add API routes
+1. ✅ Add `rack-cors` gem, configure CORS
+2. ✅ Create `Api::BaseController`
+3. ✅ Add API routes (`GET /api/v1/health` only so far — a smoke test, not a real resource)
 4. Implement `Api::V1::PeopleController` (index + show) with JSON
 5. Implement `Api::V1::GroupsController` (index + show)
 6. Implement `Api::V1::TransfersController` (index + show)

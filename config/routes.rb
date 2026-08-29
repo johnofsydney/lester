@@ -12,6 +12,12 @@ Rails.application.routes.draw do
 
   mount Prettytodo::Engine => '/prettytodo' if Rails.env.development?
 
+  namespace :api do
+    namespace :v1 do
+      get 'health' => 'health#show'
+    end
+  end
+
   get 'groups/group_people/:group_id' => 'groups#group_people'
   get 'groups/affiliated_groups/:group_id' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
