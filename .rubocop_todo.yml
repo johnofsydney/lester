@@ -341,12 +341,6 @@ Performance/Count:
   Exclude:
     - 'app/services/sidekiq_utils.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Performance/StringInclude:
-  Exclude:
-    - 'app/models/current.rb'
-    - 'app/services/tender_ingestor.rb'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
