@@ -222,7 +222,7 @@ class Group < ApplicationRecord
   end
 
   def self.nsw_parliament
-    Group.find_by(name: 'NSW Parliament'.downcase)
+    Group.find(3740)
   end
 
   def self.local_councils_tag

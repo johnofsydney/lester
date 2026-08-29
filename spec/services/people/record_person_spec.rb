@@ -146,7 +146,7 @@ RSpec.describe People::RecordPerson, type: :service do
 
           person = Person.find_by(name:)
           expect(person).to be_present
-          expect(person.trading_names.where(name:).exists?).to be(true)
+          expect(person.trading_names).to be_empty # no redundant trading name identical to the person's own name
         end
 
         it 'creates a new record when name and aec_id are provided' do
@@ -155,7 +155,7 @@ RSpec.describe People::RecordPerson, type: :service do
           person = Person.find_by(name:)
           expect(person).to be_present
           expect(person.aec_id).to eq('AEC-123')
-          expect(person.trading_names.where(name:).exists?).to be(true)
+          expect(person.trading_names).to be_empty # no redundant trading name identical to the person's own name
         end
 
         it 'creates a new record when name and acnc_id are provided' do
@@ -164,7 +164,7 @@ RSpec.describe People::RecordPerson, type: :service do
           person = Person.find_by(name:)
           expect(person).to be_present
           expect(person.acnc_id).to eq('ACNC-123')
-          expect(person.trading_names.where(name:).exists?).to be(true)
+          expect(person.trading_names).to be_empty # no redundant trading name identical to the person's own name
         end
 
         it 'creates a new record when name and open_australia_id are provided' do
@@ -173,7 +173,7 @@ RSpec.describe People::RecordPerson, type: :service do
           person = Person.find_by(name:)
           expect(person).to be_present
           expect(person.open_australia_id).to eq('10999')
-          expect(person.trading_names.where(name:).exists?).to be(true)
+          expect(person.trading_names).to be_empty # no redundant trading name identical to the person's own name
         end
       end
 

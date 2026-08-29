@@ -7,6 +7,14 @@ ActiveAdmin.register_page 'Dashboard' do
     link_to 'Clear Group and People Cache', admin_dashboard_clear_group_and_people_cache_path
   end
 
+  action_item :sidekiq do
+    link_to 'Sidekiq', '/sidekiq', target: '_blank', rel: 'noopener'
+  end
+
+  action_item :maintenance_tasks do
+    link_to 'Maintenance Tasks', '/maintenance_tasks', target: '_blank', rel: 'noopener'
+  end
+
   page_action :clear_group_and_people_cache, method: :get do
     raise unless current_admin_user
 

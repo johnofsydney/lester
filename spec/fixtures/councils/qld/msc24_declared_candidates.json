@@ -1,0 +1,22 @@
+{
+  "declaredCandidates": [
+    {
+      "electorateId": 892,
+      "parentElectorateId": null,
+      "electionStub": "MSC24",
+      "areaCode": "01",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Mornington Shire Council Councillor By-election",
+      "pollingDate": "2024-06-15T00:00:00.000Z",
+      "paragraph1": "A by-election to fill a vacancy in the office of councillor in Mornington Shire Division 1 was held on Saturday, 15 June 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Mornington Shire Division 1.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "17 Jun 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "AH KIT, Maureen Jane",
+      "declaredCandidateBallotOrder": 2
+    }
+  ]
+}

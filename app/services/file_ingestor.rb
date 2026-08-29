@@ -1,5 +1,4 @@
 class FileIngestor
-
   def initialize(csv: nil, file: nil)
     raise unless csv || file
 
