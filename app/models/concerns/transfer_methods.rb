@@ -74,7 +74,7 @@ module TransferMethods
       return results if depth == 0
 
       # Stop the whole traversal if we've reached the results threshold
-      return results if results.size >= Constants::MAX_DESCENDENTS_RESULTS
+      return results if results.size >= Constants::TRAVERSAL_BUDGET
 
       # add current memberships to visited memberships
       visited_membership_ids << current_depth_memberships.flatten.pluck(:id)
