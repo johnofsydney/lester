@@ -1,3 +1,7 @@
+**Status: implemented on `handle-graph-better` (2026-08-29).** `CanAddToQueue`/`BuildQueue` now
+follow this design — see ADR 0007. Remaining open item on this page: the deferred visual-weight
+question at the bottom.
+
 # Large/tag groups should appear as terminal leaves, not be excluded from the graph entirely
 
 **File:** `app/services/can_add_to_queue.rb`, `app/services/build_queue.rb`
@@ -91,7 +95,9 @@ ceiling on total traversal size — not an unstated assumption that per-node Cap
 payloads bounded.
 
 **Decided: name the total-cap mechanism "Traversal Budget"**, distinct from "Capped" (per-node) —
-the whole-graph-build stops adding nodes once the Traversal Budget is exhausted.
+the whole-graph-build stops adding nodes once the Traversal Budget is exhausted. **Implemented**:
+this mechanism already existed as `Constants::MAX_DESCENDENTS_RESULTS` in
+`consolidated_descendents` — renamed to `Constants::TRAVERSAL_BUDGET`, no new logic needed.
 
 **Open design option to preserve, not yet decided:** whether a terminal leaf's visual weight
 (`Descendent#mass`/`size`, currently driven by `parent_size`/`nodes_count`) should signal "this is

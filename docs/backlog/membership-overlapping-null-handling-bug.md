@@ -1,3 +1,5 @@
+**Status: fixed (2026-08-29).**
+
 # `Membership#overlapping` mishandles NULL start/end dates on `self`
 
 **File:** `app/models/membership.rb:43-51`

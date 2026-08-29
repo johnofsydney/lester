@@ -1,3 +1,7 @@
+**Status: superseded by [[large-groups-should-terminate-not-exclude]], implemented (2026-08-29).**
+`CanAddToQueue` no longer checks `is_tag?` at all — size alone now governs expansion for any node
+type, resolving this without needing a data-level Tag distinction.
+
 # `Tag` is used for two different things, but `CanAddToQueue` treats them identically
 
 **File:** `app/services/can_add_to_queue.rb`
