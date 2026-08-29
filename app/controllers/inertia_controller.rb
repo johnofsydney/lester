@@ -69,7 +69,7 @@ class InertiaController < ApplicationController
   def nodes
     node = person || group
 
-    node.cached.consolidated_descendents
+    node.cached.consolidated_descendents.select { |descendent| descendent.depth <= depth }
   end
 
   def all_memberships_of_descendents
