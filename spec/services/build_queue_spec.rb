@@ -1,51 +1,37 @@
 require 'rails_helper'
 
-describe BuildQueue do
-  let(:john) { Person.create(name: 'John') }
-  let(:queue) { [john] }
-  let(:visited_membership_ids) { [] }
-  let(:visited_nodes) { [] }
-  let(:counter) { 0 }
-  let(:build_queue) { described_class.new(queue, visited_membership_ids, visited_nodes, counter) }
-  let(:paul) { Person.create(name: 'Paul') }
-  let(:ben) { Person.create(name: 'Ben') }
-  let(:eddie) { Person.create(name: 'Eddie') }
-
-  let(:usyd) { Group.create(name: 'USYD') }
-  let(:aloy) { Group.create(name: 'Aloy') }
-  let(:alp) { Group.create(name: 'ALP') }
-
-  before do
-    Membership.create(person: john, group: usyd, start_date: Date.new(1990, 1, 1), end_date: Date.new(1994, 12, 31))
-    Membership.create(person: ben, group: usyd, start_date: Date.new(1989, 1, 1), end_date: Date.new(1993, 12, 31))
-    Membership.create(person: paul, group: aloy, start_date: Date.new(1982, 1, 1), end_date: Date.new(1988, 12, 31))
-    Membership.create(person: ben, group: aloy, start_date: Date.new(1982, 1, 1), end_date: Date.new(1988, 12, 31))
-    Membership.create(person: eddie, group: alp, start_date: Date.new(1972, 1, 1), end_date: Date.new(2014, 12, 31))
-    Membership.create(person: john, group: alp, start_date: Date.new(2022, 1, 1))
-  end
-
-  describe '#initialize' do
-    xit 'initializes with correct attributes' do
-      expect(build_queue.queue).to eq(queue)
-      expect(build_queue.visited_membership_ids).to eq(visited_membership_ids)
-      expect(build_queue.visited_nodes).to eq(visited_nodes)
-      expect(build_queue.counter).to eq(counter)
-    end
-  end
-
+RSpec.describe BuildQueue do
   describe '#call' do
-    context 'when queue is empty or nil' do
-      let(:queue) { [] }
+    context 'when the queue_node is expandable' do
+      let(:councillor) { Person.create(name: 'Councillor') }
+      let(:council) { Group.create(name: 'Council') }
+      let(:party) { Group.create(name: 'Large Party') }
 
-      xit 'returns an empty array' do
-        expect(build_queue.call).to eq([])
+      before do
+        Membership.create(member: councillor, group: council)
+        Membership.create(member: councillor, group: party)
+      end
+
+      it 'returns all of its connected nodes, regardless of their own size' do
+        build_queue = described_class.new([councillor], [], [], 0)
+
+        expect(build_queue.call).to contain_exactly(council, party)
       end
     end
 
-    context 'when queue is not empty' do
+    context 'when the queue_node itself is too large to expand' do
+      let(:large_party) { Group.create(name: 'Large Party') }
 
-      xit 'returns an array of nodes' do
-        expect(build_queue.call).to eq(john.nodes)
+      before do
+        (Constants::MAX_NODES_TO_EXPAND + 1).times do |n|
+          Membership.create(member: Person.create(name: "Person #{n}"), group: large_party)
+        end
+      end
+
+      it 'does not enumerate its members' do
+        build_queue = described_class.new([large_party], [], [], 0)
+
+        expect(build_queue.call).to eq([])
       end
     end
   end

@@ -50,7 +50,7 @@ module TransferMethods
       consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:)
     end
 
-    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil, with_parents: [] )
+    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], with_parents: [] )
       current_depth_memberships = []
 
       # sanity check in case of a large number of nodes on [self] for the first iteration
@@ -81,13 +81,13 @@ module TransferMethods
       visited_membership_ids = visited_membership_ids.flatten.uniq
 
       # get the nodes for the next depth
-      service = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter, transfer)
+      service = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter)
       queue = service.call
       with_parents = service.with_parents
 
       depth -= 1
       counter += 1
-      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:, transfer:, with_parents:)
+      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:, with_parents:)
     end
 
     def data_time_range

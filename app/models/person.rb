@@ -104,8 +104,8 @@ class Person < ApplicationRecord
 
   def direct_friendships
     # PEOPLE, with whom this person has a direct relationship, ie they are both part of the same group.
-    # The group must be <= MAX_GROUP_SIZE_TO_FOLLOW, otherwise the relationship is too weak to be considered direct.
-    # That constant is used in the BuildQueue service.
+    # The group must be <= Constants::MAX_NODES_TO_EXPAND, otherwise the relationship is too weak to be considered direct.
+    # That constant is used in the CanAddToQueue service.
     consolidated_descendents_depth(2).filter{|descendent| descendent.klass == 'Person' && descendent.depth == 2}
   end
 
