@@ -135,9 +135,8 @@ RSpec.describe Membership do
       end
     end
 
-    # TODO: needs attention
     context 'when there are overlapping memberships', :aggregate_failures do
-      xit 'returns an array of overlapping memberships' do
+      it 'returns an array of overlapping memberships' do
         expect(membership_kevin_alp.overlapping).to eq([membership_mark_alp])
         expect(membership_mark_alp.overlapping).to eq([membership_kevin_alp])
         expect(membership_mark_phon.overlapping).to eq([membership_pauline_phon])
