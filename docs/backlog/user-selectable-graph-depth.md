@@ -1,3 +1,10 @@
+**Status: partially implemented (2026-08-29).** The read-side slicing envisioned below is now live —
+`InertiaController#nodes` filters cached `consolidated_descendents` by `depth` (param, session, or
+default 2), fixing a pre-existing bug where the `depth` param/session/default machinery already
+existed but was never actually applied. No UI control to choose depth exists yet (only the `depth`
+URL param and session, no visible selector) — that's the remaining piece of this backlog item.
+The "explicitly deferred" section below (querying beyond the cached max) is still fully open.
+
 # Let the user choose how many degrees of the graph to view
 
 **Files:** `app/models/concerns/node_methods.rb#to_h`, `app/models/descendent.rb`,
