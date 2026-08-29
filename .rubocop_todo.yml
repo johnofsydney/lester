@@ -588,12 +588,6 @@ Style/PercentLiteralDelimiters:
     - 'app/models/group.rb'
     - 'app/models/transfer.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: SafeForConstants.
-Style/RedundantFetchBlock:
-  Exclude:
-    - 'config/puma.rb'
 
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).
