@@ -153,7 +153,7 @@ For GrantConnect, we don't yet know if `Value (AUD)` is:
 
 Also check: does `GaPublishedDownload` ever return versioned IDs (e.g. `GA484157-V1`)? In the sample (3 rows for 5-Jan-2026), all IDs were bare with no suffix. The Advanced Search with `LastedVariation=True` showed versioned suffixes. This suggests the Published report may only ever show original awards, not amendments — in which case the value question may not arise.
 
-**Until resolved:** Build the pipeline treating Value as per-grant. Flag for verification during testing against known amended grants.
+**Resolved (2026-08-25):** Value is per-grant. Building the pipeline on this basis — no detail-page scraping needed for amount.
 
 ---
 
@@ -198,7 +198,7 @@ Recommendation: skip aggregate grants in v1 (`next if row['Aggregate'] == 'Y'`),
 
 ### Confidential grants
 
-`Confidentiality - Contract: Y` rows have redacted recipient details (name shown as `n/a`, ABN as `ABN Exempt`). These are valid but low-value for transparency. Ingest as-is — the agency (giver) is still recorded, amount is real.
+**Resolved (2026-08-25):** `Confidentiality - Contract: Y` rows have redacted recipient details (name shown literally as `"n/a"`, ABN as `ABN Exempt`). Recording these as-is would merge every confidential grant across every agency into a single `Group` named "n/a" (name-only matching in `Groups::RecordGroup`), falsely linking unrelated redacted recipients. **Skip confidential rows in v1**, same treatment as aggregate rows (`return if release.aggregate? || release.confidential?`). Revisit later if a way to keep them distinct (e.g. per-agency placeholder groups) is wanted.
 
 ---
 
@@ -236,6 +236,7 @@ AuGrants::XlsxParser
 AuGrants::RecordIndividualGrant  # mirrors AusTender::RecordIndividualTransaction
   - Dedup: IndividualTransaction.exists?(external_id: ga_id) → return if exists
   - Skip if aggregate (Aggregate == 'Y') — v1
+  - Skip if confidential (Confidentiality - Contract == 'Y') — v1, avoids false-merging redacted "n/a" recipients
   - RecordGroup for agency (giver) — name only
   - RecordGroup for recipient (taker) — ABN if present, else name only
   - Transfer.find_or_create_by!(giver, taker, effective_date, transfer_type: 'government_grants')
@@ -257,7 +258,7 @@ e.g. `https://www.grants.gov.au/Ga/Show/GA523941`. This gives a direct link to t
 
 ### `fine_grained_transaction_category`
 
-The XLSX `Category` column (e.g. `"Aged Care"`, `"Legal Services"`, `"Broadcasting and Telecommunications"`) maps naturally to `FineGrainedTransactionCategory`. In v1, leave this nil and treat it as a future enhancement — populate once a category seeding strategy is agreed (either auto-create from XLSX values or map to a pre-seeded list).
+**Resolved (2026-08-25):** `IndividualTransaction.fine_grained_transaction_category` is a required (non-optional) association, so it cannot be left nil. Auto-create from the XLSX `Category` column, same as AusTender: `FineGrainedTransactionCategory.find_or_create_by!(name: release.category)`.
 
 ### Key differences from AusTender
 
@@ -292,7 +293,7 @@ The XLSX `Category` column (e.g. `"Aged Care"`, `"Legal Services"`, `"Broadcasti
 
 ## Open Questions
 
-1. **VALUE cumulative or per-grant?** — resolve before writing amount logic (see above)
+1. ~~**VALUE cumulative or per-grant?**~~ — resolved 2026-08-25: per-grant
 2. **Does `GaPublishedDownload` ever return versioned GA IDs (`-V1`, `-V2`)?** — observed bare IDs only in the sample; needs confirmation across busier dates
 3. **How far back to backfill?** — data exists from Dec 2017. At ~13K rows/month × 8.5 years ≈ 1.3M rows. Consider starting from a more recent year (e.g. FY2021) and expanding
 4. **Aggregate grants** — skip in v1 or ingest with a placeholder recipient?
