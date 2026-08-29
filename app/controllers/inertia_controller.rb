@@ -1,5 +1,5 @@
 class InertiaController < ApplicationController
-  attr_reader :nodes, :person, :group
+  attr_reader :person, :group
 
   layout -> { 'widescreen' }
 
