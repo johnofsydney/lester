@@ -1,0 +1,364 @@
+{
+  "declaredCandidates": [
+    {
+      "electorateId": 547,
+      "parentElectorateId": null,
+      "electionStub": "2024QLGE",
+      "areaCode": "001",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Aurukun Shire.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "28 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "mayor",
+      "electorateStub": null,
+      "declaredCandidate": "BANDICOOTCHA, Barbara Sue",
+      "declaredCandidateBallotOrder": 1
+    },
+    {
+      "electorateId": 548,
+      "parentElectorateId": 547,
+      "electionStub": "2024QLGE",
+      "areaCode": "00101",
+      "numElectedCandidates": 4,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Aurukun Shire Division 1.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "21 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidates": [
+        {
+          "declaredCandidate": "MARROTT, Jayden Isaac",
+          "declaredCandidateBallotOrder": 1
+        },
+        {
+          "declaredCandidate": "YUNKAPORTA, Leona Nanette",
+          "declaredCandidateBallotOrder": 2
+        },
+        {
+          "declaredCandidate": "KOOMEETA, Craig Allan",
+          "declaredCandidateBallotOrder": 3
+        },
+        {
+          "declaredCandidate": "YUNKAPORTA, Eloise Susie Gladys N",
+          "declaredCandidateBallotOrder": 4
+        }
+      ]
+    },
+    {
+      "electorateId": 551,
+      "parentElectorateId": null,
+      "electionStub": "2024QLGE",
+      "areaCode": "003",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Banana Shire.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "18 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "mayor",
+      "electorateStub": null,
+      "declaredCandidate": "FERRIER, Neville George",
+      "declaredCandidateBallotOrder": 1
+    },
+    {
+      "electorateId": 552,
+      "parentElectorateId": 551,
+      "electionStub": "2024QLGE",
+      "areaCode": "00301",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Banana Shire Division 1.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "30 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "BURLING, Adam Cecil",
+      "declaredCandidateBallotOrder": 2
+    },
+    {
+      "electorateId": 553,
+      "parentElectorateId": 551,
+      "electionStub": "2024QLGE",
+      "areaCode": "00302",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Banana Shire Division 2.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "27 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "JENSEN, Ashley Victor",
+      "declaredCandidateBallotOrder": 2
+    },
+    {
+      "electorateId": 554,
+      "parentElectorateId": 551,
+      "electionStub": "2024QLGE",
+      "areaCode": "00303",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Banana Shire Division 3.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "18 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "CASEY, Phillip John",
+      "declaredCandidateBallotOrder": 1
+    },
+    {
+      "electorateId": 555,
+      "parentElectorateId": 551,
+      "electionStub": "2024QLGE",
+      "areaCode": "00304",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Banana Shire Division 4.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "18 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "BAILEY, Kerrith Elizabeth",
+      "declaredCandidateBallotOrder": 1
+    },
+    {
+      "electorateId": 556,
+      "parentElectorateId": 551,
+      "electionStub": "2024QLGE",
+      "areaCode": "00305",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Banana Shire Division 5.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "18 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "LEO, Brooke",
+      "declaredCandidateBallotOrder": 1
+    },
+    {
+      "electorateId": 557,
+      "parentElectorateId": 551,
+      "electionStub": "2024QLGE",
+      "areaCode": "00306",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Banana Shire Division 6.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "27 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "BOYCE, Terri Susan",
+      "declaredCandidateBallotOrder": 1
+    },
+    {
+      "electorateId": 566,
+      "parentElectorateId": null,
+      "electionStub": "2024QLGE",
+      "areaCode": "008",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Brisbane City.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "02 Apr 2024",
+      "webpageViewFilename": null,
+      "contest": "mayor",
+      "electorateStub": null,
+      "declaredCandidate": "SCHRINNER, Adrian Jurgen",
+      "declaredCandidateBallotOrder": 3,
+      "declaredCandidateParty": "Liberal National Party of Queensland",
+      "declaredCandidatePartyCode": "LNP"
+    },
+    {
+      "electorateId": 567,
+      "parentElectorateId": 566,
+      "electionStub": "2024QLGE",
+      "areaCode": "00801",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Brisbane City Bracken Ridge.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "20 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "LANDERS, Sandra Jane Marie",
+      "declaredCandidateBallotOrder": 1,
+      "declaredCandidateParty": "Liberal National Party of Queensland",
+      "declaredCandidatePartyCode": "LNP"
+    },
+    {
+      "electorateId": 578,
+      "parentElectorateId": 566,
+      "electionStub": "2024QLGE",
+      "areaCode": "00802",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Brisbane City Calamvale.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "28 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidate": "KIM, Emily Ji-Youn",
+      "declaredCandidateBallotOrder": 3,
+      "declaredCandidateParty": "Australian Labor Party (State of Queensland)",
+      "declaredCandidatePartyCode": "Australian Labor Party"
+    },
+    {
+      "electorateId": 694,
+      "parentElectorateId": null,
+      "electionStub": "2024QLGE",
+      "areaCode": "034",
+      "numElectedCandidates": 1,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Ipswich City.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "28 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "mayor",
+      "electorateStub": null,
+      "declaredCandidate": "HARDING, Teresa Jane",
+      "declaredCandidateBallotOrder": 1
+    },
+    {
+      "electorateId": 695,
+      "parentElectorateId": 694,
+      "electionStub": "2024QLGE",
+      "areaCode": "03401",
+      "numElectedCandidates": 2,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Ipswich City Division 1.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "27 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidates": [
+        {
+          "declaredCandidate": "MADSEN, Jacob Gordon",
+          "declaredCandidateBallotOrder": 2
+        },
+        {
+          "declaredCandidate": "AUGUSTINE, Pye",
+          "declaredCandidateBallotOrder": 4
+        }
+      ]
+    },
+    {
+      "electorateId": 696,
+      "parentElectorateId": 694,
+      "electionStub": "2024QLGE",
+      "areaCode": "03402",
+      "numElectedCandidates": 2,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Ipswich City Division 2.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "27 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidates": [
+        {
+          "declaredCandidate": "TULLY, Paul Gregory",
+          "declaredCandidateBallotOrder": 3
+        },
+        {
+          "declaredCandidate": "JONIC, Nicole Kay",
+          "declaredCandidateBallotOrder": 4
+        }
+      ]
+    },
+    {
+      "electorateId": 697,
+      "parentElectorateId": 694,
+      "electionStub": "2024QLGE",
+      "areaCode": "03403",
+      "numElectedCandidates": 2,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Ipswich City Division 3.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "27 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidates": [
+        {
+          "declaredCandidate": "DOYLE, Marnie Louise",
+          "declaredCandidateBallotOrder": 2
+        },
+        {
+          "declaredCandidate": "ANTONIOLLI, Andrew Francis",
+          "declaredCandidateBallotOrder": 3
+        }
+      ]
+    },
+    {
+      "electorateId": 698,
+      "parentElectorateId": 694,
+      "electionStub": "2024QLGE",
+      "areaCode": "03404",
+      "numElectedCandidates": 2,
+      "eventName": "2024 Local Government Elections",
+      "pollingDate": "2024-03-16T00:00:00.000Z",
+      "paragraph1": "The local government quadrennial elections were held on Saturday, 16 March 2024.",
+      "paragraph2": "In accordance with section 100 of the <i>Local Government Electoral Act 2011</i>, this notice advises that the following person(s) has been duly elected for Ipswich City Division 4.",
+      "signature": "Pat Vidgen",
+      "declarationDate": "27 Mar 2024",
+      "webpageViewFilename": null,
+      "contest": "councillor",
+      "electorateStub": null,
+      "declaredCandidates": [
+        {
+          "declaredCandidate": "CULLEN, David William",
+          "declaredCandidateBallotOrder": 1
+        },
+        {
+          "declaredCandidate": "MADDEN, James Edward",
+          "declaredCandidateBallotOrder": 2
+        }
+      ]
+    }
+  ]
+}
