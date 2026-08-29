@@ -13,6 +13,7 @@ class Councils::Qld::IngestElectionResultsJob
   IMPORT_SPACING = 5.seconds
 
   def perform
+    Councils::Qld::Elections.reset!
     elections = Councils::Qld::Elections.local
     raise 'No QLD local elections found' if elections.blank?
 
