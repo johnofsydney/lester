@@ -58,6 +58,17 @@ RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
     expect(call_service.size).to eq(17)
   end
 
+  context 'when a contest\'s council name does not prefix-match any given known council' do
+    let(:known_council_names) { ['Banana Shire', 'Brisbane City', 'Ipswich City'] } # Aurukun Shire deliberately omitted
+
+    it 'skips just that contest rather than raising and aborting the whole election' do
+      contest_names = call_service.map { |c| c[:contest_name] }
+
+      expect(contest_names).not_to include('Aurukun Shire', 'Aurukun Shire Division 1')
+      expect(contest_names).to include('Banana Shire', 'Brisbane City', 'Ipswich City')
+    end
+  end
+
   context 'with a by-election (single electorate, no lgaName or parentElectorateId to resolve from)' do
     let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/msc24_declared_candidates.json').read }
     let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/msc24_electorates.json').read }

@@ -34,7 +34,13 @@ class Councils::Qld::DeclaredResultsParser
     return nil if electorate_name.blank? # no matching electorate record -- nothing to resolve a council from
 
     council_name = Councils::Qld::KnownCouncils.resolve(electorate_name, within: known_council_names)
-    raise "Could not resolve a known QLD council for electorateName: #{electorate_name.inspect}" if council_name.blank?
+    if council_name.blank?
+      # known_council_names only covers the latest general election -- an older election or
+      # by-election can reference a council that's since renamed/amalgamated and no longer
+      # prefix-matches. Skip just this contest rather than aborting the whole election's parse.
+      Rails.logger.warn "Councils::Qld::DeclaredResultsParser: could not resolve a known QLD council for electorateName: #{electorate_name.inspect} -- skipping"
+      return nil
+    end
 
     declared_date = parse_declared_date(entry['declarationDate'])
     return nil if declared_date.nil? # not yet declared -- nothing to record yet
