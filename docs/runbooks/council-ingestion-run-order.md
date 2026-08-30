@@ -55,7 +55,7 @@ ever extend coverage further back (see the "known limitation" section of
 
 One command covers everything -- current cycle, historical backfill, and every by-election since
 2020 -- since QLD's source (`resultsdata.elections.qld.gov.au`) is a single live index rather than
-a per-cycle page to crawl (see `docs/plans/0011-qld-council-councillor-ingestion.md`). No separate
+a per-cycle page to crawl (see `docs/plans/0012-qld-council-councillor-ingestion.md`). No separate
 backfill maintenance task, unlike NSW/VIC.
 
 ```ruby

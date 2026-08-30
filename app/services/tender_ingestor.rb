@@ -23,7 +23,7 @@ class TenderIngestor
     response = AusTender::TenderDownloader.new.download(url)
 
     unless response[:success]
-      return nil if response[:body]['message'].match?(/No Records found for Date Range/)
+      return nil if response[:body]['message'].include?('No Records found for Date Range')
 
       raise ApiServerError.new(response[:body]) if response[:status] == 500
 

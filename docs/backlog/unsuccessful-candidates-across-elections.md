@@ -44,7 +44,7 @@ rather than reinventing it a third and fourth time:
 
 ## Why now, why not now
 
-Surfaced while building QLD council ingestion (`docs/plans/0011-qld-council-councillor-ingestion.md`)
+Surfaced while building QLD council ingestion (`docs/plans/0012-qld-council-councillor-ingestion.md`)
 — the data was right there in `electorates.json` and it was obvious we're leaving it on the table.
 **Explicitly not part of that work.** This is a new cross-cutting design question (one rule, three
 election levels, a possible federal source pivot) that deserves its own scoping pass, not a
