@@ -98,7 +98,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
 
         group = Group.find_by(name:)
         expect(group).to be_present
-        expect(group.trading_names.where(name:).exists?).to be(true)
+        expect(group.trading_names).to be_empty # no redundant trading name identical to the group's own name
       end
 
       it 'creates a new record when name and aec_id are provided' do
@@ -107,7 +107,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
         group = Group.find_by(name:)
         expect(group).to be_present
         expect(group.aec_id).to eq('AEC-123')
-        expect(group.trading_names.where(name:).exists?).to be(true)
+        expect(group.trading_names).to be_empty # no redundant trading name identical to the group's own name
       end
 
       it 'creates a new record when name and acnc_id are provided' do
@@ -116,7 +116,7 @@ RSpec.describe Groups::RecordGroup, type: :service do
         group = Group.find_by(name:)
         expect(group).to be_present
         expect(group.acnc_id).to eq('ACNC-123')
-        expect(group.trading_names.where(name:).exists?).to be(true)
+        expect(group.trading_names).to be_empty # no redundant trading name identical to the group's own name
       end
     end
 

@@ -2,6 +2,7 @@ class Group < ApplicationRecord
   include TransferMethods
   include NodeMethods
   include CachedMethods
+  include Attributable
 
   include ExternalIdentifiable
 
@@ -218,6 +219,10 @@ class Group < ApplicationRecord
 
   def self.federal_parliament
     Group.find(877)
+  end
+
+  def self.nsw_parliament
+    Group.find(3740)
   end
 
   def self.local_councils_tag

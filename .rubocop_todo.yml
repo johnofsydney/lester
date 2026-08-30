@@ -13,16 +13,6 @@
 Layout/EmptyLinesAroundBlockBody:
   Enabled: false
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, empty_lines_special, no_empty_lines, beginning_only, ending_only
-Layout/EmptyLinesAroundClassBody:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
-    - 'app/views/components/groups/affiliated_groups.rb'
-    - 'app/views/groups/show_view.rb'
-
 # Offense count: 7
 # This cop supports safe autocorrection (--autocorrect).
 Layout/EmptyLinesAroundExceptionHandlingKeywords:
@@ -32,13 +22,6 @@ Layout/EmptyLinesAroundExceptionHandlingKeywords:
     - 'app/sidekiq/ingest_charities_people_job.rb'
     - 'app/sidekiq/ingest_single_charities_people_job.rb'
     - 'app/sidekiq/ingest_twenty_charities_missing_people_job.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLinesAroundMethodBody:
-  Exclude:
-    - 'app/views/components/transfers_table_component.rb'
-    - 'csv_data/raw/wiki_feds_cleaner.rb'
 
 # Offense count: 7
 # This cop supports safe autocorrection (--autocorrect).
@@ -247,11 +230,6 @@ Lint/DuplicateBranch:
     - 'app/services/record_donation.rb'
 
 # Offense count: 1
-Lint/DuplicateMethods:
-  Exclude:
-    - 'app/controllers/inertia_controller.rb'
-
-# Offense count: 1
 # Configuration parameters: AllowComments.
 Lint/EmptyFile:
   Exclude:
@@ -261,11 +239,6 @@ Lint/EmptyFile:
 # Configuration parameters: AllowedParentClasses.
 Lint/MissingSuper:
   Enabled: false
-
-# Offense count: 1
-Lint/NonLocalExitFromIterator:
-  Exclude:
-    - 'app/views/components/common/page_nav.rb'
 
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
@@ -282,11 +255,9 @@ Lint/ShadowingOuterLocalVariable:
     - 'app/services/build_queue.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
 
-# Offense count: 3
+# Offense count: 1
 Lint/UnreachableCode:
   Exclude:
-    - 'app/controllers/groups_controller.rb'
-    - 'app/controllers/transfers_controller.rb'
     - 'app/services/build_queue.rb'
 
 # Offense count: 2
@@ -365,12 +336,6 @@ Performance/Count:
   Exclude:
     - 'app/services/sidekiq_utils.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Performance/StringInclude:
-  Exclude:
-    - 'app/models/current.rb'
-    - 'app/services/tender_ingestor.rb'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
@@ -460,12 +425,6 @@ Rails/Output:
     - 'app/services/record_group.rb'
     - 'app/services/record_person.rb'
 
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Rails/RedundantPresenceValidationOnBelongsTo:
-  Exclude:
-    - 'app/models/transfer.rb'
-
 # Offense count: 8
 # Configuration parameters: ForbiddenMethods, AllowedMethods.
 # ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
@@ -538,26 +497,12 @@ Style/CommentAnnotation:
     - 'config/routes.rb'
 
 # Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/CommentedKeyword:
-  Exclude:
-    - 'app/admin/dashboard.rb'
-
-# Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
 # SupportedStyles: assign_to_condition, assign_inside_condition
 Style/ConditionalAssignment:
   Exclude:
     - 'app/models/concerns/node_methods.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect, EnforcedStyle, AllowComments.
-# SupportedStyles: empty, nil, both
-Style/EmptyElse:
-  Exclude:
-    - 'app/views/components/footer_component.rb'
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -629,12 +574,6 @@ Style/PercentLiteralDelimiters:
     - 'app/models/group.rb'
     - 'app/models/transfer.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: SafeForConstants.
-Style/RedundantFetchBlock:
-  Exclude:
-    - 'config/puma.rb'
 
 # Offense count: 6
 # This cop supports safe autocorrection (--autocorrect).

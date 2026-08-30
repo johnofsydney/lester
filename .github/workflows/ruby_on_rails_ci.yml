@@ -26,6 +26,13 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install Node dependencies
+        run: npm ci
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
@@ -34,6 +41,12 @@ jobs:
         run: bin/rails db:prepare
         env:
           DISABLE_BOOTSNAP: "1"
+      - name: Precompile assets
+        run: |
+          bundle exec rails assets:precompile
+          bundle exec rails vite:build
+        env:
+          SECRET_KEY_BASE: dummy_secret_for_asset_compilation
       - name: Run tests
         run: bundle exec rspec
 

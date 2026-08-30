@@ -4,24 +4,19 @@ class PeopleController < ApplicationController
   include Constants
 
   before_action :set_person, only: %i[ show post_to_socials]
-  before_action :set_page, only: %i[ index ]
   before_action :increment_views, only: %i[ show ]
 
   def index
     people = Person.order(:name)
-                   .limit(page_size)
-                   .offset(paginate_offset)
                    .includes([:groups])
-                   .to_a
+                   .page(params[:page])
 
-    pages = (Person.count.to_f / page_size).ceil
-
-    render People::IndexView.new(people:, page: @page, pages:)
+    render People::IndexView.new(people:)
   end
 
   def show
     if @person.cache_fresh?
-      render People::ShowView.new(person: @person)
+      render People::ShowView.new(person: @person, groups: paginated_groups_for(@person), transfers_page: params[:transfers_page])
     else
       Cache::BuildPersonCachedDataJob.perform_async(@person.id)
       render Common::PleaseRefreshLater.new(entity: @person)
@@ -31,8 +26,9 @@ class PeopleController < ApplicationController
   def reload
     @person = Person.find(params[:id])
     Cache::BuildPersonCachedDataJob.perform_async(@person.id)
+    @person.reload
 
-    render People::ShowView.new(person: @person.reload)
+    render People::ShowView.new(person: @person, groups: paginated_groups_for(@person), transfers_page: params[:transfers_page])
   end
 
   def post_to_socials
@@ -54,17 +50,13 @@ class PeopleController < ApplicationController
     params.require(:person).permit(:name, memberships_attributes: [:id, :title, :start_date, :end_date, :_destroy])
   end
 
-  def page_size
-    250
-  end
-
-  def set_page
-    @page = (params[:page] || 0).to_i
-  end
-
   def increment_views
     return if Current.user
 
     @person.increment!(:views)
+  end
+
+  def paginated_groups_for(person)
+    Kaminari.paginate_array(person.cached.affiliated_groups).page(params[:groups_page])
   end
 end

@@ -1,8 +1,6 @@
 class Groups::IndexView < ApplicationView
-  def initialize(groups:, page:, pages:, subheading: nil)
+  def initialize(groups:, subheading: nil)
     @groups = groups
-    @page = page
-    @pages = pages
     @subheading = subheading
   end
 
@@ -14,7 +12,7 @@ class Groups::IndexView < ApplicationView
         h2 { 'Groups' }
       end
 
-      render Common::PageNav.new(pages:, page:, klass: 'group')
+      render Common::PageNav.new(collection: groups, path: '/groups')
 
       div(class: 'list-group') do
         groups.each do |group|
@@ -32,7 +30,7 @@ class Groups::IndexView < ApplicationView
         end
       end
 
-      render Common::PageNav.new(pages:, page:, klass: 'group')
+      render Common::PageNav.new(collection: groups, path: '/groups')
     end
   end
 
@@ -51,5 +49,5 @@ class Groups::IndexView < ApplicationView
     )
   end
 
-  attr_reader :groups, :page, :pages, :subheading
+  attr_reader :groups, :subheading
 end

@@ -1,12 +1,10 @@
 class Transfers::IndexView < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  attr_reader :transfers, :page, :session, :pages
+  attr_reader :transfers, :session
 
-  def initialize(transfers:, page:, pages:, session:)
+  def initialize(transfers:, session:)
     @transfers = transfers
-    @page = page
-    @pages = pages
     @session = session
   end
 
@@ -61,7 +59,7 @@ class Transfers::IndexView < ApplicationView
       end
     end
 
-    render Common::PageNav.new(pages: @pages, page: @page, klass: 'transfer')
+    render Common::PageNav.new(collection: transfers, path: '/transfers')
 
     table(class: 'table table-striped responsive-table') do
 

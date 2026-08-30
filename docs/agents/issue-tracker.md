@@ -13,6 +13,13 @@ Issues and PRDs for this repo live as GitHub issues. Use the `gh` CLI for all op
 
 Infer the repo from `git remote -v` — `gh` does this automatically when run inside a clone.
 
+- **Ticket-ID convention**: reference issues as `LES-<number>` (e.g. `LES-282` for issue #282) in
+  commit messages, branch names, and PR titles — a display convention over GitHub's existing
+  issue numbering, chosen over adopting an external tracker. See ADR-0007.
+- **Prefer sub-issues over monolithic issues**: split a broad issue into GitHub sub-issues (see
+  "Wayfinding operations" below for the mechanics) so each maps to one closeable, mergeable PR
+  rather than staying open as a loose topic.
+
 ## Pull requests as a triage surface
 
 **PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_

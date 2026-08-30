@@ -102,8 +102,10 @@ module TransferMethods
     def tag_incoming_transfers
       return Transfer.none unless self.is_tag?
 
-      @tag_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: [self.groups.pluck(:id)])
-                                          .where.not(giver_id: [self.groups.pluck(:id)])
+      group_ids = self.groups.pluck(:id)
+
+      @tag_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: group_ids)
+                                          .where.not(giver_id: group_ids)
                                           .or(Transfer.where(taker_type: 'Person', taker_id: [self.people.pluck(:id)]))
     end
 

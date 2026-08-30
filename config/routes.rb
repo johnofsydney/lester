@@ -12,12 +12,8 @@ Rails.application.routes.draw do
 
   mount Prettytodo::Engine => '/prettytodo' if Rails.env.development?
 
-  get 'groups/page=:page' => 'groups#index'
-  get 'people/page=:page' => 'people#index'
-  get 'transfers/page=:page' => 'transfers#index'
-
-  get 'groups/group_people/:group_id/page=:page' => 'groups#group_people'
-  get 'groups/affiliated_groups/:group_id/page=:page' => 'groups#affiliated_groups'
+  get 'groups/group_people/:group_id' => 'groups#group_people'
+  get 'groups/affiliated_groups/:group_id' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
   get 'groups/:id/reload' => 'groups#reload'
 
@@ -36,12 +32,6 @@ Rails.application.routes.draw do
   resources :transfers
   resources :groups
   resources :people
-
-  # todo: remove these
-  resources :lazy_load_groups
-  resources :lazy_load_people
-  resources :lazy_load_transfers
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   get '/home/todo' => 'home#todo'
   get '/todo' => 'home#todo'

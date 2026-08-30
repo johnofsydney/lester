@@ -1,5 +1,11 @@
 # Lester Staging Setup Cheat Sheet
 
+> **Superseded for day-to-day use.** Copying the full production dump into staging (and by
+> extension local dev) is slow and wastes disk across worktrees. Use `bin/rails
+> seed_data:extract` (run against a full-data DB) + `bin/rails db:seed` instead — see
+> `lib/tasks/seed_data.rake`. This runbook is kept for the one-off case of setting up a new
+> staging database/environment from scratch.
+
 ## Step 1 — Local DB rename (optional)
 
 ```bash
