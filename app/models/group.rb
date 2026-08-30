@@ -161,7 +161,7 @@ class Group < ApplicationRecord
 
     list = major_groupings.map do |major_group|
       states.map do |state|
-        NAMES.send(major_group).send(state) if NAMES.send(major_group)
+        NAMES.send(major_group)&.send(state)
       end
     end
 
