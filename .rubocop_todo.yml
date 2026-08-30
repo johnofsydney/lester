@@ -510,13 +510,6 @@ Style/ConditionalAssignment:
   Exclude:
     - 'app/models/concerns/node_methods.rb'
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AutoCorrect, EnforcedStyle, AllowComments.
-# SupportedStyles: empty, nil, both
-Style/EmptyElse:
-  Exclude:
-    - 'app/views/components/footer_component.rb'
 
 # Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
