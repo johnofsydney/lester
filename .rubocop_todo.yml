@@ -631,15 +631,6 @@ Style/RescueStandardError:
     - 'app/sidekiq/refresh_nodes_count_job.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
 
-# Offense count: 4
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil, AllowedMethods, MaxChainLength.
-# AllowedMethods: present?, blank?, presence, try, try!
-Style/SafeNavigation:
-  Exclude:
-    - 'app/models/group.rb'
-    - 'app/models/position.rb'
-    - 'app/services/au_lobbyists/file_downloader.rb'
 
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
