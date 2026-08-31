@@ -241,3 +241,18 @@ button, .badge {
   margin-top: 0.15rem;
   margin-bottom: 0.15rem;
 }
+
+.advanced-search-row .col-auto.advanced-search-joiner,
+.advanced-search-row .col-auto.advanced-search-facet-type {
+  min-width: 7rem;
+}
+
+.advanced-search-suggestions {
+  position: absolute;
+  z-index: 10;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 12rem;
+  overflow-y: auto;
+}

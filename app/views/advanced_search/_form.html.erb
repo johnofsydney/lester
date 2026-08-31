@@ -1,0 +1,49 @@
+<%
+  filters_to_render = query.filters.any? ? query.filters : [AdvancedSearch::Query::Filter.new(joiner: 'AND', facet_type: 'Category', facet_value_id: nil)]
+%>
+<div class="card shadow-sm advanced-search-card mb-4"
+     data-controller="advanced-search"
+     data-advanced-search-groups-url-value="<%= advanced_search_group_autocomplete_path %>">
+  <div class="card-body">
+    <h2 class="h5 mb-1">Advanced search</h2>
+    <p class="grey mb-3">Find people or groups by the categories and groups they belong to.</p>
+
+    <%= form_with url: advanced_search_path, method: :get, html: { class: 'advanced-search-form' } do %>
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-auto fw-semibold">Find</div>
+        <div class="col-auto">
+          <select name="entity_type" class="form-select form-select-sm">
+            <option value="Person" <%= 'selected' if query.entity_type == 'Person' %>>People</option>
+            <option value="Group" <%= 'selected' if query.entity_type == 'Group' %>>Groups</option>
+          </select>
+        </div>
+        <div class="col-auto">who belong to&hellip;</div>
+      </div>
+
+      <div data-advanced-search-target="rows">
+        <% filters_to_render.each_with_index do |filter, index| %>
+          <%= render 'advanced_search/row', filter: filter, index: index, tags: tags, group_facet_names: group_facet_names %>
+        <% end %>
+      </div>
+
+      <template data-advanced-search-target="template">
+        <%= render 'advanced_search/row',
+                   filter: AdvancedSearch::Query::Filter.new(joiner: 'AND', facet_type: 'Category', facet_value_id: nil),
+                   index: '__INDEX__', tags: tags, group_facet_names: {} %>
+      </template>
+
+      <div class="mb-3">
+        <button type="button" class="btn btn-outline-secondary btn-sm" data-action="advanced-search#addRow">+ Add another filter</button>
+      </div>
+
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-auto fw-semibold">Narrow by name</div>
+        <div class="col-sm-4">
+          <input type="text" name="name" class="form-control form-control-sm" value="<%= query.name %>" placeholder="Optional, search within results...">
+        </div>
+      </div>
+
+      <%= submit_tag 'Search', class: 'btn btn-primary btn-sm' %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,36 @@
+<div id="advanced-search-container" class="container mt-6">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <header class="mb-3">
+        <p class="lead">Advanced search</p>
+      </header>
+
+      <%= render 'advanced_search/form', query: @query, tags: @tags, group_facet_names: @group_facet_names %>
+
+      <% if @results %>
+        <% if @results.any? %>
+          <div class="results">
+            <% @results.each do |record| %>
+              <hr>
+              <a href="/<%= @query.entity_type.downcase.pluralize %>/<%= record.id %>">
+                <%= Nodes::NameCapitalizer.capitalize(record.name) %>
+              </a>
+            <% end %>
+          </div>
+
+          <%= render(Common::PageNav.new(
+                collection: @results,
+                path: advanced_search_path,
+                extra_params: {
+                  entity_type: @query.entity_type,
+                  name: @query.name,
+                  filters: @query.filters.map { |f| { joiner: f.joiner, facet_type: f.facet_type, facet_value_id: f.facet_value_id } }
+                }
+              )) %>
+        <% else %>
+          <p class="grey">No results match those filters.</p>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>

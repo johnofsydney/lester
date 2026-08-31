@@ -23,4 +23,10 @@
   <% if @results.empty? %>
     <%= render(HomepageCategories.new) %>
   <% end %>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <%= render 'advanced_search/form', query: @advanced_query, tags: @tags, group_facet_names: @group_facet_names %>
+    </div>
+  </div>
 </div>

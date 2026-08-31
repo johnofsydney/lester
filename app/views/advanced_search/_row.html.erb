@@ -1,0 +1,49 @@
+<%
+  first_row = index == 0
+  group_name = group_facet_names[filter.facet_value_id]
+  group_display_name = group_name.present? ? Nodes::NameCapitalizer.capitalize(group_name) : ''
+%>
+<div class="row g-2 align-items-center mb-2 advanced-search-row" data-advanced-search-target="row">
+  <div class="col-auto advanced-search-joiner <%= 'invisible' if first_row %>">
+    <select name="filters[<%= index %>][joiner]" class="form-select form-select-sm" <%= 'disabled' if first_row %>>
+      <option value="AND" <%= 'selected' if filter.joiner != 'OR' %>>AND</option>
+      <option value="OR" <%= 'selected' if filter.joiner == 'OR' %>>OR</option>
+    </select>
+  </div>
+
+  <div class="col-auto advanced-search-facet-type">
+    <select name="filters[<%= index %>][facet_type]" class="form-select form-select-sm"
+            data-action="change->advanced-search#toggleFacetType">
+      <option value="Category" <%= 'selected' if filter.facet_type != 'Group' %>>Category</option>
+      <option value="Group" <%= 'selected' if filter.facet_type == 'Group' %>>Group</option>
+    </select>
+  </div>
+
+  <div class="col category-facet <%= 'd-none' if filter.facet_type == 'Group' %>" data-advanced-search-target="categoryFacet">
+    <select name="filters[<%= index %>][facet_value_id]" class="form-select form-select-sm" <%= 'disabled' if filter.facet_type == 'Group' %>>
+      <option value="">Choose a category&hellip;</option>
+      <% tags.each do |tag| %>
+        <option value="<%= tag.id %>" <%= 'selected' if filter.facet_type != 'Group' && filter.facet_value_id == tag.id %>>
+          <%= Nodes::NameCapitalizer.capitalize(tag.name) %>
+        </option>
+      <% end %>
+    </select>
+  </div>
+
+  <div class="col group-facet position-relative <%= 'd-none' unless filter.facet_type == 'Group' %>" data-advanced-search-target="groupFacet">
+    <input type="text" class="form-control form-control-sm" autocomplete="off"
+           placeholder="Start typing a group name&hellip;"
+           value="<%= group_display_name %>"
+           data-advanced-search-target="groupInput"
+           data-action="input->advanced-search#searchGroups">
+    <input type="hidden" name="filters[<%= index %>][facet_value_id]"
+           value="<%= filter.facet_type == 'Group' ? filter.facet_value_id : '' %>"
+           <%= 'disabled' unless filter.facet_type == 'Group' %>
+           data-advanced-search-target="groupHidden">
+    <div class="list-group advanced-search-suggestions d-none" data-advanced-search-target="suggestions"></div>
+  </div>
+
+  <div class="col-auto">
+    <button type="button" class="btn btn-outline-danger btn-sm" data-action="advanced-search#removeRow" aria-label="Remove filter">&times;</button>
+  </div>
+</div>
