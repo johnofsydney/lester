@@ -1,5 +1,5 @@
 **Status: implemented on `handle-graph-better` (2026-08-29).** `CanAddToQueue`/`BuildQueue` now
-follow this design — see ADR 0007. Remaining open item on this page: the deferred visual-weight
+follow this design — see ADR 0012. Remaining open item on this page: the deferred visual-weight
 question at the bottom.
 
 # Large/tag groups should appear as terminal leaves, not be excluded from the graph entirely
@@ -16,10 +16,12 @@ entry into the queue — meaning a large group (a party with hundreds of members
 parliament tag) is invisible on the graph entirely, not just un-expanded.
 
 **Example (screenshots, 2026-08-28):** The Hills Shire Council graph shows all ~17 councillors at
-depth 1, correctly. But each councillor's party (Liberals (NSW), ALP (NSW)) is completely absent —
-confirmed via each councillor's own page, which lists their party membership fine, just not on the
-council's graph. Two councillors sharing a party, or being on opposite parties, is exactly the kind
-of "gripped together" relationship this graph exists to show, and currently can't be seen at all
+depth 1, correctly. But each councillor's party (Liberals (NSW), ALP (NSW) — plain `Group`s, not
+`Tag`s, per `docs/adr/0011-tag-type-is-for-category-labels-not-organizations.md`) is completely
+absent — excluded by the `nodes_count` size check (300+ members each), not by `is_tag?` — confirmed
+via each councillor's own page, which lists their party membership fine, just not on the council's
+graph. Two councillors sharing a party, or being on opposite parties, is exactly the kind of
+"gripped together" relationship this graph exists to show, and currently can't be seen at all
 because the party node doesn't get shown, let alone followed further.
 
 **Desired behaviour:** show the edge from councillor → party (the party appears as a depth-2 leaf

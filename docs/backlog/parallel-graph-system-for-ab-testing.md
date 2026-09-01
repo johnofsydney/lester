@@ -13,7 +13,7 @@ against the cost of running two parallel systems (double the cache storage per n
 paths to maintain) versus the value of being able to compare old vs new output directly before
 cutover.
 
-**Assessment for the Capped/Traversal Budget work specifically (ADR 0007): not needed.**
+**Assessment for the Capped/Traversal Budget work specifically (ADR 0012): not needed.**
 `BuildQueue`/`CanAddToQueue` is a pure function with no external readers of its intermediate
 state, so it can change in place with test coverage as the safety net. The cache
 (`cached_summary`) already self-heals on its existing weekly refresh cycle (`cache_fresh?`) — a
