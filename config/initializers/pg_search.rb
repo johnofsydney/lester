@@ -1,9 +1,14 @@
+require 'pg_search/features/strict_word_trigram'
+original_feature_classes = PgSearch::ScopeOptions::FEATURE_CLASSES
+PgSearch::ScopeOptions.send(:remove_const, :FEATURE_CLASSES)
+PgSearch::ScopeOptions::FEATURE_CLASSES = original_feature_classes.merge(
+  strict_word_trigram: PgSearch::Features::StrictWordTrigram
+).freeze
+
 PgSearch.multisearch_options = {
   using: {
     tsearch: { dictionary: 'english', prefix: true },
-    # word_similarity matches the query against the best substring of the document,
-    # so one mistyped word in a multi-word name still surfaces (plain similarity() does not).
-    trigram: { word_similarity: true, threshold: 0.4 }
+    strict_word_trigram: { threshold: 0.38 }
   },
   ignoring: [:accents]
 }
