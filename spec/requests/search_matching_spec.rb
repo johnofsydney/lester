@@ -17,5 +17,13 @@ RSpec.describe 'Search matching quality' do
 
       expect(response.body).to include('José Ramos')
     end
+
+    it 'finds a result from a typo on one word of a multi-word name' do
+      create(:person, name: 'Anthony Albanese')
+
+      get '/search', params: { query: 'Ablanese' }
+
+      expect(response.body).to include('Anthony Albanese')
+    end
   end
 end
