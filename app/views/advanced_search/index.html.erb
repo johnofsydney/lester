@@ -1,0 +1,20 @@
+<div id="advanced-search-container" class="container mt-6">
+  <%= render 'form', entity_type: @entity_type %>
+
+  <% if @searched %>
+    <% if @results.present? %>
+      <div class="mt-3">
+        <% @results.each do |result| %>
+          <div>
+            <a href="/<%= result.class.name.downcase.pluralize %>/<%= result.id %>">
+              <%= Nodes::NameCapitalizer.capitalize(result.name) %>
+            </a>
+          </div>
+        <% end %>
+      </div>
+      <%= render(Common::PageNav.new(collection: @results, path: '/search/advanced', extra_params: { entity_type: @entity_type, filters: @filters })) %>
+    <% else %>
+      <p class="mt-3">No results found.</p>
+    <% end %>
+  <% end %>
+</div>

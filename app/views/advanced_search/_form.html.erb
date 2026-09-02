@@ -1,0 +1,29 @@
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <h2 class="h5 mb-1">Advanced search</h2>
+    <p class="grey mb-3">Find people or groups by the categories they belong to.</p>
+
+    <%= form_with url: advanced_search_path, method: :get, html: { class: 'advanced-search-form' } do %>
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-auto fw-semibold">Find</div>
+        <div class="col-auto">
+          <%= select_tag :entity_type, options_for_select([['People', 'Person'], ['Groups', 'Group']], entity_type), class: 'form-select form-select-sm' %>
+        </div>
+        <div class="col-auto">who belong to&hellip;</div>
+      </div>
+
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-auto">
+          <select name="filters[][facet_value_id]" class="form-select form-select-sm">
+            <option value="">Choose a category&hellip;</option>
+            <% Tag.order(:name).each do |tag| %>
+              <option value="<%= tag.id %>"><%= Nodes::NameCapitalizer.capitalize(tag.name) %></option>
+            <% end %>
+          </select>
+        </div>
+      </div>
+
+      <%= submit_tag 'Search', class: 'btn btn-primary btn-sm' %>
+    <% end %>
+  </div>
+</div>
