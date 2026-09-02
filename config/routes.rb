@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'groups/:id/network_graph' => 'inertia#network_graph_group'
 
   get 'search' => 'search#index'
+  get 'search/advanced/groups' => 'advanced_search#group_autocomplete', defaults: { format: 'json' }
 
   get '/post_to_socials' => 'home#post_to_socials'              # Random
   get '/people/:id/post_to_socials' => 'people#post_to_socials' # Person
