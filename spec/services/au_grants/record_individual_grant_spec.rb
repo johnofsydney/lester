@@ -63,13 +63,23 @@ describe AuGrants::RecordIndividualGrant, type: :service do
     end
   end
 
-  context 'when the grant is confidential' do
-    let(:row) { super().merge('Confidentiality - Contract' => 'Y', 'Recipient Name' => 'n/a', 'Recipient ABN' => 'ABN Exempt') }
+  context 'when the recipient is redacted' do
+    let(:row) { super().merge('Recipient Name' => 'n/a', 'Recipient ABN' => 'ABN Exempt') }
 
     it 'does not create an IndividualTransaction' do
       service.call
 
       expect(IndividualTransaction.count).to eq(0)
+    end
+  end
+
+  context 'when the grant is confidential but the recipient is not redacted' do
+    let(:row) { super().merge('Confidentiality - Contract' => 'Y') }
+
+    it 'still creates an IndividualTransaction' do
+      service.call
+
+      expect(IndividualTransaction.count).to eq(1)
     end
   end
 

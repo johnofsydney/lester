@@ -4,6 +4,7 @@
   - [default, 2]
   - [low, 1]
   - [aus_tender_contracts, 1]
+  - [au_grants, 1]
 
 # cron_tab is in UTC, converting to AEST
 # UTC 01:00 == AEST 11:00

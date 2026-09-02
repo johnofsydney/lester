@@ -12,7 +12,7 @@ class AuGrants::RecordIndividualGrant
   attr_reader :release
 
   def call
-    return if release.aggregate? || release.confidential?
+    return if release.aggregate? || release.redacted_recipient?
     return if IndividualTransaction.exists?(external_id: release.ga_id)
     raise ValidationError.new("Invalid grant data: #{release.inspect}") unless valid?
 

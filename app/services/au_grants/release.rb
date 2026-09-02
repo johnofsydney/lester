@@ -42,8 +42,11 @@ class AuGrants::Release
     row['Aggregate'] == 'Y'
   end
 
-  def confidential?
-    row['Confidentiality - Contract'] == 'Y'
+  # The Confidentiality flag does not reliably indicate a redacted recipient
+  # (observed: Confidentiality - Contract = Y rows with a real name and ABN).
+  # "n/a" in Recipient Name is the actual redaction signal.
+  def redacted_recipient?
+    recipient_name == 'n/a'
   end
 
   def evidence

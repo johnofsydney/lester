@@ -28,9 +28,9 @@ describe AuGrants::Release, type: :service do
     expect(release.evidence).to eq('https://www.grants.gov.au/Ga/Show/GA523941')
   end
 
-  it 'is not aggregate or confidential' do
+  it 'is not aggregate and has no redacted recipient' do
     expect(release.aggregate?).to be(false)
-    expect(release.confidential?).to be(false)
+    expect(release.redacted_recipient?).to be(false)
   end
 
   context 'when ABN Exempt' do
@@ -49,11 +49,19 @@ describe AuGrants::Release, type: :service do
     end
   end
 
-  context 'when confidential' do
-    let(:row) { super().merge('Confidentiality - Contract' => 'Y', 'Recipient Name' => 'n/a', 'Recipient ABN' => 'ABN Exempt') }
+  context 'when the recipient is redacted' do
+    let(:row) { super().merge('Recipient Name' => 'n/a', 'Recipient ABN' => 'ABN Exempt') }
 
-    it 'is confidential' do
-      expect(release.confidential?).to be(true)
+    it 'has a redacted recipient' do
+      expect(release.redacted_recipient?).to be(true)
+    end
+  end
+
+  context 'when confidential but the recipient is not redacted' do
+    let(:row) { super().merge('Confidentiality - Contract' => 'Y') }
+
+    it 'does not treat it as a redacted recipient' do
+      expect(release.redacted_recipient?).to be(false)
     end
   end
 end

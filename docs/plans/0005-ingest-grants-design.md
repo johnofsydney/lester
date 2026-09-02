@@ -49,6 +49,8 @@ GET https://www.grants.gov.au/Reports/GaPublishedDownload
 
 - Response: `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
 - No user account required — session cookie from step 1 is sufficient
+- **Requires a realistic browser `User-Agent`** (confirmed 2026-08-29) — Faraday's default UA, and even a bare `"Mozilla/5.0"`, get a 403. A full Chrome-style UA string works
+- The show page sets **two** `Set-Cookie` headers (`UR_BCF` and `__RequestVerificationToken`) — both must be forwarded on the download request or it 403s. Faraday's Net::HTTP adapter merges multiple `Set-Cookie` response headers into one comma-joined string; forwarding that string verbatim as the `Cookie` header is invalid — each `name=value` pair (before its first `;`) must be extracted and re-joined with `; `
 - `DateType=Publish Date` with `DateStart`/`DateEnd` is the date filter
 - Date format: `DD-Mon-YYYY` (e.g. `05-Jan-2026`)
 - Single-day queries work fine; range queries also work
@@ -196,9 +198,9 @@ Treat all recipients as `Group` initially. The existing `Groups::RecordGroup` ha
 
 Recommendation: skip aggregate grants in v1 (`next if row['Aggregate'] == 'Y'`), revisit later.
 
-### Confidential grants
+### Confidential grants / redacted recipients
 
-**Resolved (2026-08-25):** `Confidentiality - Contract: Y` rows have redacted recipient details (name shown literally as `"n/a"`, ABN as `ABN Exempt`). Recording these as-is would merge every confidential grant across every agency into a single `Group` named "n/a" (name-only matching in `Groups::RecordGroup`), falsely linking unrelated redacted recipients. **Skip confidential rows in v1**, same treatment as aggregate rows (`return if release.aggregate? || release.confidential?`). Revisit later if a way to keep them distinct (e.g. per-agency placeholder groups) is wanted.
+**Resolved (2026-08-25), corrected (2026-08-29) after a live run against real GrantConnect data:** `Confidentiality - Contract: Y` does **not** reliably indicate a redacted recipient — a real row observed in the `05-Jan-2026` publish date had `Confidentiality - Contract: Y` with a fully real `Recipient Name` and ABN. The actual redaction signal is `Recipient Name == "n/a"` (`Release#redacted_recipient?`). Recording redacted rows as-is would merge every one of them across every agency into a single `Group` named "n/a" (name-only matching in `Groups::RecordGroup`), falsely linking unrelated redacted recipients. **Skip rows where the recipient is redacted, in v1**, same treatment as aggregate rows (`return if release.aggregate? || release.redacted_recipient?`). Do not key this off the confidentiality flag — it skips real, attributable grants. Revisit later if a way to keep redacted rows distinct (e.g. per-agency placeholder groups) is wanted.
 
 ---
 
