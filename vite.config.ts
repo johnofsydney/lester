@@ -16,9 +16,13 @@ export default defineConfig({
     chunkSizeWarningLimit: 1000, // Adjust warning limit if needed
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'], // adjust based on your dependencies
-          inertia: ['@inertiajs/react'],
+        manualChunks(id) {
+          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+            return 'vendor'
+          }
+          if (id.includes('node_modules/@inertiajs/react')) {
+            return 'inertia'
+          }
         },
       },
     },
