@@ -13,6 +13,7 @@
       </div>
 
       <div class="row g-2 align-items-center mb-3">
+        <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
         <div class="col-auto">
           <select name="filters[][facet_value_id]" class="form-select form-select-sm">
             <option value="">Choose a category&hellip;</option>

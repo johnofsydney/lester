@@ -68,6 +68,47 @@ RSpec.describe AdvancedSearch::Query, type: :service do
       end
     end
 
+    context 'with a Category facet on Person entities' do
+      it 'matches a person via an intermediate subgroup, not direct tag membership' do
+        alp_tag = create(:group, name: 'Australian Labor Party', type: 'Tag')
+        nsw_branch = create(:group, name: 'ALP NSW Branch')
+        create(:membership, member: nsw_branch, group: alp_tag)
+
+        member = create(:person, name: 'Party Member')
+        create(:membership, member: member, group: nsw_branch)
+
+        non_member = create(:person, name: 'Not A Member')
+
+        filters = [{ facet_type: 'Category', facet_value_id: alp_tag.id }]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('party member')
+        expect(results.map(&:name)).not_to include(non_member.name)
+      end
+
+      it 'does not match a person only directly (not via a subgroup) attached to the tag' do
+        lobbyist_tag = create(:group, name: 'Lobbyists', type: 'Tag')
+        direct_member = create(:person, name: 'Direct Member')
+        create(:membership, member: direct_member, group: lobbyist_tag)
+
+        filters = [{ facet_type: 'Category', facet_value_id: lobbyist_tag.id }]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to be_empty
+      end
+
+      it 'uses the direct one-hop check for a Group entity_type even when facet_type is Category' do
+        alp_tag = create(:group, name: 'Australian Labor Party', type: 'Tag')
+        nsw_branch = create(:group, name: 'ALP NSW Branch')
+        create(:membership, member: nsw_branch, group: alp_tag)
+
+        filters = [{ facet_type: 'Category', facet_value_id: alp_tag.id }]
+        results = described_class.new(entity_type: 'Group', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('alp nsw branch')
+      end
+    end
+
     context 'with multiple facet filters' do
       it 'ANDs by default, requiring membership in every group' do
         lobbyist = create(:group, name: 'Lobbyist')
