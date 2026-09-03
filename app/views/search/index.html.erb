@@ -15,15 +15,6 @@
     </div>
   </div>
 
-  <div class="row justify-content-center">
-    <div class="col-12 col-lg-6">
-      <details class="mb-4">
-        <summary class="mb-2">Advanced search</summary>
-        <%= render 'advanced_search/form', entity_type: 'Person' %>
-      </details>
-    </div>
-  </div>
-
   <% if @results.present? %>
     <%= render(SearchResults.new(results: @results)) %>
     <%= render(Common::PageNav.new(collection: @results, path: '/search', extra_params: { query: @search_term })) %>

@@ -1,6 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe 'Advanced search' do
+  describe 'GET /search (homepage)' do
+    it 'does not link to the advanced search page yet' do
+      get '/search'
+
+      expect(response.body).not_to include('/search/advanced')
+    end
+  end
+
   describe 'GET /search/advanced' do
     it 'shows no results before any filter is chosen' do
       create(:person, name: 'Anthony Albanese')
