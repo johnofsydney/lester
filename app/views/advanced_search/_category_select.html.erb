@@ -1,0 +1,6 @@
+<select name="<%= field_name %>" class="form-select form-select-sm">
+  <option value="">Choose a category&hellip;</option>
+  <% Tag.order(:name).each do |tag| %>
+    <option value="<%= tag.id %>"><%= Nodes::NameCapitalizer.capitalize(tag.name) %></option>
+  <% end %>
+</select>

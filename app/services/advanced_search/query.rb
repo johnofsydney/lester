@@ -18,7 +18,7 @@ class AdvancedSearch::Query
 
   def call
     scope = entity_class.all
-    scope = scope.where(filter_conditions) if filters.any?
+    scope = scope.where(Arel.sql(filter_conditions)) if filters.any?
     scope.order(:name)
   end
 
@@ -41,14 +41,14 @@ class AdvancedSearch::Query
     end
   end
 
-  # Folds filters left-to-right rather than relying on SQL's AND-before-OR
-  # precedence, so a chain reads the same way it was built, top to bottom.
+  # Folds filters left-to-right as plain SQL text rather than relying on SQL's
+  # AND-before-OR precedence, so a chain reads the same way it was built, top to bottom.
   def filter_conditions
     filters.reduce(nil) do |combined, filter|
       condition = membership_exists(filter)
       next condition if combined.nil?
 
-      filter.joiner == 'AND' ? combined.and(condition) : combined.or(condition)
+      "(#{combined} #{filter.joiner} #{condition})"
     end
   end
 
@@ -61,11 +61,10 @@ class AdvancedSearch::Query
   end
 
   def direct_member_of(facet_value_id)
-    Membership.where(
-      'memberships.member_type = ? AND memberships.member_id = ' \
-      "#{entity_class.table_name}.id AND memberships.group_id = ?",
-      entity_type, facet_value_id
-    ).arel.exists
+    sql = 'EXISTS (SELECT 1 FROM memberships WHERE memberships.member_type = ? ' \
+          "AND memberships.member_id = #{entity_class.table_name}.id AND memberships.group_id = ?)"
+
+    Membership.sanitize_sql_array([sql, entity_type, facet_value_id])
   end
 
   # Category (Tag) memberships are recorded against sub-groups, not people directly
@@ -86,6 +85,6 @@ class AdvancedSearch::Query
       )
     SQL
 
-    Arel.sql(Membership.sanitize_sql_array([sql, facet_value_id]))
+    Membership.sanitize_sql_array([sql, facet_value_id])
   end
 end

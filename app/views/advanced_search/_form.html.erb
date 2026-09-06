@@ -15,12 +15,17 @@
       <div class="row g-2 align-items-center mb-3">
         <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
         <div class="col-auto">
-          <select name="filters[][facet_value_id]" class="form-select form-select-sm">
-            <option value="">Choose a category&hellip;</option>
-            <% Tag.order(:name).each do |tag| %>
-              <option value="<%= tag.id %>"><%= Nodes::NameCapitalizer.capitalize(tag.name) %></option>
-            <% end %>
-          </select>
+          <%= render 'category_select', field_name: 'filters[][facet_value_id]' %>
+        </div>
+      </div>
+
+      <div class="row g-2 align-items-center mb-3">
+        <div class="col-auto">
+          <%= select_tag 'filters[][joiner]', options_for_select([['AND', 'AND'], ['OR', 'OR']]), class: 'form-select form-select-sm' %>
+        </div>
+        <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
+        <div class="col-auto">
+          <%= render 'category_select', field_name: 'filters[][facet_value_id]' %>
         </div>
       </div>
 

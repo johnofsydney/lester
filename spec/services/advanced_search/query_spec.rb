@@ -97,6 +97,31 @@ RSpec.describe AdvancedSearch::Query, type: :service do
         expect(results.map(&:name)).to be_empty
       end
 
+      it 'ANDs two Category filters together via two separate subgroup hops' do
+        lobbyist_tag = create(:group, name: 'Lobbyists', type: 'Tag')
+        lobbying_firm = create(:group, name: 'Lobbying Firm')
+        create(:membership, member: lobbying_firm, group: lobbyist_tag)
+
+        alp_tag = create(:group, name: 'Australian Labor Party', type: 'Tag')
+        nsw_branch = create(:group, name: 'ALP NSW Branch')
+        create(:membership, member: nsw_branch, group: alp_tag)
+
+        both = create(:person, name: 'Both')
+        create(:membership, member: both, group: lobbying_firm)
+        create(:membership, member: both, group: nsw_branch)
+
+        only_lobbyist = create(:person, name: 'Only Lobbyist')
+        create(:membership, member: only_lobbyist, group: lobbying_firm)
+
+        filters = [
+          { facet_type: 'Category', facet_value_id: lobbyist_tag.id },
+          { joiner: 'AND', facet_type: 'Category', facet_value_id: alp_tag.id }
+        ]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('both')
+      end
+
       it 'uses the direct one-hop check for a Group entity_type even when facet_type is Category' do
         alp_tag = create(:group, name: 'Australian Labor Party', type: 'Tag')
         nsw_branch = create(:group, name: 'ALP NSW Branch')
