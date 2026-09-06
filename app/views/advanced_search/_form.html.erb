@@ -2,6 +2,7 @@
   filters = local_assigns[:filters] || []
   first_filter = filters[0] || {}
   second_filter = filters[1] || {}
+  second_filter_values = Array(second_filter[:facet_value_id])
 %>
 <div class="card shadow-sm mb-4">
   <div class="card-body">
@@ -33,7 +34,11 @@
           <%= select_tag 'filters[][joiner]', options_for_select([['AND', 'AND'], ['OR', 'OR']], second_filter[:joiner]), class: 'form-select form-select-sm' %>
         </div>
         <div class="col-auto">
-          <%= render 'category_select', field_name: 'filters[][facet_value_id]', selected_id: second_filter[:facet_value_id] %>
+          <%= render 'category_select', field_name: 'filters[][facet_value_id][]', selected_id: second_filter_values[0] %>
+        </div>
+        <div class="col-auto">OR</div>
+        <div class="col-auto">
+          <%= render 'category_select', field_name: 'filters[][facet_value_id][]', selected_id: second_filter_values[1] %>
         </div>
       </div>
 

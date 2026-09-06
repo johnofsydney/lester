@@ -134,6 +134,50 @@ RSpec.describe AdvancedSearch::Query, type: :service do
       end
     end
 
+    context 'with multiple values OR-grouped within a single filter row' do
+      it 'matches membership in any of the values within the row, ANDed with other rows' do
+        # People AND Lobbyists AND (Consulting OR Superannuation)
+        lobbyists = create(:group, name: 'Lobbyists')
+        consulting = create(:group, name: 'Consulting')
+        superannuation = create(:group, name: 'Superannuation')
+        banking = create(:group, name: 'Banking')
+
+        lobbyist_and_consulting = create(:person, name: 'Lobbyist And Consulting')
+        create(:membership, member: lobbyist_and_consulting, group: lobbyists)
+        create(:membership, member: lobbyist_and_consulting, group: consulting)
+
+        lobbyist_and_super = create(:person, name: 'Lobbyist And Super')
+        create(:membership, member: lobbyist_and_super, group: lobbyists)
+        create(:membership, member: lobbyist_and_super, group: superannuation)
+
+        lobbyist_and_banking = create(:person, name: 'Lobbyist And Banking')
+        create(:membership, member: lobbyist_and_banking, group: lobbyists)
+        create(:membership, member: lobbyist_and_banking, group: banking)
+
+        consulting_only = create(:person, name: 'Consulting Only')
+        create(:membership, member: consulting_only, group: consulting)
+
+        filters = [
+          { facet_value_id: lobbyists.id },
+          { joiner: 'AND', facet_value_id: [consulting.id, superannuation.id] }
+        ]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('lobbyist and consulting', 'lobbyist and super')
+      end
+
+      it 'ignores blank values within an array of facet_value_id, keeping the real ones' do
+        lobbyists = create(:group, name: 'Lobbyists')
+        member = create(:person, name: 'Member')
+        create(:membership, member: member, group: lobbyists)
+
+        filters = [{ facet_value_id: [lobbyists.id, ''] }]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('member')
+      end
+    end
+
     context 'with multiple facet filters' do
       it 'ANDs by default, requiring membership in every group' do
         lobbyist = create(:group, name: 'Lobbyist')

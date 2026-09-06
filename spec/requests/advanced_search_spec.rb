@@ -61,11 +61,12 @@ RSpec.describe 'Advanced search' do
       # facet_type must render first in row 2, not joiner.
       get '/search/advanced'
 
-      field_names = response.body.scan(/name="(filters\[\]\[\w+\])"/).flatten
+      field_names = response.body.scan(/name="(filters\[\]\[\w+\]\[?\]?)"/).flatten
 
       expect(field_names).to eq(%w[
                                   filters[][facet_type] filters[][facet_value_id]
-                                  filters[][facet_type] filters[][joiner] filters[][facet_value_id]
+                                  filters[][facet_type] filters[][joiner]
+                                  filters[][facet_value_id][] filters[][facet_value_id][]
                                 ])
     end
 
@@ -86,6 +87,29 @@ RSpec.describe 'Advanced search' do
       get "/search/advanced?#{raw_query}"
 
       expect(response.body).to include("/people/#{only_lobbyist.id}")
+    end
+
+    it 'matches People AND Lobbyists AND (Consulting OR Superannuation), via the real form field order' do
+      lobbyists = create(:group, name: 'Lobbyists')
+      consulting = create(:group, name: 'Consulting')
+      superannuation = create(:group, name: 'Superannuation')
+
+      lobbyist_and_consulting = create(:person, name: 'Lobbyist And Consulting')
+      create(:membership, member: lobbyist_and_consulting, group: lobbyists)
+      create(:membership, member: lobbyist_and_consulting, group: consulting)
+
+      lobbyist_only = create(:person, name: 'Lobbyist Only')
+      create(:membership, member: lobbyist_only, group: lobbyists)
+
+      raw_query = 'entity_type=Person' \
+                  "&filters[][facet_type]=Group&filters[][facet_value_id]=#{lobbyists.id}" \
+                  '&filters[][facet_type]=Group&filters[][joiner]=AND' \
+                  "&filters[][facet_value_id][]=#{consulting.id}&filters[][facet_value_id][]=#{superannuation.id}"
+
+      get "/search/advanced?#{raw_query}"
+
+      expect(response.body).to include("/people/#{lobbyist_and_consulting.id}")
+      expect(response.body).not_to include("/people/#{lobbyist_only.id}")
     end
 
     it 'falls back to Person for an invalid entity_type' do

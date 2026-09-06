@@ -3,7 +3,7 @@ class AdvancedSearch::Query
   JOINERS = %w[AND OR].freeze
   FACET_TYPES = %w[Category Group].freeze
 
-  Filter = Struct.new(:joiner, :facet_type, :facet_value_id, keyword_init: true)
+  Filter = Struct.new(:joiner, :facet_type, :facet_value_ids, keyword_init: true)
 
   def self.call(entity_type:, filters: [])
     new(entity_type: entity_type, filters: filters).call
@@ -30,13 +30,13 @@ class AdvancedSearch::Query
 
   def build_filters(raw_filters)
     Array(raw_filters).filter_map do |raw|
-      facet_value_id = raw[:facet_value_id]
-      next if facet_value_id.blank?
+      facet_value_ids = Array(raw[:facet_value_id]).map(&:presence).compact
+      next if facet_value_ids.empty?
 
       Filter.new(
         joiner: JOINERS.include?(raw[:joiner]) ? raw[:joiner] : 'AND',
         facet_type: FACET_TYPES.include?(raw[:facet_type]) ? raw[:facet_type] : 'Group',
-        facet_value_id: facet_value_id
+        facet_value_ids: facet_value_ids
       )
     end
   end
@@ -54,23 +54,24 @@ class AdvancedSearch::Query
 
   def membership_exists(filter)
     if filter.facet_type == 'Category' && entity_type == 'Person'
-      person_in_category_via_subgroup(filter.facet_value_id)
+      person_in_category_via_subgroup(filter.facet_value_ids)
     else
-      direct_member_of(filter.facet_value_id)
+      direct_member_of(filter.facet_value_ids)
     end
   end
 
-  def direct_member_of(facet_value_id)
+  # Multiple ids within one row are OR'd via IN (?), e.g. row = "Consulting OR Superannuation".
+  def direct_member_of(facet_value_ids)
     sql = 'EXISTS (SELECT 1 FROM memberships WHERE memberships.member_type = ? ' \
-          "AND memberships.member_id = #{entity_class.table_name}.id AND memberships.group_id = ?)"
+          "AND memberships.member_id = #{entity_class.table_name}.id AND memberships.group_id IN (?))"
 
-    Membership.sanitize_sql_array([sql, entity_type, facet_value_id])
+    Membership.sanitize_sql_array([sql, entity_type, facet_value_ids])
   end
 
   # Category (Tag) memberships are recorded against sub-groups, not people directly
   # (e.g. state party branches belong to a party Tag; people belong to those branches) -
   # so a Person facet match on a Category needs to go through that intermediate group.
-  def person_in_category_via_subgroup(facet_value_id)
+  def person_in_category_via_subgroup(facet_value_ids)
     sql = <<~SQL.squish
       EXISTS (
         SELECT 1 FROM memberships person_memberships
@@ -80,11 +81,11 @@ class AdvancedSearch::Query
             SELECT 1 FROM memberships subgroup_memberships
             WHERE subgroup_memberships.member_type = 'Group'
               AND subgroup_memberships.member_id = person_memberships.group_id
-              AND subgroup_memberships.group_id = ?
+              AND subgroup_memberships.group_id IN (?)
           )
       )
     SQL
 
-    Membership.sanitize_sql_array([sql, facet_value_id])
+    Membership.sanitize_sql_array([sql, facet_value_ids])
   end
 end
