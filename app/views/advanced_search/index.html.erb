@@ -1,5 +1,5 @@
 <div id="advanced-search-container" class="container mt-6">
-  <%= render 'form', entity_type: @entity_type %>
+  <%= render 'form', entity_type: @entity_type, filters: @filters %>
 
   <% if @searched %>
     <% if @results.present? %>

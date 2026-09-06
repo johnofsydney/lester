@@ -1,3 +1,8 @@
+<%
+  filters = local_assigns[:filters] || []
+  first_filter = filters[0] || {}
+  second_filter = filters[1] || {}
+%>
 <div class="card shadow-sm mb-4">
   <div class="card-body">
     <h2 class="h5 mb-1">Advanced search</h2>
@@ -15,17 +20,20 @@
       <div class="row g-2 align-items-center mb-3">
         <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
         <div class="col-auto">
-          <%= render 'category_select', field_name: 'filters[][facet_value_id]' %>
+          <%= render 'category_select', field_name: 'filters[][facet_value_id]', selected_id: first_filter[:facet_value_id] %>
         </div>
       </div>
 
       <div class="row g-2 align-items-center mb-3">
-        <div class="col-auto">
-          <%= select_tag 'filters[][joiner]', options_for_select([['AND', 'AND'], ['OR', 'OR']]), class: 'form-select form-select-sm' %>
-        </div>
+        <%# facet_type must come first here: Rack groups a repeated array-of-hashes key
+            (filters[][...]) into a new hash as soon as it sees that key again, so this
+            hidden field has to open row 2's hash before joiner/facet_value_id populate it. %>
         <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
         <div class="col-auto">
-          <%= render 'category_select', field_name: 'filters[][facet_value_id]' %>
+          <%= select_tag 'filters[][joiner]', options_for_select([['AND', 'AND'], ['OR', 'OR']], second_filter[:joiner]), class: 'form-select form-select-sm' %>
+        </div>
+        <div class="col-auto">
+          <%= render 'category_select', field_name: 'filters[][facet_value_id]', selected_id: second_filter[:facet_value_id] %>
         </div>
       </div>
 

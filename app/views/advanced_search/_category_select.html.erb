@@ -1,6 +1,5 @@
-<select name="<%= field_name %>" class="form-select form-select-sm">
-  <option value="">Choose a category&hellip;</option>
-  <% Tag.order(:name).each do |tag| %>
-    <option value="<%= tag.id %>"><%= Nodes::NameCapitalizer.capitalize(tag.name) %></option>
-  <% end %>
-</select>
+<%
+  selected_id = local_assigns[:selected_id]
+  options = [['Choose a category…', '']] + Tag.order(:name).map { |tag| [Nodes::NameCapitalizer.capitalize(tag.name), tag.id] }
+%>
+<%= select_tag field_name, options_for_select(options, selected_id&.to_s), class: 'form-select form-select-sm' %>
