@@ -29,6 +29,28 @@ RSpec.describe 'Advanced search' do
       expect(response.body).to include('Anthony Albanese')
     end
 
+    it 'shows a total result count, not just the current page' do
+      lobbyist = create(:group, name: 'Lobbyist')
+      30.times do |n|
+        member = create(:person, name: format('Member %02d', n))
+        create(:membership, member: member, group: lobbyist)
+      end
+
+      get '/search/advanced', params: { entity_type: 'Person', filters: [{ facet_value_id: lobbyist.id }] }
+
+      expect(response.body).to include('30 people found')
+    end
+
+    it 'shows a singular count for a single result' do
+      lobbyist = create(:group, name: 'Lobbyist')
+      member = create(:person, name: 'Only One')
+      create(:membership, member: member, group: lobbyist)
+
+      get '/search/advanced', params: { entity_type: 'Person', filters: [{ facet_value_id: lobbyist.id }] }
+
+      expect(response.body).to include('1 person found')
+    end
+
     it 'shows a no-results message when the filter matches nobody' do
       lobbyist = create(:group, name: 'Lobbyist')
 

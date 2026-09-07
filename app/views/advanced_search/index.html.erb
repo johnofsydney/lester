@@ -3,6 +3,9 @@
 
   <% if @searched %>
     <% if @results.present? %>
+      <p class="mt-3 mb-2 grey">
+        <%= pluralize(@results.total_count, @entity_type == 'Person' ? 'person' : 'group') %> found
+      </p>
       <% result_rows = @results.map { |result| AdvancedSearchController::SearchResultRow.new(result.class.name, result.id, result.name) } %>
       <%= render(SearchResults.new(results: result_rows)) %>
       <%= render(Common::PageNav.new(collection: @results, path: '/search/advanced', extra_params: { entity_type: @entity_type, filters: @filters })) %>

@@ -1,5 +1,8 @@
 <%
   selected_id = local_assigns[:selected_id]
+  field_id = local_assigns[:field_id]
+  label_text = local_assigns[:label_text] || 'Category'
   options = [['Choose a category…', '']] + Tag.order(:name).map { |tag| [Nodes::NameCapitalizer.capitalize(tag.name), tag.id] }
 %>
-<%= select_tag field_name, options_for_select(options, selected_id&.to_s), class: 'form-select form-select-sm' %>
+<%= label_tag field_id, label_text, class: 'visually-hidden' %>
+<%= select_tag field_name, options_for_select(options, selected_id&.to_s), id: field_id, class: 'form-select form-select-sm' %>
