@@ -60,15 +60,13 @@ module NodeMethods
     # sorts the giver or takers by the amount of money they have given or taken (sum)
     # does not consider year
     @all_the_groups ||= begin
+      as_giver_sums = outbound_transfers.group(:taker_id, :taker_type).sum(:amount)
+      as_taker_sums = inbound_transfers.group(:giver_id, :giver_type).sum(:amount)
+      names_by_key = names_for_bar_graph(as_giver_sums.keys + as_taker_sums.keys)
+
       {
-        as_giver: outbound_transfers.group(:taker_id, :taker_type)
-                                    .sum(:amount)
-                                    .transform_keys{ |key| name_for_bar_graph(key) }
-                                    .sort_by{|_k, v| v},
-        as_taker: inbound_transfers.group(:giver_id, :giver_type)
-                                   .sum(:amount)
-                                   .transform_keys{ |key| name_for_bar_graph(key) }
-                                   .sort_by{|_k, v| v}
+        as_giver: as_giver_sums.transform_keys { |key| names_by_key[key] }.sort_by { |_k, v| v },
+        as_taker: as_taker_sums.transform_keys { |key| names_by_key[key] }.sort_by { |_k, v| v }
       }
     end
   end
@@ -109,15 +107,18 @@ module NodeMethods
     end
   end
 
-  def name_for_bar_graph(key)
-    # TODO: refactor out the fetching from  the db. This is inefficient.
-    klass = key[1].constantize # key[1] == type, giver_type or taker_type
-    instance = klass.find(key[0]) # key[0] == id, giver_id or taker_id
-    name = instance.name
+  # keys are [id, type] pairs, type being giver_type/taker_type. Batches one query
+  # per type instead of one find per key, avoiding an N+1 across the grouped sums.
+  def names_for_bar_graph(keys)
+    keys.group_by { |_id, type| type }.each_with_object({}) do |(type, keys_for_type), names_by_key|
+      ids = keys_for_type.map(&:first)
+      names_by_id = type.constantize.where(id: ids).pluck(:id, :name).to_h
 
-    return name if name.length <= 25
-
-    "#{name[0..25]}..."
+      keys_for_type.each do |key|
+        name = names_by_id.fetch(key.first)
+        names_by_key[key] = name.length <= 25 ? name : "#{name[0..25]}..."
+      end
+    end
   end
 
   # Person: one row per Membership (their full history — a person can rejoin the same Group,

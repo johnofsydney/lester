@@ -138,6 +138,19 @@ RSpec.describe Group do
           }
         )
       end
+
+      it 'looks up names with one query per entity type, not one per row' do
+        # 8 distinct people + 4 distinct groups across giver/taker sums; without
+        # batching this would be 12 individual find queries.
+        queries = []
+        callback = ->(*, payload) { queries << payload[:sql] if payload[:sql].match?(/SELECT .* FROM "(people|groups)"/) }
+
+        ActiveSupport::Notifications.subscribed(callback, 'sql.active_record') do
+          group.all_the_groups
+        end
+
+        expect(queries.size).to eq(2)
+      end
     end
   end
 end
