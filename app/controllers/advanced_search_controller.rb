@@ -2,6 +2,10 @@ class AdvancedSearchController < ApplicationController
   MIN_TERM_LENGTH = 2
   MAX_RESULTS = 20
 
+  # Matches the duck-typed shape SearchResults (used by the simple search results view) expects,
+  # so the two search modes render results identically without coupling it to PgSearch::Document.
+  SearchResultRow = Struct.new(:searchable_type, :searchable_id, :content)
+
   def index
     @entity_type = AdvancedSearch::Query::ENTITY_CLASSES.key?(params[:entity_type]) ? params[:entity_type] : 'Person'
     @filters = Array(params[:filters]).map(&:to_unsafe_h)
