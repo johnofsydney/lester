@@ -139,6 +139,18 @@ RSpec.describe 'Advanced search' do
 
       expect(response).to have_http_status(:ok)
     end
+
+    it 'shows no message on the very first, un-submitted visit to the page' do
+      get '/search/advanced'
+
+      expect(response.body).not_to include('Choose at least one category to search')
+    end
+
+    it 'prompts the user when the form is submitted with nothing selected' do
+      get '/search/advanced', params: { entity_type: 'Person' }
+
+      expect(response.body).to include('Choose at least one category to search')
+    end
   end
 
   describe 'GET /search/advanced/groups' do

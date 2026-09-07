@@ -18,32 +18,42 @@
         <div class="col-auto">who belong to&hellip;</div>
       </div>
 
-      <div class="row g-2 align-items-center mb-3">
-        <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
-        <div class="col-auto">
-          <%= render 'category_select', field_name: 'filters[][facet_value_id]', field_id: 'filter_row1_category',
-                                         selected_id: first_filter[:facet_value_id] %>
-        </div>
-      </div>
-
-      <div class="row g-2 align-items-center mb-3">
-        <%# facet_type must come first here: Rack groups a repeated array-of-hashes key
-            (filters[][...]) into a new hash as soon as it sees that key again, so this
-            hidden field has to open row 2's hash before joiner/facet_value_id populate it. %>
-        <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
-        <div class="col-auto">
-          <%= label_tag 'filters__joiner', 'Combine with', class: 'visually-hidden' %>
-          <%= select_tag 'filters[][joiner]', options_for_select([['AND', 'AND'], ['OR', 'OR']], second_filter[:joiner]), class: 'form-select form-select-sm' %>
+      <%# A left border chains row 1 through the joiner to row 2's OR-box, so the two rows
+          read as one connected filter rather than two unrelated lines. %>
+      <div class="border-start border-2 ps-3 ms-1">
+        <div class="row g-2 align-items-center mb-2">
+          <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
+          <div class="col-auto">
+            <%= render 'category_select', field_name: 'filters[][facet_value_id]', field_id: 'filter_row1_category',
+                                           selected_id: first_filter[:facet_value_id] %>
+          </div>
         </div>
 
-        <%# Bordered as one unit so it reads as "row 1 AND (this OR-group)", not four
-            disconnected dropdowns - the two selects below are OR'd with each other. %>
-        <div class="col-auto d-flex align-items-center gap-2 border rounded p-2 bg-light">
-          <%= render 'category_select', field_name: 'filters[][facet_value_id][]', field_id: 'filter_row2_category_a',
-                                         label_text: 'First category', selected_id: second_filter_values[0] %>
-          <span class="fw-semibold">OR</span>
-          <%= render 'category_select', field_name: 'filters[][facet_value_id][]', field_id: 'filter_row2_category_b',
-                                         label_text: 'Second category', selected_id: second_filter_values[1] %>
+        <div class="row g-2 align-items-center mb-2">
+          <%# facet_type must come first here: Rack groups a repeated array-of-hashes key
+              (filters[][...]) into a new hash as soon as it sees that key again, so this
+              hidden field has to open row 2's hash before joiner/facet_value_id populate it -
+              even though it's visually on the joiner's line, not the OR-box's line below. %>
+          <%= hidden_field_tag 'filters[][facet_type]', 'Category' %>
+          <div class="col-auto">
+            <%= label_tag 'filters__joiner', 'Combine with', class: 'visually-hidden' %>
+            <%= select_tag 'filters[][joiner]', options_for_select([['AND', 'AND'], ['OR', 'OR']], second_filter[:joiner]), class: 'form-select form-select-sm' %>
+          </div>
+        </div>
+
+        <div class="row g-2 align-items-center mb-3">
+          <div class="col-auto">
+            <%# Bordered as one unit so it reads as "row 1 [joiner] (this OR-group)", not
+                separate dropdowns - the two selects below are OR'd with each other.
+                flex-wrap lets the pair stack on narrow screens instead of squeezing. %>
+            <div class="d-flex flex-wrap align-items-center gap-2 border rounded p-2 bg-light">
+              <%= render 'category_select', field_name: 'filters[][facet_value_id][]', field_id: 'filter_row2_category_a',
+                                             label_text: 'First category', selected_id: second_filter_values[0] %>
+              <span class="fw-semibold">OR</span>
+              <%= render 'category_select', field_name: 'filters[][facet_value_id][]', field_id: 'filter_row2_category_b',
+                                             label_text: 'Second category', selected_id: second_filter_values[1] %>
+            </div>
+          </div>
         </div>
       </div>
 
