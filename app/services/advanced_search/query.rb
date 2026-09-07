@@ -41,8 +41,11 @@ class AdvancedSearch::Query
     end
   end
 
-  # Folds filters left-to-right as plain SQL text rather than relying on SQL's
-  # AND-before-OR precedence, so a chain reads the same way it was built, top to bottom.
+  # Folds left-to-right as plain SQL text (rather than SQL's AND-before-OR precedence, so a
+  # chain reads the same way it was built) and as string concatenation rather than Arel's
+  # .and/.or (which Arel::Nodes::SqlLiteral - the two-hop condition below - doesn't support
+  # in this Rails version; mixing it with Arel::Nodes::Exists raised NoMethodError). Every
+  # dynamic value is still substituted through sanitize_sql_array before concatenation.
   def filter_conditions
     filters.reduce(nil) do |combined, filter|
       condition = membership_exists(filter)
