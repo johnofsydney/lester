@@ -94,6 +94,20 @@ RSpec.describe Group do
     end
   end
 
+  describe '.matching_name' do
+    it 'matches a typo on one word of a multi-word name' do
+      create(:group, name: 'Australian Labor Party')
+
+      expect(Group.matching_name('labour').pluck(:name)).to include('australian labor party')
+    end
+
+    it 'excludes unrelated names' do
+      create(:group, name: 'Liberal Party')
+
+      expect(Group.matching_name('labor').pluck(:name)).not_to include('liberal party')
+    end
+  end
+
   describe 'node methods' do
     let(:group) { Group.create(name: 'Test Group') }
 

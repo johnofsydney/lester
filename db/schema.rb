@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_02_083828) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_071718) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -107,6 +107,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_02_083828) do
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
     t.index ["category"], name: "index_groups_on_category"
     t.index ["name"], name: "index_groups_on_name"
+    t.index ["name"], name: "index_groups_on_name_trigram", opclass: :gin_trgm_ops, using: :gin
   end
 
   create_table "individual_transactions", force: :cascade do |t|
