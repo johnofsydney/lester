@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   mount Prettytodo::Engine => '/prettytodo' if Rails.env.development?
 
   get 'groups/group_people/:group_id' => 'groups#group_people'
-  get 'groups/affiliated_groups/:group_id/page=:page' => 'groups#affiliated_groups'
+  get 'groups/affiliated_groups/:group_id' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
   get 'groups/:id/reload' => 'groups#reload'
 
@@ -21,6 +21,8 @@ Rails.application.routes.draw do
   get 'groups/:id/network_graph' => 'inertia#network_graph_group'
 
   get 'search' => 'search#index'
+  get 'search/advanced' => 'advanced_search#index', as: :advanced_search
+  get 'search/advanced/groups' => 'advanced_search#group_autocomplete', defaults: { format: 'json' }, as: :advanced_search_group_autocomplete
 
   get '/post_to_socials' => 'home#post_to_socials'              # Random
   get '/people/:id/post_to_socials' => 'people#post_to_socials' # Person
@@ -32,12 +34,6 @@ Rails.application.routes.draw do
   resources :transfers
   resources :groups
   resources :people
-
-  # todo: remove these
-  resources :lazy_load_groups
-  resources :lazy_load_people
-  resources :lazy_load_transfers
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   get '/home/todo' => 'home#todo'
   get '/todo' => 'home#todo'

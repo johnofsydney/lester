@@ -6,7 +6,7 @@ class Common::TableRow < ApplicationView
  attr_reader :hentity
 
  def view_template
-   tr do
+   tr(class: ended_membership? ? 'fst-italic' : nil) do
      td do
        span { link_for_hash(h: hentity) }
      end
@@ -16,5 +16,11 @@ class Common::TableRow < ApplicationView
        end
      end
    end
+ end
+
+  private
+
+ def ended_membership?
+   hentity['current'] == false
  end
 end

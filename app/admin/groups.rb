@@ -44,6 +44,7 @@ ActiveAdmin.register Group do
       row :type
       row :created_at
       row :updated_at
+      row :attributed_to
       row('Memberships (as owning group)') { Membership.where(group: resource).count }
       row('Memberships (as member)') { Membership.where(member: resource).count }
       row('Direct Transfers In') { number_to_currency resource.incoming_transfers.sum(:amount), precision: 0 }
@@ -165,14 +166,7 @@ ActiveAdmin.register Group do
   } do |ids, inputs|
     tag = Group.find(inputs[:tag_id])
 
-    # TODO: use a service
-    Group.where(id: ids).find_each do |group|
-      Membership.create(
-        group: tag,
-        member: group,
-        member_type: 'Group'
-      )
-    end
+    Groups::AddToTag.call(group_ids: ids, tag: tag)
 
     redirect_to collection_path, alert: "Groups added to #{tag.name}."
   end

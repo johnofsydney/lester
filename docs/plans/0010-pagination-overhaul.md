@@ -1,6 +1,6 @@
 # Pagination overhaul: adopt kaminari everywhere
 
-**Status:** In progress
+**Status:** Completed (PRs #266, #274, #279, #281, #283, #294, and this cleanup PR)
 
 ## Problem
 
@@ -68,6 +68,19 @@ change:
 6. Search
 7. Cleanup — remove the remaining `page=:page` custom routes, retire the now-unneeded
    `.rubocop_todo.yml` exclusions for `Lint/UnreachableCode` on the 3 index controllers.
+
+## Known follow-ups (not part of this epic)
+
+- [#293](https://github.com/johnofsydney/lester/issues/293) — the Person/Group → Transfers list
+  (surface 7) pages noticeably slower than the array-backed People/Groups lists, most likely due
+  to `consolidated_transfers` being an unbounded array (unlike graph-traversal-bounded
+  `direct_connections`) plus `summarise_for`'s `group_by` rerunning on every page navigation.
+- Three pre-existing dead views were noticed but left untouched, since fixing them wasn't part of
+  fixing pagination: `app/views/groups/show.html.erb` (references classes that no longer exist),
+  and `app/views/lazy_load_people/show.html.erb` / `lazy_load_groups/show.html.erb` (call
+  `TransfersTableComponent` with a `remove_zero_degrees:` kwarg the component doesn't accept).
+  All three are unreachable — `#show` always renders the Phlex view instead — but they'd raise if
+  that ever changed.
 
 ## Why not deeper fixes
 

@@ -17,6 +17,7 @@
 
   <% if @results.present? %>
     <%= render(SearchResults.new(results: @results)) %>
+    <%= render(Common::PageNav.new(collection: @results, path: '/search', extra_params: { query: @search_term })) %>
   <% end %>
 
   <% if @results.empty? %>

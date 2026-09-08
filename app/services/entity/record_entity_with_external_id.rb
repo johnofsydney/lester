@@ -21,7 +21,7 @@ class Entity::RecordEntityWithExternalId
     entity = ExternalIdentifier.find_by(source:, owner_type: klass, value: identifier.to_s)&.owner
     return unless entity
 
-    add_to_trading_names(entity) if entity.name != name
+    add_to_trading_names(entity)
 
     entity
   end

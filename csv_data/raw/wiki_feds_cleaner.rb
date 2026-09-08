@@ -47,7 +47,6 @@ class Parser
   end
 
   def self.parse_start_date(date)
-
     start_year = date.tr('–', '-').tr('—', '-')
                      .split('-').first
                      .strip.to_s

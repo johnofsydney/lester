@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Merges the current feature branch into staging and pushes it.
+# See .claude/skills/merge-to-staging/SKILL.md for the full process this implements.
+set -euo pipefail
+
+feature_branch="$(git branch --show-current)"
+
+if [[ "$feature_branch" == "staging" || "$feature_branch" == "main" ]]; then
+  echo "Refusing to run from '$feature_branch' — check out the feature branch to merge first." >&2
+  exit 1
+fi
+
+if [[ -n "$(git status --porcelain)" ]]; then
+  echo "Working tree is not clean — commit or stash changes before merging to staging." >&2
+  exit 1
+fi
+
+git fetch origin
+
+git checkout staging
+git merge --ff-only origin/staging
+
+git merge --no-ff "$feature_branch" -m "Merge branch '$feature_branch' into staging"
+
+git push origin staging
+
+git checkout "$feature_branch"
+
+echo "Merged '$feature_branch' into staging and pushed. Now back on '$feature_branch'."

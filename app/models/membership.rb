@@ -49,8 +49,8 @@ class Membership < ApplicationRecord
                      .where('end_date IS NULL OR end_date >= ?', self.start_date)
                      .where('start_date IS NULL OR start_date <= ?', self.end_date)
 
-    base.where(group_id: self.group.id)
-        .or(base.where(member_id: self.member.id))
+    base.where(group_id: self.group_id)
+        .or(base.where(member_id: self.member_id))
   end
 
   def last_position

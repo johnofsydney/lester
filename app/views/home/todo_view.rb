@@ -38,7 +38,6 @@ class Home::TodoView < ApplicationView
                 li { 'More tests for record transfer taker' }
 
                 li { 'Add Audit table' }
-                li { 'Ex Members of a group should appear last (or not at all eg Lidia Thorpe) (app/views/components/groups/people.rb:3)' }
               end
             end
           end

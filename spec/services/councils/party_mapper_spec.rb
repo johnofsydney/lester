@@ -4,10 +4,12 @@ RSpec.describe Councils::PartyMapper, type: :service do
   subject(:call_service) { described_class.call(party_label, state: :nsw) }
 
   before do
-    FactoryBot.create(:group, name: Group::NAMES.labor.nsw, type: 'Tag')
-    FactoryBot.create(:group, name: Group::NAMES.greens.nsw, type: 'Tag')
-    FactoryBot.create(:group, name: Group::NAMES.liberals.nsw, type: 'Tag')
-    FactoryBot.create(:group, name: Group::NAMES.nationals.nsw, type: 'Tag')
+    # Real party Groups are plain Groups (type: nil), not Tags -- see
+    # docs/adr/0011-tag-type-is-for-category-labels-not-organizations.md.
+    FactoryBot.create(:group, name: Group::NAMES.labor.nsw)
+    FactoryBot.create(:group, name: Group::NAMES.greens.nsw)
+    FactoryBot.create(:group, name: Group::NAMES.liberals.nsw)
+    FactoryBot.create(:group, name: Group::NAMES.nationals.nsw)
   end
 
   context 'when the label matches Labor' do
@@ -38,6 +40,32 @@ RSpec.describe Councils::PartyMapper, type: :service do
     let(:party_label) { 'The Nationals' }
 
     it 'returns the NSW Nationals tag group' do
+      expect(call_service.name).to eq(Group::NAMES.nationals.nsw)
+    end
+  end
+
+  context 'when the label is the Liberal Democratic Party (not a Group::NAMES family)' do
+    let(:party_label) { 'Liberal Democratic Party' }
+
+    before { FactoryBot.create(:group, name: 'Liberal Democratic Party') }
+
+    it 'returns the Liberal Democratic Party group, not the NSW Liberals group' do
+      expect(call_service.name).to eq('liberal democratic party')
+    end
+  end
+
+  context 'when the label is a joint ticket, e.g. "LIBERAL / THE NATIONALS"' do
+    let(:party_label) { 'LIBERAL / THE NATIONALS' }
+
+    it 'resolves to the first-named party' do
+      expect(call_service.name).to eq(Group::NAMES.liberals.nsw)
+    end
+  end
+
+  context 'when the label is a joint ticket with National named first' do
+    let(:party_label) { 'THE NATIONALS / LIBERAL' }
+
+    it 'resolves to the first-named party' do
       expect(call_service.name).to eq(Group::NAMES.nationals.nsw)
     end
   end
@@ -73,6 +101,18 @@ RSpec.describe Councils::PartyMapper, type: :service do
 
     it 'returns nil rather than raising' do
       expect(call_service).to be_nil
+    end
+  end
+
+  describe '.resolved_name' do
+    it 'returns the canonical name even when no matching Group exists in the DB' do
+      Group.where(name: Group::NAMES.labor.nsw).delete_all
+
+      expect(described_class.resolved_name('Australian Labor Party (NSW Branch)', state: :nsw)).to eq(Group::NAMES.labor.nsw)
+    end
+
+    it 'returns nil for an independent' do
+      expect(described_class.resolved_name('Independent', state: :nsw)).to be_nil
     end
   end
 end

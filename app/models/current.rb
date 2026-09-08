@@ -3,7 +3,7 @@ class Current < ActiveSupport::CurrentAttributes
   attribute :user, :host
 
   def local_host?
-    host.match?(/localhost/)
+    host.include?('localhost')
   end
 
   def admin_user?

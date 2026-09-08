@@ -2,6 +2,7 @@ class Person < ApplicationRecord
   include TransferMethods
   include NodeMethods
   include CachedMethods
+  include Attributable
 
   include ExternalIdentifiable
 
@@ -124,15 +125,10 @@ class Person < ApplicationRecord
 
   def first_degree_transfers
     # TODO: cache some of these database calls
-    # TODO: Potentially Useless Code
     # largely duplicated by code inside node methods
     transfers = consolidated_transfers(depth: 1).filter { |transfer| transfer.depth == 1 }
     incoming_transfers = transfers.filter { |transfer| transfer.direction == 'incoming' }
     outgoing_transfers = transfers.filter { |transfer| transfer.direction == 'outgoing' }
-    OpenStruct.new(
-      in: number_to_currency(incoming_transfers.sum(&:amount), precision: 0),
-      out: number_to_currency(outgoing_transfers.sum(&:amount), precision: 0)
-    )
 
     return 'None' if incoming_transfers.empty? && outgoing_transfers.empty?
     return "Incoming: #{number_to_currency(incoming_transfers.sum(&:amount), precision: 0)}" if outgoing_transfers.empty?

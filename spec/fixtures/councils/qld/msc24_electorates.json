@@ -1,0 +1,40 @@
+{
+  "electorates": [
+    {
+      "electorateId": 892,
+      "parentElectorateId": null,
+      "areaCode": "01",
+      "electorateName": "Mornington Shire Division 1",
+      "contestType": "Councillor",
+      "electorateType": "Division",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "First Past the Post",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "candidatesCouncillorCount": 3,
+      "candidatesCouncillor": [
+        {
+          "ballotName": "THOMAS, Roxanne",
+          "ballotOrderNumber": 1,
+          "candidateSurname": "THOMAS",
+          "candidateGivenNames": "ROXANNE"
+        },
+        {
+          "ballotName": "AH KIT, Jane",
+          "ballotOrderNumber": 2,
+          "candidateSurname": "AH KIT",
+          "candidateGivenNames": "MAUREEN JANE"
+        },
+        {
+          "ballotName": "MOON, Helen",
+          "ballotOrderNumber": 3,
+          "candidateSurname": "MOON",
+          "candidateGivenNames": "HELEN INGARBORGE"
+        }
+      ],
+      "numberToElect": 1,
+      "enrolment": 769
+    }
+  ]
+}

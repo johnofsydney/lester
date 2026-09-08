@@ -1,16 +1,20 @@
 class TransfersTableComponent < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  def initialize(transfers:, heading:, summarise_for: nil, exclude: nil, entity:)
+  def initialize(transfers:, heading:, summarise_for: nil, exclude: nil, entity:, page: nil)
     # these transfers are already consolidated with depth relative to the entity
     @transfers = transfers
     @heading = heading
     @summarise_for = summarise_for
     @exclude = exclude
     @entity = entity
+    # Pagination happens inside make_table, after summarise_for/exclude have
+    # transformed transfers into the final row set - slicing the raw transfers
+    # first would paginate rows that no longer exist post-summarisation.
+    @page = page
   end
 
-  attr_reader :transfers, :heading, :summarise_for, :exclude, :entity
+  attr_reader :transfers, :heading, :summarise_for, :exclude, :entity, :page
 
   def view_template
     return nil if transfers.empty?
@@ -45,9 +49,14 @@ class TransfersTableComponent < ApplicationView
   end
 
   def make_table(transfers)
+    paginated_transfers = Kaminari.paginate_array(transfers.sort_by { |t| [t.depth, -t.amount] }).page(page)
+
     div(class: 'row mt-3 mb-3') do
       h4(class: 'font-italic') { 'Transfers' }
       p { "#{heading} (#{transfers.count} records)" }
+
+      render Common::PageNav.new(collection: paginated_transfers, path: "/#{class_of(entity)}/#{entity.id}", param_name: 'transfers_page')
+
       table(class: 'table responsive-table') do
         tr do
           th { 'Amount' }
@@ -57,7 +66,7 @@ class TransfersTableComponent < ApplicationView
           th(class: 'desktop-only') { 'Depth' }
         end
 
-        transfers.sort_by{ |t| [t.depth, -t.amount] }.each do |transfer|
+        paginated_transfers.each do |transfer|
           tr do
             td(style: row_style(transfer)) do
               value = number_to_currency(transfer.amount.to_s, precision: 0)

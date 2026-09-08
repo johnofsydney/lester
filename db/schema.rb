@@ -10,9 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_03_071718) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+  enable_extension "pg_trgm"
+  enable_extension "unaccent"
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.bigint "author_id"
@@ -91,6 +93,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
   end
 
   create_table "groups", force: :cascade do |t|
+    t.string "attributed_to"
     t.string "business_number"
     t.json "cached_data", default: {}
     t.boolean "category", default: false
@@ -104,6 +107,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
     t.index ["business_number"], name: "index_groups_on_business_number", unique: true
     t.index ["category"], name: "index_groups_on_category"
     t.index ["name"], name: "index_groups_on_name"
+    t.index ["name"], name: "index_groups_on_name_trigram", opclass: :gin_trgm_ops, using: :gin
   end
 
   create_table "individual_transactions", force: :cascade do |t|
@@ -181,6 +185,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
   end
 
   create_table "people", force: :cascade do |t|
+    t.string "attributed_to"
     t.json "cached_data", default: {}
     t.jsonb "council_election_data", default: [], null: false
     t.datetime "council_election_data_updated_at"
@@ -192,6 +197,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
     t.datetime "nodes_count_cached_at"
     t.jsonb "open_australia_data", default: [], null: false
     t.datetime "open_australia_data_fetched_at"
+    t.jsonb "state_election_data", default: [], null: false
+    t.datetime "state_election_data_updated_at"
     t.datetime "updated_at", null: false
     t.integer "views", default: 0, null: false
     t.index ["name"], name: "index_people_on_name"
@@ -203,6 +210,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_17_090000) do
     t.bigint "searchable_id"
     t.string "searchable_type"
     t.datetime "updated_at", null: false
+    t.index ["content"], name: "index_pg_search_documents_on_content_trigram", opclass: :gin_trgm_ops, using: :gin
     t.index ["searchable_type", "searchable_id"], name: "index_pg_search_documents_on_searchable"
   end
 
