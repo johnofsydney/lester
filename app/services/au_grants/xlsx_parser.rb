@@ -9,13 +9,11 @@ class AuGrants::XlsxParser
     sheet = xlsx.sheet(0)
     headers = sheet.row(HEADER_ROW)
 
-    ((HEADER_ROW + 1)..sheet.last_row).each do |r|
+    ((HEADER_ROW + 1)..sheet.last_row).filter_map do |r|
       row = sheet.row(r)
       next unless row&.any?
 
-      yield headers.zip(row).to_h
+      headers.zip(row).to_h
     end
-  ensure
-    File.delete(path) if path && File.exist?(path)
   end
 end
