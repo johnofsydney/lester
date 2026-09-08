@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_071718) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_08_101213) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -114,6 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_071718) do
     t.string "amendment_id"
     t.float "amount"
     t.string "category"
+    t.string "city"
     t.string "contract_id"
     t.datetime "created_at", null: false
     t.string "description"
@@ -123,8 +124,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_071718) do
     t.bigint "fine_grained_transaction_category_id"
     t.bigint "giver_id"
     t.string "giver_type"
+    t.string "postcode"
     t.string "registration_code"
     t.integer "return_id"
+    t.string "state"
     t.bigint "taker_id"
     t.string "taker_type"
     t.string "transaction_type"

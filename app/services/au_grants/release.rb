@@ -52,4 +52,34 @@ class AuGrants::Release
   def evidence
     "https://www.grants.gov.au/Ga/Show/#{ga_id}"
   end
+
+  def description
+    [grant_program, grant_activity, grant_purpose].compact.join(' - ')
+  end
+
+
+  def grant_program
+    row['Grant Program'].to_s
+  end
+
+
+  def grant_activity
+    row['Grant Activity'].to_s
+  end
+
+  def grant_purpose
+    row['Grant Purpose'].to_s
+  end
+
+  def recipient_city
+    row['Recipient Town/City'].to_s
+  end
+
+  def recipient_state
+    row['Recipient State'].to_s
+  end
+
+  def recipient_postcode
+    row['Recipient Postcode'].to_s
+  end
 end
