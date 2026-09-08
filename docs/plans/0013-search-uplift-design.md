@@ -1,6 +1,7 @@
 # Search uplift: faceted advanced search + trigram-tolerant simple search
 
-**Status:** Proposed (design doc — implementation not started)
+**Status:** In Progress (PRs 1–3 implemented as designed; PR 4 implemented with deviations — see
+"Implementation notes" below; PR 5 not started)
 
 ## Problem
 
@@ -103,3 +104,38 @@ This should be encapsulated in a small, unit-testable service object (e.g. `Adva
 
 - Whether `pg_search` 2.3.7 supports `ignoring: [:accents]` directly, or whether `unaccent()` needs to be applied manually in the multisearch query.
 - Exact UI treatment for the advanced search panel (accordion vs. always-visible section) — deferred to a first-draft mockup in PR 4.
+
+## Implementation notes (deviations from this doc, recorded after the fact)
+
+PRs 1–3 shipped as designed. PR 4 shipped a deliberately narrower, JS-free slice of what this doc
+describes, plus one real bugfix this doc didn't anticipate:
+
+- **Category+Person facet matching is two-hop, not the single one-hop `EXISTS` this doc
+  describes.** Category (`Tag`) memberships in the real data are recorded against sub-groups, not
+  people directly (e.g. a party's state branches belong to the party Tag; people belong to those
+  branches) — confirmed against dev data (`Australian Labor Party` tag: 9 `Group` memberships, 0
+  `Person` memberships). The one-hop design silently returned empty results for most Category
+  filters against Person. `AdvancedSearch::Query` now branches: Category+Person traverses an
+  intermediate subgroup; every other combination (Group facet against either entity type, or
+  Category facet against Group entity type, where sub-groups are direct Tag members) stays one-hop.
+- **Filter folding uses raw SQL string concatenation, not `scope.merge`/`scope.or`.** The
+  two-hop condition above is built as a sanitized raw-SQL fragment (`Arel::Nodes::SqlLiteral`),
+  which doesn't support Arel's `.and`/`.or` in this Rails version — mixing it with `Arel::Nodes::Exists`
+  (from the one-hop path) raised `NoMethodError` in practice. Every dynamic value is still
+  substituted through `sanitize_sql_array` before string concatenation.
+- **A row can OR multiple facet values together** (`Filter#facet_value_ids`, plural), e.g. "People
+  AND Lobbyists AND (Consulting OR Superannuation)" — a two-level AND-of-ORs, not in this doc's
+  original one-value-per-row filter model. Added on direct request mid-implementation; still no
+  general parenthesised/precedence support beyond that fixed two-level shape. Implemented for
+  Category facets only so far (see below).
+- **No Stimulus controller, no typeahead, no repeatable add/remove rows, and the homepage link is
+  deliberately absent.** PR 4 shipped two static, plain-`<select>` Category filter rows submitted
+  via plain GET, reachable only by direct URL to `/search/advanced` — explicitly asked to be kept
+  off the homepage until the rest of the UI (Group facet typeahead, dynamic rows) is built. The
+  results page does pre-populate the form with whatever was searched for (entity type, both rows'
+  categories, the joiner), which this doc didn't call for but improves the "what did I search for"
+  readability of a plain-GET results page.
+- **Group-facet filtering (as opposed to Category) is not yet exposed in the UI**, though
+  `AdvancedSearch::Query` and the `GET /search/advanced/groups.json` endpoint from PR 3 both
+  already support it correctly. Scoped as a separate follow-up:
+  `docs/plans/0014-advanced-search-group-facet-design.md`.

@@ -68,6 +68,138 @@ RSpec.describe AdvancedSearch::Query, type: :service do
       end
     end
 
+    context 'with a Category facet on Person entities' do
+      it 'matches a person via an intermediate subgroup, not direct tag membership' do
+        alp_tag = create(:group, name: 'Australian Labor Party', type: 'Tag')
+        nsw_branch = create(:group, name: 'ALP NSW Branch')
+        create(:membership, member: nsw_branch, group: alp_tag)
+
+        member = create(:person, name: 'Party Member')
+        create(:membership, member: member, group: nsw_branch)
+
+        non_member = create(:person, name: 'Not A Member')
+
+        filters = [{ facet_type: 'Category', facet_value_id: alp_tag.id }]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('party member')
+        expect(results.map(&:name)).not_to include(non_member.name)
+      end
+
+      it 'matches a person with only a direct Tag membership (no subgroup involved)' do
+        # e.g. AuLobbyists::ImportLobbyistsPeopleRowJob tags lobbyist individuals directly
+        # onto the Lobbyists tag, independent of whether their employer firm is also tagged.
+        lobbyist_tag = create(:group, name: 'Lobbyists', type: 'Tag')
+        direct_member = create(:person, name: 'Direct Member')
+        create(:membership, member: direct_member, group: lobbyist_tag)
+
+        filters = [{ facet_type: 'Category', facet_value_id: lobbyist_tag.id }]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('direct member')
+      end
+
+      it 'matches a person via either the direct or the subgroup path, not just one' do
+        lobbyist_tag = create(:group, name: 'Lobbyists', type: 'Tag')
+        lobbying_firm = create(:group, name: 'Lobbying Firm')
+        create(:membership, member: lobbying_firm, group: lobbyist_tag)
+
+        direct_only = create(:person, name: 'Direct Only')
+        create(:membership, member: direct_only, group: lobbyist_tag)
+
+        subgroup_only = create(:person, name: 'Subgroup Only')
+        create(:membership, member: subgroup_only, group: lobbying_firm)
+
+        neither = create(:person, name: 'Neither')
+
+        filters = [{ facet_type: 'Category', facet_value_id: lobbyist_tag.id }]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('direct only', 'subgroup only')
+        expect(results.map(&:name)).not_to include(neither.name)
+      end
+
+      it 'ANDs two Category filters together via two separate subgroup hops' do
+        lobbyist_tag = create(:group, name: 'Lobbyists', type: 'Tag')
+        lobbying_firm = create(:group, name: 'Lobbying Firm')
+        create(:membership, member: lobbying_firm, group: lobbyist_tag)
+
+        alp_tag = create(:group, name: 'Australian Labor Party', type: 'Tag')
+        nsw_branch = create(:group, name: 'ALP NSW Branch')
+        create(:membership, member: nsw_branch, group: alp_tag)
+
+        both = create(:person, name: 'Both')
+        create(:membership, member: both, group: lobbying_firm)
+        create(:membership, member: both, group: nsw_branch)
+
+        only_lobbyist = create(:person, name: 'Only Lobbyist')
+        create(:membership, member: only_lobbyist, group: lobbying_firm)
+
+        filters = [
+          { facet_type: 'Category', facet_value_id: lobbyist_tag.id },
+          { joiner: 'AND', facet_type: 'Category', facet_value_id: alp_tag.id }
+        ]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('both')
+      end
+
+      it 'uses the direct one-hop check for a Group entity_type even when facet_type is Category' do
+        alp_tag = create(:group, name: 'Australian Labor Party', type: 'Tag')
+        nsw_branch = create(:group, name: 'ALP NSW Branch')
+        create(:membership, member: nsw_branch, group: alp_tag)
+
+        filters = [{ facet_type: 'Category', facet_value_id: alp_tag.id }]
+        results = described_class.new(entity_type: 'Group', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('alp nsw branch')
+      end
+    end
+
+    context 'with multiple values OR-grouped within a single filter row' do
+      it 'matches membership in any of the values within the row, ANDed with other rows' do
+        # People AND Lobbyists AND (Consulting OR Superannuation)
+        lobbyists = create(:group, name: 'Lobbyists')
+        consulting = create(:group, name: 'Consulting')
+        superannuation = create(:group, name: 'Superannuation')
+        banking = create(:group, name: 'Banking')
+
+        lobbyist_and_consulting = create(:person, name: 'Lobbyist And Consulting')
+        create(:membership, member: lobbyist_and_consulting, group: lobbyists)
+        create(:membership, member: lobbyist_and_consulting, group: consulting)
+
+        lobbyist_and_super = create(:person, name: 'Lobbyist And Super')
+        create(:membership, member: lobbyist_and_super, group: lobbyists)
+        create(:membership, member: lobbyist_and_super, group: superannuation)
+
+        lobbyist_and_banking = create(:person, name: 'Lobbyist And Banking')
+        create(:membership, member: lobbyist_and_banking, group: lobbyists)
+        create(:membership, member: lobbyist_and_banking, group: banking)
+
+        consulting_only = create(:person, name: 'Consulting Only')
+        create(:membership, member: consulting_only, group: consulting)
+
+        filters = [
+          { facet_value_id: lobbyists.id },
+          { joiner: 'AND', facet_value_id: [consulting.id, superannuation.id] }
+        ]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('lobbyist and consulting', 'lobbyist and super')
+      end
+
+      it 'ignores blank values within an array of facet_value_id, keeping the real ones' do
+        lobbyists = create(:group, name: 'Lobbyists')
+        member = create(:person, name: 'Member')
+        create(:membership, member: member, group: lobbyists)
+
+        filters = [{ facet_value_id: [lobbyists.id, ''] }]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('member')
+      end
+    end
+
     context 'with multiple facet filters' do
       it 'ANDs by default, requiring membership in every group' do
         lobbyist = create(:group, name: 'Lobbyist')
