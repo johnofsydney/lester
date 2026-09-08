@@ -8,7 +8,7 @@ class AdvancedSearchController < ApplicationController
 
   def index
     @entity_type = AdvancedSearch::Query::ENTITY_CLASSES.key?(params[:entity_type]) ? params[:entity_type] : 'Person'
-    @filters = Array(params[:filters]).map(&:to_unsafe_h)
+    @filters = Array(params[:filters]).filter_map { |filter| filter.to_unsafe_h if filter.respond_to?(:to_unsafe_h) }
     @submitted = params[:entity_type].present?
     @searched = @filters.any? { |filter| Array(filter[:facet_value_id]).any?(&:present?) }
 
