@@ -55,9 +55,12 @@ class AdvancedSearch::Query
     end
   end
 
+  # Category+Person matches either a direct Person->Tag membership (e.g. AuLobbyists jobs tag
+  # lobbyist individuals straight onto the Lobbyists tag) or the subgroup path below - a person
+  # can have one without the other depending on which ingest jobs have run, so both must count.
   def membership_exists(filter)
     if filter.facet_type == 'Category' && entity_type == 'Person'
-      person_in_category_via_subgroup(filter.facet_value_ids)
+      "(#{direct_member_of(filter.facet_value_ids)} OR #{person_in_category_via_subgroup(filter.facet_value_ids)})"
     else
       direct_member_of(filter.facet_value_ids)
     end

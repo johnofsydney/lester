@@ -140,6 +140,18 @@ RSpec.describe 'Advanced search' do
       expect(response).to have_http_status(:ok)
     end
 
+    it 'does not 500 on a malformed filters param (a scalar instead of an array of hashes)' do
+      get '/search/advanced?entity_type=Person&filters=not_an_array_of_hashes'
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'does not 500 on a filters param that is an array of scalars' do
+      get '/search/advanced?entity_type=Person&filters[]=1&filters[]=2'
+
+      expect(response).to have_http_status(:ok)
+    end
+
     it 'shows no message on the very first, un-submitted visit to the page' do
       get '/search/advanced'
 

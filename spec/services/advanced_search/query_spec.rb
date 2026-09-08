@@ -86,7 +86,9 @@ RSpec.describe AdvancedSearch::Query, type: :service do
         expect(results.map(&:name)).not_to include(non_member.name)
       end
 
-      it 'does not match a person only directly (not via a subgroup) attached to the tag' do
+      it 'matches a person with only a direct Tag membership (no subgroup involved)' do
+        # e.g. AuLobbyists::ImportLobbyistsPeopleRowJob tags lobbyist individuals directly
+        # onto the Lobbyists tag, independent of whether their employer firm is also tagged.
         lobbyist_tag = create(:group, name: 'Lobbyists', type: 'Tag')
         direct_member = create(:person, name: 'Direct Member')
         create(:membership, member: direct_member, group: lobbyist_tag)
@@ -94,7 +96,27 @@ RSpec.describe AdvancedSearch::Query, type: :service do
         filters = [{ facet_type: 'Category', facet_value_id: lobbyist_tag.id }]
         results = described_class.new(entity_type: 'Person', filters: filters).call
 
-        expect(results.map(&:name)).to be_empty
+        expect(results.map(&:name)).to contain_exactly('direct member')
+      end
+
+      it 'matches a person via either the direct or the subgroup path, not just one' do
+        lobbyist_tag = create(:group, name: 'Lobbyists', type: 'Tag')
+        lobbying_firm = create(:group, name: 'Lobbying Firm')
+        create(:membership, member: lobbying_firm, group: lobbyist_tag)
+
+        direct_only = create(:person, name: 'Direct Only')
+        create(:membership, member: direct_only, group: lobbyist_tag)
+
+        subgroup_only = create(:person, name: 'Subgroup Only')
+        create(:membership, member: subgroup_only, group: lobbying_firm)
+
+        neither = create(:person, name: 'Neither')
+
+        filters = [{ facet_type: 'Category', facet_value_id: lobbyist_tag.id }]
+        results = described_class.new(entity_type: 'Person', filters: filters).call
+
+        expect(results.map(&:name)).to contain_exactly('direct only', 'subgroup only')
+        expect(results.map(&:name)).not_to include(neither.name)
       end
 
       it 'ANDs two Category filters together via two separate subgroup hops' do
