@@ -13,7 +13,15 @@ class AuGrants::XlsxParser
       row = sheet.row(r)
       next unless row&.any?
 
-      headers.zip(row).to_h
+      headers.zip(row.map { |cell| json_safe(cell) }).to_h
     end
+  end
+
+  private
+
+  # Job arguments must be native JSON types (Sidekiq.strict_args!) -- Roo returns
+  # Date/Time objects for date cells, which aren't valid job arguments.
+  def json_safe(cell)
+    cell.is_a?(Date) || cell.is_a?(Time) ? cell.iso8601 : cell
   end
 end

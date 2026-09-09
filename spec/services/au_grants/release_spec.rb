@@ -5,13 +5,36 @@ describe AuGrants::Release, type: :service do
     {
       'Agency' => "Attorney-General's Department",
       'GA ID' => 'GA523941',
+      'Internal Reference ID' => 'DIDSS000523',
+      'GO ID' => 'GO247',
       'Recipient Name' => 'Easyweb Digital Pty Ltd',
       'Recipient ABN' => '79 145 583 099',
-      'Category' => 'Legal Services',
+      'PBS Program Name' => 'AGD 25/26 1.4 Justice Services',
+      'Grant Program' => 'Financial assistance towards legal costs and related expenses',
+      'Grant Activity' => 'Financial assistance',
+      'Purpose' => 'Financial assistance',
+      'One-off/Ad hoc' => 'N',
       'Aggregate' => 'N',
+      'Aggregate Reason' => '',
+      'Aggregate Number' => nil,
+      'Selection Process' => 'Open Competitive',
+      'Category' => 'Legal Services',
       'Confidentiality - Contract' => 'N',
-      'Publish Date' => Date.new(2026, 1, 5),
-      'Value (AUD)' => 5_341_639.0
+      'Confidentiality - Outputs' => 'N',
+      'Publish Date' => '2026-01-05',
+      'Approval Date' => '2025-11-26',
+      'Start Date' => '2025-11-26',
+      'End Date' => '2026-10-26',
+      'Value (AUD)' => 5_341_639.0,
+      'Recipient Suburb' => 'CANBERRA',
+      'Recipient Town/City' => 'CANBERRA',
+      'Recipient Postcode' => '2600',
+      'Recipient State/Territory' => 'ACT',
+      'Recipient Country' => 'AUSTRALIA',
+      'Delivery State/Territory' => 'ACT',
+      'Delivery Postcode' => '2600',
+      'Delivery Country' => 'AUSTRALIA',
+      'Contact Name' => 'Legal Financial Assistance Casework Section'
     }
   end
 
@@ -26,6 +49,13 @@ describe AuGrants::Release, type: :service do
     expect(release.amount).to eq(5_341_639.0)
     expect(release.effective_date).to eq(Date.new(2026, 1, 5))
     expect(release.evidence).to eq('https://www.grants.gov.au/Ga/Show/GA523941')
+  end
+
+  it 'exposes the description and recipient location fields' do
+    expect(release.description).to eq('Financial assistance towards legal costs and related expenses - Financial assistance - Financial assistance')
+    expect(release.recipient_city).to eq('CANBERRA')
+    expect(release.recipient_state).to eq('ACT')
+    expect(release.recipient_postcode).to eq('2600')
   end
 
   it 'is not aggregate and has no redacted recipient' do

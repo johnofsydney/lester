@@ -57,18 +57,16 @@ class AuGrants::Release
     [grant_program, grant_activity, grant_purpose].compact.join(' - ')
   end
 
-
   def grant_program
     row['Grant Program'].to_s
   end
-
 
   def grant_activity
     row['Grant Activity'].to_s
   end
 
   def grant_purpose
-    row['Grant Purpose'].to_s
+    row['Purpose'].to_s
   end
 
   def recipient_city
@@ -76,7 +74,7 @@ class AuGrants::Release
   end
 
   def recipient_state
-    row['Recipient State'].to_s
+    row['Recipient State/Territory'].to_s
   end
 
   def recipient_postcode

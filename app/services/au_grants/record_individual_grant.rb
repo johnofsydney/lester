@@ -25,7 +25,11 @@ class AuGrants::RecordIndividualGrant
       transaction_type: 'government_grant',
       evidence: release.evidence,
       external_id: release.ga_id,
-      fine_grained_transaction_category:
+      fine_grained_transaction_category:,
+      description: release.description,
+      city: release.recipient_city,
+      state: release.recipient_state,
+      postcode: release.recipient_postcode
     )
 
     Transfers::RefreshSingleTransferAmountJob.perform_in(5.minutes, transfer.id)

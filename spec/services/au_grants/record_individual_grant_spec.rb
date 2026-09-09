@@ -9,13 +9,36 @@ describe AuGrants::RecordIndividualGrant, type: :service do
     {
       'Agency' => "Attorney-General's Department",
       'GA ID' => 'GA523941',
+      'Internal Reference ID' => 'DIDSS000523',
+      'GO ID' => 'GO247',
       'Recipient Name' => 'Easyweb Digital Pty Ltd',
       'Recipient ABN' => '79 145 583 099',
-      'Category' => 'Legal Services',
+      'PBS Program Name' => 'AGD 25/26 1.4 Justice Services',
+      'Grant Program' => 'Financial assistance towards legal costs and related expenses',
+      'Grant Activity' => 'Financial assistance',
+      'Purpose' => 'Financial assistance',
+      'One-off/Ad hoc' => 'N',
       'Aggregate' => 'N',
+      'Aggregate Reason' => '',
+      'Aggregate Number' => nil,
+      'Selection Process' => 'Open Competitive',
+      'Category' => 'Legal Services',
       'Confidentiality - Contract' => 'N',
-      'Publish Date' => Date.new(2026, 1, 5),
-      'Value (AUD)' => 5_341_639.0
+      'Confidentiality - Outputs' => 'N',
+      'Publish Date' => '2026-01-05',
+      'Approval Date' => '2025-11-26',
+      'Start Date' => '2025-11-26',
+      'End Date' => '2026-10-26',
+      'Value (AUD)' => 5_341_639.0,
+      'Recipient Suburb' => 'CANBERRA',
+      'Recipient Town/City' => 'CANBERRA',
+      'Recipient Postcode' => '2600',
+      'Recipient State/Territory' => 'ACT',
+      'Recipient Country' => 'AUSTRALIA',
+      'Delivery State/Territory' => 'ACT',
+      'Delivery Postcode' => '2600',
+      'Delivery Country' => 'AUSTRALIA',
+      'Contact Name' => 'Legal Financial Assistance Casework Section'
     }
   end
 
@@ -42,6 +65,16 @@ describe AuGrants::RecordIndividualGrant, type: :service do
     expect(individual_transaction.fine_grained_transaction_category.name).to eq('Legal Services')
     expect(individual_transaction.transfer.transfer_type).to eq('government_grants')
     expect(individual_transaction.transfer.effective_date).to eq(Date.new(2026, 6, 30))
+  end
+
+  it 'records the description and recipient location' do
+    service.call
+
+    individual_transaction = IndividualTransaction.last
+    expect(individual_transaction.description).to eq('Financial assistance towards legal costs and related expenses - Financial assistance - Financial assistance')
+    expect(individual_transaction.city).to eq('CANBERRA')
+    expect(individual_transaction.state).to eq('ACT')
+    expect(individual_transaction.postcode).to eq('2600')
   end
 
   context 'when the same grant is processed twice' do
