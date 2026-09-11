@@ -15,12 +15,16 @@ class Councils::Qld::ImportElectionResultsJob
   ELECTORATES_URL = 'https://resultsdata.elections.qld.gov.au/%<stub>s-electorates.json'.freeze
 
   def perform(stub)
+    declared_candidates_page = fetch(declared_candidates_url(stub), 'declared candidates')
+    electorates_page = fetch(electorates_url(stub), 'electorates')
+
     contests = Councils::Qld::DeclaredResultsParser.call(
-      declared_candidates_page: fetch(declared_candidates_url(stub), 'declared candidates'),
-      electorates_page: fetch(electorates_url(stub), 'electorates'),
+      declared_candidates_page:,
+      electorates_page:,
       source_url: declared_candidates_url(stub),
       known_council_names: Councils::Qld::KnownCouncils.names
     )
+    notify_no_contest_councils(declared_candidates_page:, electorates_page:)
     return if contests.blank? # nothing declared yet for this election
 
     contests.each { |contest| record_contest(stub, contest) }
@@ -38,6 +42,14 @@ class Councils::Qld::ImportElectionResultsJob
     raise "Failed to download QLD #{label}: #{url}" if page.blank?
 
     page
+  end
+
+  def notify_no_contest_councils(declared_candidates_page:, electorates_page:)
+    Councils::Qld::DeclaredResultsParser.no_contest_council_names(
+      declared_candidates_page:,
+      electorates_page:,
+      known_council_names: Councils::Qld::KnownCouncils.names
+    ).each { |council_name| Councils::ArbitraryLeadershipWebsiteIngestJob.perform_async(council_name) }
   end
 
   def record_contest(stub, contest)
