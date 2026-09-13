@@ -3,13 +3,13 @@ require 'rails_helper'
 RSpec.describe BuildQueue, type: :service do
   describe '#call' do
     context 'when the queue_node is expandable' do
-      let(:councillor) { Person.create(name: 'Councillor') }
-      let(:council) { Group.create(name: 'Council') }
-      let(:party) { Group.create(name: 'Large Party') }
+      let(:councillor) { create(:person, name: 'Councillor') }
+      let(:council) { create(:group, name: 'Council') }
+      let(:party) { create(:group, name: 'Large Party') }
 
       before do
-        Membership.create(member: councillor, group: council)
-        Membership.create(member: councillor, group: party)
+        create(:membership, member: councillor, group: council)
+        create(:membership, member: councillor, group: party)
       end
 
       it 'returns all of its connected nodes, regardless of their own size' do
@@ -20,11 +20,11 @@ RSpec.describe BuildQueue, type: :service do
     end
 
     context 'when the queue_node itself is too large to expand' do
-      let(:large_party) { Group.create(name: 'Large Party') }
+      let(:large_party) { create(:group, name: 'Large Party') }
 
       before do
-        (Constants::MAX_NODES_TO_EXPAND + 1).times do |n|
-          Membership.create(member: Person.create(name: "Person #{n}"), group: large_party)
+        (Constants::MAX_NODES_TO_EXPAND + 1).times do
+          create(:membership, member: create(:person), group: large_party)
         end
       end
 

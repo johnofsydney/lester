@@ -10,18 +10,20 @@ class BuildQueue
 
   # returns an array of nodes.
   def call
-    expandable_queue.flat_map(&:nodes).uniq - visited_nodes
+    with_parents.map { |pair| pair[:child] }.uniq - visited_nodes
   end
 
   def with_parents
-    expandable_queue.flat_map do |queue_node|
+    @with_parents ||= expandable_queue.flat_map do |queue_node|
       queue_node.nodes.map { |next_node| {parent: queue_node, child: next_node} }
     end.uniq
   end
 
   private
 
+  # The traversal root (counter 0) always expands; its ceiling is
+  # Constants::MAX_NODE_COUNT_FIRST_DEGREE_CONNECTIONS, applied in consolidated_descendents.
   def expandable_queue
-    queue.select { |queue_node| CanAddToQueue.call(queue_node, counter) }
+    @expandable_queue ||= counter.zero? ? queue : queue.select { |queue_node| CanAddToQueue.call(queue_node) }
   end
 end

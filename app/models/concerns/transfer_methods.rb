@@ -50,7 +50,7 @@ module TransferMethods
       consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:)
     end
 
-    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], with_parents: [] )
+    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], with_parents: [])
       current_depth_memberships = []
 
       # sanity check in case of a large number of nodes on [self] for the first iteration

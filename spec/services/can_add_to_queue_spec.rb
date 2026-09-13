@@ -6,41 +6,37 @@ RSpec.describe CanAddToQueue, type: :service do
       let(:tag) { Tag.create(name: 'Coalition', type: 'Tag') }
 
       before do
-        Membership.create(member: Person.create(name: 'Person 1'), group: tag)
+        create(:membership, member: create(:person), group: tag)
       end
 
       it 'can be expanded' do
-        expect(described_class.call(tag, 1)).to be(true)
+        expect(described_class.call(tag)).to be(true)
       end
     end
 
     context 'when node has more members than MAX_NODES_TO_EXPAND' do
-      let(:large_group) { Group.create(name: 'Large Group') }
+      let(:large_group) { create(:group, name: 'Large Group') }
 
       before do
-        (Constants::MAX_NODES_TO_EXPAND + 1).times do |n|
-          Membership.create(member: Person.create(name: "Person #{n}"), group: large_group)
+        (Constants::MAX_NODES_TO_EXPAND + 1).times do
+          create(:membership, member: create(:person), group: large_group)
         end
       end
 
       it 'cannot be expanded' do
-        expect(described_class.call(large_group, 1)).to be(false)
-      end
-
-      it 'can be expanded when it is the root of the traversal' do
-        expect(described_class.call(large_group, 0)).to be(true)
+        expect(described_class.call(large_group)).to be(false)
       end
     end
 
-    context 'when counter is high but node is small' do
-      let(:small_group) { Group.create(name: 'Small Group') }
+    context 'when node is a small plain Group' do
+      let(:small_group) { create(:group, name: 'Small Group') }
 
       before do
-        Membership.create(member: Person.create(name: 'Person 1'), group: small_group)
+        create(:membership, member: create(:person), group: small_group)
       end
 
       it 'can be expanded' do
-        expect(described_class.call(small_group, 1000)).to be(true)
+        expect(described_class.call(small_group)).to be(true)
       end
     end
   end
