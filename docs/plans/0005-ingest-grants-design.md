@@ -49,6 +49,8 @@ GET https://www.grants.gov.au/Reports/GaPublishedDownload
 
 - Response: `application/vnd.openxmlformats-officedocument.spreadsheetml.sheet`
 - No user account required — session cookie from step 1 is sufficient
+- **Requires a realistic browser `User-Agent`** (confirmed 2026-08-29) — Faraday's default UA, and even a bare `"Mozilla/5.0"`, get a 403. A full Chrome-style UA string works
+- The show page sets **two** `Set-Cookie` headers (`UR_BCF` and `__RequestVerificationToken`) — both must be forwarded on the download request or it 403s. Faraday's Net::HTTP adapter merges multiple `Set-Cookie` response headers into one comma-joined string; forwarding that string verbatim as the `Cookie` header is invalid — each `name=value` pair (before its first `;`) must be extracted and re-joined with `; `
 - `DateType=Publish Date` with `DateStart`/`DateEnd` is the date filter
 - Date format: `DD-Mon-YYYY` (e.g. `05-Jan-2026`)
 - Single-day queries work fine; range queries also work
@@ -153,7 +155,7 @@ For GrantConnect, we don't yet know if `Value (AUD)` is:
 
 Also check: does `GaPublishedDownload` ever return versioned IDs (e.g. `GA484157-V1`)? In the sample (3 rows for 5-Jan-2026), all IDs were bare with no suffix. The Advanced Search with `LastedVariation=True` showed versioned suffixes. This suggests the Published report may only ever show original awards, not amendments — in which case the value question may not arise.
 
-**Until resolved:** Build the pipeline treating Value as per-grant. Flag for verification during testing against known amended grants.
+**Resolved (2026-08-25), refined (2026-09-13) after direct evidence — see "Amendment Detection & Handling" below:** `Value (AUD)` at any single row is a **cumulative snapshot as of that version**, not the true incremental value of that specific award or amendment — the same shape of problem AusTender has. For a grant that has never been amended, the row's value *is* the grant's true value, so the original v1 assumption ("no scraping needed") holds for the common case. But for an amended grant, the value changes across versions (proven: one real grant's value went `$3,294,711.20 → $3,039,418.80 → $3,294,711.20` — it decreased then increased, which is only possible if each row is a point-in-time snapshot, not a running total that only grows). Scraping is required to detect *which* grants have been amended and to recover the true original (pre-amendment) amount, which does not appear in either bulk export at all. See the new section below for the full mechanism.
 
 ---
 
@@ -196,9 +198,35 @@ Treat all recipients as `Group` initially. The existing `Groups::RecordGroup` ha
 
 Recommendation: skip aggregate grants in v1 (`next if row['Aggregate'] == 'Y'`), revisit later.
 
-### Confidential grants
+### Confidential grants / redacted recipients
 
-`Confidentiality - Contract: Y` rows have redacted recipient details (name shown as `n/a`, ABN as `ABN Exempt`). These are valid but low-value for transparency. Ingest as-is — the agency (giver) is still recorded, amount is real.
+**Resolved (2026-08-25), corrected (2026-08-29) after a live run against real GrantConnect data:** `Confidentiality - Contract: Y` does **not** reliably indicate a redacted recipient — a real row observed in the `05-Jan-2026` publish date had `Confidentiality - Contract: Y` with a fully real `Recipient Name` and ABN. The actual redaction signal is `Recipient Name == "n/a"` (`Release#redacted_recipient?`). Recording redacted rows as-is would merge every one of them across every agency into a single `Group` named "n/a" (name-only matching in `Groups::RecordGroup`), falsely linking unrelated redacted recipients. **Skip rows where the recipient is redacted, in v1**, same treatment as aggregate rows (`return if release.aggregate? || release.redacted_recipient?`). Do not key this off the confidentiality flag — it skips real, attributable grants. Revisit later if a way to keep redacted rows distinct (e.g. per-agency placeholder groups) is wanted.
+
+---
+
+## Amendment Detection & Handling
+
+**Added 2026-09-13, based on direct evidence pulled from real GrantConnect data (a full month, Jan 2026, 6,769 clean rows).** This mirrors the AusTender pipeline's central problem — the bulk-download value is a cumulative snapshot, not a per-award amount — and the fix is the same shape: the web show page is the ultimate source of truth, and per-amendment amounts are reconstructed by diffing consecutive snapshots. This section supersedes the "per-grant, no scraping needed" resolution above for any grant that has been amended.
+
+### Evidence
+
+- Across a full clean month of `GaPublishedDownload` data, **no `GA ID` ever repeats, and no version suffix ever appears.** `GO ID` and `Internal Reference ID` also do not indicate amendments — both are shared by many unrelated recipients under the same funding round/program (e.g. one `GO ID` covering 8 different universities' ARC grants). **`GaPublishedDownload` cannot tell you a grant has been amended, at all.**
+- `GaAdvancedSearchDownload` (queried without `LastedVariation=True`, across the same month) **does** carry version suffixes: `GA531362`, `GA531362-V1`; `GA528013`, `GA528013-V1`, `GA528013-V2`, etc. 52 of ~6,800 base GA IDs in the sample month had at least one variation.
+- `Publish Date` is **identical across every version of a grant** — only a `Last Updated` timestamp (visible in `GaAdvancedSearchDownload`, not in `GaPublishedDownload`) changes when a grant is amended. Amendments were observed landing many months after the original publish date (a Jan-2026 grant amended as late as Sep-2026 in the sample).
+- The base (no-suffix) row in both bulk exports **mirrors the current/latest value, not the original.** For `GA528013`: base row and `-V2` both show `$3,294,711.20`; `-V1` shows `$3,039,418.80` (an actual decrease, proving these are point-in-time snapshots, not a running total).
+- The show page (`/Ga/Show/{guid}`, reachable via `Ga ID` → HTML `GaAdvancedSearch` page → `/Ga/Show/{guid}` link, no XLSX download involved) is the **only** place the true original (pre-amendment) value appears — it's not in either bulk export. For `GA528013` the show page reports `Value (AUD): $3,294,711.20` with `Original: $2,279,564.10`, and a `Variations:` list: `GA528013-V2 - Increase in Grant Funding (23-Jul-2026)`, `GA528013-V1 - Increase in Grant Funding and change to End Date (2-Jul-2026)`.
+- The `Variations:` list gives a human-readable reason and date **per variation, but not a dollar amount** — so even the show page doesn't hand you each amendment's own value directly. That still has to be reconstructed by diffing.
+
+### Mechanism (mirrors AusTender's amendment scraping)
+
+1. **Cheaper detection than AusTender's "scrape every row":** AusTender's API gives no versioning signal at all, so every contract gets scraped. Here, `GaAdvancedSearchDownload` already reveals in bulk which base `GA ID`s have any `-V` siblings — so only that subset needs a show-page scrape, not every grant. Whether to source this via a periodic bulk `GaAdvancedSearchDownload` diff, or by checking each ingested grant's show page directly, is an implementation choice (see Open Questions below).
+2. **GUID resolution:** the plain HTML `GaAdvancedSearch` results page (not the `...Download` XLSX endpoint) links directly to `/Ga/Show/{guid}` per result — a normal two-step scrape (search by `GaId=`, extract the GUID, fetch the show page), same shape as AusTender's contract-UUID resolution.
+3. **Reconstructing per-version amounts:** order a grant's versions chronologically (`Original` from the show page, then each `-V<n>`'s cumulative value from the bulk export, ordered by `Last Updated` since `Publish Date` is frozen). Diff consecutive cumulative values to get each version's own incremental amount — `Original → V1` is the first amendment's value, `V1 → V2` the second, and so on. This is the same diffing AusTender already does for contract amendments.
+4. **New polling requirement:** since amendments don't get a new `Publish Date`, our current daily-by-publish-date job structurally cannot discover them after the fact. Catching amendments going forward needs a re-check mechanism keyed on something other than publish date — closer to AusTender's "poll by contract-last-modified date" model than our current "poll by publish date, once" model. Whether GrantConnect's search supports filtering by `Last Updated` directly (as a `DateType` option, alongside the observed `Publish Date`/`Approval Date`/`Start Date`/`End Date`) is unconfirmed — needs checking against the search form's actual `DateType` dropdown options.
+
+### Implication for scope
+
+This is materially more work than the original "no scraping needed" v1 design assumed. The un-amended common case (no version suffix ever observed for that GA ID) still needs no scraping — the bulk export value is correct as-is. Only the amended subset needs the show-page/diffing treatment. Given only 52 of ~6,800 grants (~0.8%) had any amendment in the sample month, prioritise: ship the current no-scrape pipeline for the common case first (already done), then add amendment detection + reconciliation as a distinct, later phase — do not block the whole pipeline on solving amendment handling first.
 
 ---
 
@@ -236,6 +264,7 @@ AuGrants::XlsxParser
 AuGrants::RecordIndividualGrant  # mirrors AusTender::RecordIndividualTransaction
   - Dedup: IndividualTransaction.exists?(external_id: ga_id) → return if exists
   - Skip if aggregate (Aggregate == 'Y') — v1
+  - Skip if confidential (Confidentiality - Contract == 'Y') — v1, avoids false-merging redacted "n/a" recipients
   - RecordGroup for agency (giver) — name only
   - RecordGroup for recipient (taker) — ABN if present, else name only
   - Transfer.find_or_create_by!(giver, taker, effective_date, transfer_type: 'government_grants')
@@ -257,7 +286,7 @@ e.g. `https://www.grants.gov.au/Ga/Show/GA523941`. This gives a direct link to t
 
 ### `fine_grained_transaction_category`
 
-The XLSX `Category` column (e.g. `"Aged Care"`, `"Legal Services"`, `"Broadcasting and Telecommunications"`) maps naturally to `FineGrainedTransactionCategory`. In v1, leave this nil and treat it as a future enhancement — populate once a category seeding strategy is agreed (either auto-create from XLSX values or map to a pre-seeded list).
+**Resolved (2026-08-25):** `IndividualTransaction.fine_grained_transaction_category` is a required (non-optional) association, so it cannot be left nil. Auto-create from the XLSX `Category` column, same as AusTender: `FineGrainedTransactionCategory.find_or_create_by!(name: release.category)`.
 
 ### Key differences from AusTender
 
@@ -265,10 +294,10 @@ The XLSX `Category` column (e.g. `"Aged Care"`, `"Legal Services"`, `"Broadcasti
 |-----------|--------|
 | Fetches by contract modification date | Fetches by publish date |
 | Two-step: API list → individual contract fetch | One-step: single XLSX contains all data |
-| Scrapes detail page for amount + category | Amount in XLSX; no scrape needed (pending VALUE resolution) |
-| Circuit breaker for scraper | No scraping in v1 — simpler |
+| Scrapes detail page for amount + category, for every contract | Amount in XLSX is correct as-is for un-amended grants (the common case); detail-page scrape + diffing only needed for the ~0.8% of grants with a variation (see "Amendment Detection & Handling") |
+| Circuit breaker for scraper | Scraping is a smaller, later-phase concern — only touches amended grants, not every row |
 | No ABN in API; relies on supplier field | Recipient ABN in XLSX directly |
-| Amount from web scrape (not cumulative API value) | Amount from XLSX (per-grant — to be verified) |
+| Amount from web scrape (always, since API never gives per-amendment value) | Amount from XLSX directly for un-amended grants; web scrape + snapshot-diffing only for amended ones |
 | `transaction_type: 'government_contract'` | `transaction_type: 'government_grant'` |
 | Amount stored as integer (cents) from web scrape | Convert `Value (AUD)` float × 100 → integer cents |
 
@@ -285,16 +314,19 @@ The XLSX `Category` column (e.g. `"Aged Care"`, `"Legal Services"`, `"Broadcasti
 7. `IngestGrantsByDateJob` (daily)
 8. `BackfillGrantsMasterJob` (monthly + manual trigger for historical backfill)
 9. Flipper flag to gate rollout, admin trigger for manual backfill
-10. (Later) Detail page scraping for VALUE if needed
+10. **(Later, separate phase) Amendment detection & reconciliation** — see "Amendment Detection & Handling": GUID resolution, show-page scrape, cumulative-snapshot diffing, and a new re-check polling mechanism (not keyed on publish date). Do not block the common-case pipeline on this.
 11. (Later) ARC grants as secondary source (separate pipeline, different model — lead investigator is a Person)
 
 ---
 
 ## Open Questions
 
-1. **VALUE cumulative or per-grant?** — resolve before writing amount logic (see above)
-2. **Does `GaPublishedDownload` ever return versioned GA IDs (`-V1`, `-V2`)?** — observed bare IDs only in the sample; needs confirmation across busier dates
+1. ~~**VALUE cumulative or per-grant?**~~ — refined 2026-09-13: per-grant for un-amended grants (the common case, correct as originally resolved); cumulative-snapshot-per-version for amended grants, requiring scrape + diff. See "Amendment Detection & Handling".
+2. ~~**Does `GaPublishedDownload` ever return versioned GA IDs?**~~ — resolved 2026-09-13: no, never — confirmed across a full clean month (6,769 rows, zero version suffixes). Only `GaAdvancedSearchDownload` carries them.
 3. **How far back to backfill?** — data exists from Dec 2017. At ~13K rows/month × 8.5 years ≈ 1.3M rows. Consider starting from a more recent year (e.g. FY2021) and expanding
 4. **Aggregate grants** — skip in v1 or ingest with a placeholder recipient?
 5. **Agency ABN** — the XLSX has no agency ABN column. Agencies are government departments and unlikely to need ABN matching, but worth noting. Use name-only matching for givers.
-6. **`GaPublishedDownload` vs `GaAdvancedSearchDownload`** — confirm the Published endpoint is strictly superior (has ABN, richer fields) and retire the Advanced Search URL from the plan
+6. ~~**`GaPublishedDownload` vs `GaAdvancedSearchDownload`**~~ — resolved 2026-09-13: neither retires the other. `GaPublishedDownload` stays primary for the daily common-case ingest (richer fields, ABN). `GaAdvancedSearchDownload` is now known to be load-bearing for amendment detection (it's the only bulk source that carries version suffixes) — keep both.
+7. **New (2026-09-13): does GrantConnect's search support filtering by `Last Updated`/amendment date?** Needed to build a re-check polling job that can discover amendments after the fact, since `Publish Date` never changes when a grant is amended. Check the search form's actual `DateType` dropdown options.
+8. **New (2026-09-13): bulk-diff vs per-grant show-page check for amendment detection?** — either periodically re-pull `GaAdvancedSearchDownload` and diff against already-recorded external_ids for new `-V` siblings, or check each ingested grant's show page directly. Bulk-diff is likely cheaper (matches the AusTender-improvement noted above) but unverified against real polling volume.
+9. ~~**A parsed blank/malformed row bug existed in `XlsxParser`**~~ — fixed 2026-09-13. Two distinct issues, both now covered by real-fixture specs (`spec/fixtures/au_grants/`): (a) `row&.any?` only filtered fully-`nil` rows, not all-empty-string rows; (b) more seriously, on a day with **zero published grants**, GrantConnect's XLSX contains a literal message row — `"There are no results that match your selection."` in the Agency column, everything else `nil` — which was passing through as a fake grant record (would have created a real `Group` named after that message string). Fixed by filtering on `GA ID` presence directly (a genuine row always has one; both bad-row shapes don't).
