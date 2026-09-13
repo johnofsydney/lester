@@ -27,7 +27,10 @@ class Councils::Vic::ImportCouncilResultRowJob
     raise "Failed to download VIC council results: #{url}" if page.blank?
 
     result = Councils::Vic::CouncillorResultsParser.call(page)
-    return if result.blank? # not yet declared -- nothing to record yet
+    if result.blank?
+      Councils::ArbitraryLeadershipWebsiteIngestJob.perform_async(council_name) if Councils::Vic::CouncillorResultsParser.no_contest_expected?(page)
+      return # not yet declared, or no contest expected this cycle -- nothing to record
+    end
 
     council = Groups::RecordGroup.call(council_name)
     council.add_to_tag(tag_name: LOCAL_COUNCILS_TAG_NAME)
