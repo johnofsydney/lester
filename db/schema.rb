@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_050456) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_051912) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -40,13 +40,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_050456) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
-  end
-
-  create_table "contract_backfills", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.date "last_processed_date", null: false
-    t.datetime "updated_at", null: false
-    t.index ["last_processed_date"], name: "index_contract_backfills_on_last_processed_date", unique: true
   end
 
   create_table "external_identifiers", force: :cascade do |t|
