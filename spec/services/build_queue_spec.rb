@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe BuildQueue do
+RSpec.describe BuildQueue, type: :service do
   describe '#call' do
     context 'when the queue_node is expandable' do
       let(:councillor) { Person.create(name: 'Councillor') }
@@ -29,9 +29,15 @@ RSpec.describe BuildQueue do
       end
 
       it 'does not enumerate its members' do
-        build_queue = described_class.new([large_party], [], [], 0)
+        build_queue = described_class.new([large_party], [], [], 1)
 
         expect(build_queue.call).to eq([])
+      end
+
+      it 'enumerates its members when it is the root of the traversal' do
+        build_queue = described_class.new([large_party], [], [], 0)
+
+        expect(build_queue.call.size).to eq(Constants::MAX_NODES_TO_EXPAND + 1)
       end
     end
   end
