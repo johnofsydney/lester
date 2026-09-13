@@ -1,7 +1,7 @@
 # Consider building the new graph pipeline as a parallel, swappable system
 
 **Context:** raised while designing the Capped-node rework
-([[large-groups-should-terminate-not-exclude]]). The graph pipeline has four independent stages —
+(now ADR 0012, `docs/adr/0012-capped-nodes-and-traversal-budget.md`). The graph pipeline has four independent stages —
 traversal/building (`BuildQueue`/`CanAddToQueue`), caching (`Cache::Build*CachedDataJob`),
 rehydrating (`RehydratedNode`/`CachedMethods`), and views. Idea: build the reworked version of each
 stage as a parallel implementation that can be swapped in independently, rather than editing the
