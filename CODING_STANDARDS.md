@@ -152,6 +152,13 @@ comment, a rework) or a stated preference on record — not as a preemptive styl
     silencing it, so the enqueue itself stays covered.
   - Applies to both real `Sidekiq::Job` classes calling `.perform_async` directly and ActiveJob-based
     jobs routed through the sidekiq queue adapter.
+  - **Also stub direct Redis/queue introspection** — `Sidekiq::Queue.new(:x).size`,
+    `Sidekiq::Stats.new`, etc. are not job enqueues but still require a live Redis connection and
+    fail with the same `RedisClient::CannotConnectError` in CI. A spec `before` block that stubs
+    `perform_async`/`perform_in` but not `Sidekiq::Queue.new` will pass locally (if Redis happens to
+    be running) and fail deterministically in CI. See `AuGrants::BackfillGrantsMasterJob` and its
+    spec for an example of `queue_overloaded?` needing `Sidekiq::Queue` stubbed in every example,
+    not only the one deliberately testing the overloaded branch.
 - **Stub-then-assert idiom**: stub a collaborator/job with `allow(...).to receive(...)` in a
   `before` block, then assert on it later with `have_received(...).with(...)` — not an inline
   `expect(...).to receive(...)` at the point of the call. Keeps the "this gets called" assertion

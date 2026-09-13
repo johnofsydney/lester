@@ -6,6 +6,7 @@ RSpec.describe AuGrants::BackfillGrantsMasterJob, type: :job do
   before do
     allow(AuGrants::IngestGrantsByDateJob).to receive(:perform_async)
     allow(described_class).to receive(:perform_in)
+    allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))
     travel_to Date.new(2026, 2, 3)
   end
 
