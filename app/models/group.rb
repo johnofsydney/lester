@@ -105,6 +105,16 @@ class Group < ApplicationRecord
     )
   end
 
+  MATCHING_NAME_SIMILARITY_THRESHOLD = 0.4
+
+  # strict_word_similarity anchors to whole-word boundaries, so a short query against a
+  # long multi-word name (e.g. "labor" vs "Australian Labor Party") still matches -
+  # plain similarity()/the % operator scores that too low to pass its default threshold.
+  scope :matching_name, lambda { |term|
+    where(sanitize_sql_array(['strict_word_similarity(?, name) >= ?', term, MATCHING_NAME_SIMILARITY_THRESHOLD]))
+      .order(Arel.sql(sanitize_sql_array(['strict_word_similarity(?, name) DESC', term])))
+  }
+
   scope :with_business_number, -> { where.not(business_number: [nil, '']) }
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ..4.days.ago).or(where(nodes_count_cached: nil)) }
