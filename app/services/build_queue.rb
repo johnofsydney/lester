@@ -10,14 +10,10 @@ class BuildQueue
 
   # returns an array of nodes.
   def call
-    return [] if (queue.empty? || queue.nil?)
-
     expandable_queue.flat_map(&:nodes).uniq - visited_nodes
   end
 
   def with_parents
-    return [] if (queue.empty? || queue.nil?)
-
     expandable_queue.flat_map do |queue_node|
       queue_node.nodes.map { |next_node| {parent: queue_node, child: next_node} }
     end.uniq
