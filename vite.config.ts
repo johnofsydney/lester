@@ -17,11 +17,12 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/react') || id.includes('node_modules/react-dom')) {
+          if (
+            id.includes('node_modules/react') ||
+            id.includes('node_modules/react-dom') ||
+            id.includes('node_modules/@inertiajs/react')
+          ) {
             return 'vendor'
-          }
-          if (id.includes('node_modules/@inertiajs/react')) {
-            return 'inertia'
           }
         },
       },
