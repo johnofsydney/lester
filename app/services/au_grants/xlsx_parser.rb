@@ -11,9 +11,15 @@ class AuGrants::XlsxParser
 
     ((HEADER_ROW + 1)..sheet.last_row).filter_map do |r|
       row = sheet.row(r)
-      next unless row&.any?
+      next unless row
 
-      headers.zip(row.map { |cell| json_safe(cell) }).to_h
+      parsed = headers.zip(row.map { |cell| json_safe(cell) }).to_h
+      # A row with no GA ID is not a real grant -- either a blank trailing row, or the
+      # literal "There are no results that match your selection." row GrantConnect
+      # returns in place of data on a day with zero published grants.
+      next if parsed['GA ID'].blank?
+
+      parsed
     end
   end
 
