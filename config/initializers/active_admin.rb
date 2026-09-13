@@ -155,6 +155,7 @@ ActiveAdmin.setup do |config|
   #
   # You can customize the comment menu:
   # config.comments_menu = { parent: 'Admin', priority: 1 }
+  config.comments = false
 
   # == Batch Actions
   #
@@ -261,6 +262,13 @@ ActiveAdmin.setup do |config|
   #       menu.add label: "My Great Website", url: "http://www.mygreatwebsite.com", html_options: { target: :blank }
   #     end
   #   end
+
+  config.namespace :admin do |admin|
+    admin.build_menu :utility_navigation do |menu|
+      menu.add label: 'View Site', url: '/', priority: 0
+      admin.add_logout_button_to_menu menu
+    end
+  end
 
   # == Download Links
   #

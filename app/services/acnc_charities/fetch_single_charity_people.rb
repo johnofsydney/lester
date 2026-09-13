@@ -14,16 +14,16 @@ class AcncCharities::FetchSingleCharityPeople
   def call
     # Part 1 - query API for UUID
     response = connection(search_url).get
-    raise ResponseFailed.new("Request failed: #{response.inspect}") unless response.success? && response.body.present?
+    raise ResponseFailed.new("Request failed: status=#{response.status}") unless response.success? && response.body.present?
 
     body = JSON.parse(response.body)
-    raise NoResultsFound.new("No results found: #{response.inspect}") if !body['results'].is_a?(Array) || body['results'][0].nil?
+    raise NoResultsFound.new("No results found: status=#{response.status}") if !body['results'].is_a?(Array) || body['results'][0].nil?
 
     @uuid = body['results'][0]['uuid']
 
     #  Part 2 - fetch people page
     response = connection(people_url).get
-    raise ResponseFailed.new("People request failed: #{response.inspect}") unless response.success? && response.body.present?
+    raise ResponseFailed.new("People request failed: status=#{response.status}") unless response.success? && response.body.present?
 
     doc = Nokogiri::HTML(response.body)
     people_count = 0
@@ -33,7 +33,7 @@ class AcncCharities::FetchSingleCharityPeople
     # cards = doc.css('.card-body')
     if cards.empty?
       Rails.logger.info("People not found for charity #{@charity.id} - raise and retry")
-      raise NoResultsFound.new("People not found for charity #{@charity.id}. Response: #{response.inspect}")
+      raise NoResultsFound.new("People not found for charity #{@charity.id}. Response status: #{response.status}")
     end
 
     cards.each do |card|

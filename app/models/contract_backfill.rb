@@ -1,2 +1,0 @@
-class ContractBackfill < ApplicationRecord
-end

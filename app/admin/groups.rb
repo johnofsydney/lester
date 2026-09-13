@@ -15,18 +15,22 @@ ActiveAdmin.register Group do
   #   permitted
   # end
 
-  permit_params :name, :business_number
+  permit_params :name, :business_number, :aec_id, :acnc_id, :open_australia_id
 
   filter :id
   filter :name
   filter :views, as: :numeric
   filter :type
+  filter :by_external_identifier, as: :string, label: 'External ID (AEC / ACNC / Open Australia)'
+  filter :by_trading_name, as: :string, label: 'Trading Name'
 
   index do
     selectable_column
     id_column
     column(:name, sortable: 'name')
     column(:business_number, sortable: 'business_number')
+    column('AEC ID', &:aec_id)
+    column('ACNC ID', &:acnc_id)
     column :views
     column('Memberships (as owning group)') do |group|
       group.memberships.count
@@ -49,6 +53,21 @@ ActiveAdmin.register Group do
       row('Memberships (as member)') { Membership.where(member: resource).count }
       row('Direct Transfers In') { number_to_currency resource.incoming_transfers.sum(:amount), precision: 0 }
       row('Direct Transfers Out') { number_to_currency resource.outgoing_transfers.sum(:amount), precision: 0 }
+    end
+
+    panel 'External Identifiers' do
+      table_for resource.external_identifiers.order(:source) do
+        column :source
+        column :value
+        column :created_at
+      end
+    end
+
+    panel 'Trading Names' do
+      table_for resource.trading_names.order(:name) do
+        column :name
+        column :created_at
+      end
     end
 
     panel 'Memberships (as owning group)' do
@@ -92,6 +111,11 @@ ActiveAdmin.register Group do
       f.input :name
       f.input :business_number
       f.input :type, as: :select, collection: %w[Group Tag], include_blank: false
+    end
+    f.inputs 'External Identifiers' do
+      f.input :aec_id, label: 'AEC ID'
+      f.input :acnc_id, label: 'ACNC ID'
+      f.input :open_australia_id, label: 'Open Australia ID'
     end
     f.actions
   end
@@ -221,6 +245,10 @@ ActiveAdmin.register Group do
   end
 
   controller do
+    def scoped_collection
+      super.includes(:external_identifiers)
+    end
+
     def destroy
       @group = Group.find(params[:id])
 
