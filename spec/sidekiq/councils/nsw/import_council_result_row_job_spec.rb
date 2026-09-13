@@ -163,6 +163,14 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
         expect(Person.count).to eq(0)
         expect(Membership.count).to eq(0)
       end
+
+      it 'invokes the arbitrary leadership website fallback with the council name' do
+        allow(Councils::ArbitraryLeadershipWebsiteIngestJob).to receive(:perform_async)
+
+        described_class.new.perform(council_name, council_slug)
+
+        expect(Councils::ArbitraryLeadershipWebsiteIngestJob).to have_received(:perform_async).with(council_name)
+      end
     end
 
     context 'when the council runs its own election, outside NSWEC' do
@@ -175,6 +183,14 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
         expect(Group.find_by(name: council_name)).to be_nil
         expect(Person.count).to eq(0)
         expect(Membership.count).to eq(0)
+      end
+
+      it 'invokes the arbitrary leadership website fallback with the council name' do
+        allow(Councils::ArbitraryLeadershipWebsiteIngestJob).to receive(:perform_async)
+
+        described_class.new.perform(council_name, council_slug)
+
+        expect(Councils::ArbitraryLeadershipWebsiteIngestJob).to have_received(:perform_async).with(council_name)
       end
     end
 

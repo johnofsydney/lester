@@ -17,8 +17,20 @@ class Councils::Vic::CouncillorResultsParser
   EXCLUDED_CONTEST_REGEX = /\ALeadership Team\b/i
   ELECTED_CANDIDATES_HEADING = 'Elected candidates'.freeze
 
+  # A VIC council can be under state-appointed administration for a cycle (the Minister for Local
+  # Government can dismiss a council under the Local Government Act 2020) and hold no ordinary
+  # election that cycle -- analogous to NSW's administration/self-run cases (see
+  # Councils::Nsw::ResultsPageParser::NO_CONTEST_REGEX). No live example has been confirmed for VIC
+  # yet (unlike NSW's confirmed Balranald/Fairfield/Liverpool/Penrith), so this is a best-effort
+  # regex pending a real observed case to tune it against.
+  NO_CONTEST_REGEX = /administrators? (have been|were|was) appointed|under (the )?administration|no election (was|will be) held/i
+
   def self.call(page)
     new(page).call
+  end
+
+  def self.no_contest_expected?(page)
+    page.to_s.match?(NO_CONTEST_REGEX)
   end
 
   def initialize(page)
