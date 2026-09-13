@@ -1,6 +1,29 @@
 require 'rails_helper'
 
 RSpec.describe TransferMethods do
+  describe '#consolidated_descendents' do
+    context 'when the traversal budget is exhausted' do
+      let(:root) { create(:person, name: 'Root') }
+      let(:group_a) { create(:group, name: 'Group A') }
+      let(:group_b) { create(:group, name: 'Group B') }
+      let(:other_person) { create(:person, name: 'Other Person') }
+
+      before do
+        stub_const('Constants::TRAVERSAL_BUDGET', 2)
+
+        create(:membership, member: root, group: group_a)
+        create(:membership, member: root, group: group_b)
+        create(:membership, member: other_person, group: group_a)
+      end
+
+      it 'stops the whole traversal without expanding into the next depth' do
+        descendents = root.consolidated_descendents(depth: 4)
+
+        expect(descendents.map(&:name)).not_to include(other_person.name)
+      end
+    end
+  end
+
   describe '#tag_incoming_transfers' do
     it 'returns Transfer.none when the group is not a tag' do
       group = create(:group)
