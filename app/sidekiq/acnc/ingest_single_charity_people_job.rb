@@ -11,15 +11,16 @@ class Acnc::IngestSingleCharityPeopleJob
   def perform(charity_id)
     charity = Group.find(charity_id)
     AcncCharities::FetchSingleCharityPeople.call(charity)
+    IngestSourceStatus.record_success(self.class.name)
   rescue ActiveRecord::RecordNotFound, NoResultsFound => e
     Rails.logger.error "Charity not found for Acnc::IngestSingleCharityPeopleJob: #{charity_id}"
-    ApiLog.create(message: e.message)
+    IngestSourceStatus.record_failure(self.class.name, e)
     # Don't re-raise - this won't be fixed by retrying
   rescue ResponseFailed, Net::ReadTimeout => e
     # anticipated errors
     Rails.logger.error "Error processing Acnc::IngestSingleCharityPeopleJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(message: e.message)
+    IngestSourceStatus.record_failure(self.class.name, e)
     raise e
   end
 end
