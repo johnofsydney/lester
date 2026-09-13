@@ -15,6 +15,18 @@ class Councils::Qld::ImportElectionResultsJob
   ELECTORATES_URL = 'https://resultsdata.elections.qld.gov.au/%<stub>s-electorates.json'.freeze
 
   def perform(stub)
+    import_election_results(stub)
+    IngestSourceStatus.record_success(self.class.name)
+  rescue StandardError => e
+    Rails.logger.error "Error processing Councils::Qld::ImportElectionResultsJob(#{stub}): #{e.message} - will retry"
+    Rails.logger.error e.backtrace.join("\n")
+    IngestSourceStatus.record_failure(self.class.name, e)
+    raise e
+  end
+
+  private
+
+  def import_election_results(stub)
     contests = Councils::Qld::DeclaredResultsParser.call(
       declared_candidates_page: fetch(declared_candidates_url(stub), 'declared candidates'),
       electorates_page: fetch(electorates_url(stub), 'electorates'),
@@ -24,14 +36,7 @@ class Councils::Qld::ImportElectionResultsJob
     return if contests.blank? # nothing declared yet for this election
 
     contests.each { |contest| record_contest(stub, contest) }
-  rescue StandardError => e
-    Rails.logger.error "Error processing Councils::Qld::ImportElectionResultsJob(#{stub}): #{e.message} - will retry"
-    Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: stub, message: e.message)
-    raise e
   end
-
-  private
 
   def fetch(url, label)
     page = Councils::PageDownloader.call(url)

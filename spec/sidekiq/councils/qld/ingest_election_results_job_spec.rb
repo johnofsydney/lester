@@ -25,9 +25,9 @@ RSpec.describe Councils::Qld::IngestElectionResultsJob, type: :job do
     context 'when the elections index has no local elections' do
       before { allow(Councils::Qld::Elections).to receive(:local).and_return([]) }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /No QLD local elections found/)
-        expect(ApiLog.last.endpoint).to eq(Councils::Qld::Elections::ELECTIONS_URL)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
         expect(Councils::Qld::ImportElectionResultsJob).not_to have_received(:perform_in)
       end
     end
@@ -35,9 +35,9 @@ RSpec.describe Councils::Qld::IngestElectionResultsJob, type: :job do
     context 'when discovering elections raises' do
       before { allow(Councils::Qld::Elections).to receive(:local).and_raise('boom') }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform }.to raise_error('boom')
-        expect(ApiLog.last.endpoint).to eq(Councils::Qld::Elections::ELECTIONS_URL)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_error).to eq('boom')
       end
     end
   end

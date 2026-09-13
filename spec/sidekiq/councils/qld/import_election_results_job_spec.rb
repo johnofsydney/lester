@@ -33,9 +33,9 @@ RSpec.describe Councils::Qld::ImportElectionResultsJob, type: :job do
       let(:declared_candidates_page) { nil }
       let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_electorates.json').read }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform(stub) }.to raise_error(RuntimeError, /Failed to download QLD declared candidates/)
-        expect(ApiLog.last.endpoint).to eq(stub)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
         expect(Councils::Qld::RecordContestResultJob).not_to have_received(:perform_async)
       end
     end
@@ -44,9 +44,9 @@ RSpec.describe Councils::Qld::ImportElectionResultsJob, type: :job do
       let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_declared_candidates.json').read }
       let(:electorates_page) { nil }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform(stub) }.to raise_error(RuntimeError, /Failed to download QLD electorates/)
-        expect(ApiLog.last.endpoint).to eq(stub)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
   end

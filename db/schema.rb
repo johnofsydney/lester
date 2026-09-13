@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_03_071718) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_050456) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -40,13 +40,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_071718) do
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
-  end
-
-  create_table "api_logs", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "endpoint"
-    t.text "message"
-    t.datetime "updated_at", null: false
   end
 
   create_table "contract_backfills", force: :cascade do |t|
@@ -137,6 +130,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_03_071718) do
     t.index ["giver_type", "giver_id"], name: "index_individual_transactions_on_giver"
     t.index ["taker_type", "taker_id"], name: "index_individual_transactions_on_taker"
     t.index ["transfer_id"], name: "index_individual_transactions_on_transfer_id"
+  end
+
+  create_table "ingest_source_statuses", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "key", null: false
+    t.string "last_error", limit: 1000
+    t.datetime "last_failure_at"
+    t.datetime "last_run_at"
+    t.datetime "last_success_at"
+    t.datetime "updated_at", null: false
+    t.index ["key"], name: "index_ingest_source_statuses_on_key", unique: true
   end
 
   create_table "maintenance_tasks_runs", force: :cascade do |t|
