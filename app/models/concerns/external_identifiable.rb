@@ -3,6 +3,16 @@ module ExternalIdentifiable
 
   included do
     has_many :external_identifiers, as: :owner, dependent: :destroy
+
+    scope :by_external_identifier, lambda { |value|
+      return all if value.blank?
+
+      joins(:external_identifiers).where(external_identifiers: { value: value })
+    }
+
+    def self.ransackable_scopes(_auth_object = nil)
+      [:by_external_identifier]
+    end
   end
 
   def aec_id
