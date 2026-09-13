@@ -139,6 +139,34 @@ RSpec.describe Councils::Vic::ImportCouncilResultRowJob, type: :job do
         expect(Person.count).to eq(0)
         expect(Membership.count).to eq(0)
       end
+
+      it 'does not invoke the arbitrary leadership website fallback' do
+        allow(Councils::ArbitraryLeadershipWebsiteIngestJob).to receive(:perform_async)
+
+        described_class.new.perform(council_name, council_slug)
+
+        expect(Councils::ArbitraryLeadershipWebsiteIngestJob).not_to have_received(:perform_async)
+      end
+    end
+
+    context 'when the council is under state-appointed administration' do
+      let(:page) { Rails.root.join('spec/fixtures/councils/vic/councillor_under_administration.html').read }
+
+      it 'does not raise, and does not create the council Group, any Person, or any Membership' do
+        expect { described_class.new.perform(council_name, council_slug) }.not_to raise_error
+
+        expect(Group.find_by(name: council_name)).to be_nil
+        expect(Person.count).to eq(0)
+        expect(Membership.count).to eq(0)
+      end
+
+      it 'invokes the arbitrary leadership website fallback with the council name' do
+        allow(Councils::ArbitraryLeadershipWebsiteIngestJob).to receive(:perform_async)
+
+        described_class.new.perform(council_name, council_slug)
+
+        expect(Councils::ArbitraryLeadershipWebsiteIngestJob).to have_received(:perform_async).with(council_name)
+      end
     end
 
     context 'when the page fails to download' do
