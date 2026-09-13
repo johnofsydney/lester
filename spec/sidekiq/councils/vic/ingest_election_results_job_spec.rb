@@ -6,6 +6,10 @@ RSpec.describe Councils::Vic::IngestElectionResultsJob, type: :job do
     let(:index_url) { "https://www.vec.vic.gov.au/results/council-election-results/#{election_year}-council-election-results" }
 
     before do
+      Councils::Vic::Elections.reset!
+      allow(Councils::PageDownloader).to receive(:call)
+        .with(Councils::Vic::Elections::INDEX_URL)
+        .and_return(Rails.root.join('spec/fixtures/councils/vic/cycle_index.html').read)
       allow(Councils::PageDownloader).to receive(:call)
         .with(index_url)
         .and_return(index_page)

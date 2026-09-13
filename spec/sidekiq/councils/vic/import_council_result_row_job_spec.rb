@@ -7,6 +7,11 @@ RSpec.describe Councils::Vic::ImportCouncilResultRowJob, type: :job do
     let(:expected_url) { "https://www.vec.vic.gov.au/results/council-election-results/#{Councils::Vic::Elections.latest[:year]}-council-election-results/#{council_slug}" }
 
     before do
+      Councils::Vic::Elections.reset!
+      allow(Councils::PageDownloader).to receive(:call)
+        .with(Councils::Vic::Elections::INDEX_URL)
+        .and_return(Rails.root.join('spec/fixtures/councils/vic/cycle_index.html').read)
+
       # Group.government_department_tag and Group.local_councils_tag are hardcoded to
       # production-only IDs (app/models/group.rb) -- stub them so they don't blow up against the
       # test DB.
@@ -83,7 +88,7 @@ RSpec.describe Councils::Vic::ImportCouncilResultRowJob, type: :job do
     end
 
     context 'when backfilling a non-latest election cycle' do
-      let(:backfill_election) { Councils::Vic::Elections::ALL.first }
+      let(:backfill_election) { Councils::Vic::Elections.find(2020) }
       let(:expected_url) { "https://www.vec.vic.gov.au/results/council-election-results/#{backfill_election[:year]}-council-election-results/#{council_slug}" }
       let(:page) { Rails.root.join('spec/fixtures/councils/vic/councillor_declared.html').read }
 
