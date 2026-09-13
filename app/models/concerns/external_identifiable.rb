@@ -9,10 +9,6 @@ module ExternalIdentifiable
 
       joins(:external_identifiers).where(external_identifiers: { value: value })
     }
-
-    def self.ransackable_scopes(_auth_object = nil)
-      [:by_external_identifier]
-    end
   end
 
   def aec_id

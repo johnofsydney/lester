@@ -24,6 +24,7 @@ ActiveAdmin.register Person do
   filter :linkedin_url
   filter :linkedin_ingested, as: :date_range
   filter :by_external_identifier, as: :string, label: 'External ID (AEC / ACNC / Open Australia)'
+  filter :by_trading_name, as: :string, label: 'Trading Name'
 
   index do
     selectable_column
@@ -56,6 +57,13 @@ ActiveAdmin.register Person do
       table_for resource.external_identifiers.order(:source) do
         column :source
         column :value
+        column :created_at
+      end
+    end
+
+    panel 'Trading Names' do
+      table_for resource.trading_names.order(:name) do
+        column :name
         column :created_at
       end
     end
