@@ -3,6 +3,7 @@ require 'rails_helper'
 describe AuGrants::RecordIndividualGrant, type: :service do
   before do
     allow(Transfers::RefreshSingleTransferAmountJob).to receive(:perform_in).and_return(true)
+    allow(Abn::UpdateGroupNamesJob).to receive(:perform_async)
   end
 
   let(:row) do
