@@ -45,7 +45,7 @@ class Councils::Nsw::ImportCouncilResultRowJob
       Councils::ArbitraryLeadershipWebsiteIngestJob.perform_async(council_name)
       return
     end
-    raise PermanentIngestError, "No councillor contest found on NSW council results page: #{url}" if councillor_paths.blank?
+    raise "No councillor contest found on NSW council results page: #{url}" if councillor_paths.blank?
 
     contests = councillor_paths.filter_map do |path|
       url = "https://pastvtr.elections.nsw.gov.au/#{election[:id]}/#{council_slug}/#{path}"

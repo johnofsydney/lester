@@ -31,7 +31,7 @@ class Councils::Nsw::Elections
 
     def parse(page)
       cycles = Councils::Nsw::CycleIndexParser.call(page)
-      raise PermanentIngestError, "No NSW LG cycles found on #{ROOT_URL}" if cycles.blank?
+      raise "No NSW LG cycles found on #{ROOT_URL}" if cycles.blank?
 
       cycles
     end

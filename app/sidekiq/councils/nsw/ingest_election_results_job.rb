@@ -16,7 +16,7 @@ class Councils::Nsw::IngestElectionResultsJob
     raise "Failed to download NSW council index: #{url}" if page.blank?
 
     councils = Councils::Nsw::ResultsIndexParser.call(page)
-    raise PermanentIngestError, "No councils found on NSW council index: #{url}" if councils.blank?
+    raise "No councils found on NSW council index: #{url}" if councils.blank?
 
     councils.each_with_index do |council, index|
       Councils::Nsw::ImportCouncilResultRowJob.perform_in(index * IMPORT_SPACING, council[:name], council[:slug], election_id)

@@ -16,7 +16,7 @@ class Councils::Vic::IngestElectionResultsJob
     raise "Failed to download VIC council index: #{url}" if page.blank?
 
     councils = Councils::Vic::ResultsIndexParser.call(page)
-    raise PermanentIngestError, "No councils found on VIC council index: #{url}" if councils.blank?
+    raise "No councils found on VIC council index: #{url}" if councils.blank?
 
     councils.each_with_index do |council, index|
       Councils::Vic::ImportCouncilResultRowJob.perform_in(index * IMPORT_SPACING, council[:name], council[:slug], election_year)

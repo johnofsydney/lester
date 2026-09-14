@@ -96,9 +96,9 @@ RSpec.describe Councils::Vic::ImportByElectionResultRowJob, type: :job do
       let(:council_description) { 'Moira Shire Council' }
       let(:page) { nil }
 
-      it 'records an ingest failure and re-raises' do
+      it 'logs to ApiLog and re-raises' do
         expect { described_class.new.perform(slug, kind, council_description) }.to raise_error(RuntimeError, /Failed to download/)
-        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
+        expect(ApiLog.last.endpoint).to eq(url)
       end
     end
   end

@@ -19,7 +19,7 @@ class NswStatePoliticians::ImportLaElectorateResultJob
     raise "Failed to download NSW LA fp_summary page: #{url}" if page.blank?
 
     candidates = NswStatePoliticians::La::FpSummaryParser.call(page)
-    raise PermanentIngestError, "No candidates found on NSW LA fp_summary page: #{url}" if candidates.blank?
+    raise "No candidates found on NSW LA fp_summary page: #{url}" if candidates.blank?
 
     candidates.each do |candidate|
       next if candidate[:name] == winner_name

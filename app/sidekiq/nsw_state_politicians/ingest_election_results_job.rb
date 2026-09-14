@@ -43,7 +43,7 @@ class NswStatePoliticians::IngestElectionResultsJob
       raise "Failed to download NSW LA elected page: #{elected_url}" if page.blank?
 
       winners = NswStatePoliticians::La::ElectedPageParser.call(page)
-      raise PermanentIngestError, "No winners found on NSW LA elected page: #{elected_url}" if winners.blank?
+      raise "No winners found on NSW LA elected page: #{elected_url}" if winners.blank?
 
       winners.index_by { |winner| winner[:electorate] }
     end
@@ -54,7 +54,7 @@ class NswStatePoliticians::IngestElectionResultsJob
     raise "Failed to download NSW LA results index: #{results_index_url}" if page.blank?
 
     slugs = NswStatePoliticians::La::ResultsIndexParser.call(page)
-    raise PermanentIngestError, "No electorates found on NSW LA results index: #{results_index_url}" if slugs.blank?
+    raise "No electorates found on NSW LA results index: #{results_index_url}" if slugs.blank?
 
     slugs.each_with_index do |slug, index|
       winner_name = winners_by_electorate.values.find { |w| slugify(w[:electorate]) == slug }&.dig(:name)

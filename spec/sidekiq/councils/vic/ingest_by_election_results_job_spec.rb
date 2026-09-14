@@ -27,9 +27,9 @@ RSpec.describe Councils::Vic::IngestByElectionResultsJob, type: :job do
     context 'when the timeline page fails to download' do
       let(:timeline_page) { nil }
 
-      it 'records an ingest failure and re-raises' do
+      it 'logs to ApiLog and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /Failed to download/)
-        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
+        expect(ApiLog.last.endpoint).to eq(timeline_url)
         expect(Councils::Vic::ImportByElectionResultRowJob).not_to have_received(:perform_in)
       end
     end
@@ -37,9 +37,9 @@ RSpec.describe Councils::Vic::IngestByElectionResultsJob, type: :job do
     context 'when the timeline page has no events' do
       let(:timeline_page) { '<html><body>nothing</body></html>' }
 
-      it 'records an ingest failure and re-raises' do
-        expect { described_class.new.perform }.to raise_error(PermanentIngestError, %r{No VIC by-election/countback events found})
-        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
+      it 'logs to ApiLog and re-raises' do
+        expect { described_class.new.perform }.to raise_error(RuntimeError, %r{No VIC by-election/countback events found})
+        expect(ApiLog.last.endpoint).to eq(timeline_url)
       end
     end
   end

@@ -34,11 +34,10 @@ class Councils::Nsw::ImportByElectionResultRowJob
     result[:candidates].each do |candidate|
       record_candidate(council:, candidate:, declared_date: result[:declared_date], evidence:, lb_id:, source_url: report_url)
     end
-    IngestSourceStatus.record_success(self.class.name)
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Nsw::ImportByElectionResultRowJob(#{lb_id}): #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    IngestSourceStatus.record_failure(self.class.name, e)
+    ApiLog.create(endpoint: report_url, message: e.message)
     raise e
   end
 
