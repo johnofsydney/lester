@@ -30,9 +30,9 @@ RSpec.describe Councils::Nsw::IngestByElectionResultsJob, type: :job do
     context 'when the archive page fails to download' do
       let(:archive_page) { nil }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /Failed to download/)
-        expect(ApiLog.last.endpoint).to eq(archive_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
         expect(Councils::Nsw::ImportByElectionResultRowJob).not_to have_received(:perform_in)
       end
     end
@@ -40,9 +40,9 @@ RSpec.describe Councils::Nsw::IngestByElectionResultsJob, type: :job do
     context 'when the archive page has no events' do
       let(:archive_page) { '<html><body>nothing</body></html>' }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, %r{No NSW by-election/countback events found})
-        expect(ApiLog.last.endpoint).to eq(archive_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
   end
