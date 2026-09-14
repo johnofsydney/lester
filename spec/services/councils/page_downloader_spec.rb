@@ -23,8 +23,8 @@ RSpec.describe Councils::PageDownloader, type: :service do
   context 'when the request returns a non-success status' do
     let(:response) { double('Faraday::Response', success?: false, status: 403) } # rubocop:disable RSpec/VerifiedDoubles
 
-    it 'returns nil' do
-      expect(call_service).to be_nil
+    it 'raises a PermanentIngestError' do
+      expect { call_service }.to raise_error(PermanentIngestError, /HTTP 403/)
     end
   end
 

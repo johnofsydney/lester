@@ -18,15 +18,16 @@ class Councils::Nsw::IngestByElectionResultsJob
     raise "Failed to download NSW by-election/countback archive: #{ARCHIVE_URL}" if page.blank?
 
     events = Councils::Nsw::ByElectionIndexParser.call(page)
-    raise "No NSW by-election/countback events found on #{ARCHIVE_URL}" if events.blank?
+    raise PermanentIngestError, "No NSW by-election/countback events found on #{ARCHIVE_URL}" if events.blank?
 
     events.each_with_index do |event, index|
       Councils::Nsw::ImportByElectionResultRowJob.perform_in(index * IMPORT_SPACING, event[:lb_id], event[:report_url], event[:council_description])
     end
+    IngestSourceStatus.record_success(self.class.name)
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Nsw::IngestByElectionResultsJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: ARCHIVE_URL, message: e.message)
+    IngestSourceStatus.record_failure(self.class.name, e)
     raise e
   end
 end

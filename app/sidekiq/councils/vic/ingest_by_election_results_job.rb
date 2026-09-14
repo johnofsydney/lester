@@ -17,15 +17,16 @@ class Councils::Vic::IngestByElectionResultsJob
     raise "Failed to download VIC by-election/countback timeline: #{TIMELINE_URL}" if page.blank?
 
     events = Councils::Vic::ByElectionIndexParser.call(page)
-    raise "No VIC by-election/countback events found on #{TIMELINE_URL}" if events.blank?
+    raise PermanentIngestError, "No VIC by-election/countback events found on #{TIMELINE_URL}" if events.blank?
 
     events.each_with_index do |event, index|
       Councils::Vic::ImportByElectionResultRowJob.perform_in(index * IMPORT_SPACING, event[:slug], event[:kind].to_s, event[:council_description])
     end
+    IngestSourceStatus.record_success(self.class.name)
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Vic::IngestByElectionResultsJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: TIMELINE_URL, message: e.message)
+    IngestSourceStatus.record_failure(self.class.name, e)
     raise e
   end
 end

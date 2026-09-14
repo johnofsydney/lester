@@ -17,13 +17,11 @@ class Councils::PageDownloader
     end
 
     response = conn.get
+    return response.body if response.success?
 
-    if response.success?
-      response.body
-    else
-      Rails.logger.warn "Councils::PageDownloader: HTTP #{response.status} for #{url}"
-      nil
-    end
+    raise PermanentIngestError, "HTTP #{response.status} for #{url}"
+  rescue PermanentIngestError
+    raise
   rescue StandardError => e
     Rails.logger.error "Councils::PageDownloader: failed to download #{url}: #{e.message}"
     nil

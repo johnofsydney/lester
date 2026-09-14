@@ -43,7 +43,7 @@ class Councils::Vic::Elections
 
     def parse(page)
       cycles = Councils::Vic::CycleIndexParser.call(page)
-      raise "No VIC council election cycles found on #{INDEX_URL}" if cycles.blank?
+      raise PermanentIngestError, "No VIC council election cycles found on #{INDEX_URL}" if cycles.blank?
 
       cycles
     end
