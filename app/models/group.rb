@@ -71,6 +71,16 @@ class Group < ApplicationRecord
 
   has_many :trading_names, as: :owner, dependent: :destroy
 
+  scope :by_trading_name, lambda { |value|
+    return all if value.blank?
+
+    joins(:trading_names).where(trading_names: { name: TradingName.normalize_value_for(:name, value) })
+  }
+
+  def self.ransackable_scopes(_auth_object = nil)
+    %i[by_external_identifier by_trading_name]
+  end
+
   has_many :memberships, dependent: :destroy
   has_many :memberships_as_member, as: :member, class_name: 'Membership', dependent: :destroy
   has_many :people, through: :memberships, source: :member, source_type: 'Person'
@@ -171,7 +181,7 @@ class Group < ApplicationRecord
 
     list = major_groupings.map do |major_group|
       states.map do |state|
-        NAMES.send(major_group).send(state) if NAMES.send(major_group)
+        NAMES.send(major_group)&.send(state)
       end
     end
 

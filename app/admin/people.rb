@@ -15,7 +15,7 @@ ActiveAdmin.register Person do
   #   permitted
   # end
 
-  permit_params :name, :linkedin_url
+  permit_params :name, :linkedin_url, :aec_id, :acnc_id, :open_australia_id
 
   filter :id
   filter :name
@@ -23,6 +23,8 @@ ActiveAdmin.register Person do
   filter :views, as: :numeric
   filter :linkedin_url
   filter :linkedin_ingested, as: :date_range
+  filter :by_external_identifier, as: :string, label: 'External ID (AEC / ACNC / Open Australia)'
+  filter :by_trading_name, as: :string, label: 'Trading Name'
 
   index do
     selectable_column
@@ -31,6 +33,12 @@ ActiveAdmin.register Person do
     column :views
     column :linkedin_url
     column :linkedin_ingested
+  end
+
+  controller do
+    def scoped_collection
+      super.includes(:external_identifiers)
+    end
   end
 
   show do
@@ -43,6 +51,21 @@ ActiveAdmin.register Person do
       row :linkedin_url
       row :linkedin_ingested
       row :views
+    end
+
+    panel 'External Identifiers' do
+      table_for resource.external_identifiers.order(:source) do
+        column :source
+        column :value
+        column :created_at
+      end
+    end
+
+    panel 'Trading Names' do
+      table_for resource.trading_names.order(:name) do
+        column :name
+        column :created_at
+      end
     end
 
     panel 'Memberships (as member group)' do
@@ -63,6 +86,11 @@ ActiveAdmin.register Person do
     f.inputs 'Person' do
       f.input :name
       f.input :linkedin_url
+    end
+    f.inputs 'External Identifiers' do
+      f.input :aec_id, label: 'AEC ID'
+      f.input :acnc_id, label: 'ACNC ID'
+      f.input :open_australia_id, label: 'Open Australia ID'
     end
     f.actions
   end

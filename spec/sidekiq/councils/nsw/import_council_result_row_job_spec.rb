@@ -168,6 +168,14 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
         expect(Person.count).to eq(0)
         expect(Membership.count).to eq(0)
       end
+
+      it 'invokes the arbitrary leadership website fallback with the council name' do
+        allow(Councils::ArbitraryLeadershipWebsiteIngestJob).to receive(:perform_async)
+
+        described_class.new.perform(council_name, council_slug)
+
+        expect(Councils::ArbitraryLeadershipWebsiteIngestJob).to have_received(:perform_async).with(council_name)
+      end
     end
 
     context 'when the council runs its own election, outside NSWEC' do
@@ -180,6 +188,14 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
         expect(Group.find_by(name: council_name)).to be_nil
         expect(Person.count).to eq(0)
         expect(Membership.count).to eq(0)
+      end
+
+      it 'invokes the arbitrary leadership website fallback with the council name' do
+        allow(Councils::ArbitraryLeadershipWebsiteIngestJob).to receive(:perform_async)
+
+        described_class.new.perform(council_name, council_slug)
+
+        expect(Councils::ArbitraryLeadershipWebsiteIngestJob).to have_received(:perform_async).with(council_name)
       end
     end
 
@@ -199,18 +215,18 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
       let(:results_page) { nil }
       let(:page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform(council_name, council_slug) }.to raise_error(RuntimeError, /Failed to download NSW council results page/)
-        expect(ApiLog.last.endpoint).to eq(results_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
 
     context 'when the councillor contest page fails to download' do
       let(:page) { nil }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform(council_name, council_slug) }.to raise_error(RuntimeError, /Failed to download NSW councillor results/)
-        expect(ApiLog.last.endpoint).to eq(expected_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
 

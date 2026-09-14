@@ -22,6 +22,18 @@ class Councils::Nsw::ImportCouncilResultRowJob
   LOCAL_COUNCILS_TAG_NAME = 'Australian Local Councils'.freeze
 
   def perform(council_name, council_slug, election_id = Councils::Nsw::Elections.latest[:id])
+    import_council_result_row(council_name, council_slug, election_id)
+    IngestSourceStatus.record_success(self.class.name)
+  rescue StandardError => e
+    Rails.logger.error "Error processing Councils::Nsw::ImportCouncilResultRowJob(#{council_name}): #{e.message} - will retry"
+    Rails.logger.error e.backtrace.join("\n")
+    IngestSourceStatus.record_failure(self.class.name, e)
+    raise e
+  end
+
+  private
+
+  def import_council_result_row(council_name, council_slug, election_id)
     election = Councils::Nsw::Elections.find(election_id)
 
     url = "https://pastvtr.elections.nsw.gov.au/#{election[:id]}/#{council_slug}/results"
@@ -29,7 +41,10 @@ class Councils::Nsw::ImportCouncilResultRowJob
     raise "Failed to download NSW council results page: #{url}" if results_page.blank?
 
     councillor_paths = Councils::Nsw::ResultsPageParser.call(results_page)
-    return if councillor_paths.blank? && Councils::Nsw::ResultsPageParser.no_contest_expected?(results_page) # council was under administration, or runs its own election -- nothing to record
+    if councillor_paths.blank? && Councils::Nsw::ResultsPageParser.no_contest_expected?(results_page) # council was under administration, or runs its own election -- nothing for this pipeline to record
+      Councils::ArbitraryLeadershipWebsiteIngestJob.perform_async(council_name)
+      return
+    end
     raise "No councillor contest found on NSW council results page: #{url}" if councillor_paths.blank?
 
     contests = councillor_paths.filter_map do |path|
@@ -42,14 +57,7 @@ class Councils::Nsw::ImportCouncilResultRowJob
     council.add_to_tag(tag_name: LOCAL_COUNCILS_TAG_NAME)
 
     contests.each { |contest| record_contest(council:, council_slug:, contest:, election:) }
-  rescue StandardError => e
-    Rails.logger.error "Error processing Councils::Nsw::ImportCouncilResultRowJob(#{council_name}): #{e.message} - will retry"
-    Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: url, message: e.message)
-    raise e
   end
-
-  private
 
   def fetch_contest(url)
     page = Councils::PageDownloader.call(url)

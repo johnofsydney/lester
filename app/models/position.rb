@@ -20,11 +20,11 @@ class Position < ApplicationRecord
   end
 
   def formatted_start_month_year
-    start_date.strftime('%B %Y') if start_date
+    start_date&.strftime('%B %Y')
   end
 
   def formatted_end_month_year
-    end_date.strftime('%B %Y') if end_date
+    end_date&.strftime('%B %Y')
   end
 
   def formatting_for_date(date)
