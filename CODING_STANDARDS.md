@@ -135,23 +135,30 @@ comment, a rework) or a stated preference on record — not as a preemptive styl
   Lookup, etc.) needs a spec that exercises the real method with only the transport layer stubbed
   (e.g. `WebMock`/VCR at the HTTP boundary) — not just consumer specs that stub the whole client.
   Consumer-only stubs don't catch a broken wrapper.
-- **Stub background job enqueues**: if the code under test enqueues a job (`.perform_async`,
-  `.perform_later`, etc.), the spec must stub it — e.g. `allow(SomeJob).to receive(:perform_async)`
-  — rather than letting a real call through. Real enqueues need a live Redis connection, which
-  neither local dev nor CI provisions for the test suite; an unstubbed enqueue fails with
-  `RedisClient::CannotConnectError` and is a CI-blocking bug, not flakiness.
-  - Stub the specific job class(es) the exercised path actually triggers — don't blanket-stub
-    Sidekiq globally, since that hides genuinely missing coverage.
-  - Trace indirect enqueues, not just direct ones: a service call can fan out into a job enqueue
-    several layers down (e.g. `Person#merge!` → `Nodes::Merge` → `Cache::BuildPersonCachedDataJob.perform_async`,
-    or `Groups::RecordGroup.call` on a brand-new business-numbered Group →
-    `Abn::UpdateGroupNamesJob.perform_async`). Read the full call path before assuming no job fires
-    — the same code path can be safe or CI-blocking depending on which branch the fixture data
-    happens to hit.
-  - Where relevant, assert on the stub (`have_received(:perform_async).with(...)`) rather than just
-    silencing it, so the enqueue itself stays covered.
-  - Applies to both real `Sidekiq::Job` classes calling `.perform_async` directly and ActiveJob-based
-    jobs routed through the sidekiq queue adapter.
+- **Job enqueues no longer need Redis in specs — this is fixed globally, not per-spec.**
+  `spec/rails_helper.rb` disables `sidekiq-unique-jobs`' client middleware
+  (`SidekiqUniqueJobs.configure { |c| c.enabled = false }`), which is what actually required Redis
+  on `.perform_async` for any job with `lock: :until_executed` (the project's own convention for
+  write/idempotency-sensitive jobs) — `Sidekiq::Testing.fake!` alone does not stop this middleware,
+  since fake mode only intercepts what happens *after* client middleware runs. You do not need to
+  stub a job just to avoid a `RedisClient::CannotConnectError` crash.
+  - Still stub the job (`allow(SomeJob).to receive(:perform_async)`) when you want to **assert** it
+    was enqueued — `have_received(:perform_async).with(...)` — not to avoid a crash, which is now
+    handled globally.
+  - Trace indirect enqueues when writing that assertion — a service call can fan out into a job
+    enqueue several layers down (e.g. `Person#merge!` → `Nodes::Merge` →
+    `Cache::BuildPersonCachedDataJob.perform_async`, or `Groups::RecordGroup.call` on a brand-new
+    business-numbered Group → `Abn::UpdateGroupNamesJob.perform_async`).
+  - **Direct Redis/queue introspection is a separate case, still needing an explicit stub per
+    spec** — `Sidekiq::Queue.new(:x).size`, `Sidekiq::Stats.new`, etc. aren't job enqueues and
+    aren't covered by the fix above; they always need a live Redis connection. `rails_helper.rb`
+    replaces `Sidekiq::Queue.new` with a version that raises a clear, actionable error unless a
+    spec explicitly stubs it (e.g.
+    `allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))`)
+    — this fails the same way locally as in CI, deliberately, so "passed locally, failed in CI"
+    can't happen for this case either. See `AuGrants::BackfillGrantsMasterJob`'s spec for an
+    example of `queue_overloaded?` needing this in every example, not only the one deliberately
+    testing the overloaded branch.
 - **Stub-then-assert idiom**: stub a collaborator/job with `allow(...).to receive(...)` in a
   `before` block, then assert on it later with `have_received(...).with(...)` — not an inline
   `expect(...).to receive(...)` at the point of the call. Keeps the "this gets called" assertion

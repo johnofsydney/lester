@@ -6,6 +6,10 @@ RSpec.describe Councils::Nsw::IngestElectionResultsJob, type: :job do
     let(:index_url) { "https://pastvtr.elections.nsw.gov.au/#{election_id}/index" }
 
     before do
+      Councils::Nsw::Elections.reset!
+      allow(Councils::PageDownloader).to receive(:call)
+        .with(Councils::Nsw::Elections::ROOT_URL)
+        .and_return(Rails.root.join('spec/fixtures/councils/nsw/pastvtr_root.html').read)
       allow(Councils::PageDownloader).to receive(:call)
         .with(index_url)
         .and_return(index_page)
@@ -30,9 +34,9 @@ RSpec.describe Councils::Nsw::IngestElectionResultsJob, type: :job do
     context 'when the index page fails to download' do
       let(:index_page) { nil }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /Failed to download/)
-        expect(ApiLog.last.endpoint).to eq(index_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
         expect(Councils::Nsw::ImportCouncilResultRowJob).not_to have_received(:perform_in)
       end
     end
@@ -40,9 +44,9 @@ RSpec.describe Councils::Nsw::IngestElectionResultsJob, type: :job do
     context 'when the index page has no councils' do
       let(:index_page) { '<html><body>nothing</body></html>' }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform }.to raise_error(RuntimeError, /No councils found/)
-        expect(ApiLog.last.endpoint).to eq(index_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
   end

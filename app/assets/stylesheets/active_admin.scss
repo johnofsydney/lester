@@ -74,5 +74,28 @@
 			background-color: #fff9e6;
 		}
 	}
+
+	#header {
+		background: #1a2733;
+
+		.site_title { color: #fff; }
+
+		#utility_nav {
+			a[href="/"] {
+				font-weight: bold;
+				color: #7fd1ff;
+			}
+		}
+	}
+
+	table.index_table, table.attributes_table, table.table_for {
+		tbody tr:hover { background-color: #f1f6fb; }
+
+		th { background-color: #eef2f5; }
+	}
+
+	.panel {
+		h3 { background-color: #eef2f5; }
+	}
 }
 

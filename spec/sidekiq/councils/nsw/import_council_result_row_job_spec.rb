@@ -9,6 +9,11 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
     let(:results_page) { Rails.root.join('spec/fixtures/councils/nsw/results_single.html').read }
 
     before do
+      Councils::Nsw::Elections.reset!
+      allow(Councils::PageDownloader).to receive(:call)
+        .with(Councils::Nsw::Elections::ROOT_URL)
+        .and_return(Rails.root.join('spec/fixtures/councils/nsw/pastvtr_root.html').read)
+
       FactoryBot.create(:group, name: Group::NAMES.labor.nsw, type: 'Tag')
       FactoryBot.create(:group, name: Group::NAMES.greens.nsw, type: 'Tag')
       # Group.government_department_tag and Group.local_councils_tag are hardcoded to
@@ -105,7 +110,7 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
     end
 
     context 'when backfilling a non-latest election cycle' do
-      let(:backfill_election) { Councils::Nsw::Elections::ALL.first }
+      let(:backfill_election) { Councils::Nsw::Elections.find('LG2101') }
       let(:results_url) { "https://pastvtr.elections.nsw.gov.au/#{backfill_election[:id]}/#{council_slug}/results" }
       let(:expected_url) { "https://pastvtr.elections.nsw.gov.au/#{backfill_election[:id]}/#{council_slug}/councillor" }
       let(:page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
@@ -210,18 +215,18 @@ RSpec.describe Councils::Nsw::ImportCouncilResultRowJob, type: :job do
       let(:results_page) { nil }
       let(:page) { Rails.root.join('spec/fixtures/councils/nsw/councillor_declared.html').read }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform(council_name, council_slug) }.to raise_error(RuntimeError, /Failed to download NSW council results page/)
-        expect(ApiLog.last.endpoint).to eq(results_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
 
     context 'when the councillor contest page fails to download' do
       let(:page) { nil }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform(council_name, council_slug) }.to raise_error(RuntimeError, /Failed to download NSW councillor results/)
-        expect(ApiLog.last.endpoint).to eq(expected_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
 

@@ -20,6 +20,18 @@ class Councils::Vic::ImportCouncilResultRowJob
   LOCAL_COUNCILS_TAG_NAME = 'Australian Local Councils'.freeze
 
   def perform(council_name, council_slug, election_year = Councils::Vic::Elections.latest[:year])
+    import_council_result_row(council_name, council_slug, election_year)
+    IngestSourceStatus.record_success(self.class.name)
+  rescue StandardError => e
+    Rails.logger.error "Error processing Councils::Vic::ImportCouncilResultRowJob(#{council_name}): #{e.message} - will retry"
+    Rails.logger.error e.backtrace.join("\n")
+    IngestSourceStatus.record_failure(self.class.name, e)
+    raise e
+  end
+
+  private
+
+  def import_council_result_row(council_name, council_slug, election_year)
     election = Councils::Vic::Elections.find(election_year)
 
     url = "https://www.vec.vic.gov.au/results/council-election-results/#{election[:year]}-council-election-results/#{council_slug}"
@@ -40,14 +52,7 @@ class Councils::Vic::ImportCouncilResultRowJob
     result[:candidates].each do |candidate|
       record_candidate(council:, council_slug:, candidate:, declared_date:, evidence:, election:, source_url: url)
     end
-  rescue StandardError => e
-    Rails.logger.error "Error processing Councils::Vic::ImportCouncilResultRowJob(#{council_name}): #{e.message} - will retry"
-    Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: url, message: e.message)
-    raise e
   end
-
-  private
 
   # The page's own "Last updated" date is only trustworthy for the live/latest cycle -- for any
   # backfilled cycle it reflects whenever VEC last regenerated the page, not the real historical
