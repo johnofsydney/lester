@@ -220,7 +220,6 @@ Layout/TrailingEmptyLines:
 # Configuration parameters: AllowInHeredoc.
 Layout/TrailingWhitespace:
   Exclude:
-    - 'app/admin/suggestions.rb'
     - 'app/models/admin_user.rb'
 
 # Offense count: 1
