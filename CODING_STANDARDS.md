@@ -109,6 +109,12 @@ comment, a rework) or a stated preference on record — not as a preemptive styl
   could plausibly be double-enqueued — an idempotency guard, not just boilerplate. See
   `app/sidekiq/au_aec_donations/import_donation_row_job.rb:4-8`,
   `app/sidekiq/cache/build_person_cached_data_job.rb:4`.
+- **Distinguish permanent errors from retryable ones.** A permanent error (e.g.
+  `ActiveRecord::RecordNotFound` — the record is gone and retrying can't change that) should be
+  rescued, logged, and swallowed (`return`, don't re-raise) so Sidekiq doesn't keep retrying a job
+  that can never succeed. A retryable error (e.g. a timeout, rate limit, or other transient failure)
+  should be rescued for logging and then re-raised (`raise e`) so Sidekiq's retry mechanism can run.
+  See `app/sidekiq/cache/node_count_job.rb`, `app/sidekiq/acnc/ingest_single_charity_people_job.rb`.
 
 ### Post-deployment tasks
 

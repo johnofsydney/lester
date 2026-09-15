@@ -24,9 +24,9 @@ class Maintenance::BackfillAnnualDonationsJob
         Transfer.where(transfer_type: 'donations').delete_all
         Transfer.where(transfer_type: 'Donation AU 2023 Referendum').delete_all
 
-        (1999..2025).each_with_index do |year, index|
+        (1999..2025).each_with_index do |backfill_year, index|
           delay = index * 30.seconds + (index % 5).seconds
-          Maintenance::BackfillAnnualDonationsJob.perform_in(delay, year)
+          Maintenance::BackfillAnnualDonationsJob.perform_in(delay, backfill_year)
         end
       end
     end
