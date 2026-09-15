@@ -6,6 +6,8 @@ RSpec.describe 'Network graph edges' do
   let(:unrendered_member) { create(:person, name: 'Unrendered Member') }
 
   before do
+    allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))
+
     create(:membership, member: root, group: capped_party)
     create(:membership, member: unrendered_member, group: capped_party)
 

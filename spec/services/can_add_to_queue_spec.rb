@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe CanAddToQueue, type: :service do
+  before do
+    allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))
+  end
+
   describe '.call' do
     context 'when node is a small Tag' do
       let(:tag) { Tag.create(name: 'Coalition', type: 'Tag') }

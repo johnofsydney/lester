@@ -9,6 +9,7 @@ RSpec.describe TransferMethods do
       let(:other_person) { create(:person, name: 'Other Person') }
 
       before do
+        allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))
         stub_const('Constants::TRAVERSAL_BUDGET', 2)
 
         create(:membership, member: root, group: group_a)

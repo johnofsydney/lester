@@ -4,6 +4,8 @@ RSpec.describe 'Network graph depth selection' do
   let(:person) { create(:person, name: 'Root Person') }
 
   before do
+    allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))
+
     person.cached_summary = {
       'consolidated_descendents' => (0..3).map do |depth|
         cached_descendent(id: depth, name: "Node #{depth}", klass: 'Person', depth: depth)
