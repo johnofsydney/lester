@@ -38,7 +38,7 @@ class Abn::FetchBusinessNames
     {
       abn: @abn,
       main_name: main_name,
-      trading_names: other_names.compact.map { |name| capitalize(name) }.uniq
+      trading_names: other_names.compact.map { |name| capitalize(name) }.uniq { |name| TradingName.normalize_value_for(:name, name) }
     }
   end
 
