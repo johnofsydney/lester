@@ -45,8 +45,16 @@ class Nodes::Merge
 
   def handle_trading_names
     argument_node.trading_names.find_each do |trading_name|
-      trading_name.update!(owner: receiver_node)
+      if receiver_node.trading_names.exists?(name: trading_name.name)
+        trading_name.destroy!
+      else
+        trading_name.update!(owner: receiver_node)
+      end
     end
+
+    return if argument_node.name == receiver_node.name
+
+    receiver_node.trading_names.create_or_find_by!(name: argument_node.name)
   end
 
   def handle_external_ids
