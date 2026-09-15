@@ -18,10 +18,6 @@ Layout/EmptyLinesAroundBlockBody:
 Layout/EmptyLinesAroundExceptionHandlingKeywords:
   Exclude:
     - 'app/services/file_ingestor.rb'
-    - 'app/sidekiq/ingest_charities_dataset_csv.rb'
-    - 'app/sidekiq/ingest_charities_people_job.rb'
-    - 'app/sidekiq/ingest_single_charities_people_job.rb'
-    - 'app/sidekiq/ingest_twenty_charities_missing_people_job.rb'
 
 # Offense count: 7
 # This cop supports safe autocorrection (--autocorrect).
@@ -43,7 +39,6 @@ Layout/ExtraSpacing:
   Exclude:
     - 'app/models/concerns/transfer_methods.rb'
     - 'app/models/membership.rb'
-    - 'app/services/record_donation.rb'
     - 'app/services/record_person_or_group.rb'
     - 'app/views/groups/show_view.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
@@ -58,16 +53,6 @@ Layout/FirstArgumentIndentation:
     - 'app/models/group.rb'
     - 'spec/services/tender_ingestor_spec.rb'
 
-# Offense count: 41
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMultipleStyles, EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle.
-# SupportedHashRocketStyles: key, separator, table
-# SupportedColonStyles: key, separator, table
-# SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
-Layout/HashAlignment:
-  Exclude:
-    - 'spec/services/record_group_spec.rb'
-
 # Offense count: 56
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: IndentationWidth, EnforcedStyle.
@@ -81,10 +66,7 @@ Layout/IndentationStyle:
     - 'app/views/components/groups/affiliated_groups.rb'
     - 'app/views/components/groups/people_table.rb'
     - 'app/views/components/people/groups_table.rb'
-    - 'app/views/components/transfers/table_of_both_sides.rb'
     - 'app/views/groups/edit_view.rb'
-    - 'app/views/imports/annual_associated_entity_view.rb'
-    # - 'app/views/imports/annual_donor_form.rb'
     - 'app/views/layouts/application_layout.rb'
     - 'app/views/people/index_view.rb'
 
@@ -107,7 +89,6 @@ Layout/LeadingEmptyLines:
 Layout/MultilineMethodCallIndentation:
   Exclude:
     - 'app/services/build_queue.rb'
-    - 'app/sidekiq/ingest_charities_people_job.rb'
     - 'app/views/components/common/money_graphs.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
 
@@ -122,7 +103,6 @@ Layout/RescueEnsureAlignment:
 Layout/SpaceAfterColon:
   Exclude:
     - 'app/views/components/common/heading.rb'
-    - 'app/views/imports/annual_associated_entity_view.rb'
 
 # Offense count: 28
 # This cop supports safe autocorrection (--autocorrect).
@@ -137,11 +117,9 @@ Layout/SpaceAfterComma:
 # SupportedStylesForRationalLiterals: space, no_space
 Layout/SpaceAroundOperators:
   Exclude:
-    - 'app/controllers/concerns/pagination.rb'
     - 'app/models/concerns/transfer_methods.rb'
     - 'app/models/transfer.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
-    - 'spec/services/record_group_spec.rb'
 
 # Offense count: 26
 # This cop supports safe autocorrection (--autocorrect).
@@ -150,7 +128,6 @@ Layout/SpaceAroundOperators:
 # SupportedStylesForEmptyBraces: space, no_space
 Layout/SpaceBeforeBlockBraces:
   Exclude:
-    - 'app/controllers/concerns/pagination.rb'
     - 'app/controllers/inertia_controller.rb'
     - 'app/models/concerns/node_methods.rb'
     - 'app/models/person.rb'
@@ -197,7 +174,6 @@ Layout/SpaceInsideParens:
   Exclude:
     - 'app/models/concerns/transfer_methods.rb'
     - 'app/services/file_ingestor.rb'
-    - 'app/sidekiq/ingest_contracts_date_job.rb'
 
 # Offense count: 21
 # This cop supports safe autocorrection (--autocorrect).
@@ -222,12 +198,6 @@ Layout/TrailingWhitespace:
   Exclude:
     - 'app/admin/suggestions.rb'
     - 'app/models/admin_user.rb'
-
-# Offense count: 1
-# Configuration parameters: IgnoreLiteralBranches, IgnoreConstantBranches, IgnoreDuplicateElseBranch.
-Lint/DuplicateBranch:
-  Exclude:
-    - 'app/services/record_donation.rb'
 
 # Offense count: 1
 # Configuration parameters: AllowComments.
@@ -326,12 +296,6 @@ Performance/Count:
     - 'app/services/sidekiq_utils.rb'
 
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-RSpec/ExcessiveDocstringSpacing:
-  Exclude:
-    - 'spec/services/record_person_spec.rb'
-
 # Offense count: 5
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
@@ -358,19 +322,6 @@ RSpec/PendingWithoutReason:
     - 'spec/models/person_spec.rb'
     - 'spec/requests/search_spec.rb'
     - 'spec/services/build_queue_spec.rb'
-    - 'spec/services/linked_in_profile_getter_spec.rb'
-    - 'spec/services/record_group_spec.rb'
-
-# Offense count: 2
-RSpec/RepeatedDescription:
-  Exclude:
-    - 'spec/services/record_person_spec.rb'
-
-# Offense count: 2
-# Configuration parameters: IgnoreNameless, IgnoreSymbolicNames.
-RSpec/VerifiedDoubles:
-  Exclude:
-    - 'spec/services/linked_in_profile_getter_spec.rb'
 
 # Offense count: 2
 # Configuration parameters: Database, Include.
@@ -379,14 +330,6 @@ RSpec/VerifiedDoubles:
 Rails/BulkChangeTable:
   Exclude:
     - 'db/migrate/20251130043112_add_nodes_count_cached_to_groups_and_people.rb'
-
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: EnforcedStyle, AllowToTime.
-# SupportedStyles: strict, flexible
-Rails/Date:
-  Exclude:
-    - 'app/sidekiq/backfill_contracts_master_job.rb'
 
 # Offense count: 6
 Rails/I18nLocaleTexts:
@@ -411,8 +354,6 @@ Rails/LexicallyScopedActionFilter:
 Rails/Output:
   Exclude:
     - 'app/services/file_ingestor.rb'
-    - 'app/services/record_group.rb'
-    - 'app/services/record_person.rb'
 
 # Offense count: 8
 # Configuration parameters: ForbiddenMethods, AllowedMethods.
@@ -449,20 +390,6 @@ Rails/UniqueValidationWithoutIndex:
 Rails/UnknownEnv:
   Exclude:
     - 'app/services/acnc_charities/ingest_csv.rb'
-    - 'app/sidekiq/ingest_contracts_date_job.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Rails/WhereMissing:
-  Exclude:
-    - 'app/sidekiq/ingest_twenty_charities_missing_people_job.rb'
-
-# Offense count: 1
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: MinBranchesCount.
-Style/CaseLikeIf:
-  Exclude:
-    - 'app/services/record_donation.rb'
 
 # Offense count: 34
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -531,7 +458,6 @@ Style/NumericPredicate:
   Exclude:
     - 'app/controllers/inertia_controller.rb'
     - 'app/models/concerns/transfer_methods.rb'
-    - 'app/sidekiq/ingest_contracts_date_job.rb'
     - 'app/views/components/common/page_nav.rb'
     - 'app/views/components/groups/people_table.rb'
 
@@ -588,7 +514,6 @@ Style/RedundantSelf:
 Style/RegexpLiteral:
   Exclude:
     - 'app/services/bluesky_service.rb'
-    - 'app/services/record_donation.rb'
     - 'app/services/record_person_or_group.rb'
 
 # Offense count: 9
@@ -600,16 +525,7 @@ Style/RescueStandardError:
     - 'app/services/au_lobbyists/file_downloader.rb'
     - 'app/services/file_ingestor.rb'
     - 'app/services/linked_in_profile_getter.rb'
-    - 'app/sidekiq/refresh_nodes_count_job.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
-
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowModifier.
-Style/SoleNestedConditional:
-  Exclude:
-    - 'app/sidekiq/ingest_contracts_date_job.rb'
 
 # Offense count: 7
 # This cop supports unsafe autocorrection (--autocorrect-all).
