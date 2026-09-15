@@ -14,5 +14,8 @@ class Cache::NodeCountJob
     count = node.nodes.count
 
     node.update(nodes_count_cached: count, nodes_count_cached_at: Time.current)
+  rescue ActiveRecord::RecordNotFound => e
+    Rails.logger.error "Cache::NodeCountJob: #{klass} #{id} not found: #{e.message}"
+    # Don't re-raise - this won't be fixed by retrying
   end
 end
