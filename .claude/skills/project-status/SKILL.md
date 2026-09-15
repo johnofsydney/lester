@@ -44,6 +44,33 @@ them to `PILLS` in `render.rb`:
 
 Example: `- [ ] {waiting-on-verification} **Thing** — detail...`
 
+## Syncing to the public about page
+
+`PROJECT_STATUS.md` is personal and gitignored, but the live `/about` page renders a
+public-facing "Major Initiatives" table sourced from a tracked file in the same worktree:
+
+    /Users/john/Projects/lester/app/views/home/major_initiatives.yml
+
+Every time you update `PROJECT_STATUS.md`'s content (not just when viewing), also update this
+file so the two stay in sync. It is a YAML array, one entry per initiative:
+
+    - title: Short public-friendly name
+      status: one of the tags below
+      summary: >
+        One or two honest sentences, written for a stranger to the project.
+
+Reuse the same status tags as the pills above (`not-started`, `designed`, `investigating`,
+`in-progress`, `waiting-on-verification`, `blocked`, plus `complete` for finished items) —
+this keeps the personal doc and the public page conceptually aligned. The summary text must
+be rewritten for a public audience: no PR numbers, branch names, ticket IDs, or internal
+jargon — just a plain statement of what exists and what doesn't. Only include initiatives
+significant enough to be worth telling a visitor about; small cleanups and internal-only work
+belong in `PROJECT_STATUS.md` alone.
+
+This file lives in the same fixed worktree as `PROJECT_STATUS.md` regardless of which
+worktree/branch you're invoked from. It only renders once the about-page code that reads it is
+merged into whichever branch is checked out at that path.
+
 ## Updating
 
 - Check a box (`- [ ]` → `- [x]`) when the user confirms something is complete, or when you
