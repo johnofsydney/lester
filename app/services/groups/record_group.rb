@@ -19,14 +19,9 @@ class Groups::RecordGroup
     elsif external_id
       Entity::RecordEntityWithExternalId.new(name:, identifier:, source:, id_attribute:, klass: 'Group').call
     elsif one_group_exists?
-        Group.find_sole_by(name:)
-    elsif TradingName.where(name:).count > 1
-        Rails.logger.info("Multiple trading names found for: #{name}")
-        NewRelic::Agent.notice_error("Cannot Disambiguate Trading name: #{name}")
-
-        raise ActiveRecord::ArgumentError, "Attempting to create Group with name: #{name}. Multiple trading names exist with the same name, cannot disambiguate"
-    elsif (tn = TradingName.find_by(name:))
-        tn.owner
+      Group.find_sole_by(name:)
+    elsif (trading_name_owner = TradingName.sole_owner_for(name, owner_type: 'Group'))
+      trading_name_owner
     else
       Groups::Record::RecordGroupWithName.new(name:).call
     end
