@@ -6,6 +6,10 @@ RSpec.describe Councils::Nsw::IngestElectionResultsJob, type: :job do
     let(:index_url) { "https://pastvtr.elections.nsw.gov.au/#{election_id}/index" }
 
     before do
+      Councils::Nsw::Elections.reset!
+      allow(Councils::PageDownloader).to receive(:call)
+        .with(Councils::Nsw::Elections::ROOT_URL)
+        .and_return(Rails.root.join('spec/fixtures/councils/nsw/pastvtr_root.html').read)
       allow(Councils::PageDownloader).to receive(:call)
         .with(index_url)
         .and_return(index_page)
