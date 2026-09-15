@@ -68,6 +68,31 @@ RSpec.configure do |config|
   # Disable actual job processing
   Sidekiq::Testing.fake! # => jobs go into Sidekiq::Queues, not run immediately
 
+  # sidekiq-unique-jobs' client middleware acquires a Redis lock on every .perform_async
+  # call -- including under Sidekiq::Testing.fake!, since fake mode only intercepts what
+  # happens *after* client middleware runs. Any job with `lock: :until_executed` (the
+  # project convention for write/idempotency-sensitive jobs) would otherwise need real
+  # Redis just to be enqueued in a spec. Disabling this here removes that Redis
+  # dependency for the whole suite, rather than requiring every such job to be stubbed.
+  SidekiqUniqueJobs.configure { |c| c.enabled = false }
+
+  # Direct Redis/queue introspection (Sidekiq::Queue.new(...).size, Sidekiq::Stats.new, etc.)
+  # is not a job enqueue and is NOT made safe by Sidekiq::Testing.fake! or the unique-jobs
+  # config above -- it always needs a live Redis connection. Left unstubbed, this passes
+  # locally (if Redis happens to be running) and fails deterministically in CI with a bare
+  # RedisClient::CannotConnectError. Fail loudly and immediately instead, in every
+  # environment, so the fix (stub the specific call) is obvious without a CI round-trip.
+  # A spec that needs to test queue-size logic overrides this itself, e.g.
+  # `allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))`.
+  config.before do
+    allow(Sidekiq::Queue).to receive(:new) do |*args|
+      raise "Sidekiq::Queue.new(#{args.map(&:inspect).join(', ')}) called without being " \
+            'stubbed in this spec. This requires a live Redis connection, which is not ' \
+            'available in CI -- stub it explicitly, e.g. ' \
+            'allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))'
+    end
+  end
+
   # Optional: clear jobs between tests, default is each
   config.before { Sidekiq::Worker.clear_all }
 

@@ -61,9 +61,9 @@ RSpec.describe Councils::Nsw::ImportByElectionResultRowJob, type: :job do
     context 'when the result page fails to download' do
       let(:page) { nil }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform(lb_id, report_url, council_description) }.to raise_error(RuntimeError, /Failed to download/)
-        expect(ApiLog.last.endpoint).to eq(report_url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
   end

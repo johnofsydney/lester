@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe BuildQueue, type: :service do
+  before do
+    allow(Sidekiq::Queue).to receive(:new).and_return(instance_double(Sidekiq::Queue, size: 0))
+  end
+
   describe '#call' do
     context 'when the queue_node is expandable' do
       let(:councillor) { create(:person, name: 'Councillor') }

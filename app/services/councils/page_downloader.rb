@@ -1,3 +1,5 @@
+require 'faraday/follow_redirects'
+
 class Councils::PageDownloader
   USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'.freeze
 
@@ -11,6 +13,7 @@ class Councils::PageDownloader
       config.headers['Accept'] = 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
       config.options.timeout = 10
       config.options.open_timeout = 10
+      config.response :follow_redirects
     end
 
     response = conn.get

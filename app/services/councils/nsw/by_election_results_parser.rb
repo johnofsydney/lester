@@ -45,11 +45,9 @@ class Councils::Nsw::ByElectionResultsParser
   end
 
   def parse_declared_date(doc)
-    match = doc.text.match(LAST_UPDATED_REGEX)
+    match = doc.at_css('h4')&.text&.match(LAST_UPDATED_REGEX)
     return nil if match.nil?
 
-    Date.strptime(match[1], '%d/%m/%Y')
-  rescue Date::Error
-    nil
+    Councils::SafeDateParse.call(match[1], format: '%d/%m/%Y')
   end
 end
