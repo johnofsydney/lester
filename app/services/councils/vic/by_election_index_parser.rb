@@ -6,6 +6,7 @@
 # directly, not inferred from the slug -- more reliable), and a link to the event's own result
 # page (relative to the timeline path, since a plain href attribute is only the trailing slug).
 class Councils::Vic::ByElectionIndexParser
+  TIMELINE_URL = 'https://www.vec.vic.gov.au/results/council-election-results/council-by-elections-and-countbacks-timeline'.freeze
   KIND_BY_TYPE = {
     'by-election' => :by_election,
     'countback' => :countback
@@ -56,8 +57,6 @@ class Councils::Vic::ByElectionIndexParser
   end
 
   def parse_date(day_month, year)
-    Date.parse("#{day_month} #{year}")
-  rescue Date::Error
-    nil
+    Councils::SafeDateParse.call("#{day_month} #{year}")
   end
 end

@@ -9,7 +9,7 @@ class Councils::Vic::IngestByElectionResultsJob
   include Sidekiq::Job
   sidekiq_options queue: :low
 
-  TIMELINE_URL = 'https://www.vec.vic.gov.au/results/council-election-results/council-by-elections-and-countbacks-timeline'.freeze
+  TIMELINE_URL = Councils::Vic::ByElectionIndexParser::TIMELINE_URL
   IMPORT_SPACING = 4.seconds
 
   def perform

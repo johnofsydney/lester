@@ -40,10 +40,6 @@ class Councils::Vic::CountbackResultsParser
   end
 
   def parse_date(text)
-    return nil if text.blank?
-
-    Date.parse(text)
-  rescue Date::Error
-    nil
+    Councils::SafeDateParse.call(text)
   end
 end

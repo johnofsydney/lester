@@ -21,28 +21,25 @@ class Councils::Vic::ImportByElectionResultRowJob
 
   STATE = :vic
   LOCAL_COUNCILS_TAG_NAME = 'Australian Local Councils'.freeze
-  PARSER_BY_KIND = {
-    'by_election' => Councils::Vic::CouncillorResultsParser,
-    'countback' => Councils::Vic::CountbackResultsParser
-  }.freeze
-  EVIDENCE_LABEL_BY_KIND = {
-    'by_election' => 'by-election',
-    'countback' => 'countback'
+  CONFIG_BY_KIND = {
+    'by_election' => { parser: Councils::Vic::CouncillorResultsParser, evidence_label: 'by-election' },
+    'countback' => { parser: Councils::Vic::CountbackResultsParser, evidence_label: 'countback' }
   }.freeze
 
   def perform(slug, kind, council_description)
-    url = "#{Councils::Vic::IngestByElectionResultsJob::TIMELINE_URL}/#{slug}"
+    config = CONFIG_BY_KIND.fetch(kind)
+    url = "#{Councils::Vic::ByElectionIndexParser::TIMELINE_URL}/#{slug}"
     page = Councils::PageDownloader.call(url)
     raise "Failed to download VIC by-election/countback result page: #{url}" if page.blank?
 
-    result = PARSER_BY_KIND.fetch(kind).call(page)
+    result = config[:parser].call(page)
     return if result.blank? # not yet declared -- nothing to record yet
 
     council_name = council_description.split(',').first.strip
     council = Groups::RecordGroup.call(council_name)
     council.add_to_tag(tag_name: LOCAL_COUNCILS_TAG_NAME)
 
-    evidence = "Victorian Electoral Commission #{EVIDENCE_LABEL_BY_KIND.fetch(kind)} declared results (#{url})"
+    evidence = "Victorian Electoral Commission #{config[:evidence_label]} declared results (#{url})"
     result[:candidates].each do |candidate|
       record_candidate(council:, candidate:, declared_date: result[:declared_date], evidence:, slug:, source_url: url)
     end

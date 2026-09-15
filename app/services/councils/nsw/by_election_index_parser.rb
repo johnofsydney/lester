@@ -53,6 +53,6 @@ class Councils::Nsw::ByElectionIndexParser
 
   def description(heading_text)
     without_date = heading_text.sub(LEADING_DATE_REGEX, '')
-    without_date.split(DESCRIPTION_CUT_REGEX).first.to_s.strip
+    without_date.split(DESCRIPTION_CUT_REGEX).first.strip
   end
 end
