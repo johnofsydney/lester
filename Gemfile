@@ -76,6 +76,7 @@ gem 'flipper-ui'
 # https://dev.to/chmich/setup-bootstrap-on-rails-7-and-vite-g5a
 
 gem 'faraday', '>= 2.14.1'
+gem 'faraday-follow_redirects'
 gem 'sidekiq'
 
 gem 'newrelic_rpm'
