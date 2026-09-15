@@ -1,35 +1,29 @@
 class BuildQueue
-  attr_reader :visited_membership_ids, :queue, :visited_nodes, :counter, :transfer
+  attr_reader :visited_membership_ids, :queue, :visited_nodes, :counter
 
-  def initialize(queue, visited_membership_ids, visited_nodes, counter, transfer = nil)
+  def initialize(queue, visited_membership_ids, visited_nodes, counter)
     @queue = queue
     @visited_membership_ids = visited_membership_ids
     @visited_nodes = visited_nodes
     @counter = counter
-    @transfer = transfer
   end
 
   # returns an array of nodes.
   def call
-    return [] if (queue.empty? || queue.nil?)
-
-    queue.map do |queue_node|
-      queue_node.nodes.filter { |next_node| can_add_to_queue?(queue_node, next_node) }
-    end.flatten.uniq - visited_nodes
+    with_parents.map { |pair| pair[:child] }.uniq - visited_nodes
   end
 
   def with_parents
-    return [] if (queue.empty? || queue.nil?)
-
-    queue.map do |queue_node|
-      queue_node.nodes.filter { |next_node| can_add_to_queue?(queue_node, next_node) }
-                      .map { |next_node| {parent: queue_node, child: next_node} }
-    end.flatten.uniq
+    @with_parents ||= expandable_queue.flat_map do |queue_node|
+      queue_node.nodes.map { |next_node| {parent: queue_node, child: next_node} }
+    end.uniq
   end
 
   private
 
-  def can_add_to_queue?(node, next_node)
-    CanAddToQueue.call(node, next_node, counter)
+  # The traversal root (counter 0) always expands; its ceiling is
+  # Constants::MAX_NODE_COUNT_FIRST_DEGREE_CONNECTIONS, applied in consolidated_descendents.
+  def expandable_queue
+    @expandable_queue ||= counter.zero? ? queue : queue.select { |queue_node| CanAddToQueue.call(queue_node) }
   end
 end
