@@ -229,12 +229,6 @@ Lint/DuplicateBranch:
   Exclude:
     - 'app/services/record_donation.rb'
 
-# Offense count: 1
-# Configuration parameters: AllowComments.
-Lint/EmptyFile:
-  Exclude:
-    - 'app/views/people/edit_view.rb'
-
 # Offense count: 23
 # Configuration parameters: AllowedParentClasses.
 Lint/MissingSuper:
