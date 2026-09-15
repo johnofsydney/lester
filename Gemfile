@@ -48,7 +48,7 @@ group :development do
   gem 'pry-byebug'
 end
 
-gem 'dockerfile-rails', '>= 1.2', :group => :development
+gem 'dockerfile-rails', '>= 1.2', group: :development
 gem 'phlex-rails', '~> 2.4'
 gem 'phlex', '~> 2.4'
 
