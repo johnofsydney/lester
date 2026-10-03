@@ -24,9 +24,10 @@ if [[ -n "$LATEST_DUMP" ]]; then
     echo ""
     echo "Do you want to download the latest prod database, or use the dump file from $DUMP_DATE?"
     echo "  1) Download the latest production database"
-    echo "  2) Use the dump file from $DUMP_DATE"
+    echo "  2) Use the dump file from $DUMP_DATE (default)"
     echo ""
-    read -rp "Enter 1 or 2: " CHOICE
+    read -rp "Enter 1 or 2 [2]: " CHOICE
+    CHOICE="${CHOICE:-2}"
 
     case "$CHOICE" in
         1)
