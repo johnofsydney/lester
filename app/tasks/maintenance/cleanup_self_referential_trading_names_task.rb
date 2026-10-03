@@ -1,16 +1,13 @@
-# Deletes TradingName rows whose (already-normalised) name matches their owner's own
-# (already-normalised) name - the years-of-history backlog left behind before
-# `Record::SavingHelpers#add_to_trading_names` started skipping this case (see issue
-# #315). Covers both Person and Group owners in one run. Run from /maintenance_tasks.
+# Deletes TradingName rows whose name is identical to their owner's own name - they
+# duplicate every search hit without adding any disambiguation value. Covers both
+# Person and Group owners in one run. Fans each deletion out to a low-priority job
+# rather than deleting synchronously. Run from /maintenance_tasks.
 module Maintenance
   class CleanupSelfReferentialTradingNamesTask < MaintenanceTasks::Task
     attribute :dry_run, :boolean, default: true
 
     def collection
-      TradingName.where(
-        "trading_names.owner_type = 'Person' AND EXISTS (SELECT 1 FROM people WHERE people.id = trading_names.owner_id AND people.name = trading_names.name)
-         OR trading_names.owner_type = 'Group' AND EXISTS (SELECT 1 FROM groups WHERE groups.id = trading_names.owner_id AND groups.name = trading_names.name)"
-      )
+      TradingName.duplicating_owner_name
     end
 
     delegate :count, to: :collection
@@ -21,7 +18,7 @@ module Maintenance
         return
       end
 
-      trading_name.destroy!
+      Maintenance::DeleteSelfReferentialTradingNameJob.perform_async(trading_name.id)
     end
   end
 end

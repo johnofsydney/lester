@@ -30,27 +30,33 @@ RSpec.describe Maintenance::CleanupSelfReferentialTradingNamesTask do
   end
 
   describe '#process' do
+    before { allow(Maintenance::DeleteSelfReferentialTradingNameJob).to receive(:perform_async) }
+
     context 'when dry_run is true (default)' do
-      it 'does not delete anything' do
+      it 'does not enqueue a deletion job' do
         task = described_class.new
         expect(task.dry_run).to be(true)
 
-        expect { task.process(self_referential_group_trading_name) }.not_to change(TradingName, :count)
+        task.process(self_referential_group_trading_name)
+
+        expect(Maintenance::DeleteSelfReferentialTradingNameJob).not_to have_received(:perform_async)
       end
     end
 
     context 'when dry_run is false' do
-      it 'destroys the trading name' do
+      it 'enqueues a deletion job for the trading name' do
         task = described_class.new.tap { |t| t.dry_run = false }
 
-        expect { task.process(self_referential_group_trading_name) }.to change(TradingName, :count).by(-1)
-        expect(TradingName.exists?(self_referential_group_trading_name.id)).to be(false)
+        task.process(self_referential_group_trading_name)
+
+        expect(Maintenance::DeleteSelfReferentialTradingNameJob)
+          .to have_received(:perform_async).with(self_referential_group_trading_name.id)
       end
 
-      it 'leaves distinct trading names untouched' do
+      it 'does not delete anything itself' do
         task = described_class.new.tap { |t| t.dry_run = false }
 
-        expect { task.process(self_referential_group_trading_name) }.not_to(change { TradingName.exists?(distinct_group_trading_name.id) })
+        expect { task.process(self_referential_group_trading_name) }.not_to change(TradingName, :count)
       end
     end
   end

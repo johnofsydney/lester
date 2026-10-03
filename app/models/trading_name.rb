@@ -14,6 +14,13 @@ class TradingName < ApplicationRecord
 
   normalizes :name, with: ->(name) { name.downcase.strip.delete('.') }
 
+  scope :duplicating_owner_name, lambda {
+    where(
+      "(trading_names.owner_type = 'Person' AND EXISTS (SELECT 1 FROM people WHERE people.id = trading_names.owner_id AND people.name = trading_names.name))
+       OR (trading_names.owner_type = 'Group' AND EXISTS (SELECT 1 FROM groups WHERE groups.id = trading_names.owner_id AND groups.name = trading_names.name))"
+    )
+  }
+
   def self.sole_owner_for(name, owner_type:)
     matches = where(name:, owner_type:).limit(2).to_a
 
