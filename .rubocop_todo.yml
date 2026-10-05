@@ -15,12 +15,6 @@ Layout/EmptyLinesAroundBlockBody:
 
 # Offense count: 7
 # This cop supports safe autocorrection (--autocorrect).
-Layout/EmptyLinesAroundExceptionHandlingKeywords:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
-
-# Offense count: 7
-# This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyleAlignWith, Severity.
 # SupportedStylesAlignWith: keyword, variable, start_of_line
 Layout/EndAlignment:
@@ -76,12 +70,6 @@ Layout/IndentationStyle:
 Layout/IndentationWidth:
   Enabled: false
 
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-Layout/LeadingEmptyLines:
-  Exclude:
-    - 'db/seeds.rb'
-
 # Offense count: 14
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, IndentationWidth.
@@ -91,12 +79,6 @@ Layout/MultilineMethodCallIndentation:
     - 'app/services/build_queue.rb'
     - 'app/views/components/common/money_graphs.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-Layout/RescueEnsureAlignment:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
 
 # Offense count: 28
 # This cop supports safe autocorrection (--autocorrect).
@@ -131,16 +113,6 @@ Layout/SpaceBeforeBlockBraces:
     - 'app/views/components/transfers_table_component.rb'
     - 'lib/tasks/maintenance.rake'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBrackets.
-# SupportedStyles: space, no_space, compact
-# SupportedStylesForEmptyBrackets: space, no_space
-Layout/SpaceInsideArrayLiteralBrackets:
-  Exclude:
-    - 'config/environments/production.rb'
-    - 'config/environments/staging.rb'
-
 # Offense count: 60
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, EnforcedStyleForEmptyBraces, SpaceBeforeBlockParameters.
@@ -160,15 +132,6 @@ Layout/SpaceInsideHashLiteralBraces:
     - 'app/services/acnc_charities/ingest_csv.rb'
     - 'app/services/build_queue.rb'
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: space, compact, no_space
-Layout/SpaceInsideParens:
-  Exclude:
-    - 'app/models/concerns/transfer_methods.rb'
-    - 'app/services/file_ingestor.rb'
-
 # Offense count: 21
 # This cop supports safe autocorrection (--autocorrect).
 Layout/SpaceInsidePercentLiteralDelimiters:
@@ -184,19 +147,6 @@ Layout/SpaceInsidePercentLiteralDelimiters:
 # SupportedStyles: final_newline, final_blank_line
 Layout/TrailingEmptyLines:
   Enabled: false
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowInHeredoc.
-Layout/TrailingWhitespace:
-  Exclude:
-    - 'app/models/admin_user.rb'
-
-# Offense count: 1
-# Configuration parameters: AllowComments.
-Lint/EmptyFile:
-  Exclude:
-    - 'app/views/people/edit_view.rb'
 
 # Offense count: 23
 # Configuration parameters: AllowedParentClasses.
@@ -238,13 +188,6 @@ Metrics/CyclomaticComplexity:
 Metrics/MethodLength:
   Max: 260
 
-# Offense count: 1
-# Configuration parameters: CountComments, CountAsOne.
-Metrics/ModuleLength:
-  Max: 133
-  Exclude:
-    - 'app/models/concerns/node_methods.rb'
-
 # Offense count: 3
 # Configuration parameters: CountKeywordArgs, MaxOptionalParameters.
 Metrics/ParameterLists:
@@ -268,14 +211,6 @@ Naming/PredicatePrefix:
     - 'app/models/person.rb'
 
 # Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: PreferredName.
-Naming/RescuedExceptionsVariableName:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
-    - 'app/services/linked_in_profile_getter.rb'
-
-# Offense count: 2
 # This cop supports unsafe autocorrection (--autocorrect-all).
 Performance/Count:
   Exclude:
@@ -291,57 +226,6 @@ RSpec/ImplicitExpect:
     - 'spec/models/group_spec.rb'
 
 # Offense count: 8
-# Configuration parameters: Max, AllowedIdentifiers, AllowedPatterns.
-RSpec/IndexedLet:
-  Exclude:
-    - 'spec/models/group_spec.rb'
-
-# Offense count: 3
-RSpec/LetSetup:
-  Exclude:
-    - 'spec/models/membership_spec.rb'
-
-# Offense count: 15
-RSpec/PendingWithoutReason:
-  Exclude:
-    - 'spec/models/membership_spec.rb'
-    - 'spec/models/person_spec.rb'
-    - 'spec/requests/search_spec.rb'
-    - 'spec/services/build_queue_spec.rb'
-
-# Offense count: 2
-# Configuration parameters: Database, Include.
-# SupportedDatabases: mysql, postgresql
-# Include: db/**/*.rb
-Rails/BulkChangeTable:
-  Exclude:
-    - 'db/migrate/20251130043112_add_nodes_count_cached_to_groups_and_people.rb'
-
-# Offense count: 6
-Rails/I18nLocaleTexts:
-  Exclude:
-    - 'app/admin/memberships.rb'
-    - 'app/admin/people.rb'
-    - 'app/models/transfer.rb'
-
-# Offense count: 6
-# Configuration parameters: Include.
-# Include: app/controllers/**/*.rb, app/mailers/**/*.rb
-Rails/LexicallyScopedActionFilter:
-  Exclude:
-    - 'app/controllers/groups_controller.rb'
-    - 'app/controllers/people_controller.rb'
-    - 'app/controllers/transfers_controller.rb'
-
-# Offense count: 3
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: Include.
-# Include: app/**/*.rb, config/**/*.rb, db/**/*.rb, lib/**/*.rb
-Rails/Output:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
-
-# Offense count: 8
 # Configuration parameters: ForbiddenMethods, AllowedMethods.
 # ForbiddenMethods: decrement!, decrement_counter, increment!, increment_counter, insert, insert!, insert_all, insert_all!, toggle!, touch, touch_all, update_all, update_attribute, update_column, update_columns, update_counters, upsert, upsert_all
 Rails/SkipsModelValidations:
@@ -353,13 +237,6 @@ Rails/SkipsModelValidations:
     - 'db/migrate/20250119060639_add_data_to_group.rb'
     - 'db/migrate/20250119060640_add_data_to_person.rb'
     - 'lib/tasks/maintenance.rake'
-
-# Offense count: 1
-# Configuration parameters: Include.
-# Include: db/**/*.rb
-Rails/ThreeStateBooleanColumn:
-  Exclude:
-    - 'db/migrate/20241022232534_add_category_to_group.rb'
 
 # Offense count: 3
 # Configuration parameters: Include.
@@ -382,15 +259,6 @@ Style/ClassAndModuleChildren:
 Style/ClassEqualityComparison:
   Enabled: false
 
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: Keywords, RequireColon.
-# Keywords: TODO, FIXME, OPTIMIZE, HACK, REVIEW, NOTE
-Style/CommentAnnotation:
-  Exclude:
-    - 'Gemfile'
-    - 'config/routes.rb'
-
 # Offense count: 1
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
@@ -398,13 +266,6 @@ Style/CommentAnnotation:
 Style/ConditionalAssignment:
   Exclude:
     - 'app/models/concerns/node_methods.rb'
-
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Style/GlobalStdStream:
-  Exclude:
-    - 'config/environments/production.rb'
-    - 'config/environments/staging.rb'
 
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
@@ -414,14 +275,6 @@ Style/Lambda:
   Exclude:
     - 'app/admin/groups.rb'
     - 'app/models/group.rb'
-
-# Offense count: 2
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, MinBodyLength, AllowConsecutiveConditionals.
-# SupportedStyles: skip_modifier_ifs, always
-Style/Next:
-  Exclude:
-    - 'app/services/file_ingestor.rb'
 
 # Offense count: 6
 # This cop supports unsafe autocorrection (--autocorrect-all).
@@ -511,11 +364,3 @@ Style/SymbolProc:
     - 'app/services/build_queue.rb'
     - 'app/services/file_ingestor.rb'
     - 'app/services/linked_in_profile_getter.rb'
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, AllowSafeAssignment.
-# SupportedStyles: require_parentheses, require_no_parentheses, require_parentheses_when_complex
-Style/TernaryParentheses:
-  Exclude:
-    - 'app/views/components/common/page_nav.rb'
