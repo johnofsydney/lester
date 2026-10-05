@@ -135,9 +135,31 @@ RSpec.describe Membership do
       end
     end
 
-    # TODO: needs attention
+    context 'when the membership has NULL dates on self' do
+      let!(:roadie) { Person.create(name: 'Roadie') }
+      let!(:membership_roadie_sabbath) do
+        described_class.create(member: roadie, group: sabbath, end_date: Date.new(1970, 1, 1))
+      end
+
+      it 'a membership with no dates overlaps every other membership of the same member' do
+        expect(membership_john_phader.overlapping).to contain_exactly(
+          membership_john_cootes,
+          membership_john_wc_boys
+        )
+      end
+
+      it 'a membership with only an end_date overlaps memberships already started by then' do
+        expect(membership_roadie_sabbath.overlapping).to contain_exactly(
+          membership_tony_sabbath,
+          membership_ozzy_sabbath,
+          membership_geezer_sabbath,
+          membership_bill_sabbath
+        )
+      end
+    end
+
     context 'when there are overlapping memberships', :aggregate_failures do
-      xit 'returns an array of overlapping memberships' do
+      it 'returns an array of overlapping memberships' do
         expect(membership_kevin_alp.overlapping).to eq([membership_mark_alp])
         expect(membership_mark_alp.overlapping).to eq([membership_kevin_alp])
         expect(membership_mark_phon.overlapping).to eq([membership_pauline_phon])

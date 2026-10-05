@@ -236,5 +236,30 @@ RSpec.describe Nodes::Merge, type: :service do
       end
 
     end
+
+    context 'when there are trading names' do
+      before do
+        group_b.trading_names.create!(name: 'Beta Trading')
+      end
+
+      it 'moves the trading names to the receiver' do
+        merge
+
+        expect(group_a.trading_names.pluck(:name)).to include('beta trading')
+      end
+
+      it 'records the merged-away node\'s own name as a trading name on the receiver' do
+        merge
+
+        expect(group_a.trading_names.pluck(:name)).to include('group b')
+      end
+
+      it 'absorbs a trading name the receiver already has instead of raising' do
+        group_a.trading_names.create!(name: 'Beta Trading')
+
+        expect { merge }.not_to raise_error
+        expect(group_a.trading_names.where(name: 'Beta Trading').count).to eq(1)
+      end
+    end
   end
 end

@@ -67,17 +67,20 @@ class InertiaController < ApplicationController
   end
 
   def nodes
-    node = person || group
+    @nodes ||= begin
+      node = person || group
 
-    node.cached.consolidated_descendents
+      node.cached.consolidated_descendents.select { |descendent| descendent.depth <= depth }
+    end
   end
 
   def all_memberships_of_descendents
     ActiveRecord::Base.logger.silence do
-      # There is a good index for this, and it is ONE query, so it's not very slow
-      Membership.where(member_id: ids_people_descendents, member_type: 'Person')
-                .or(Membership.where(member_id: ids_group_descendents, member_type: 'Group'))
-                .or(Membership.where(group_id: ids_group_descendents))
+      # Both endpoints must be rendered nodes; an edge to an absent node is invisible.
+      base = Membership.where(group_id: ids_group_descendents)
+
+      base.where(member_id: ids_people_descendents, member_type: 'Person')
+          .or(base.where(member_id: ids_group_descendents, member_type: 'Group'))
     end
   end
 

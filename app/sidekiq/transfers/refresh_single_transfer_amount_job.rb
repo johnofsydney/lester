@@ -11,6 +11,9 @@ class Transfers::RefreshSingleTransferAmountJob
   def perform(transfer_id)
     transfer = Transfer.find(transfer_id)
     update_transfer_amount(transfer)
+  rescue ActiveRecord::RecordNotFound => e
+    Rails.logger.error "Transfers::RefreshSingleTransferAmountJob: Transfer #{transfer_id} not found: #{e.message}"
+    # Don't re-raise - this won't be fixed by retrying
   end
 
   def update_transfer_amount(transfer)

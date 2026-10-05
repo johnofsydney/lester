@@ -9,7 +9,11 @@ class Groups::Record::RecordGroupWithBusinessNumber
   attr_reader :name, :business_number
 
   def call
-    Group.find_by(business_number:) || find_group_and_append_business_number || create_group_with_business_number
+    group = Group.find_by(business_number:) || find_group_and_append_business_number || create_group_with_business_number
+
+    add_to_trading_names(group) if group.persisted?
+
+    group
   end
 
   def find_group_and_append_business_number

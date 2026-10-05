@@ -5,7 +5,6 @@ class SearchResults < ApplicationView
 
   attr_reader :results
 
-  # rubocop:disable Style/EmptyElse
   def view_template
     return if results.empty?
 
@@ -16,20 +15,29 @@ class SearchResults < ApplicationView
         href = "/#{result.searchable_type.downcase.pluralize}/#{result.searchable_id}"
         link_text = Nodes::NameCapitalizer.capitalize(result.content)
 
-        suffix = if result.searchable_type == 'TradingName'
-                   owner_name = result.searchable_type.constantize.find(result.searchable_id).owner.name
-                   Nodes::NameCapitalizer.capitalize(owner_name)
-                 else
-                   nil
-                 end
-
         a(href:) { plain link_text }
 
+        suffix = owner_name_suffix(result)
         plain " (#{suffix})" if suffix
       end
     end
   end
-  # rubocop:enable Style/EmptyElse
+
+  private
+
+  def owner_name_suffix(result)
+    return unless result.searchable_type == 'TradingName'
+
+    owner = trading_names_by_id[result.searchable_id]&.owner
+    Nodes::NameCapitalizer.capitalize(owner.name) if owner
+  end
+
+  def trading_names_by_id
+    @trading_names_by_id ||= TradingName
+                             .where(id: results.select { |r| r.searchable_type == 'TradingName' }.map(&:searchable_id))
+                             .includes(:owner)
+                             .index_by(&:id)
+  end
 end
 
 # id: 32,

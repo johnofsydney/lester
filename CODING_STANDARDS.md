@@ -109,6 +109,12 @@ comment, a rework) or a stated preference on record — not as a preemptive styl
   could plausibly be double-enqueued — an idempotency guard, not just boilerplate. See
   `app/sidekiq/au_aec_donations/import_donation_row_job.rb:4-8`,
   `app/sidekiq/cache/build_person_cached_data_job.rb:4`.
+- **Distinguish permanent errors from retryable ones.** A permanent error (e.g.
+  `ActiveRecord::RecordNotFound` — the record is gone and retrying can't change that) should be
+  rescued, logged, and swallowed (`return`, don't re-raise) so Sidekiq doesn't keep retrying a job
+  that can never succeed. A retryable error (e.g. a timeout, rate limit, or other transient failure)
+  should be rescued for logging and then re-raised (`raise e`) so Sidekiq's retry mechanism can run.
+  See `app/sidekiq/cache/node_count_job.rb`, `app/sidekiq/acnc/ingest_single_charity_people_job.rb`.
 
 ### Post-deployment tasks
 
@@ -121,13 +127,17 @@ comment, a rework) or a stated preference on record — not as a preemptive styl
   `app/tasks/maintenance/dedupe_lobbyist_people_task.rb` and
   `app/tasks/maintenance/cleanup_orphaned_memberships_task.rb` for the shape: `attribute :dry_run,
   :boolean, default: true`, `collection`, `count`, `process`.
-- **Consider, don't default to, an async job per item when `process` fans out.** If a task's
-  `process(item)` would trigger meaningfully expensive or external per-item work, weigh enqueuing a
-  Sidekiq job per item (for retry/backoff/spacing — see
-  `app/tasks/maintenance/backfill_vic_council_election_results_task.rb`) against doing the work
-  inline. Inline is the right call when the per-item work is cheap and has no external calls (e.g.
-  `cleanup_orphaned_memberships_task.rb`'s in-process `delete`) — this isn't a hard rule in either
-  direction, just a question worth asking per task.
+- **`process` fans out to an async job per item — always.** A maintenance task's `process(item)`
+  enqueues one low-priority Sidekiq job per item; it never does the per-item write inline. The task
+  run then finishes quickly (it's just iterating and enqueueing) while the real work drains through
+  the `low` queue without competing with user-facing or ingestion workloads, with Sidekiq's
+  retry/backoff and dead set per item. The per-item job must **re-check its precondition at
+  execution time** (don't trust the state at enqueue time) and guard against the record no longer
+  existing. See `app/tasks/maintenance/cleanup_self_referential_trading_names_task.rb` +
+  `app/sidekiq/maintenance/delete_self_referential_trading_name_job.rb` for the canonical pair, and
+  `backfill_vic_council_election_results_task.rb` for an earlier example. "The per-item work is
+  cheap" is not an exemption — a large collection of cheap writes is still one long-running
+  synchronous task. The only thing that stays inline in `process` is dry-run logging.
 
 ## Testing
 
