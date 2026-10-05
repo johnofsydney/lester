@@ -55,6 +55,13 @@ Metrics/MethodLength:
 Naming/VariableNumber:
   Enabled: false
 
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - test
+    - production
+    - staging
+
 Rails/RedundantPresenceValidationOnBelongsTo:
   # belongs_to's automatic presence check only catches an unset association,
   # not the foreign key column set to nil directly, and specs assert the
