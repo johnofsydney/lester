@@ -1,7 +1,7 @@
 class TransfersTableComponent < ApplicationView
   include ActionView::Helpers::NumberHelper
 
-  def initialize(transfers:, heading:, summarise_for: nil, exclude: nil, entity:, page: nil)
+  def initialize(transfers:, heading:, entity:, summarise_for: nil, exclude: nil, page: nil)
     # these transfers are already consolidated with depth relative to the entity
     @transfers = transfers
     @heading = heading

@@ -29,12 +29,12 @@ class Common::MoneyGraphs < ApplicationView
         query.group(:taker_id, :taker_type)
             .sum(:amount)
             .transform_keys{ |key| key[1].constantize.find(key[0]).name }
-            .map { |name, v| "##{Digest::MD5.hexdigest(name)[0..5]}" }
+            .map { |name, _v| "##{Digest::MD5.hexdigest(name)[0..5]}" }
       else
         query.group(:giver_id, :giver_type)
             .sum(:amount)
             .transform_keys{ |key| key[1].constantize.find(key[0]).name }
-            .map { |name, v| "##{Digest::MD5.hexdigest(name)[0..5]}" }
+            .map { |name, _v| "##{Digest::MD5.hexdigest(name)[0..5]}" }
       end
     end
   end
