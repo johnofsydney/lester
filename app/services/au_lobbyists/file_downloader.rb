@@ -70,7 +70,7 @@ class AuLobbyists::FileDownloader
     # Remove temporary xlsx file
     begin
       File.delete(path) if path && File.exist?(path)
-    rescue => e
+    rescue StandardError => e
       Rails.logger.warn "Csv::FileDownloader: failed to delete temp xlsx #{path}: #{e.class} #{e.message}"
     end
 

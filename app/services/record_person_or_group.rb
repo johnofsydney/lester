@@ -113,7 +113,7 @@ class RecordPersonOrGroup
     return 'group' if name.match?(/(guild|foundation|trust|retail|council|union|club|alliance)/i)  # Check for company names
     return 'group' if name.match?(/(new south wales|queensland|state|tasmania|south|northern|territory|western)/i)  # Check for states names
     return 'group' if name.match?(/\b(nsw|n\.s\.w|qld|s\.a\.|n\.t\.|w\.a\.)\b/i)  # Check for states abbreviations
-    return 'group' if name.match?(/( pl$|t\/as|trading as| p\/l)/i)  # Check for company endings
+    return 'group' if name.match?(%r{( pl$|t/as|trading as| p/l)}i)  # Check for company endings
     return 'group' if name.match?(/&|\(/)  # Check for entries with ampersands (considered as companies)
     return 'group' if name.match?(/\d/)  # Check for entries with numbers (considered as companies)
     return 'group' if name.include?('+')  # Check for entries with signs (considered as companies)
