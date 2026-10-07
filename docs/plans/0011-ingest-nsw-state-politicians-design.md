@@ -94,9 +94,21 @@ end
 
 Both confirmed live on the current page structure (`LA/state/elected`, `LC/state/candidates_elected`). By-elections (e.g. the 2024 Epping/Hornsby/Pittwater, 2025 Kiama/Port Macquarie ones listed on `elections.nsw.gov.au`) are **not covered by this list** — they're single-electorate events with their own separate result pages, not part of a general-election `SG*` sweep; whether/how to fold by-election winners into this ingestion (they're real MPs, but discovered a different way) is not designed here.
 
+## LC implementation (addendum, 2026-10-07)
+
+LC shipped as a sibling to LA, same `RecordCandidatePerson`/`Group::RecordRow`/`People::RecordStateElectionData`/`CleanCandidateName` reuse, same gate rule. Two decisions supersede what this doc originally assumed:
+
+- **`cc/fp_summary` is NOT used for loser extraction**, despite the "Not yet designed" note below originally pointing at it. It nests vote counts/quotas under group letters and never attaches a party name to a group that elected nobody — unusable for the gate without a separate lookup anyway. Two other pages, confirmed live and simpler, are used instead:
+  - **`/{event}/LC/state/fp_by_grp`** — flat, one row per ballot group: `Group letter | Group/Party Name | ...vote columns (unused)`. This is the group-letter → party-name map (`NswStatePoliticians::Lc::FpByGrpParser`); covers groups `candidates_elected` never lists (no elected member). Blank-party rows (ungrouped independents) and the trailing summary rows (`UNGROUPED CANDIDATES`, `Total Formal Votes`, etc) are both excluded.
+  - **`/{event}/LC/state/fp_grp_and_candidates`** — nested: one header row per group (letter populated, rest blank), then one row per candidate in that group (`Candidate Name | ELECTED/EXCLUDED | Position | Count`). This is the full candidate roster with explicit win/loss status (`NswStatePoliticians::Lc::GrpAndCandidatesParser`), joined to the party map above by group letter. Only `EXCLUDED` rows feed the loser gate — `ELECTED` rows are skipped (already recorded from `candidates_elected`).
+- **PartyMapper's LDP bug and joint-ticket (`LIBERAL / THE NATIONALS`) handling were already fixed** by the time this was picked up — confirmed by reading current `app/services/councils/party_mapper.rb`, not assumed. No `PartyMapper` changes were needed for LC.
+
+Implementation: `app/services/nsw_state_politicians/lc/{candidates_elected_page_parser,fp_by_grp_parser,grp_and_candidates_parser}.rb`, `app/services/nsw_state_politicians/record_lc_candidate.rb`, `app/sidekiq/nsw_state_politicians/ingest_lc_election_results_job.rb`. `electorate` has no LC equivalent (one statewide ballot, no per-seat fan-out like LA) — fixed to the literal `'statewide'` in `state_election_data`'s dedup tuple; `house: 'LC'` already disambiguates from LA's real electorate values.
+
+Verified against real SG2301 data in dev: 21/21 elected members recorded with `'Member of the Legislative Council'`, 53 gated losers recorded, blank-party independents correctly excluded, no duplicate party Groups.
+
 ## Not yet designed
 
-- LC's `fp_summary` group-ticket parser, and how `PartyMapper` should resolve joint-ticket labels like `LIBERAL / THE NATIONALS` (which family, or both, or neither) — the *rule* for who's ingested is decided (same existing-Group gate as LA), but extracting a clean candidate+party row from LC's page shape isn't.
 - By-election handling (see above) — separate discovery mechanism from the general-election sweep.
 - The legacy pre-2019 (`SGE2015` and earlier) page structure — different enough from the current `SG*` shape that it needs its own parser before backfill can reach it, not assumed to be a drop-in. Tracked separately, deliberately not blocking this doc's initial implementation: [issue #290](https://github.com/johnofsydney/lester/issues/290).
 - The manual pre-step to destroy the legacy one-time-import Memberships/Positions/orphaned People — `Group.nsw_parliament` confirmed locally (id 3740, not hardcoded — see above), full design and rake-task sketch in [the cleanup runbook](../runbooks/nsw-state-politicians-legacy-cleanup.md); not yet implemented, and worth reconciling the runbook's "expected ~93 electorates but found 512 memberships" gap before running it for real.
