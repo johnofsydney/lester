@@ -4,11 +4,11 @@ RSpec.describe Group do
   let(:group) { described_class.create(name:) }
   let(:name) { 'Test Group' }
 
-  it { should have_many(:memberships) }
-  it { should have_many(:people) }
-  it { should have_many(:groups) }
-  it { should have_many(:outgoing_transfers) }
-  it { should have_many(:incoming_transfers) }
+  it { is_expected.to have_many(:memberships) }
+  it { is_expected.to have_many(:people) }
+  it { is_expected.to have_many(:groups) }
+  it { is_expected.to have_many(:outgoing_transfers) }
+  it { is_expected.to have_many(:incoming_transfers) }
 
   describe 'validations' do
     it 'does not allow two groups with the same business number' do

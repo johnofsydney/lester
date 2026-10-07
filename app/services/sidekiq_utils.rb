@@ -4,11 +4,11 @@ class SidekiqUtils
   end
 
   def self.scheduled_size(queue_name)
-    Sidekiq::ScheduledSet.new.select { |job| job.queue == queue_name }.size
+    Sidekiq::ScheduledSet.new.count { |job| job.queue == queue_name }
   end
 
   def self.retry_size(queue_name)
-    Sidekiq::RetrySet.new.select { |job| job.queue == queue_name }.size
+    Sidekiq::RetrySet.new.count { |job| job.queue == queue_name }
   end
 
   def self.already_scheduled?(klass_name)

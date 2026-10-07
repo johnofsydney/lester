@@ -88,7 +88,7 @@ module NodeMethods
   end
 
   def top_six_as_giver
-    sum_others = others_as_giver.sum{|a| a.last}
+    sum_others = others_as_giver.sum(&:last)
 
     if sum_others.zero?
       top_five_as_giver.to_h
@@ -98,7 +98,7 @@ module NodeMethods
   end
 
   def top_six_as_taker
-    sum_others = others_as_taker.sum{|a| a.last}
+    sum_others = others_as_taker.sum(&:last)
 
     if sum_others.zero?
       top_five_as_taker.to_h
@@ -192,11 +192,11 @@ module NodeMethods
     result = position.title
 
     if position.end_date.present? && position.start_date.present?
-      if position.end_date == position.start_date
-        result += " | (#{position.formatted_start_date})"
-      else
-        result += " | (#{position.formatted_start_date} - #{position.formatted_end_date})"
-      end
+      result += if position.end_date == position.start_date
+                  " | (#{position.formatted_start_date})"
+                else
+                  " | (#{position.formatted_start_date} - #{position.formatted_end_date})"
+                end
     elsif position.start_date.present?
       result += " | (since #{position.formatted_start_date})"
     elsif position.end_date.present?
@@ -221,7 +221,7 @@ module NodeMethods
   end
 
   def ==(other)
-    self.class == other.class && self.id == other.id
+    self.class == other.class && id == other.id
   end
 
   def both_have_business_number?(other_entity)

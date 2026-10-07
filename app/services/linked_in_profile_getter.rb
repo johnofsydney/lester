@@ -82,7 +82,7 @@ class LinkedInProfileGetter
     # person
     title = if experience['title'].present?
       CapitalizeNames.capitalize(experience['title'].strip)
-                     .gsub(/\bCEO\b/i) { |word| word.upcase }
+                     .gsub(/\bCEO\b/i, &:upcase)
     end
 
     evidence = person.linkedin_url
@@ -97,7 +97,7 @@ class LinkedInProfileGetter
       group: group
     )
     # create position for each row, with unique dates and title
-    position = Position.find_or_create_by(membership:, title:, start_date:, end_date:) if (title || start_date || end_date)
+    position = Position.find_or_create_by(membership:, title:, start_date:, end_date:) if title || start_date || end_date
 
     membership.update!(evidence:) if evidence
     position.update!(evidence:) if evidence && position
@@ -108,7 +108,7 @@ class LinkedInProfileGetter
 
     begin
       Date.new(date_hash['year'], date_hash['month'], date_hash['day'])
-    rescue
+    rescue StandardError
       nil
     end
   end

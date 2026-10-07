@@ -153,15 +153,6 @@ Layout/TrailingEmptyLines:
 Lint/MissingSuper:
   Enabled: false
 
-# Offense count: 4
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowedMethods.
-# AllowedMethods: present?, blank?, presence, try, try!
-Lint/SafeNavigationConsistency:
-  Exclude:
-    - 'app/services/acnc_charities/csv_downloader.rb'
-    - 'app/services/aus_tender/tender_downloader.rb'
-
 # Offense count: 69
 # Configuration parameters: AllowedMethods, AllowedPatterns, CountRepeatedAttributes.
 Metrics/AbcSize:
@@ -210,20 +201,6 @@ Naming/PredicatePrefix:
     - 'app/models/group.rb'
     - 'app/models/person.rb'
 
-# Offense count: 2
-# This cop supports unsafe autocorrection (--autocorrect-all).
-Performance/Count:
-  Exclude:
-    - 'app/services/sidekiq_utils.rb'
-
-
-# Offense count: 5
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: is_expected, should
-RSpec/ImplicitExpect:
-  Exclude:
-    - 'spec/models/group_spec.rb'
 
 # Offense count: 8
 # Configuration parameters: ForbiddenMethods, AllowedMethods.
@@ -258,14 +235,6 @@ Style/ClassAndModuleChildren:
 
 Style/ClassEqualityComparison:
   Enabled: false
-
-# Offense count: 1
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, SingleLineConditionsOnly, IncludeTernaryExpressions.
-# SupportedStyles: assign_to_condition, assign_inside_condition
-Style/ConditionalAssignment:
-  Exclude:
-    - 'app/models/concerns/node_methods.rb'
 
 # Offense count: 4
 # This cop supports safe autocorrection (--autocorrect).
@@ -305,62 +274,3 @@ Style/PercentLiteralDelimiters:
     - 'app/models/group.rb'
     - 'app/models/transfer.rb'
 
-
-# Offense count: 6
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantParentheses:
-  Exclude:
-    - 'app/services/build_queue.rb'
-    - 'app/services/file_ingestor.rb'
-    - 'app/services/linked_in_profile_getter.rb'
-    - 'app/views/components/transfers_table_component.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'app/controllers/groups_controller.rb'
-    - 'app/services/build_queue.rb'
-    - 'app/views/components/transfers_table_component.rb'
-
-# Offense count: 19
-# This cop supports safe autocorrection (--autocorrect).
-Style/RedundantSelf:
-  Exclude:
-    - 'app/models/concerns/node_methods.rb'
-    - 'app/models/concerns/transfer_methods.rb'
-    - 'app/models/group.rb'
-    - 'app/models/membership.rb'
-
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle, AllowInnerSlashes.
-# SupportedStyles: slashes, percent_r, mixed
-Style/RegexpLiteral:
-  Exclude:
-    - 'app/services/bluesky_service.rb'
-    - 'app/services/record_person_or_group.rb'
-
-# Offense count: 9
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: EnforcedStyle.
-# SupportedStyles: implicit, explicit
-Style/RescueStandardError:
-  Exclude:
-    - 'app/services/au_lobbyists/file_downloader.rb'
-    - 'app/services/file_ingestor.rb'
-    - 'app/services/linked_in_profile_getter.rb'
-    - 'csv_data/raw/wiki_feds_cleaner.rb'
-
-# Offense count: 7
-# This cop supports unsafe autocorrection (--autocorrect-all).
-# Configuration parameters: AllowMethodsWithArguments, AllowedMethods, AllowedPatterns, AllowComments.
-# AllowedMethods: define_method, mail, respond_to
-Style/SymbolProc:
-  Exclude:
-    - 'app/controllers/inertia_controller.rb'
-    - 'app/models/concerns/node_methods.rb'
-    - 'app/services/build_queue.rb'
-    - 'app/services/file_ingestor.rb'
-    - 'app/services/linked_in_profile_getter.rb'
