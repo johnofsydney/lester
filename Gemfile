@@ -97,3 +97,6 @@ gem "roo", "~> 3.0.0"
 
 gem "rexml"
 gem "ostruct"
+
+gem 'aws-sdk-s3'
+gem 'rubyzip'

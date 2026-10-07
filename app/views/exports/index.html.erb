@@ -1,0 +1,29 @@
+<div class="container mt-6">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <header class="mb-4 d-flex justify-content-between align-items-center">
+        <h1>Data exports</h1>
+        <%= link_to 'Download all (.zip)', @zip_url, class: 'btn btn-primary' %>
+      </header>
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Last updated</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @objects.each do |object| %>
+            <tr>
+              <td><%= object.key %></td>
+              <td><%= object.last_modified.strftime('%Y-%m-%d %H:%M') %></td>
+              <td><%= link_to 'Download', Exports::S3Client.public_url(object.key) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
