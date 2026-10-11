@@ -50,7 +50,7 @@ module TransferMethods
       consolidated_transfers(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:)
     end
 
-    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], transfer: nil, with_parents: [] )
+    def consolidated_descendents(depth: 0, results: [], visited_nodes: [], queue: [self], counter: 0, visited_membership_ids: [], with_parents: [])
       current_depth_memberships = []
 
       # sanity check in case of a large number of nodes on [self] for the first iteration
@@ -74,20 +74,20 @@ module TransferMethods
       return results if depth == 0
 
       # Stop the whole traversal if we've reached the results threshold
-      return results if results.size >= Constants::MAX_DESCENDENTS_RESULTS
+      return results if results.size >= Constants::TRAVERSAL_BUDGET
 
       # add current memberships to visited memberships
       visited_membership_ids << current_depth_memberships.flatten.pluck(:id)
       visited_membership_ids = visited_membership_ids.flatten.uniq
 
       # get the nodes for the next depth
-      service = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter, transfer)
+      service = BuildQueue.new(queue, visited_membership_ids, visited_nodes, counter)
       queue = service.call
       with_parents = service.with_parents
 
       depth -= 1
       counter += 1
-      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:, transfer:, with_parents:)
+      consolidated_descendents(depth:, results:, visited_nodes:, queue:, counter:, visited_membership_ids:, with_parents:)
     end
 
     def data_time_range
@@ -100,20 +100,20 @@ module TransferMethods
     end
 
     def tag_incoming_transfers
-      return Transfer.none unless self.is_tag?
+      return Transfer.none unless is_tag?
 
-      group_ids = self.groups.pluck(:id)
+      group_ids = groups.pluck(:id)
 
       @tag_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: group_ids)
                                           .where.not(giver_id: group_ids)
-                                          .or(Transfer.where(taker_type: 'Person', taker_id: [self.people.pluck(:id)]))
+                                          .or(Transfer.where(taker_type: 'Person', taker_id: [people.pluck(:id)]))
     end
 
     def tag_outgoing_transfers
-      return Transfer.none unless self.is_tag?
+      return Transfer.none unless is_tag?
 
-      group_ids = self.groups.pluck(:id)
-      people_ids = self.people.pluck(:id)
+      group_ids = groups.pluck(:id)
+      people_ids = people.pluck(:id)
 
       @tag_outgoing_transfers ||= Transfer.where(giver_type: 'Group', giver_id: group_ids)
                                           .where.not(taker_id: group_ids)
@@ -123,10 +123,10 @@ module TransferMethods
     private
 
     def all_transfers
-      @all_transfers ||= if self.is_tag?
+      @all_transfers ||= if is_tag?
                            tag_outgoing_transfers.or(tag_incoming_transfers)
                          else
-                           self.incoming_transfers.or(self.outgoing_transfers)
+                           incoming_transfers.or(outgoing_transfers)
                          end
     end
   end

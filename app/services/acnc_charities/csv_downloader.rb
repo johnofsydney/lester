@@ -14,13 +14,13 @@ class AcncCharities::CsvDownloader
   def success
     return false unless response
 
-    response&.success? || response[:success]
+    response.success? || response[:success]
   end
 
   def status
     return unless response
 
-    response&.status || response[:status]
+    response.status || response[:status]
   end
 
   def body

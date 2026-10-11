@@ -43,7 +43,6 @@ module Sunshine01
       ActiveSupport::TimeWithZone,
       ActiveSupport::Duration
     ]
-    config.active_support.to_time_preserves_timezone = :zone
     config.log_formatter = ::Logger::Formatter.new
     config.generators.system_tests = nil
     config.log_level = :debug

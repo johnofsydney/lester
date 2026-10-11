@@ -60,7 +60,7 @@ class BlueskyService
       matches = []
       # message.scan(URI::RFC2396_PARSER.make_regexp(["http", "https"])) { matches << Regexp.last_match }
       # raises exception, so using plain old regex instead to find each link
-      url_regex = /https?:\/\/[\w\-.]+\.[a-z]{2,}(?:\/[^\s<>"']*)?/i
+      url_regex = %r{https?://[\w\-.]+\.[a-z]{2,}(?:/[^\s<>"']*)?}i
       message.scan(url_regex) { matches << Regexp.last_match }
       matches.each do |match|
         start, stop = match.byteoffset(0)

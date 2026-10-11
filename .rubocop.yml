@@ -23,6 +23,10 @@ AllCops:
     - 'csv_data/**/*'
     - 'db/**/*'
     - 'vendor/**/*'
+    # Temporarily disabled (raises immediately - see "mapper id broken - fix later")
+    # pending a fix for the underlying mapper bug. Remove this exclude once general_upload
+    # is re-enabled.
+    - 'app/services/file_ingestor.rb'
 
 Bundler/OrderedGems:
   Exclude:
@@ -54,6 +58,13 @@ Metrics/MethodLength:
 
 Naming/VariableNumber:
   Enabled: false
+
+Rails/UnknownEnv:
+  Environments:
+    - development
+    - test
+    - production
+    - staging
 
 Rails/RedundantPresenceValidationOnBelongsTo:
   # belongs_to's automatic presence check only catches an unset association,
