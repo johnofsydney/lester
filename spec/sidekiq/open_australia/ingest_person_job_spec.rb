@@ -34,8 +34,8 @@ RSpec.describe OpenAustralia::IngestPersonJob, type: :job do
       allow(OpenAustralia::IngestPerson).to receive(:call).and_raise(StandardError, 'boom')
     end
 
-    it 're-raises and logs an ApiLog entry' do
-      expect { perform }.to raise_error(StandardError, 'boom').and change(ApiLog, :count).by(1)
+    it 're-raises and records an ingest failure' do
+      expect { perform }.to raise_error(StandardError, 'boom').and change(IngestSourceStatus, :count).by(1)
     end
   end
 
@@ -44,8 +44,8 @@ RSpec.describe OpenAustralia::IngestPersonJob, type: :job do
       allow(OpenAustralia::IngestPerson).to receive(:call).and_raise(OpenAustraliaRateLimitError, '429: slow down')
     end
 
-    it 're-raises (so Sidekiq retries) and logs an ApiLog entry' do
-      expect { perform }.to raise_error(OpenAustraliaRateLimitError).and change(ApiLog, :count).by(1)
+    it 're-raises (so Sidekiq retries) and records an ingest failure' do
+      expect { perform }.to raise_error(OpenAustraliaRateLimitError).and change(IngestSourceStatus, :count).by(1)
     end
   end
 
@@ -54,9 +54,9 @@ RSpec.describe OpenAustralia::IngestPersonJob, type: :job do
       allow(OpenAustralia::IngestPerson).to receive(:call).and_raise(OpenAustraliaApiError, 'getRepresentative: Unknown person ID')
     end
 
-    it 'does not re-raise, but logs an ApiLog entry' do
+    it 'does not re-raise, but records an ingest failure' do
       expect { perform }.not_to raise_error
-      expect(ApiLog.count).to eq(1)
+      expect(IngestSourceStatus.count).to eq(1)
     end
   end
 end

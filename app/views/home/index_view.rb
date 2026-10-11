@@ -1,4 +1,41 @@
 class Home::IndexView < ApplicationView
+  include Phlex::Rails::Helpers::TimeAgoInWords
+
+  STATUS_LABELS = {
+    'not-started' => 'Not started',
+    'designed' => 'Designed',
+    'investigating' => 'Investigating',
+    'in-progress' => 'In progress',
+    'waiting-on-verification' => 'Being verified',
+    'blocked' => 'Paused',
+    'complete' => 'Done'
+  }.freeze
+
+  DATA_SOURCE_GROUPS = [
+    { label: 'AEC Annual Donor records since 1999', url: 'https://transparency.aec.gov.au/AnnualDonor', frequency: 'Manual trigger' },
+    { label: 'AEC 2023 Referendum Donor Returns', url: 'https://transparency.aec.gov.au/ReferendumDonor', frequency: 'Manual trigger' },
+    { label: 'AEC Election Donor Returns since 2007', url: 'https://transparency.aec.gov.au/Donor', frequency: 'Manual trigger' },
+    { label: 'Federal Government Contracts since 2018', url: 'https://www.tenders.gov.au/cn/search', frequency: 'Daily',
+      keys: %w[AusTender::IngestContractsDateJob AusTender::BackfillContractsMasterJob] },
+    { label: 'Lobbyists and the Clients of Lobbyists', url: 'https://lobbyists.ag.gov.au/register', frequency: 'Twice yearly (Apr & Oct)',
+      keys: %w[AuLobbyists::IngestLobbyistsJob] },
+    { label: 'Charities and Not-For-Profit Organisations', url: 'https://www.acnc.gov.au/', frequency: 'Yearly',
+      keys: %w[Acnc::IngestDatasetCsvJob Acnc::IngestMissingPeopleJob Acnc::IngestSingleCharityPeopleJob] },
+    { label: 'Federal MPs and Senators', url: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term', frequency: 'Monthly',
+      keys: %w[OpenAustralia::IngestCurrentPoliticiansJob OpenAustralia::IngestPersonJob] },
+    { label: 'NSW council elections', frequency: 'Monthly',
+      keys: %w[Councils::Nsw::IngestElectionResultsJob Councils::Nsw::IngestByElectionResultsJob
+               Councils::Nsw::ImportCouncilResultRowJob Councils::Nsw::ImportByElectionResultRowJob] },
+    { label: 'VIC council elections', frequency: 'Monthly',
+      keys: %w[Councils::Vic::IngestElectionResultsJob Councils::Vic::IngestByElectionResultsJob
+               Councils::Vic::ImportCouncilResultRowJob Councils::Vic::ImportByElectionResultRowJob] },
+    { label: 'QLD council elections', frequency: 'Monthly',
+      keys: %w[Councils::Qld::IngestElectionResultsJob Councils::Qld::ImportElectionResultsJob Councils::Qld::RecordContestResultJob] },
+    { label: 'NSW state politicians', frequency: 'Ad hoc, as elections occur',
+      keys: %w[NswStatePoliticians::IngestElectionResultsJob NswStatePoliticians::ImportLaElectorateResultJob] },
+    { label: 'Various ad-hoc data sources added directly', frequency: 'Manual, as needed' }
+  ].freeze
+
   def view_template
     div(class: 'bg-dark text-white p-5 mb-4 rounded-3') do
       h1(class: 'display-4 mb-0') { '...follow the money...' }
@@ -34,41 +71,43 @@ class Home::IndexView < ApplicationView
                 thead do
                   tr do
                     th { 'Data Source' }
-                    th { 'Notes' }
+                    th { 'Update Frequency' }
+                    th { 'Status' }
+                    th { 'Last Run' }
                   end
                 end
                 tbody do
-                  tr do
-                    td { a(href: 'https://transparency.aec.gov.au/AnnualDonor') { 'AEC Annual Donor records since 1999' } }
-                    td { plain 'manual trigger' }
+                  data_sources.each do |source|
+                    tr do
+                      td { source.url ? a(href: source.url) { source.label } : plain(source.label) }
+                      td { plain source.frequency }
+                      td { data_source_status_badge(source) }
+                      td { source.last_run_at ? plain("#{time_ago_in_words(source.last_run_at)} ago") : plain('—') }
+                    end
                   end
+                end
+              end
+            end
+          end
+          div(class: 'card shadow-sm mb-4') do
+            div(class: 'card-body') do
+              p { 'We keep this project moving in the open. Here is an honest summary of the major initiatives currently underway and their status.' }
+
+              table(class: 'table table-striped') do
+                thead do
                   tr do
-                    td { a(href: 'https://transparency.aec.gov.au/ReferendumDonor') { 'AEC 2023 Referendum Donor Returns' } }
-                    td { plain 'manual trigger' }
+                    th { 'Initiative' }
+                    th { 'Status' }
+                    th { 'Summary' }
                   end
-                  tr do
-                    td { a(href: 'https://transparency.aec.gov.au/Donor') {'AEC Election Donor Returns Since 2007'} }
-                    td { plain 'manual trigger' }
-                  end
-                  tr do
-                    td { a(href: 'https://www.tenders.gov.au/cn/search') { 'Federal Government Contracts since 2018' } }
-                    td { plain 'automatically ingested daily'}
-                  end
-                  tr do
-                    td { a(href: 'https://lobbyists.ag.gov.au/register') { 'Lobbyists and the Clients Of Lobbyists' } }
-                    td { plain 'automatically ingested every 6 months'}
-                  end
-                  tr do
-                    td { a(href: 'https://www.acnc.gov.au/', class: 'd-block mb-1') { 'Charities and Not-For-Profit Organisations' } }
-                    td { plain 'automatically ingested every 6 months' }
-                  end
-                  tr do
-                    td { a(href: 'https://en.wikipedia.org/wiki/Category:Members_of_Australian_parliaments_by_term') { 'Federal MPs and Senators since 2016' } }
-                    td { plain 'manually ingested. (data for the 2025 election results yet to be collated and added to the database)' }
-                  end
-                  tr do
-                    td { plain 'Various Ad-Hoc Data Sources added directly' }
-                    td { plain 'manually ingested as needed' }
+                end
+                tbody do
+                  major_initiatives.each do |initiative|
+                    tr do
+                      td { strong { initiative[:title] } }
+                      td { span(class: "badge #{initiative_status_class(initiative[:status])}") { STATUS_LABELS.fetch(initiative[:status], initiative[:status]) } }
+                      td { plain initiative[:summary].to_s.squish }
+                    end
                   end
                 end
               end
@@ -95,5 +134,36 @@ class Home::IndexView < ApplicationView
         end
       end
     end
+  end
+
+  private
+
+  def data_sources
+    @data_sources ||= DATA_SOURCE_GROUPS.map { |group| Home::DataSourceHealth.new(**group) }
+  end
+
+  def data_source_status_badge(source)
+    case source.state
+    when :ok then span(class: 'badge bg-success') { 'OK' }
+    when :failing then span(class: 'badge bg-danger') { 'Failing' }
+    when :manual then span(class: 'badge bg-secondary') { 'Manual' }
+    when :unknown then span(class: 'badge bg-secondary') { 'Not yet run' }
+    end
+  end
+
+  def major_initiatives
+    @major_initiatives ||= YAML.load_file(Rails.root.join('app/views/home/major_initiatives.yml')).map(&:symbolize_keys)
+  end
+
+  def initiative_status_class(status)
+    {
+      'not-started' => 'bg-secondary',
+      'designed' => 'bg-secondary',
+      'investigating' => 'bg-info',
+      'in-progress' => 'bg-primary',
+      'waiting-on-verification' => 'bg-warning text-dark',
+      'blocked' => 'bg-danger',
+      'complete' => 'bg-success'
+    }.fetch(status, 'bg-secondary')
   end
 end

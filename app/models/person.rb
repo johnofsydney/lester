@@ -13,9 +13,18 @@ class Person < ApplicationRecord
 
   include ActionView::Helpers::NumberHelper
 
-  include ExternalIdentifiable
-
   has_many :trading_names, as: :owner, dependent: :destroy
+
+  scope :by_trading_name, lambda { |value|
+    return all if value.blank?
+
+    joins(:trading_names).where(trading_names: { name: TradingName.normalize_value_for(:name, value) })
+  }
+
+  def self.ransackable_scopes(_auth_object = nil)
+    %i[by_external_identifier by_trading_name]
+  end
+
   has_many :memberships, as: :member, dependent: :destroy
   has_many :groups, through: :memberships
   has_many :positions, through: :memberships
@@ -105,8 +114,8 @@ class Person < ApplicationRecord
 
   def direct_friendships
     # PEOPLE, with whom this person has a direct relationship, ie they are both part of the same group.
-    # The group must be <= MAX_GROUP_SIZE_TO_FOLLOW, otherwise the relationship is too weak to be considered direct.
-    # That constant is used in the BuildQueue service.
+    # The group must be <= Constants::MAX_NODES_TO_EXPAND, otherwise the relationship is too weak to be considered direct.
+    # That constant is used in the CanAddToQueue service.
     consolidated_descendents_depth(2).filter{|descendent| descendent.klass == 'Person' && descendent.depth == 2}
   end
 

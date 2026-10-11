@@ -5,7 +5,10 @@
 # no longer matters (see docs/adr/0006-council-membership-position-dates-deferred-to-interpretation.md).
 module Maintenance
   class BackfillVicCouncilElectionResultsTask < MaintenanceTasks::Task
-    BACKFILL_ELECTION_YEAR = Councils::Vic::Elections::ALL.first[:year]
+    # Hardcoded, not looked up via Councils::Vic::Elections (which discovers cycles live) -- a
+    # backfill task targets one specific, fixed historical cycle by design, and this constant is
+    # evaluated at class-load time, before any request context exists to make that live call from.
+    BACKFILL_ELECTION_YEAR = 2020
 
     def collection
       @collection ||= fetch_councils

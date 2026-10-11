@@ -195,4 +195,42 @@ RSpec.describe Groups::RecordGroup, type: :service do
       end
     end
   end
+
+  describe 'trading_names fallback' do
+    let(:name) { 'Acme' }
+
+    context 'when a sole Group owns a matching trading name' do
+      let!(:group) { FactoryBot.create(:group, name: 'Acme Holdings') }
+
+      before { group.trading_names.create!(name:) }
+
+      it 'returns the owning group without creating a new one' do
+        expect { expect(described_class.call(name)).to eq(group) }.not_to change(Group, :count)
+      end
+    end
+
+    context 'when the only matching trading name belongs to a Person' do
+      let!(:person) { FactoryBot.create(:person, name: 'Acme Person') }
+
+      before { person.trading_names.create!(name:) }
+
+      it 'does not return the person and creates a new group instead' do
+        result = nil
+        expect { result = described_class.call(name) }.to change(Group, :count).by(1)
+        expect(result).to be_a(Group)
+      end
+    end
+
+    context 'when multiple groups own a matching trading name' do
+      before do
+        FactoryBot.create(:group, name: 'Acme Holdings').trading_names.create!(name:)
+        FactoryBot.create(:group, name: 'Acme Industries').trading_names.create!(name:)
+        allow(NewRelic::Agent).to receive(:notice_error)
+      end
+
+      it 'raises AmbiguousName' do
+        expect { described_class.call(name) }.to raise_error(TradingName::AmbiguousName)
+      end
+    end
+  end
 end

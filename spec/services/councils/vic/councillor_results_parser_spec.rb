@@ -58,4 +58,29 @@ RSpec.describe Councils::Vic::CouncillorResultsParser, type: :service do
       )
     end
   end
+
+  context 'when the council is under state-appointed administration' do
+    let(:page) { Rails.root.join('spec/fixtures/councils/vic/councillor_under_administration.html').read }
+
+    it 'returns nil' do
+      expect(call_service).to be_nil
+    end
+  end
+
+  describe '.no_contest_expected?' do
+    it 'is true for a council-under-administration page' do
+      page = Rails.root.join('spec/fixtures/councils/vic/councillor_under_administration.html').read
+      expect(described_class.no_contest_expected?(page)).to be(true)
+    end
+
+    it 'is false for a normal declared results page' do
+      page = Rails.root.join('spec/fixtures/councils/vic/councillor_declared.html').read
+      expect(described_class.no_contest_expected?(page)).to be(false)
+    end
+
+    it 'is false for a not-yet-declared page' do
+      page = Rails.root.join('spec/fixtures/councils/vic/councillor_not_declared.html').read
+      expect(described_class.no_contest_expected?(page)).to be(false)
+    end
+  end
 end

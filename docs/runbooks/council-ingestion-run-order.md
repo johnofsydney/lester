@@ -16,8 +16,8 @@ Any order below is fine; current-cycle-first is still the natural default.
 ## Current cycle
 
 ```ruby
-Councils::Nsw::IngestElectionResultsJob.perform_async   # defaults to the latest cycle (LG2401/2024)
-Councils::Vic::IngestElectionResultsJob.perform_async    # defaults to the latest cycle (2024)
+Councils::Nsw::IngestElectionResultsJob.perform_async   # defaults to the latest cycle, discovered live
+Councils::Vic::IngestElectionResultsJob.perform_async    # defaults to the latest cycle, discovered live
 ```
 
 Roughly 3.2 hours for NSW (128 councils), 2 hours for VIC (78 councils), run concurrently via the
@@ -43,13 +43,46 @@ zero-record skips:
 - Runs its own election under s296 of the Local Government Amendment (Elections) Act 2011 --
   NSWEC never has data for these councils, in any cycle (e.g. Fairfield, Liverpool)
 
+## By-elections and countbacks
+
+Separate top-level jobs, also cron-scheduled monthly and idempotent:
+
+```ruby
+Councils::Nsw::IngestByElectionResultsJob.perform_async
+Councils::Vic::IngestByElectionResultsJob.perform_async
+```
+
+Both discover every event live -- NSW from its local-election-results archive page
+(`Councils::Nsw::ByElectionIndexParser`), VIC from its by-election/countback timeline
+(`Councils::Vic::ByElectionIndexParser`) -- so a newly-declared by-election or (VIC) countback
+needs no code change, same principle as QLD below. VIC records a countback (a recount of
+already-cast ballots to fill a casual vacancy, no fresh vote) exactly like a by-election win, just
+with different evidence wording; NSW's own archive doesn't distinguish the two kinds at all, so
+both are recorded identically there.
+
+NSW's by-election ingestion only covers events with a modern `results.elections.nsw.gov.au` report
+link -- a handful of the oldest (2014) events only link PDF reports and are silently skipped, the
+same "nothing for this pipeline to record" treatment as an NSW council in administration. NSW
+council-name matching for by-elections is free-text extracted from NSWEC's own inconsistently
+worded headings (see `Councils::Nsw::ByElectionIndexParser`) -- expect this to need iteration
+against live data over time, not a guaranteed match to every council's canonical Group name.
+
 ## Ongoing (no action needed)
 
 `config/sidekiq.yml`'s `ingest_nsw_council_election_results_job` /
 `ingest_vic_council_election_results_job` cron entries re-run the *current* cycle monthly,
 idempotently -- no need to re-run anything manually going forward, except a future backfill if we
 ever extend coverage further back (see the "known limitation" section of
-`docs/plans/0009-council-ingestion-production-readiness-goal-2.md`).
+`docs/plans/0009-council-ingestion-production-readiness-goal-2.md`). The current cycle is
+discovered live (`Councils::{Nsw,Vic}::Elections`), not hardcoded, so a new general election cycle
+needs no code change either.
+
+`ingest_nsw_by_election_results_job` / `ingest_vic_by_election_results_job` cover by-elections and
+countbacks the same way -- see the section above.
+
+`ingest_qld_council_election_results_job` re-runs the single QLD ingest job monthly, also
+idempotently -- it discovers every general election *and* by-election live from ECQ's own index
+each run (see the QLD section below), the same live-discovery principle NSW/VIC now follow too.
 
 ## QLD
 

@@ -1,0 +1,19 @@
+- title: NSW/VIC/QLD council election coverage
+  status: waiting-on-verification
+  summary: >
+    Council election and by-election results for NSW, VIC and QLD are now discovered and
+    ingested automatically as they're published, instead of needing manual updates each
+    cycle. This is built and passing our tests, and is being verified against real
+    published results before we rely on it fully.
+- title: Grants ingestion (GrantConnect)
+  status: designed
+  summary: >
+    We've designed a pipeline to automatically ingest Commonwealth government grant data
+    from GrantConnect, alongside the donations and contracts we already track. Not yet
+    built.
+- title: NSW Legislative Council, VIC state politicians, and historical backfill
+  status: not-started
+  summary: >
+    NSW Legislative Assembly (lower house) politicians are ingested and up to date. The
+    NSW Legislative Council (upper house), Victorian state politicians, and a full
+    historical backfill are not yet covered.

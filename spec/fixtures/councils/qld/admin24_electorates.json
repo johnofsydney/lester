@@ -1,0 +1,19 @@
+{
+  "electorates": [
+    {
+      "electorateId": 999,
+      "parentElectorateId": null,
+      "areaCode": "01",
+      "electorateName": "Example Shire",
+      "contestType": "Mayor",
+      "electorateType": "LGA",
+      "votingMethod": "Attendance Ballot",
+      "votingSystem": "First Past the Post",
+      "votingSystemMayor": null,
+      "votingSystemCouncillor": null,
+      "indicativeCount": false,
+      "numberToElect": 1,
+      "enrolment": 5000
+    }
+  ]
+}

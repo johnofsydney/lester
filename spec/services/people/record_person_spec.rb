@@ -266,7 +266,7 @@ RSpec.describe People::RecordPerson, type: :service do
         end
 
         it 'raises rather than guessing which person to use' do
-          expect { described_class.call(name) }.to raise_error(ArgumentError, /Multiple trading names exist/)
+          expect { described_class.call(name) }.to raise_error(TradingName::AmbiguousName, /Multiple Person trading names exist/)
         end
       end
     end

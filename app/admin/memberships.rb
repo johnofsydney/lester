@@ -43,6 +43,31 @@ ActiveAdmin.register Membership do
     column :end_date
   end
 
+  show do
+    attributes_table do
+      row :id
+      row :member
+      row :group
+      row :start_date
+      row :end_date
+      row :evidence
+      row :created_at
+      row :updated_at
+    end
+
+    panel 'Positions' do
+      table_for resource.positions.order(:start_date) do
+        column :title
+        column :start_date
+        column :end_date
+        column :evidence
+        column '' do |position|
+          link_to 'View', admin_position_path(position)
+        end
+      end
+    end
+  end
+
   form do |f|
     f.inputs 'Membership Details' do
       f.input :group_id, label: 'Owning Group ID'

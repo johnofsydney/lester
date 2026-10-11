@@ -48,7 +48,7 @@ group :development do
   gem 'pry-byebug'
 end
 
-gem 'dockerfile-rails', '>= 1.2', :group => :development
+gem 'dockerfile-rails', '>= 1.2', group: :development
 gem 'phlex-rails', '~> 2.4'
 gem 'phlex', '~> 2.4'
 
@@ -76,6 +76,7 @@ gem 'flipper-ui'
 # https://dev.to/chmich/setup-bootstrap-on-rails-7-and-vite-g5a
 
 gem 'faraday', '>= 2.14.1'
+gem 'faraday-follow_redirects'
 gem 'sidekiq'
 
 gem 'newrelic_rpm'

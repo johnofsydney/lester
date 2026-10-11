@@ -14,9 +14,11 @@ class Abn::GroupNameUpdater
 
     group.update(name: result[:main_name])
 
-    group.trading_names.destroy_all
+    group.trading_names.where(source: 'abn').destroy_all
     result[:trading_names].each do |trading_name|
-      group.trading_names.create(name: trading_name)
+      next if TradingName.normalize_value_for(:name, trading_name) == group.name
+
+      group.trading_names.create_or_find_by!(name: trading_name) { |tn| tn.source = 'abn' }
     end
   rescue AbnDetailsSuppressed => e
     # Many details, including name, are suppressed for this ABN. Don't update the group, don't retry.

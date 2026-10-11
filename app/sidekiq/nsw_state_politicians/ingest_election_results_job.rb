@@ -14,10 +14,11 @@ class NswStatePoliticians::IngestElectionResultsJob
     @event_id = event_id
     record_winners
     fan_out_electorates
+    IngestSourceStatus.record_success(self.class.name)
   rescue StandardError => e
     Rails.logger.error "Error processing NswStatePoliticians::IngestElectionResultsJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: elected_url, message: e.message)
+    IngestSourceStatus.record_failure(self.class.name, e)
     raise e
   end
 

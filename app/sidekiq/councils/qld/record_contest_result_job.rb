@@ -27,10 +27,11 @@ class Councils::Qld::RecordContestResultJob
 
     council.add_to_tag(tag_name: LOCAL_COUNCILS_TAG_NAME)
     candidates.each { |candidate| record_candidate(candidate) }
+    IngestSourceStatus.record_success(self.class.name)
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Qld::RecordContestResultJob(#{stub}, #{contest_name}): #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: source_url, message: e.message)
+    IngestSourceStatus.record_failure(self.class.name, e)
     raise e
   end
 

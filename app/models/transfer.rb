@@ -16,10 +16,12 @@ class Transfer < ApplicationRecord
 
   enum :transfer_type, {
     government_contracts: 'government_contracts',
+    government_grants: 'government_grants',
     donations: 'donations'
   }
 
   scope :government_contracts, -> { where(transfer_type: 'government_contracts') }
+  scope :government_grants, -> { where(transfer_type: 'government_grants') }
   scope :donations, -> { where(transfer_type: 'donations') }
 
   def self.financial_years

@@ -1,0 +1,22 @@
+{
+  "declaredCandidates": [
+    {
+      "electorateId": 999,
+      "parentElectorateId": null,
+      "electionStub": "ADMIN24",
+      "areaCode": "01",
+      "numElectedCandidates": 0,
+      "eventName": "2024 Example Shire Council Mayoral Election",
+      "pollingDate": null,
+      "paragraph1": "Example Shire Council is currently under the administration of Government-appointed administrators. No election was held for this council at this general election.",
+      "paragraph2": "",
+      "signature": "Pat Vidgen",
+      "declarationDate": null,
+      "webpageViewFilename": null,
+      "contest": "mayor",
+      "electorateStub": null,
+      "declaredCandidate": null,
+      "declaredCandidateBallotOrder": null
+    }
+  ]
+}

@@ -20,10 +20,11 @@ class Councils::Qld::IngestElectionResultsJob
     elections.each_with_index do |election, index|
       Councils::Qld::ImportElectionResultsJob.perform_in(index * IMPORT_SPACING, election[:stub])
     end
+    IngestSourceStatus.record_success(self.class.name)
   rescue StandardError => e
     Rails.logger.error "Error processing Councils::Qld::IngestElectionResultsJob: #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: Councils::Qld::Elections::ELECTIONS_URL, message: e.message)
+    IngestSourceStatus.record_failure(self.class.name, e)
     raise e
   end
 end

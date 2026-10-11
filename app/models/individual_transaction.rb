@@ -10,9 +10,11 @@ class IndividualTransaction < ApplicationRecord
 
   enum :transaction_type, {
     government_contract: 'government_contract',
+    government_grant: 'government_grant',
     donation: 'donation'
   }
 
   scope :government_contracts, -> { where(transaction_type: 'government_contract') }
+  scope :government_grants, -> { where(transaction_type: 'government_grant') }
   scope :donations, -> { where(transaction_type: 'donation') }
 end

@@ -46,9 +46,9 @@ RSpec.describe NswStatePoliticians::ImportLaElectorateResultJob, type: :job do
     context 'when the fp_summary page fails to download' do
       let(:page) { nil }
 
-      it 'logs to ApiLog and re-raises' do
+      it 'records an ingest failure and re-raises' do
         expect { described_class.new.perform(event_id, electorate_slug) }.to raise_error(RuntimeError, /Failed to download NSW LA fp_summary page/)
-        expect(ApiLog.last.endpoint).to eq(url)
+        expect(IngestSourceStatus.find_by(key: described_class.name).last_failure_at).to be_present
       end
     end
   end

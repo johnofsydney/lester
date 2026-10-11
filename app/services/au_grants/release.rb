@@ -1,0 +1,83 @@
+# Maps a parsed XLSX row hash into a nice Ruby object
+
+class AuGrants::Release
+  def initialize(row)
+    @row = row
+  end
+
+  attr_reader :row
+
+  def ga_id
+    row['GA ID']
+  end
+
+  def agency_name
+    row['Agency']
+  end
+
+  def recipient_name
+    row['Recipient Name']
+  end
+
+  def recipient_abn
+    abn = row['Recipient ABN']
+    return nil if abn.blank? || abn == 'ABN Exempt'
+
+    abn
+  end
+
+  def amount
+    row['Value (AUD)'].to_f
+  end
+
+  def effective_date
+    row['Publish Date'].to_date
+  end
+
+  def category
+    row['Category']
+  end
+
+  def aggregate?
+    row['Aggregate'] == 'Y'
+  end
+
+  # The Confidentiality flag does not reliably indicate a redacted recipient
+  # (observed: Confidentiality - Contract = Y rows with a real name and ABN).
+  # "n/a" in Recipient Name is the actual redaction signal.
+  def redacted_recipient?
+    recipient_name == 'n/a'
+  end
+
+  def evidence
+    "https://www.grants.gov.au/Ga/Show/#{ga_id}"
+  end
+
+  def description
+    [grant_program, grant_activity, grant_purpose].compact.join(' - ')
+  end
+
+  def grant_program
+    row['Grant Program'].to_s
+  end
+
+  def grant_activity
+    row['Grant Activity'].to_s
+  end
+
+  def grant_purpose
+    row['Purpose'].to_s
+  end
+
+  def recipient_city
+    row['Recipient Town/City'].to_s
+  end
+
+  def recipient_state
+    row['Recipient State/Territory'].to_s
+  end
+
+  def recipient_postcode
+    row['Recipient Postcode'].to_s
+  end
+end

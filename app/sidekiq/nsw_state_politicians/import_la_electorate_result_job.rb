@@ -26,10 +26,11 @@ class NswStatePoliticians::ImportLaElectorateResultJob
 
       NswStatePoliticians::RecordLaCandidate.call(event_id:, electorate: electorate_slug, name: candidate[:name], party: candidate[:party], elected: false, source_url: url)
     end
+    IngestSourceStatus.record_success(self.class.name)
   rescue StandardError => e
     Rails.logger.error "Error processing NswStatePoliticians::ImportLaElectorateResultJob(#{electorate_slug}): #{e.message} - will retry"
     Rails.logger.error e.backtrace.join("\n")
-    ApiLog.create(endpoint: fp_summary_url(event_id, electorate_slug), message: e.message)
+    IngestSourceStatus.record_failure(self.class.name, e)
     raise e
   end
 

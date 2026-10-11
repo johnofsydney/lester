@@ -30,6 +30,14 @@ _Avoid_: Payment, transaction, donation (too narrow — a Transfer also covers g
 A Group subtype used to label other Groups or People by category (e.g. a political party, "Charities", "Lobbyists").
 _Avoid_: Category, label
 
+**Capped**:
+A node that appears in the relationship graph as an edge from its parent, but is not itself expanded further because its membership is too large to illustrate a meaningful connection (e.g. a political party shown under a councillor, but not traversed to the party's hundreds of other members). Distinct from a node omitted for depth-exhaustion, which is a separate, unrelated cutoff.
+_Avoid_: Terminal (ambiguous with depth-exhaustion cutoff), Pruned (implies removal, not display), Excluded (this is the old, wrong behaviour — Capped nodes are shown, not excluded)
+
+**Traversal Budget**:
+A whole-graph limit on the total number of nodes a single graph build may add, distinct from Capped (which limits fan-out at one node). The build stops adding nodes once the Traversal Budget is exhausted, regardless of how many individual nodes are or aren't Capped.
+_Avoid_: conflating with Capped — Capped is per-node ("don't expand past this one"), Traversal Budget is whole-graph ("stop the whole build").
+
 **Current Standing**:
 Which Membership represents a member's relationship with a Group right now, when more than one Membership exists between the same pair (e.g. non-contiguous stints). The open Membership if one exists, else whichever has the most recent `end_date`. A display-layer concept only — storage always keeps every Membership regardless of which one is a member's Current Standing.
 _Avoid_: Last Position (the screen label for this, but do not use it as the internal name — collides with the existing, narrower `Membership#last_position`, which picks the most recent Position *within one* Membership, not across several)

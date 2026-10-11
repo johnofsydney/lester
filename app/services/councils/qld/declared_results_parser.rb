@@ -12,7 +12,30 @@
 # `known_council_names:` list the caller passes in -- keeping this parser a pure function of its
 # inputs, with no hidden network call through KnownCouncils' own memoized fetch.
 class Councils::Qld::DeclaredResultsParser
+  # A handful of QLD councils could have no declared result for a cycle because of a state
+  # administration scenario, analogous to NSW's s296 self-run/administration cases (see
+  # Councils::Nsw::ResultsPageParser::NO_CONTEST_REGEX) -- no live example has been confirmed for
+  # QLD yet, so this is a best-effort regex pending a real observed case to tune it against. Checked
+  # against each declared-candidates entry's own free-text fields (`eventName`, `paragraph1`,
+  # `paragraph2` -- confirmed present on every entry, e.g. "A by-election to fill a vacancy ...").
+  NO_CONTEST_REGEX = /administrators? (have been|were|was) appointed|under (the )?administration|no election (was|will be) held/i
+
   def self.call(declared_candidates_page:, electorates_page:, source_url:, known_council_names:) = new(declared_candidates_page:, electorates_page:, source_url:, known_council_names:).call
+
+  # Checked against a single raw declared-candidates entry (a Hash, straight from its JSON), not a
+  # whole downloaded page -- QLD's per-stub JSON covers every council/contest in one file, so unlike
+  # NSW/VIC there's no single "page" to check for a specific council's no-contest status.
+  def self.no_contest_expected?(entry)
+    [entry['eventName'], entry['paragraph1'], entry['paragraph2']].join(' ').match?(NO_CONTEST_REGEX)
+  end
+
+  # Pure function of its inputs like .call (see class-level comment) -- surfaces the known council
+  # name for any entry whose free text matches NO_CONTEST_REGEX despite having no declared_date, so
+  # the caller (Councils::Qld::ImportElectionResultsJob) can route it to the arbitrary-website
+  # fallback rather than silently treating it as "not yet declared".
+  def self.no_contest_council_names(declared_candidates_page:, electorates_page:, known_council_names:)
+    new(declared_candidates_page:, electorates_page:, source_url: nil, known_council_names:).no_contest_council_names
+  end
 
   def initialize(declared_candidates_page:, electorates_page:, source_url:, known_council_names:)
     @declared_candidates_page = declared_candidates_page
@@ -25,9 +48,23 @@ class Councils::Qld::DeclaredResultsParser
     declared_candidates.filter_map { |entry| contest_from(entry) }
   end
 
+  def no_contest_council_names
+    declared_candidates.filter_map { |entry| no_contest_council_name_from(entry) }
+  end
+
   private
 
   attr_reader :declared_candidates_page, :electorates_page, :source_url, :known_council_names
+
+  def no_contest_council_name_from(entry)
+    return nil if parse_declared_date(entry['declarationDate']).present? # already declared -- nothing to flag
+    return nil unless self.class.no_contest_expected?(entry)
+
+    electorate_name = electorate_names[entry['electorateId']]
+    return nil if electorate_name.blank?
+
+    Councils::Qld::KnownCouncils.resolve(electorate_name, within: known_council_names)
+  end
 
   def contest_from(entry)
     electorate_name = electorate_names[entry['electorateId']]

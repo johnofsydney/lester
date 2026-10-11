@@ -60,7 +60,7 @@ class AuLobbyists::FileDownloader
 
         (start_row..last_row).each do |r|
           row = sheet.row(r)
-          next unless row && row.any?
+          next unless row&.any?
 
           csv_out << row
         end

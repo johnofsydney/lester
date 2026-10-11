@@ -69,6 +69,44 @@ RSpec.describe Councils::Qld::DeclaredResultsParser, type: :service do
     end
   end
 
+  describe '.no_contest_expected?' do
+    it 'is true for an entry whose free text describes a council under administration' do
+      entry = { 'eventName' => 'x', 'paragraph1' => 'Example Shire Council is currently under the administration of Government-appointed administrators.', 'paragraph2' => '' }
+      expect(described_class.no_contest_expected?(entry)).to be(true)
+    end
+
+    it 'is false for a normal declared-candidate entry' do
+      entry = { 'eventName' => '2024 Aurukun Shire Council Mayoral Election', 'paragraph1' => 'declared elected', 'paragraph2' => '' }
+      expect(described_class.no_contest_expected?(entry)).to be(false)
+    end
+  end
+
+  describe '.no_contest_council_names' do
+    subject(:no_contest_council_names) do
+      described_class.no_contest_council_names(declared_candidates_page:, electorates_page:, known_council_names:)
+    end
+
+    context 'when an entry has no declared candidate and its free text describes administration' do
+      let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/admin24_declared_candidates.json').read }
+      let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/admin24_electorates.json').read }
+      let(:known_council_names) { ['Example Shire'] }
+
+      it 'surfaces the known council name' do
+        expect(no_contest_council_names).to eq(['Example Shire'])
+      end
+    end
+
+    context 'when every entry has already been declared' do
+      let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_declared_candidates.json').read }
+      let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/2024qlge_electorates.json').read }
+      let(:known_council_names) { ['Aurukun Shire', 'Banana Shire', 'Brisbane City', 'Ipswich City'] }
+
+      it 'returns an empty array' do
+        expect(no_contest_council_names).to eq([])
+      end
+    end
+  end
+
   context 'with a by-election (single electorate, no lgaName or parentElectorateId to resolve from)' do
     let(:declared_candidates_page) { Rails.root.join('spec/fixtures/councils/qld/msc24_declared_candidates.json').read }
     let(:electorates_page) { Rails.root.join('spec/fixtures/councils/qld/msc24_electorates.json').read }
