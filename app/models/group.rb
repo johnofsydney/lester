@@ -160,7 +160,7 @@ class Group < ApplicationRecord
   }
 
   def parent_groups
-    Group.joins(:memberships).where(memberships: { member: self, member_type: 'Group' }).where.not(id: self.id)
+    Group.joins(:memberships).where(memberships: { member: self, member_type: 'Group' }).where.not(id: id)
   end
 
   def nodes
@@ -205,7 +205,7 @@ class Group < ApplicationRecord
 
   def add_to_tag(tag_group: nil, tag_name: nil)
     raise ArgumentError, 'Either tag_group or tag_name must be provided' if tag_group.blank? && tag_name.blank?
-    return if self.is_tag?
+    return if is_tag?
 
     tag_group ||= Group.find_or_create_by!(name: tag_name, type: 'Tag')
     Tag::AddGroupToTag.call(tag: tag_group, group: self)

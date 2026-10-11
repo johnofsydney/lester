@@ -19,7 +19,7 @@ class TransfersTableComponent < ApplicationView
   def view_template
     return nil if transfers.empty?
 
-    return make_table(transfers) if (summarise_for.nil? && exclude.nil?)
+    return make_table(transfers) if summarise_for.nil? && exclude.nil?
 
     # TODO: also deal with summarise outbound?
     if summarise_for.present?
@@ -44,7 +44,7 @@ class TransfersTableComponent < ApplicationView
       transfers_grouped_by_each_exclude_name = transfers_grouped_by_name.slice(*exclude)
       make_table(transfers - transfers_grouped_by_each_exclude_name.values.flatten)
     else
-      return make_table(transfers)
+      make_table(transfers)
     end
   end
 

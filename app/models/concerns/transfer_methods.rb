@@ -100,20 +100,20 @@ module TransferMethods
     end
 
     def tag_incoming_transfers
-      return Transfer.none unless self.is_tag?
+      return Transfer.none unless is_tag?
 
-      group_ids = self.groups.pluck(:id)
+      group_ids = groups.pluck(:id)
 
       @tag_incoming_transfers ||= Transfer.where(taker_type: 'Group', taker_id: group_ids)
                                           .where.not(giver_id: group_ids)
-                                          .or(Transfer.where(taker_type: 'Person', taker_id: [self.people.pluck(:id)]))
+                                          .or(Transfer.where(taker_type: 'Person', taker_id: [people.pluck(:id)]))
     end
 
     def tag_outgoing_transfers
-      return Transfer.none unless self.is_tag?
+      return Transfer.none unless is_tag?
 
-      group_ids = self.groups.pluck(:id)
-      people_ids = self.people.pluck(:id)
+      group_ids = groups.pluck(:id)
+      people_ids = people.pluck(:id)
 
       @tag_outgoing_transfers ||= Transfer.where(giver_type: 'Group', giver_id: group_ids)
                                           .where.not(taker_id: group_ids)
@@ -123,10 +123,10 @@ module TransferMethods
     private
 
     def all_transfers
-      @all_transfers ||= if self.is_tag?
+      @all_transfers ||= if is_tag?
                            tag_outgoing_transfers.or(tag_incoming_transfers)
                          else
-                           self.incoming_transfers.or(self.outgoing_transfers)
+                           incoming_transfers.or(outgoing_transfers)
                          end
     end
   end

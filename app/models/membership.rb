@@ -45,12 +45,12 @@ class Membership < ApplicationRecord
     # used in BuildQueue
     # investigate caching
 
-    base = Membership.where.not(id: self.id)
-    base = base.where('end_date IS NULL OR end_date >= ?', self.start_date) if self.start_date
-    base = base.where('start_date IS NULL OR start_date <= ?', self.end_date) if self.end_date
+    base = Membership.where.not(id: id)
+    base = base.where('end_date IS NULL OR end_date >= ?', start_date) if start_date
+    base = base.where('start_date IS NULL OR start_date <= ?', end_date) if end_date
 
-    base.where(group_id: self.group_id)
-        .or(base.where(member_id: self.member_id))
+    base.where(group_id: group_id)
+        .or(base.where(member_id: member_id))
   end
 
   def last_position

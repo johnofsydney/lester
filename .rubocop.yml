@@ -23,6 +23,10 @@ AllCops:
     - 'csv_data/**/*'
     - 'db/**/*'
     - 'vendor/**/*'
+    # Temporarily disabled (raises immediately - see "mapper id broken - fix later")
+    # pending a fix for the underlying mapper bug. Remove this exclude once general_upload
+    # is re-enabled.
+    - 'app/services/file_ingestor.rb'
 
 Bundler/OrderedGems:
   Exclude:

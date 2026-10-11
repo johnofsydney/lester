@@ -54,12 +54,12 @@ class InertiaController < ApplicationController
 
   def ids_people_descendents
     nodes.filter{|n| n.klass == 'Person' }
-         .map{|n| n.id }
+         .map(&:id)
   end
 
   def ids_group_descendents
     nodes.filter{|n| n.klass == 'Group' }
-         .map{|n| n.id }
+         .map(&:id)
   end
 
   def edges
