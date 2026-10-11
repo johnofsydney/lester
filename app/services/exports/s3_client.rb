@@ -1,6 +1,4 @@
 class Exports::S3Client
-  ZIP_KEY = 'all-files.zip'.freeze
-
   attr_reader :bucket, :client
 
   def initialize
@@ -18,7 +16,6 @@ class Exports::S3Client
 
   def upload(key, body)
     client.put_object(bucket: bucket, key: key, body: body)
-    rebuild_zip
   end
 
   def self.delete(key)
@@ -27,16 +24,15 @@ class Exports::S3Client
 
   def delete(key)
     client.delete_object(bucket: bucket, key: key)
-    rebuild_zip
   end
 
   def self.list
     new.list
   end
 
-  # Objects sorted most-recently-modified first, excluding the generated zip bundle.
+  # Objects sorted most-recently-modified first.
   def list
-    objects.reject { |object| object.key == ZIP_KEY }.sort_by(&:last_modified).reverse
+    objects.sort_by(&:last_modified).reverse
   end
 
   def self.public_url(key)
@@ -51,18 +47,5 @@ class Exports::S3Client
 
   def objects
     client.list_objects_v2(bucket: bucket).contents
-  end
-
-  def rebuild_zip
-    zip_data = Zip::OutputStream.write_buffer do |zip|
-      objects.each do |object|
-        next if object.key == ZIP_KEY
-
-        zip.put_next_entry(object.key)
-        zip.write(client.get_object(bucket: bucket, key: object.key).body.read)
-      end
-    end
-
-    client.put_object(bucket: bucket, key: ZIP_KEY, body: zip_data.string)
   end
 end

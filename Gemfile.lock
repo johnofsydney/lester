@@ -584,7 +584,6 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec
   rubocop-rspec_rails
-  rubyzip
   sassc-rails
   shoulda-matchers (~> 5.0)
   sidekiq

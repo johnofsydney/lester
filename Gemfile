@@ -98,4 +98,3 @@ gem "rexml"
 gem "ostruct"
 
 gem 'aws-sdk-s3'
-gem 'rubyzip'
