@@ -9,6 +9,8 @@ class FileIngestor
 
   def general_upload
     # general upload does NOT record start and end dates for memberships
+
+    raise "mapper id broken - fix later"
     csv.each do |row|
       group = Groups::RecordGroup.call(row['group'], mapper: MapGroupNamesBase.new)
 
