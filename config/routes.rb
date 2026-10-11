@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   get 'people/:id/network_graph' => 'inertia#network_graph_person'
   get 'groups/:id/network_graph' => 'inertia#network_graph_group'
 
+  get 'exports' => 'exports#index'
+
   get 'search' => 'search#index'
   get 'search/advanced' => 'advanced_search#index', as: :advanced_search
   get 'search/advanced/groups' => 'advanced_search#group_autocomplete', defaults: { format: 'json' }, as: :advanced_search_group_autocomplete
