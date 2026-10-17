@@ -138,6 +138,15 @@ comment, a rework) or a stated preference on record — not as a preemptive styl
   `backfill_vic_council_election_results_task.rb` for an earlier example. "The per-item work is
   cheap" is not an exemption — a large collection of cheap writes is still one long-running
   synchronous task. The only thing that stays inline in `process` is dry-run logging.
+- **Triggering an existing ingest job's first/manual run in production also goes through a
+  maintenance task — never a raw console `SomeJob.perform_async(...)` call.** This applies
+  whenever a job has no cron trigger yet (a new pipeline, a backfill, a one-off re-run) and
+  someone needs to kick it off for real: build a thin `Maintenance::*Task` wrapper (`collection`
+  = the thing(s) being triggered, e.g. an array of event IDs; `process(item)` enqueues the real
+  job, per the fan-out rule above) rather than running it from `rails runner`/console. The gem's
+  pause/cancel/resume, run history, and discoverable UI apply here just as much as to a
+  backfill/cleanup task. It's fine to use a raw console command instead for genuine one-off
+  debugging — but ask first, don't default to it quietly.
 
 ## Testing
 
