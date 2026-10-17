@@ -10,10 +10,10 @@ module CachedMethods
   TIMESTAMP_IGNORED_ATTRS = %w[nodes_count_cached_at views].freeze
 
   included do
-    store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
+    store_accessor :cached_data, [:summary], prefix: :cached
 
     scope :cache_stale, lambda {
-      where("(cached_data->>'summary_timestamp') IS NULL OR (cached_data->>'summary_timestamp')::timestamptz < ?", 1.week.ago)
+      where(cached_summary_timestamp: ..1.week.ago).or(where(cached_summary_timestamp: nil))
     }
   end
 
