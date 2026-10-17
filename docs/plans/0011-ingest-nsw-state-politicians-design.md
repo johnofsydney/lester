@@ -92,7 +92,7 @@ module NswStatePoliticians::Elections
 end
 ```
 
-Both confirmed live on the current page structure (`LA/state/elected`, `LC/state/candidates_elected`). By-elections (e.g. the 2024 Epping/Hornsby/Pittwater, 2025 Kiama/Port Macquarie ones listed on `elections.nsw.gov.au`) are **not covered by this list** — they're single-electorate events with their own separate result pages, not part of a general-election `SG*` sweep; whether/how to fold by-election winners into this ingestion (they're real MPs, but discovered a different way) is not designed here.
+Both URLs return HTTP 200, but **only `SG2301`'s pages were actually checked against the parsers' real selector shape before this was written — `SG1901`'s weren't, and it turns out not to share that shape. See the correction below.** By-elections (e.g. the 2024 Epping/Hornsby/Pittwater, 2025 Kiama/Port Macquarie ones listed on `elections.nsw.gov.au`) are **not covered by this list** — they're single-electorate events with their own separate result pages, not part of a general-election `SG*` sweep; whether/how to fold by-election winners into this ingestion (they're real MPs, but discovered a different way) is not designed here.
 
 ## LC implementation (addendum, 2026-10-07)
 
@@ -107,8 +107,11 @@ Implementation: `app/services/nsw_state_politicians/lc/{candidates_elected_page_
 
 Verified against real SG2301 data in dev: 21/21 elected members recorded with `'Member of the Legislative Council'`, 53 gated losers recorded, blank-party independents correctly excluded, no duplicate party Groups.
 
+**Known gap, deliberately not closed by this PR: `SG2301` alone only covers half the sitting LC (21 of 42 seats)**, since LC members serve 8-year, half-chamber-renewed terms — the other 21, elected in `SG1901`, are still serving but invisible to an SG2301-only ingest. Getting the full current roster needs `SG1901` to work too, but **`SG1901` turned out to use a different, older page template** (`table.list`, no `div.prcc-data` wrapper, no `thead`/`tbody` split, header row sits bare as the table's first `<tr>`) — every existing parser (LA's and LC's, both keyed on `div.prcc-data table tbody tr`) returns zero rows against it. This isn't LC-specific: checking live, **LA's SG1901 pages have the identical problem** — `NswStatePoliticians::IngestElectionResultsJob` has apparently never actually been exercised against SG1901 (it defaults to `Elections.latest`, i.e. `SG2301`), despite this doc's "confirmed live" claim above, which only checked HTTP 200 + an eyeballed sample, not the parsers' actual selector. Tracked in [issue #391](https://github.com/johnofsydney/lester/issues/391) — out of scope for this PR, which stays SG2301-only.
+
 ## Not yet designed
 
+- **SG1901 support for both houses** (see issue #391 above) — needs a second parser path (or template-detecting fallback) for the older `table.list` shape; worth checking whether SG1901's other result pages (LA's results-index, LC's fp_by_grp) share this template too before assuming the fix is uniform.
 - By-election handling (see above) — separate discovery mechanism from the general-election sweep.
 - The legacy pre-2019 (`SGE2015` and earlier) page structure — different enough from the current `SG*` shape that it needs its own parser before backfill can reach it, not assumed to be a drop-in. Tracked separately, deliberately not blocking this doc's initial implementation: [issue #290](https://github.com/johnofsydney/lester/issues/290).
 - The manual pre-step to destroy the legacy one-time-import Memberships/Positions/orphaned People — `Group.nsw_parliament` confirmed locally (id 3740, not hardcoded — see above), full design and rake-task sketch in [the cleanup runbook](../runbooks/nsw-state-politicians-legacy-cleanup.md); not yet implemented, and worth reconciling the runbook's "expected ~93 electorates but found 512 memberships" gap before running it for real.
