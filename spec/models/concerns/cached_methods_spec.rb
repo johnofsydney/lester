@@ -37,6 +37,41 @@ RSpec.describe CachedMethods do
 
         expect(record.reload.updated_at).to be_within(1.second).of(Time.current)
       end
+
+      describe '#refresh_cached_data!' do
+        it 'stores the result of to_h and marks the cache fresh' do
+          allow(record).to receive(:to_h).and_return({ 'money_in' => 100 })
+
+          record.refresh_cached_data!
+
+          expect(record.reload.cached_summary).to eq({ 'money_in' => 100 })
+          expect(record.cache_fresh?).to be true
+        end
+
+        it 'rescues and logs instead of raising when to_h fails' do
+          allow(record).to receive(:to_h).and_raise(StandardError, 'boom')
+
+          expect { record.refresh_cached_data! }.not_to raise_error
+        end
+      end
+
+      describe '.cache_stale' do
+        it 'includes records with no cached summary timestamp' do
+          expect(record.class.cache_stale).to include(record)
+        end
+
+        it 'includes records with a cached summary timestamp older than a week' do
+          record.update!(cached_summary_timestamp: 8.days.ago)
+
+          expect(record.class.cache_stale).to include(record)
+        end
+
+        it 'excludes records with a fresh cached summary timestamp' do
+          record.update!(cached_summary_timestamp: 1.day.ago)
+
+          expect(record.class.cache_stale).not_to include(record)
+        end
+      end
     end
   end
 end

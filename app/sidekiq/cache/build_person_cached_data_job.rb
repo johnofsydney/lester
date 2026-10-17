@@ -9,12 +9,6 @@ class Cache::BuildPersonCachedDataJob
 
     Rails.logger.info "Building cached data for Person #{person.name} (ID: #{person.id})"
 
-    person.cached_summary = person.to_h
-    person.cached_summary_timestamp = Time.zone.now
-    person.save
-  rescue StandardError => e
-    NewRelic::Agent.notice_error(e) if defined?(NewRelic)
-    Rails.logger.error "Error building cached data for Person ID #{id}: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
+    person.refresh_cached_data!
   end
 end
