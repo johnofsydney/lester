@@ -11,6 +11,10 @@ module CachedMethods
 
   included do
     store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
+
+    scope :cache_stale, lambda {
+      where("(cached_data->>'summary_timestamp') IS NULL OR (cached_data->>'summary_timestamp')::timestamptz < ?", 1.week.ago)
+    }
   end
 
   def cached
@@ -22,6 +26,16 @@ module CachedMethods
     return false unless cached_summary_timestamp
 
     cached_summary_timestamp > 1.week.ago
+  end
+
+  def refresh_cached_data!
+    self.cached_summary = to_h
+    self.cached_summary_timestamp = Time.zone.now
+    save
+  rescue StandardError => e
+    NewRelic::Agent.notice_error(e) if defined?(NewRelic)
+    Rails.logger.error "Error building cached data for #{self.class.name} ID #{id}: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
   end
 
   def nodes_count
