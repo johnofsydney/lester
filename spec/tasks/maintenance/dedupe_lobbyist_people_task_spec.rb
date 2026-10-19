@@ -12,12 +12,10 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
   # This task always merges with queue: :low, which routes cache refresh jobs through
   # Sidekiq::Job::Setter#perform_async rather than the job class's own perform_async - a
   # stub on the class method doesn't cover that path, so the real call would hit live
-  # Redis (both to enqueue, and because Cache::Build*CachedDataJob's sidekiq-unique-jobs
+  # Redis (both to enqueue, and because Cache::RefreshCachedDataJob's sidekiq-unique-jobs
   # locking checks Redis regardless of Sidekiq::Testing.fake!). Stub .set(queue: :low)
-  # directly to avoid that, matching every job that could be affected by a merge here
-  # (the person being merged, plus any group whose membership set changed).
-  let(:person_refresh_setter) { double('Sidekiq::Job::Setter') } # rubocop:disable RSpec/VerifiedDoubles
-  let(:group_refresh_setter) { double('Sidekiq::Job::Setter') } # rubocop:disable RSpec/VerifiedDoubles
+  # directly to avoid that.
+  let(:refresh_setter) { double('Sidekiq::Job::Setter') } # rubocop:disable RSpec/VerifiedDoubles
 
   before do
     [keeper, dup1, dup2, unrelated].each do |person|
@@ -26,12 +24,8 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
     end
 
     allow(Group).to receive(:lobbyists_tag).and_return(lobbyists_tag)
-    allow(Cache::BuildPersonCachedDataJob).to receive(:perform_async)
-    allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async)
-    allow(Cache::BuildPersonCachedDataJob).to receive(:set).with(queue: :low).and_return(person_refresh_setter)
-    allow(Cache::BuildGroupCachedDataJob).to receive(:set).with(queue: :low).and_return(group_refresh_setter)
-    allow(person_refresh_setter).to receive(:perform_async)
-    allow(group_refresh_setter).to receive(:perform_async)
+    allow(Cache::RefreshCachedDataJob).to receive(:set).with(queue: :low).and_return(refresh_setter)
+    allow(refresh_setter).to receive(:perform_async)
   end
 
   describe '#collection' do
@@ -87,7 +81,7 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
         task = described_class.new.tap { |t| t.dry_run = false }
         task.process(dup1)
 
-        expect(person_refresh_setter).to have_received(:perform_async).with(keeper.id)
+        expect(refresh_setter).to have_received(:perform_async).with('Person', keeper.id)
       end
 
       it 'is safe to process the same element twice' do

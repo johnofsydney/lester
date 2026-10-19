@@ -39,19 +39,25 @@ RSpec.describe CachedMethods do
       end
 
       describe '#refresh_cached_data!' do
-        it 'stores the result of to_h and marks the cache fresh' do
-          allow(record).to receive(:to_h).and_return({ 'money_in' => 100 })
+        let(:setter) { double('Sidekiq::Job::Setter') } # rubocop:disable RSpec/VerifiedDoubles
 
-          record.refresh_cached_data!
-
-          expect(record.reload.cached_summary).to eq({ 'money_in' => 100 })
-          expect(record.cache_fresh?).to be true
+        before do
+          allow(Cache::RefreshCachedDataJob).to receive(:set).and_return(setter)
+          allow(setter).to receive(:perform_async)
         end
 
-        it 'rescues and logs instead of raising when to_h fails' do
-          allow(record).to receive(:to_h).and_raise(StandardError, 'boom')
+        it 'enqueues the job on the low queue by default' do
+          record.refresh_cached_data!
 
-          expect { record.refresh_cached_data! }.not_to raise_error
+          expect(Cache::RefreshCachedDataJob).to have_received(:set).with(queue: :low)
+          expect(setter).to have_received(:perform_async).with(record.class.name, record.id)
+        end
+
+        it 'enqueues on the given queue when one is passed' do
+          record.refresh_cached_data!(queue: :critical)
+
+          expect(Cache::RefreshCachedDataJob).to have_received(:set).with(queue: :critical)
+          expect(setter).to have_received(:perform_async).with(record.class.name, record.id)
         end
       end
 

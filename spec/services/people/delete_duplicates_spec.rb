@@ -1,7 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe People::DeleteDuplicates do
-  before { allow(Cache::BuildPersonCachedDataJob).to receive(:perform_async) }
+  before do
+    setter = double('Sidekiq::Job::Setter') # rubocop:disable RSpec/VerifiedDoubles
+    allow(Cache::RefreshCachedDataJob).to receive(:set).and_return(setter)
+    allow(setter).to receive(:perform_async)
+  end
 
   describe '#call' do
     context 'with three people sharing a name' do

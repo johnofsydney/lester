@@ -28,14 +28,8 @@ module CachedMethods
     cached_summary_timestamp > 1.week.ago
   end
 
-  def refresh_cached_data!
-    self.cached_summary = to_h
-    self.cached_summary_timestamp = Time.zone.now
-    save
-  rescue StandardError => e
-    NewRelic::Agent.notice_error(e) if defined?(NewRelic)
-    Rails.logger.error "Error building cached data for #{self.class.name} ID #{id}: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
+  def refresh_cached_data!(queue: :low)
+    Cache::RefreshCachedDataJob.set(queue: queue).perform_async(self.class.name, id)
   end
 
   def nodes_count

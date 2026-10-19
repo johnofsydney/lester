@@ -5,9 +5,34 @@ RSpec.describe Exports::S3Client, type: :service do
 
   before do
     allow(Aws::S3::Client).to receive(:new).and_return(stubbed_client)
-    allow(Rails.application.credentials).to receive(:dig).and_call_original
-    allow(Rails.application.credentials).to receive(:dig).with(:aws, :s3_export_bucket).and_return('test-bucket')
-    allow(Rails.application.credentials).to receive(:dig).with(:aws, :region).and_return('ap-southeast-2')
+    allow(Rails.application.credentials).to receive(:[]).and_call_original
+    allow(Rails.application.credentials).to receive(:[]).with(:aws).and_return(
+      {
+        s3_export_bucket: 'test-bucket',
+        region: 'ap-southeast-2',
+        access_key_id: 'key-id',
+        secret_access_key: 'secret'
+      }
+    )
+  end
+
+  describe '#initialize' do
+    it 'raises a clear error instead of reaching the AWS SDK when credentials are missing' do
+      allow(Rails.application.credentials).to receive(:[]).with(:aws).and_return(
+        { s3_export_bucket: 'test-bucket', region: 'ap-southeast-2', access_key_id: nil, secret_access_key: '' }
+      )
+
+      expect { described_class.new }.to raise_error(
+        Exports::S3Client::ConfigurationError,
+        'Missing Rails.application.credentials.aws keys: access_key_id, secret_access_key'
+      )
+    end
+
+    it 'raises when the aws credentials block is absent entirely' do
+      allow(Rails.application.credentials).to receive(:[]).with(:aws).and_return(nil)
+
+      expect { described_class.new }.to raise_error(Exports::S3Client::ConfigurationError)
+    end
   end
 
   describe '#upload' do
