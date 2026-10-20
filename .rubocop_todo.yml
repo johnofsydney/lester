@@ -236,13 +236,12 @@ Style/ClassAndModuleChildren:
 Style/ClassEqualityComparison:
   Enabled: false
 
-# Offense count: 4
+# Offense count: 3
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle.
 # SupportedStyles: line_count_dependent, lambda, literal
 Style/Lambda:
   Exclude:
-    - 'app/admin/groups.rb'
     - 'app/models/group.rb'
 
 # Offense count: 6
