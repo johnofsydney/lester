@@ -98,8 +98,3 @@
     ingest_vic_by_election_results_job:
       cron: '0 13 7 * *' # On the 7th of every month, at 23:00 AEST
       class: Councils::Vic::IngestByElectionResultsJob
-    # Every month, rebuild and upload the flattened people/groups export to S3. Starts the
-    # self-rescheduling chain at its first phase.
-    export_people_job:
-      cron: '0 13 8 * *' # On the 8th of every month, at 23:00 AEST
-      class: Exports::ExportPeopleJob
