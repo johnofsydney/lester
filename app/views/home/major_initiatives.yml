@@ -11,6 +11,13 @@
     We've designed a pipeline to automatically ingest Commonwealth government grant data
     from GrantConnect, alongside the donations and contracts we already track. Not yet
     built.
+- title: Bulk data exports
+  status: in-progress
+  summary: >
+    Our underlying people and organisation data is now exported automatically to a
+    public download page as it's refreshed, so researchers and journalists can work
+    with it directly rather than only through the site. Access controls for this are
+    still being worked out, so treat it as an early version.
 - title: NSW Legislative Council, VIC state politicians, and historical backfill
   status: in-progress
   summary: >

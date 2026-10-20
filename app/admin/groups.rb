@@ -183,7 +183,7 @@ ActiveAdmin.register Group do
     redirect_to admin_group_path(source_group), notice: "Group successfully merged with #{replacement_group_name}."
   end
 
-  batch_action :add_to_tag, form: -> {
+  batch_action :add_to_tag, form: lambda {
     {
       tag_id: Group.other_tags.map { |c| [c.name, c.id] }
     }
