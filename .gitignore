@@ -54,3 +54,6 @@ mise.toml
 # Personal working doc, not project documentation
 /PROJECT_STATUS.md
 /PROJECT_STATUS.html
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+

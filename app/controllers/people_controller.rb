@@ -18,14 +18,14 @@ class PeopleController < ApplicationController
     if @person.cache_fresh?
       render People::ShowView.new(person: @person, groups: paginated_groups_for(@person), transfers_page: params[:transfers_page])
     else
-      Cache::BuildPersonCachedDataJob.perform_async(@person.id)
+      @person.refresh_cached_data!(queue: :critical)
       render Common::PleaseRefreshLater.new(entity: @person)
     end
   end
 
   def reload
     @person = Person.find(params[:id])
-    Cache::BuildPersonCachedDataJob.perform_async(@person.id)
+    @person.refresh_cached_data!(queue: :critical)
     @person.reload
 
     render People::ShowView.new(person: @person, groups: paginated_groups_for(@person), transfers_page: params[:transfers_page])

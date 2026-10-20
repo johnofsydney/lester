@@ -14,7 +14,7 @@ RSpec.describe 'Admin::Groups batch merge', type: :request do
   end
 
   it 'merges the selected groups into the target group' do
-    allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async)
+    refresh_setter = stub_refresh_cached_data_job(queue: :critical)
 
     target = create(:group)
     source_a = create(:group)
@@ -27,7 +27,7 @@ RSpec.describe 'Admin::Groups batch merge', type: :request do
     expect(Group.exists?(source_b.id)).to be false
     expect(response).to redirect_to(admin_group_path(target))
     expect(flash[:notice]).to include(source_a.name).and include(source_b.name).and include(target.name)
-    expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(target.id).twice
+    expect(refresh_setter).to have_received(:perform_async).with('Group', target.id).twice
   end
 
   it 'reports an error and merges nothing when the target group id is missing' do
@@ -39,7 +39,7 @@ RSpec.describe 'Admin::Groups batch merge', type: :request do
   end
 
   it 'skips the target group if it is included in the selection, without error' do
-    allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async)
+    refresh_setter = stub_refresh_cached_data_job(queue: :critical)
 
     target = create(:group)
     source = create(:group)
@@ -49,11 +49,11 @@ RSpec.describe 'Admin::Groups batch merge', type: :request do
 
     expect(Group.exists?(target.id)).to be true
     expect(Group.exists?(source.id)).to be false
-    expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(target.id)
+    expect(refresh_setter).to have_received(:perform_async).with('Group', target.id)
   end
 
   it 'preserves the standard merge guardrails, reporting the blocked group without merging it' do
-    allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async)
+    refresh_setter = stub_refresh_cached_data_job(queue: :critical)
 
     target = create(:group, business_number: '123456789')
     blocked = create(:group, business_number: '987654321')
@@ -65,6 +65,6 @@ RSpec.describe 'Admin::Groups batch merge', type: :request do
     expect(Group.exists?(blocked.id)).to be true
     expect(Group.exists?(mergeable.id)).to be false
     expect(flash[:alert]).to include(blocked.name).and include('Failed')
-    expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(target.id)
+    expect(refresh_setter).to have_received(:perform_async).with('Group', target.id)
   end
 end

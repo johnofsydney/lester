@@ -37,6 +37,44 @@ RSpec.describe CachedMethods do
 
         expect(record.reload.updated_at).to be_within(1.second).of(Time.current)
       end
+
+      describe '#refresh_cached_data!' do
+        let(:setter) { stub_refresh_cached_data_job }
+
+        before { setter }
+
+        it 'enqueues the job on the low queue by default' do
+          record.refresh_cached_data!
+
+          expect(Cache::RefreshCachedDataJob).to have_received(:set).with(queue: :low)
+          expect(setter).to have_received(:perform_async).with(record.class.name, record.id)
+        end
+
+        it 'enqueues on the given queue when one is passed' do
+          record.refresh_cached_data!(queue: :critical)
+
+          expect(Cache::RefreshCachedDataJob).to have_received(:set).with(queue: :critical)
+          expect(setter).to have_received(:perform_async).with(record.class.name, record.id)
+        end
+      end
+
+      describe '.cache_stale' do
+        it 'includes records with no cached summary timestamp' do
+          expect(record.class.cache_stale).to include(record)
+        end
+
+        it 'includes records with a cached summary timestamp older than a week' do
+          record.update!(cached_summary_timestamp: 8.days.ago)
+
+          expect(record.class.cache_stale).to include(record)
+        end
+
+        it 'excludes records with a fresh cached summary timestamp' do
+          record.update!(cached_summary_timestamp: 1.day.ago)
+
+          expect(record.class.cache_stale).not_to include(record)
+        end
+      end
     end
   end
 end

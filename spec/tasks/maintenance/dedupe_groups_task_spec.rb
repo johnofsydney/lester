@@ -6,7 +6,9 @@ RSpec.describe Maintenance::DedupeGroupsTask do
   let!(:dup2) { FactoryBot.create(:group, name: 'Acme Foundation') }
   let!(:unrelated) { FactoryBot.create(:group, name: 'Solo Group') }
 
-  before { allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async) }
+  let(:refresh_setter) { stub_refresh_cached_data_job(queue: :critical) }
+
+  before { refresh_setter }
 
   describe '#collection' do
     it 'includes every duplicate except the lowest-id keeper for each name' do
@@ -48,7 +50,7 @@ RSpec.describe Maintenance::DedupeGroupsTask do
         task = described_class.new.tap { |t| t.dry_run = false }
         task.process(dup1)
 
-        expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(keeper.id)
+        expect(refresh_setter).to have_received(:perform_async).with('Group', keeper.id)
       end
 
       it 'is safe to process the same element twice' do

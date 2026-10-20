@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_15_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_17_053200) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -82,6 +82,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_000000) do
     t.string "attributed_to"
     t.string "business_number"
     t.json "cached_data", default: {}
+    t.datetime "cached_summary_timestamp"
     t.boolean "category", default: false
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -187,6 +188,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_15_000000) do
   create_table "people", force: :cascade do |t|
     t.string "attributed_to"
     t.json "cached_data", default: {}
+    t.datetime "cached_summary_timestamp"
     t.jsonb "council_election_data", default: [], null: false
     t.datetime "council_election_data_updated_at"
     t.datetime "created_at", null: false

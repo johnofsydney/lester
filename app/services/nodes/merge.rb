@@ -167,15 +167,7 @@ class Nodes::Merge
   end
 
   def enqueue_refresh_job(node)
-    job_class =
-      if node.is_a?(Group)
-        Cache::BuildGroupCachedDataJob
-      elsif node.is_a?(Person)
-        Cache::BuildPersonCachedDataJob
-      end
-    return unless job_class
-
-    queue ? job_class.set(queue:).perform_async(node.id) : job_class.perform_async(node.id)
+    node.refresh_cached_data!(queue: queue || :critical)
   end
 
   def both_have_business_number?
