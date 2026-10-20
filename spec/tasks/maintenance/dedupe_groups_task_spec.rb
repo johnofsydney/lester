@@ -6,12 +6,9 @@ RSpec.describe Maintenance::DedupeGroupsTask do
   let!(:dup2) { FactoryBot.create(:group, name: 'Acme Foundation') }
   let!(:unrelated) { FactoryBot.create(:group, name: 'Solo Group') }
 
-  let(:refresh_setter) { double('Sidekiq::Job::Setter') } # rubocop:disable RSpec/VerifiedDoubles
+  let(:refresh_setter) { stub_refresh_cached_data_job(queue: :critical) }
 
-  before do
-    allow(Cache::RefreshCachedDataJob).to receive(:set).with(queue: :critical).and_return(refresh_setter)
-    allow(refresh_setter).to receive(:perform_async)
-  end
+  before { refresh_setter }
 
   describe '#collection' do
     it 'includes every duplicate except the lowest-id keeper for each name' do

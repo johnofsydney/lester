@@ -15,7 +15,7 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
   # Redis (both to enqueue, and because Cache::RefreshCachedDataJob's sidekiq-unique-jobs
   # locking checks Redis regardless of Sidekiq::Testing.fake!). Stub .set(queue: :low)
   # directly to avoid that.
-  let(:refresh_setter) { double('Sidekiq::Job::Setter') } # rubocop:disable RSpec/VerifiedDoubles
+  let(:refresh_setter) { stub_refresh_cached_data_job(queue: :low) }
 
   before do
     [keeper, dup1, dup2, unrelated].each do |person|
@@ -24,8 +24,7 @@ RSpec.describe Maintenance::DedupeLobbyistPeopleTask do
     end
 
     allow(Group).to receive(:lobbyists_tag).and_return(lobbyists_tag)
-    allow(Cache::RefreshCachedDataJob).to receive(:set).with(queue: :low).and_return(refresh_setter)
-    allow(refresh_setter).to receive(:perform_async)
+    refresh_setter
   end
 
   describe '#collection' do

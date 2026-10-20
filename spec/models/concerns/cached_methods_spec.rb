@@ -39,12 +39,9 @@ RSpec.describe CachedMethods do
       end
 
       describe '#refresh_cached_data!' do
-        let(:setter) { double('Sidekiq::Job::Setter') } # rubocop:disable RSpec/VerifiedDoubles
+        let(:setter) { stub_refresh_cached_data_job }
 
-        before do
-          allow(Cache::RefreshCachedDataJob).to receive(:set).and_return(setter)
-          allow(setter).to receive(:perform_async)
-        end
+        before { setter }
 
         it 'enqueues the job on the low queue by default' do
           record.refresh_cached_data!

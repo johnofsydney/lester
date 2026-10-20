@@ -11,12 +11,9 @@ RSpec.describe Nodes::Merge, type: :service do
     let!(:person_a)  { Person.create!(name: 'Alice') }
     let!(:person_b)  { Person.create!(name: 'Bob') }
 
-    let(:setter) { double('Sidekiq::Job::Setter') } # rubocop:disable RSpec/VerifiedDoubles
+    let(:setter) { stub_refresh_cached_data_job }
 
-    before do
-      allow(Cache::RefreshCachedDataJob).to receive(:set).and_return(setter)
-      allow(setter).to receive(:perform_async)
-    end
+    before { setter }
 
     it 'raises when merging node into itself' do
       expect {described_class.call(receiver_node: group_a, argument_node: group_a)}.to raise_error('Cannot merge node into itself')

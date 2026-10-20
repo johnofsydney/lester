@@ -14,9 +14,7 @@ RSpec.describe 'Admin::Groups batch merge', type: :request do
   end
 
   it 'merges the selected groups into the target group' do
-    refresh_setter = double('Sidekiq::Job::Setter') # rubocop:disable RSpec/VerifiedDoubles
-    allow(Cache::RefreshCachedDataJob).to receive(:set).with(queue: :critical).and_return(refresh_setter)
-    allow(refresh_setter).to receive(:perform_async)
+    refresh_setter = stub_refresh_cached_data_job(queue: :critical)
 
     target = create(:group)
     source_a = create(:group)
@@ -41,9 +39,7 @@ RSpec.describe 'Admin::Groups batch merge', type: :request do
   end
 
   it 'skips the target group if it is included in the selection, without error' do
-    refresh_setter = double('Sidekiq::Job::Setter') # rubocop:disable RSpec/VerifiedDoubles
-    allow(Cache::RefreshCachedDataJob).to receive(:set).with(queue: :critical).and_return(refresh_setter)
-    allow(refresh_setter).to receive(:perform_async)
+    refresh_setter = stub_refresh_cached_data_job(queue: :critical)
 
     target = create(:group)
     source = create(:group)
@@ -57,9 +53,7 @@ RSpec.describe 'Admin::Groups batch merge', type: :request do
   end
 
   it 'preserves the standard merge guardrails, reporting the blocked group without merging it' do
-    refresh_setter = double('Sidekiq::Job::Setter') # rubocop:disable RSpec/VerifiedDoubles
-    allow(Cache::RefreshCachedDataJob).to receive(:set).with(queue: :critical).and_return(refresh_setter)
-    allow(refresh_setter).to receive(:perform_async)
+    refresh_setter = stub_refresh_cached_data_job(queue: :critical)
 
     target = create(:group, business_number: '123456789')
     blocked = create(:group, business_number: '987654321')
