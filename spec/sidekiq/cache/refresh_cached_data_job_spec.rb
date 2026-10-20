@@ -15,7 +15,7 @@ RSpec.describe Cache::RefreshCachedDataJob, type: :job do
       expect(person.cache_fresh?).to be true
     end
 
-    it 'uploads the refreshed summary to S3, keyed by class, name and id' do
+    it 'uploads the refreshed summary to S3, keyed by class, name and id, with no previous key to clean up' do
       person = create(:person, name: 'Jane Donor')
       allow(person).to receive(:to_h).and_return({ 'money_in' => 100 })
       allow(Person).to receive(:find_by).with(id: person.id).and_return(person)
@@ -23,7 +23,28 @@ RSpec.describe Cache::RefreshCachedDataJob, type: :job do
       described_class.new.perform('Person', person.id)
 
       expect(Exports::UploadKeyContentsJob).to have_received(:perform_async)
-        .with("person/#{person.name}_#{person.id}.json", { 'money_in' => 100 }.to_json)
+        .with("person/#{person.name}_#{person.id}.json", { 'money_in' => 100 }.to_json, nil)
+    end
+
+    it 'records the export key so a later rename can clean up this one' do
+      person = create(:person, name: 'Jane Donor')
+      allow(person).to receive(:to_h).and_return({ 'money_in' => 100 })
+      allow(Person).to receive(:find_by).with(id: person.id).and_return(person)
+
+      described_class.new.perform('Person', person.id)
+
+      expect(person.reload.cached_export_key).to eq("person/#{person.name}_#{person.id}.json")
+    end
+
+    it 'passes the previous export key through so the job can delete it if the key has changed' do
+      person = create(:person, name: 'Jane Donor', cached_export_key: 'person/old_name_999.json')
+      allow(person).to receive(:to_h).and_return({ 'money_in' => 100 })
+      allow(Person).to receive(:find_by).with(id: person.id).and_return(person)
+
+      described_class.new.perform('Person', person.id)
+
+      expect(Exports::UploadKeyContentsJob).to have_received(:perform_async)
+        .with("person/#{person.name}_#{person.id}.json", { 'money_in' => 100 }.to_json, 'person/old_name_999.json')
     end
 
     it 'does nothing when the record no longer exists' do
@@ -31,13 +52,13 @@ RSpec.describe Cache::RefreshCachedDataJob, type: :job do
       expect(Exports::UploadKeyContentsJob).not_to have_received(:perform_async)
     end
 
-    it 'rescues and logs instead of raising when to_h fails, identifying the record by class and id' do
+    it 'logs then re-raises when to_h fails, identifying the record by class and id' do
       person = create(:person)
       allow(person).to receive(:to_h).and_raise(StandardError, 'boom')
       allow(Person).to receive(:find_by).with(id: person.id).and_return(person)
       allow(Rails.logger).to receive(:error)
 
-      expect { described_class.new.perform('Person', person.id) }.not_to raise_error
+      expect { described_class.new.perform('Person', person.id) }.to raise_error(StandardError, 'boom')
 
       expect(Rails.logger).to have_received(:error).with("Error building cached data for Person ID #{person.id}: boom")
       expect(Exports::UploadKeyContentsJob).not_to have_received(:perform_async)
@@ -52,7 +73,7 @@ RSpec.describe Cache::RefreshCachedDataJob, type: :job do
 
       expect(group.reload.cached_summary).to eq({ 'money_out' => 50 })
       expect(Exports::UploadKeyContentsJob).to have_received(:perform_async)
-        .with("group/#{group.name}_#{group.id}.json", { 'money_out' => 50 }.to_json)
+        .with("group/#{group.name}_#{group.id}.json", { 'money_out' => 50 }.to_json, nil)
     end
   end
 end
