@@ -100,20 +100,20 @@ class Group < ApplicationRecord
   normalizes :name, with: ->(name) { name.downcase.strip.delete('.') }
 
   # scopes
-  scope :major_political_tags, -> do
+  scope :major_political_tags, lambda {
     where(type: 'Tag').where(name: MAJOR_POLITICAL_GROUPS).order(:name)
-  end
-  scope :other_tags, -> do
+  }
+  scope :other_tags, lambda {
     where(type: 'Tag').where.not(name: MAJOR_POLITICAL_GROUPS).order(:name)
-  end
+  }
 
-  scope :political_parties, -> do
+  scope :political_parties, lambda {
     where(
       id: Membership.joins(:group)
                     .where(groups: { type: 'Tag', name: MAJOR_POLITICAL_GROUPS })
                     .select(:member_id)
     )
-  end
+  }
 
   MATCHING_NAME_SIMILARITY_THRESHOLD = 0.4
 
@@ -129,7 +129,7 @@ class Group < ApplicationRecord
   scope :nodes_count_expired, -> { where(nodes_count_cached_at: ..8.days.ago).or(where(nodes_count_cached: nil)) }
   scope :nodes_count_soon_expired, -> { where(nodes_count_cached_at: ..4.days.ago).or(where(nodes_count_cached: nil)) }
 
-  scope :orphans, -> {
+  scope :orphans, lambda {
     # Groups with no members and no transfers. They may be children of parent groups
     left_outer_joins(:memberships, :incoming_transfers, :outgoing_transfers)
       .where(memberships: { id: nil })
@@ -139,20 +139,20 @@ class Group < ApplicationRecord
   }
 
   # Scope: has at least one person
-  scope :with_people, -> {
+  scope :with_people, lambda {
     joins(:people).distinct
   }
   # Scope: has at least one group (as member)
-  scope :with_groups, -> {
+  scope :with_groups, lambda {
     joins(:groups).distinct
   }
 
-  scope :created_since, ->(since) {
+  scope :created_since, lambda { |since|
     where(created_at: since..Time.current)
   }
 
   # Scope: groups that are members of the lobbyists tag
-  scope :lobbyist_groups, -> {
+  scope :lobbyist_groups, lambda {
     lobbyist_tag = Group.lobbyists_tag
     joins("INNER JOIN memberships ON memberships.member_id = groups.id AND memberships.member_type = 'Group'")
       .where('memberships.group_id = ?', lobbyist_tag.id)
