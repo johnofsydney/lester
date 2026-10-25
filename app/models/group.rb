@@ -14,60 +14,60 @@ class Group < ApplicationRecord
   MAJOR_POLITICAL_GROUPS = ['Australian Labor Party', 'Liberal / National Coalition', 'The Greens'].freeze
 
   NAMES = OpenStruct.new(
-            coalition: OpenStruct.new(
-              federal: 'the coalition (federal)',
-              nsw: 'the coalition (nsw)',
-              sa: 'the coalition (sa)',
-              vic: 'the coalition (vic)',
-              tas: 'the coalition (tas)',
-              wa: 'the coalition (wa)',
-              act: 'the coalition (act)'
-            ),
-            liberals: OpenStruct.new(
-              federal: 'liberals (federal)',
-              nsw: 'liberals (nsw)',
-              qld: 'liberal national party (qld)',
-              sa: 'liberals (sa)',
-              vic: 'liberals (vic)',
-              tas: 'liberals (tas)',
-              wa: 'liberals (wa)',
-              act: 'liberals (act)',
-              nt: 'country liberal party (nt)'
-            ),
-            nationals: OpenStruct.new(
-              federal: 'nationals (federal)',
-              nsw: 'nationals (nsw)',
-              qld: 'liberal national party (qld)',
-              sa: 'nationals (sa)',
-              vic: 'nationals (vic)',
-              tas: 'nationals (tas)',
-              wa: 'nationals (wa)',
-              act: 'nationals (act)',
-              nt: 'country liberal party (nt)'
-            ),
-            labor: OpenStruct.new(
-              federal: 'alp (federal)',
-              nsw: 'alp (nsw)',
-              qld: 'alp (qld)',
-              sa: 'alp (sa)',
-              vic: 'alp (vic)',
-              tas: 'alp (tas)',
-              wa: 'alp (wa)',
-              act: 'alp (act)',
-              nt: 'alp (nt)'
-            ),
-            greens: OpenStruct.new(
-              federal: 'the greens (federal)',
-              nsw: 'the greens (nsw)',
-              qld: 'the greens (qld)',
-              sa: 'the greens (sa)',
-              vic: 'the greens (vic)',
-              tas: 'the greens (tas)',
-              wa: 'the greens (wa)',
-              act: 'the greens (act)',
-              nt: 'the greens (nt)'
-            )
-          )
+    coalition: OpenStruct.new(
+      federal: 'the coalition (federal)',
+      nsw: 'the coalition (nsw)',
+      sa: 'the coalition (sa)',
+      vic: 'the coalition (vic)',
+      tas: 'the coalition (tas)',
+      wa: 'the coalition (wa)',
+      act: 'the coalition (act)'
+    ),
+    liberals: OpenStruct.new(
+      federal: 'liberals (federal)',
+      nsw: 'liberals (nsw)',
+      qld: 'liberal national party (qld)',
+      sa: 'liberals (sa)',
+      vic: 'liberals (vic)',
+      tas: 'liberals (tas)',
+      wa: 'liberals (wa)',
+      act: 'liberals (act)',
+      nt: 'country liberal party (nt)'
+    ),
+    nationals: OpenStruct.new(
+      federal: 'nationals (federal)',
+      nsw: 'nationals (nsw)',
+      qld: 'liberal national party (qld)',
+      sa: 'nationals (sa)',
+      vic: 'nationals (vic)',
+      tas: 'nationals (tas)',
+      wa: 'nationals (wa)',
+      act: 'nationals (act)',
+      nt: 'country liberal party (nt)'
+    ),
+    labor: OpenStruct.new(
+      federal: 'alp (federal)',
+      nsw: 'alp (nsw)',
+      qld: 'alp (qld)',
+      sa: 'alp (sa)',
+      vic: 'alp (vic)',
+      tas: 'alp (tas)',
+      wa: 'alp (wa)',
+      act: 'alp (act)',
+      nt: 'alp (nt)'
+    ),
+    greens: OpenStruct.new(
+      federal: 'the greens (federal)',
+      nsw: 'the greens (nsw)',
+      qld: 'the greens (qld)',
+      sa: 'the greens (sa)',
+      vic: 'the greens (vic)',
+      tas: 'the greens (tas)',
+      wa: 'the greens (wa)',
+      act: 'the greens (act)',
+      nt: 'the greens (nt)'
+    )
+  )
 
   has_many :trading_names, as: :owner, dependent: :destroy
 
@@ -176,7 +176,7 @@ class Group < ApplicationRecord
   end
 
   def self.summarise_for(group = nil)
-    major_groupings = %i(coalition nationals labor green liberals)
+    major_groupings = %i[coalition nationals labor green liberals]
     states = %i[federal nsw vic qld sa wa nt act tas]
 
     list = major_groupings.map do |major_group|

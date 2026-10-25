@@ -42,10 +42,6 @@ Layout/ExtraSpacing:
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: EnforcedStyle, IndentationWidth.
 # SupportedStyles: consistent, consistent_relative_to_receiver, special_for_inner_method_call, special_for_inner_method_call_in_parentheses
-Layout/FirstArgumentIndentation:
-  Exclude:
-    - 'app/models/group.rb'
-    - 'spec/services/tender_ingestor_spec.rb'
 
 # Offense count: 56
 # This cop supports safe autocorrection (--autocorrect).
@@ -257,11 +253,4 @@ Style/ParenthesesAroundCondition:
     - 'app/services/linked_in_profile_getter.rb'
     - 'app/views/components/transfers_table_component.rb'
 
-# Offense count: 3
-# This cop supports safe autocorrection (--autocorrect).
-# Configuration parameters: PreferredDelimiters.
-Style/PercentLiteralDelimiters:
-  Exclude:
-    - 'app/models/group.rb'
-    - 'app/models/transfer.rb'
 
