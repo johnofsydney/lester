@@ -22,24 +22,24 @@ set -o pipefail
 if [[ -n "$LATEST_DUMP" ]]; then
     DUMP_DATE=$(stat -f "%Sm" -t "%d/%m/%Y at %H:%M" "$LATEST_DUMP")
     echo ""
-    echo "Do you want to use the dump file from $DUMP_DATE, or download the latest prod database?"
-    echo "  1) Use the dump file from $DUMP_DATE (default)"
-    echo "  2) Download the latest production database"
+    echo "Do you want to download the latest prod database, or use the dump file from $DUMP_DATE?"
+    echo "  1) Download the latest production database"
+    echo "  2) Use the dump file from $DUMP_DATE (default)"
     echo ""
-    read -rp "Enter 1 or 2 [1]: " CHOICE
-    CHOICE="${CHOICE:-1}"
+    read -rp "Enter 1 or 2 [2]: " CHOICE
+    CHOICE="${CHOICE:-2}"
 
     case "$CHOICE" in
         1)
-            echo "Using existing dump from $DUMP_DATE..."
-            DUMP_TO_USE="$LATEST_DUMP"
-            ;;
-        2)
             echo "Fetching latest backup from remote server..."
             "$SCRIPT_DIR/fetch_remote_db_backup.sh"
             set +o pipefail
             DUMP_TO_USE=$(ls -t "$LOCAL_BACKUP_DIR"/*.sql | head -n1)
             set -o pipefail
+            ;;
+        2)
+            echo "Using existing dump from $DUMP_DATE..."
+            DUMP_TO_USE="$LATEST_DUMP"
             ;;
         *)
             echo "Invalid choice. Exiting."
