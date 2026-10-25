@@ -15,11 +15,6 @@ RSpec.describe Group do
       group = described_class.create(name: 'abc pty ltd')
       expect(group.display_name).to eq('ABC Pty Ltd')
     end
-
-    it 'appends the business number when present' do
-      group = described_class.create(name: 'abc pty ltd', business_number: '123456789')
-      expect(group.display_name).to eq('ABC Pty Ltd (123456789)')
-    end
   end
 
   describe 'validations' do

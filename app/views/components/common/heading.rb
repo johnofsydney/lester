@@ -60,7 +60,7 @@ class Common::Heading < ApplicationView
   end
 
   def business_number_and_trading_names
-    trading_names_list = entity.trading_names.map { Nodes::NameCapitalizer.capitalize_for(entity.class.name, it.name) }.join(', ')
+    trading_names_list = entity.trading_names.map(&:display_name).join(', ')
     parts = []
     parts << a(href: "https://abr.business.gov.au/ABN/View?abn=#{entity.business_number}", target: :_blank) { "ABN: #{entity.business_number}" } if entity.business_number.present?
     parts << plain(" Also known as: #{trading_names_list.truncate(200)}") if entity.trading_names.any?

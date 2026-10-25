@@ -81,7 +81,7 @@ class Person < ApplicationRecord
   def business_number = nil
 
   def display_name
-    CapitalizeNames.capitalize(name)
+    Nodes::NameCapitalizer.capitalize_for('Person', name)
   end
 
   # rubocop:disable Style/StringConcatenation # feels nicer in this case
