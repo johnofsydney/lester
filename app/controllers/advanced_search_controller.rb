@@ -20,6 +20,6 @@ class AdvancedSearchController < ApplicationController
 
     groups = term.length < MIN_TERM_LENGTH ? Group.none : Group.matching_name(term).limit(MAX_RESULTS)
 
-    render json: groups.map { |group| { id: group.id, name: Nodes::NameCapitalizer.capitalize(group.name) } }
+    render json: groups.map { |group| { id: group.id, name: group.display_name } }
   end
 end

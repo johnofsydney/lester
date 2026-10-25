@@ -13,7 +13,7 @@ class SearchResults < ApplicationView
         hr
 
         href = "/#{result.searchable_type.downcase.pluralize}/#{result.searchable_id}"
-        link_text = Nodes::NameCapitalizer.capitalize(result.content)
+        link_text = Nodes::NameCapitalizer.capitalize_for(result.searchable_type, result.content)
 
         a(href:) { plain link_text }
 
@@ -29,7 +29,7 @@ class SearchResults < ApplicationView
     return unless result.searchable_type == 'TradingName'
 
     owner = trading_names_by_id[result.searchable_id]&.owner
-    Nodes::NameCapitalizer.capitalize(owner.name) if owner
+    owner&.display_name
   end
 
   def trading_names_by_id

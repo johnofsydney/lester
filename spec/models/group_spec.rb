@@ -10,6 +10,18 @@ RSpec.describe Group do
   it { is_expected.to have_many(:outgoing_transfers) }
   it { is_expected.to have_many(:incoming_transfers) }
 
+  describe '#display_name' do
+    it 'capitalizes the name, upcasing short words that look like acronyms' do
+      group = described_class.create(name: 'abc pty ltd')
+      expect(group.display_name).to eq('ABC Pty Ltd')
+    end
+
+    it 'appends the business number when present' do
+      group = described_class.create(name: 'abc pty ltd', business_number: '123456789')
+      expect(group.display_name).to eq('ABC Pty Ltd (123456789)')
+    end
+  end
+
   describe 'validations' do
     it 'does not allow two groups with the same business number' do
       described_class.create(name:, business_number: '123456789')
