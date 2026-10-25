@@ -32,9 +32,9 @@ class Transfer < ApplicationRecord
   end
 
   # cached data can be deleted and re-created
-  store_accessor :data, %i(giver_name taker_name), prefix: :cached
+  store_accessor :data, %i[giver_name taker_name], prefix: :cached
   # other data is immutable
-  store_accessor :data, %i(donations)
+  store_accessor :data, %i[donations]
 
   attr_accessor :depth, :direction, :giver_name, :taker_name
 
