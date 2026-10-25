@@ -17,8 +17,6 @@ class Nodes::NameCapitalizer
                    .gsub(/\b\w{2,4}\b/) { |acronym| exceptions.include?(acronym) ? acronym : acronym.upcase } # upcase any 2-4 letter words, unless they are in the exceptions list
   end
 
-  # Dispatches by entity type: Person names get plain title-casing, everything
-  # else (Group/Tag) goes through the acronym-aware capitalizer above.
   def self.capitalize_for(klass, name)
     return if name.blank?
 

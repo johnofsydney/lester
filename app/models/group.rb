@@ -200,7 +200,8 @@ class Group < ApplicationRecord
   def is_person? = false
 
   def display_name
-    Nodes::NameCapitalizer.capitalize_for('Group', name)
+    capitalized_name = Nodes::NameCapitalizer.capitalize_for('Group', name)
+    business_number.present? ? "#{capitalized_name} (#{business_number})" : capitalized_name
   end
 
   def add_to_tag(tag_group: nil, tag_name: nil)
