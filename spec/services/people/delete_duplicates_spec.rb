@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe People::DeleteDuplicates do
-  before { allow(Cache::BuildPersonCachedDataJob).to receive(:perform_async) }
+  before { stub_refresh_cached_data_job }
 
   describe '#call' do
     context 'with three people sharing a name' do

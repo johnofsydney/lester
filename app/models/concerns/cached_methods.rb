@@ -10,7 +10,11 @@ module CachedMethods
   TIMESTAMP_IGNORED_ATTRS = %w[nodes_count_cached_at views].freeze
 
   included do
-    store_accessor :cached_data, [:summary, :summary_timestamp], prefix: :cached
+    store_accessor :cached_data, [:summary, :export_key], prefix: :cached
+
+    scope :cache_stale, lambda {
+      where(cached_summary_timestamp: ..1.week.ago).or(where(cached_summary_timestamp: nil))
+    }
   end
 
   def cached
@@ -22,6 +26,10 @@ module CachedMethods
     return false unless cached_summary_timestamp
 
     cached_summary_timestamp > 1.week.ago
+  end
+
+  def refresh_cached_data!(queue: :low)
+    Cache::RefreshCachedDataJob.set(queue: queue).perform_async(self.class.name, id)
   end
 
   def nodes_count

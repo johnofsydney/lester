@@ -1,12 +1,19 @@
 class Exports::S3Client
+  ConfigurationError = Class.new(StandardError)
+
   attr_reader :bucket, :client
 
   def initialize
-    @bucket = Rails.application.credentials.dig(:aws, :s3_export_bucket)
+    credentials = Rails.application.credentials[:aws] || {}
+    @bucket = credentials[:s3_export_bucket]
+
+    missing = %i[s3_export_bucket region access_key_id secret_access_key].select { |key| credentials[key].blank? }
+    raise ConfigurationError, "Missing Rails.application.credentials.aws keys: #{missing.join(', ')}" if missing.any?
+
     @client = Aws::S3::Client.new(
-      region: Rails.application.credentials.dig(:aws, :region),
-      access_key_id: Rails.application.credentials.dig(:aws, :access_key_id),
-      secret_access_key: Rails.application.credentials.dig(:aws, :secret_access_key)
+      region: credentials[:region],
+      access_key_id: credentials[:access_key_id],
+      secret_access_key: credentials[:secret_access_key]
     )
   end
 

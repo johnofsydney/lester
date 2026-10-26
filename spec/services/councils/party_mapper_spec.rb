@@ -54,6 +54,39 @@ RSpec.describe Councils::PartyMapper, type: :service do
     end
   end
 
+  context 'when the label is One Nation (not a Group::NAMES family)' do
+    let(:party_label) { 'ONE NATION' }
+
+    before { FactoryBot.create(:group, name: "Pauline Hanson's One Nation") }
+
+    it 'returns the One Nation group' do
+      expect(call_service.name).to eq("pauline hanson's one nation")
+    end
+  end
+
+  context 'when the label is the Legalise Cannabis Party (not a Group::NAMES family)' do
+    let(:party_label) { 'LEGALISE CANNABIS PARTY' }
+
+    before do
+      FactoryBot.create(:group, name: 'Legalise Cannabis Australia') # a distinct, similarly-named Group -- must not match this one
+      FactoryBot.create(:group, name: 'Legalise Cannabis Party')
+    end
+
+    it 'returns the Legalise Cannabis Party group specifically' do
+      expect(call_service.name).to eq('legalise cannabis party')
+    end
+  end
+
+  context 'when the label is Shooters, Fishers and Farmers (not a Group::NAMES family)' do
+    let(:party_label) { 'SHOOTERS, FISHERS AND FARMERS' }
+
+    before { FactoryBot.create(:group, name: 'Shooters, Fishers and Farmers Party') }
+
+    it 'returns the Shooters, Fishers and Farmers Party group' do
+      expect(call_service.name).to eq('shooters, fishers and farmers party')
+    end
+  end
+
   context 'when the label is a joint ticket, e.g. "LIBERAL / THE NATIONALS"' do
     let(:party_label) { 'LIBERAL / THE NATIONALS' }
 

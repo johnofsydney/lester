@@ -21,14 +21,14 @@ class GroupsController < ApplicationController
     if @group.cache_fresh?
       render Groups::ShowView.new(group: @group, transfers_page: params[:transfers_page])
     else
-      Cache::BuildGroupCachedDataJob.perform_async(@group.id)
+      @group.refresh_cached_data!(queue: :critical)
       render Common::PleaseRefreshLater.new(entity: @group)
     end
   end
 
   def reload
     @group = Group.find(params[:id])
-    Cache::BuildGroupCachedDataJob.perform_async(@group.id)
+    @group.refresh_cached_data!(queue: :critical)
 
     render Groups::ShowView.new(group: @group.reload, transfers_page: params[:transfers_page])
   end

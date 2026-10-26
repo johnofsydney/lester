@@ -11,10 +11,9 @@ RSpec.describe Nodes::Merge, type: :service do
     let!(:person_a)  { Person.create!(name: 'Alice') }
     let!(:person_b)  { Person.create!(name: 'Bob') }
 
-    before do
-      allow(Cache::BuildGroupCachedDataJob).to receive(:perform_async)
-      allow(Cache::BuildPersonCachedDataJob).to receive(:perform_async)
-    end
+    let(:setter) { stub_refresh_cached_data_job }
+
+    before { setter }
 
     it 'raises when merging node into itself' do
       expect {described_class.call(receiver_node: group_a, argument_node: group_a)}.to raise_error('Cannot merge node into itself')
@@ -30,20 +29,18 @@ RSpec.describe Nodes::Merge, type: :service do
       merge
 
       expect(group_a.cached_data).to eq({})
-      expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(group_a.id)
+      expect(Cache::RefreshCachedDataJob).to have_received(:set).with(queue: :critical)
+      expect(setter).to have_received(:perform_async).with('Group', group_a.id)
     end
 
     context 'when a queue is given' do
       subject(:merge) { described_class.call(receiver_node:, argument_node:, queue: :low) }
 
       it 'enqueues the refresh job on that queue' do
-        setter = double('Sidekiq::Job::Setter') # rubocop:disable RSpec/VerifiedDoubles
-        allow(Cache::BuildGroupCachedDataJob).to receive(:set).with(queue: :low).and_return(setter)
-        allow(setter).to receive(:perform_async)
-
         merge
 
-        expect(setter).to have_received(:perform_async).with(group_a.id)
+        expect(Cache::RefreshCachedDataJob).to have_received(:set).with(queue: :low)
+        expect(setter).to have_received(:perform_async).with('Group', group_a.id)
       end
     end
 
@@ -164,8 +161,8 @@ RSpec.describe Nodes::Merge, type: :service do
 
       it 'refreshes the cache of the person merged in as a side effect' do
         merge
-        expect(Cache::BuildPersonCachedDataJob).to have_received(:perform_async).with(person_a.id)
-        expect(Cache::BuildPersonCachedDataJob).to have_received(:perform_async).with(person_b.id)
+        expect(setter).to have_received(:perform_async).with('Person', person_a.id)
+        expect(setter).to have_received(:perform_async).with('Person', person_b.id)
       end
     end
 
@@ -179,7 +176,7 @@ RSpec.describe Nodes::Merge, type: :service do
 
       it 'refreshes the cache of the affected employer group' do
         merge
-        expect(Cache::BuildGroupCachedDataJob).to have_received(:perform_async).with(group_a.id)
+        expect(setter).to have_received(:perform_async).with('Group', group_a.id)
       end
     end
 

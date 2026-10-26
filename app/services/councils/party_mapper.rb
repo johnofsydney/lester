@@ -11,11 +11,17 @@ class Councils::PartyMapper
 
   # Non-family minor parties that still have their own (non-state-branched) Group in the DB --
   # checked before the family keyword match below. Without this, a label like "Liberal Democratic
-  # Party" would wrongly match /liberal/i and resolve into the actual Liberal Party's Group -- LDP
-  # has no entry in Group::NAMES at all (it's not one of the four major families), so it needs its
-  # own direct name here rather than a family lookup.
+  # Party" would wrongly match /liberal/i and resolve into the actual Liberal Party's Group -- none
+  # of these have an entry in Group::NAMES at all (they're not one of the four major families), so
+  # they need their own direct name here rather than a family lookup. Canonical names below are
+  # exact matches (via Group.find_by_name_i) against real Groups already in the DB from other
+  # ingestion sources (AEC donations etc), confirmed live: ONE NATION and SHOOTERS, FISHERS AND
+  # FARMERS are both real NSW LC winners (SG2301) that `family_name` can't resolve.
   EXPLICIT_NAMES = {
-    /liberal democrat/i => 'Liberal Democratic Party'
+    /liberal democrat/i => 'Liberal Democratic Party',
+    /one nation/i => "Pauline Hanson's One Nation",
+    /legalise cannabis/i => 'Legalise Cannabis Party',
+    /shooters,?\s*fishers\s*and\s*farmers/i => 'Shooters, Fishers and Farmers Party'
   }.freeze
 
   def self.call(party_label, state:)
