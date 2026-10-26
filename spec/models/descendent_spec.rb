@@ -159,6 +159,25 @@ RSpec.describe Descendent do
     end
   end
 
+  describe '#to_h' do
+    let(:klass) { 'Person' }
+    let(:name) { 'adam benson' }
+    let(:id) { 1 }
+    let(:depth) { 1 }
+
+    it 'capitalizes the name for display' do
+      expect(descendent.to_h[:name]).to eq('Adam Benson')
+    end
+
+    context 'when there is a parent' do
+      let(:parent) { instance_double(Group, id: 2, name: 'abc pty ltd', class: Group, nodes_count: 0) }
+
+      it 'capitalizes the parent name for display' do
+        expect(descendent.to_h[:parent_name]).to eq('ABC Pty Ltd')
+      end
+    end
+  end
+
   describe '#url' do
     context 'when the klass is Thing' do
       let(:klass) { 'Thing' }

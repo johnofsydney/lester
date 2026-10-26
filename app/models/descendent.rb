@@ -18,11 +18,11 @@ class Descendent
   def to_h
     {
       parent_id: parent&.id,
-      parent_name: parent&.name,
+      parent_name: Nodes::NameCapitalizer.capitalize_for(parent&.class&.to_s, parent&.name),
       parent_klass: parent&.class&.to_s,
       parent_count: parent_count || parent_size,
       id:,
-      name:,
+      name: Nodes::NameCapitalizer.capitalize_for(klass, name),
       klass:,
       depth:,
       shape:,
