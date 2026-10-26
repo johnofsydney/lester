@@ -22,20 +22,14 @@ class Common::MoneyGraphs < ApplicationView
   end
 
   def colors(query, giver: false)
-    # TODO: refactor to use cached data - which is an array of hashes
     # DO NOT find from the database. The name should be added to the cached data.
     @colors ||= begin
-      if giver
-        query.group(:taker_id, :taker_type)
-            .sum(:amount)
-            .transform_keys{ |key| key[1].constantize.find(key[0]).name }
-            .map { |name, _v| "##{Digest::MD5.hexdigest(name)[0..5]}" }
-      else
-        query.group(:giver_id, :giver_type)
-            .sum(:amount)
-            .transform_keys{ |key| key[1].constantize.find(key[0]).name }
-            .map { |name, _v| "##{Digest::MD5.hexdigest(name)[0..5]}" }
-      end
+      key_field, type_field = giver ? [:taker_id, :taker_type] : [:giver_id, :giver_type]
+
+      query.group(key_field, type_field)
+           .sum(:amount)
+           .keys
+           .map { |id, type| type.constantize.find(id).graph_color }
     end
   end
 

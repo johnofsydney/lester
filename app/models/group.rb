@@ -217,6 +217,18 @@ class Group < ApplicationRecord
     end.flatten.uniq
   end
 
+  PARTY_COLORS = {
+    coalition: '#0d6efd',
+    liberals: '#0d6efd',
+    nationals: '#0d6efd',
+    labor: '#dc3545',
+    greens: '#198754'
+  }.freeze
+
+  def self.party_color_for(name)
+    PARTY_COLORS.find { |party_key, _color| NAMES.send(party_key).to_h.value?(name) }&.last
+  end
+
   def self.find_by_name_i(name)
     Group.where('LOWER(name) = ?', name.downcase).first
   end

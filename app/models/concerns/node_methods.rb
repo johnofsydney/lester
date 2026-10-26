@@ -47,11 +47,15 @@ module NodeMethods
       direct_connections:, # TODO: Remove from here
       top_six_as_giver: top_six_as_giver.to_h, # used in chartkick graphs # TODO: Remove from here
       top_six_as_taker: top_six_as_taker.to_h, # used in chartkick graphs # TODO: Remove from here
-      graph_color: "##{Digest::MD5.hexdigest(name)[0..5]}", # used in chartkick graphs
+      graph_color:, # used in chartkick graphs
       consolidated_descendents: consolidated_descendents(depth: 4).map(&:to_h), # used for the network graph
       consolidated_transfers: consolidated_transfers(depth: 2).map(&:to_h), # is this enough - probably
       data_time_range: data_time_range # used in chartkick graphs
     }
+  end
+
+  def graph_color
+    (is_a?(Group) && Group.party_color_for(name)) || "##{Digest::MD5.hexdigest(name)[0..5]}"
   end
 
   # private
