@@ -128,6 +128,10 @@ ActiveAdmin.register Group do
     link_to 'Post to Socials', group_post_to_socials_path(resource), method: :get
   end
 
+  action_item :reload, only: :show do
+    link_to 'Reload', group_reload_path(resource), method: :get
+  end
+
   action_item :refresh_from_abn, only: :show do
     link_to 'Refresh from ABN', refresh_from_abn_admin_group_path(resource), method: :get
   end

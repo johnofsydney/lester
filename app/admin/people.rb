@@ -123,6 +123,10 @@ ActiveAdmin.register Person do
     link_to 'Post to Socials', person_post_to_socials_path(resource), method: :get
   end
 
+  action_item :reload, only: :show do
+    link_to 'Reload', person_reload_path(resource), method: :get
+  end
+
   action_item :explode_person, only: :show do
     link_to 'Explode Person', explode_person_admin_person_path(resource), method: :get
   end
