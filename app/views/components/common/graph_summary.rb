@@ -10,7 +10,7 @@ class Common::GraphSummary < ApplicationView
   def view_template
     turbo_frame(id: 'money_summary') do
       if entity.cached.money_in.present? || entity.cached.money_out.present?
-        div(class: 'margin-above ') do
+        div(class: 'row margin-above') do
 
           if entity.cached.money_in.present?
             div(class: 'col') do

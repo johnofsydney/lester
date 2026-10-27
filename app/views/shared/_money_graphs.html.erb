@@ -1,5 +1,5 @@
 <% if transfers_by_name.present? %>
-  <div class="row graph rounded bg-light mt-3 shadow-sm border">
+  <div class="graph rounded bg-light mt-3 shadow-sm border">
     <%= bar_chart(
       transfers_by_name,
       # colors:,
@@ -14,7 +14,7 @@
 <% end %>
 
 <% if transfers_by_name.present? %>
-  <div class="row graph rounded bg-light mt-3 border">
+  <div class="graph rounded bg-light mt-3 border">
     <%= pie_chart(
       transfers_by_name,
       # colors:,
@@ -30,7 +30,7 @@
 <% end %>
 
 <% if transfers_by_year.present? %>
-  <div class="row graph rounded bg-light mt-3 mb-3 border">
+  <div class="graph rounded bg-light mt-3 mb-3 border">
     <%= column_chart(
       transfers_by_year,
       # colors:,
