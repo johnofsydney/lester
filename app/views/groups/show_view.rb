@@ -37,7 +37,7 @@ class Groups::ShowView < ApplicationView
       render TransfersTableComponent.new(
         entity: group,
         transfers: group.cached.consolidated_transfers,
-        heading: "Connected to #{Nodes::NameCapitalizer.capitalize(group.name)}",
+        heading: "Connected to #{group.display_name}",
         summarise_for: Group.summarise_for(group),
         page: transfers_page
       )

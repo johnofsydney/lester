@@ -33,4 +33,8 @@ class TradingName < ApplicationRecord
 
     matches.first&.owner
   end
+
+  def display_name
+    Nodes::NameCapitalizer.capitalize_for(owner_type, name)
+  end
 end
