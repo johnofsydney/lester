@@ -7,3 +7,7 @@ import "controllers"
 
 import "chartkick"
 import "Chart.bundle"
+
+Chartkick.options = {
+  library: { font: { family: getComputedStyle(document.body).fontFamily } }
+}
