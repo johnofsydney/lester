@@ -49,7 +49,7 @@ RSpec.describe Descendent do
         let(:node) { instance_double(Group, is_a?: true, nodes_count_cached: 275, id: 1, name: 'liberals (nsw)') }
 
         it 'uses a distinct shape, not the ordinary box' do
-          expect(descendent.shape).to eq('star')
+          expect(descendent.shape).to eq('hexagon')
         end
       end
 

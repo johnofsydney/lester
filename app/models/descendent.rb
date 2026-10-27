@@ -37,7 +37,7 @@ class Descendent
 
   def shape
     return 'circle' if depth.zero?
-    return 'star' if capped?
+    return 'hexagon' if capped?
 
     klass == 'Person' ? 'dot' : 'box'
   end
