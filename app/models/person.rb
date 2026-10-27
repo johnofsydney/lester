@@ -63,14 +63,6 @@ class Person < ApplicationRecord
     groups
   end
 
-  def transfers
-    # TODO: Potentially useless code
-    OpenStruct.new(
-      incoming: Transfer.where(taker: self), # always nil. replace with [] ?,
-      outgoing: Transfer.where(giver: self, giver_type: 'Person').order(amount: :desc)
-    )
-  end
-
   def other_edge_ends
     outgoing_transfers.map(&:taker)
   end

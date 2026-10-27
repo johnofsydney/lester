@@ -119,6 +119,10 @@ ActiveAdmin.register Person do
   #   Linkedin::ProfileGetterJob.perform_async(person.id)
   # end
 
+  action_item :post_to_socials, only: :show do
+    link_to 'Post to Socials', person_post_to_socials_path(resource), method: :get
+  end
+
   action_item :explode_person, only: :show do
     link_to 'Explode Person', explode_person_admin_person_path(resource), method: :get
   end

@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
 
   include Constants
 
-  before_action :set_group, only: %i[ show ]
+  before_action :set_group, only: %i[ show post_to_socials ]
   before_action :increment_views, only: %i[ show ]
 
   def index
@@ -42,6 +42,13 @@ class GroupsController < ApplicationController
       affiliated_groups: paginate(direct_connections.filter { |c| (c['klass'] == 'Group') && !c['is_tag'] }, params[:groups_page]),
       tags: paginate(direct_connections.filter { |c| c['klass'] == 'Tag' }, params[:tags_page])
     )
+  end
+
+  def post_to_socials
+    message = @group.tweet_body
+    BlueskyService.skeet(message)
+
+    render json: { message: message }, status: :ok
   end
 
   def money_summary

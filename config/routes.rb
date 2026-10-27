@@ -27,7 +27,8 @@ Rails.application.routes.draw do
   get 'search/advanced/groups' => 'advanced_search#group_autocomplete', defaults: { format: 'json' }, as: :advanced_search_group_autocomplete
 
   get '/post_to_socials' => 'home#post_to_socials'              # Random
-  get '/people/:id/post_to_socials' => 'people#post_to_socials' # Person
+  get '/people/:id/post_to_socials' => 'people#post_to_socials', as: :person_post_to_socials # Person
+  get '/groups/:id/post_to_socials' => 'groups#post_to_socials', as: :group_post_to_socials # Group
 
   get '/people/:id/reload' => 'people#reload'
   get '/tradingnames/:id' => 'trading_names#show', as: :trading_name
