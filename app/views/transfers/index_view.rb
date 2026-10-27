@@ -82,10 +82,10 @@ class Transfers::IndexView < ApplicationView
             td { transfer.effective_date.strftime('%d/%m/%Y') }
             td { transfer.transfer_type.titleize }
             td do
-              a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { Nodes::NameCapitalizer.capitalize(transfer.giver.name) }
+              a(href: "/#{transfer.giver_type.downcase.pluralize}/#{transfer.giver_id}") { transfer.giver.display_name }
             end
             td do
-              a(href: "/#{transfer.taker_type.downcase.pluralize}/#{transfer.taker_id}") { Nodes::NameCapitalizer.capitalize(transfer.taker.name) }
+              a(href: "/#{transfer.taker_type.downcase.pluralize}/#{transfer.taker_id}") { transfer.taker.display_name }
             end
           end
         end

@@ -1,6 +1,18 @@
 require 'rails_helper'
 
 RSpec.describe Person do
+  describe '#display_name' do
+    it 'title-cases the name without upcasing short words' do
+      person = Person.create(name: 'adam benson')
+      expect(person.display_name).to eq('Adam Benson')
+    end
+
+    it 'does not upcase short words that would look like acronyms to the group capitalizer' do
+      person = Person.create(name: 'aiden may')
+      expect(person.display_name).to eq('Aiden May')
+    end
+  end
+
   describe 'scopes' do
     let!(:charities_group) { Group.create(name: 'Charities') }
     let!(:charity1) { Group.create(name: 'Charity 1') }

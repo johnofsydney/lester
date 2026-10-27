@@ -115,7 +115,7 @@ module NodeMethods
       names_by_id = type.constantize.where(id: ids).pluck(:id, :name).to_h
 
       keys_for_type.each do |key|
-        name = names_by_id.fetch(key.first)
+        name = Nodes::NameCapitalizer.capitalize_for(type, names_by_id.fetch(key.first))
         names_by_key[key] = name.length <= 25 ? name : "#{name[0..25]}..."
       end
     end
