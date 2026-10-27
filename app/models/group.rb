@@ -231,10 +231,42 @@ class Group < ApplicationRecord
     'the greens' => PARTY_COLORS[:greens]
   }.freeze
 
+  # Shade steps applied to a party's base colour, keyed by branch so the same
+  # branch (e.g. nsw) always gets the same shade regardless of party.
+  STATE_SHADE_STEPS = { federal: 0, nsw: -15, vic: 15, qld: -30, sa: 30, wa: -45, tas: 45, act: -60, nt: 60 }.freeze
+
   def self.party_color_for(name)
-    MAJOR_GROUP_COLORS[name] ||
-      PARTY_COLORS.find { |party_key, _color| NAMES.send(party_key).to_h.value?(name) }&.last
+    MAJOR_GROUP_COLORS[name] || shaded_party_color_for(name)
   end
+
+  def self.shaded_party_color_for(name)
+    party_key, state_key = party_and_state_for(name)
+    return nil unless party_key
+
+    adjust_lightness(PARTY_COLORS.fetch(party_key), STATE_SHADE_STEPS.fetch(state_key, 0))
+  end
+  private_class_method :shaded_party_color_for
+
+  def self.party_and_state_for(name)
+    PARTY_COLORS.each_key do |party_key|
+      NAMES.send(party_key).to_h.each do |state_key, state_name|
+        return [party_key, state_key] if state_name == name
+      end
+    end
+    nil
+  end
+  private_class_method :party_and_state_for
+
+  def self.adjust_lightness(hex, percent)
+    rgb = hex.delete('#').scan(/../).map { |c| c.to_i(16) }
+    shaded = rgb.map do |channel|
+      delta = percent.negative? ? channel * percent / 100.0 : (255 - channel) * percent / 100.0
+      (channel + delta).round.clamp(0, 255)
+    end
+
+    "##{shaded.map { |c| format('%02x', c) }.join}"
+  end
+  private_class_method :adjust_lightness
 
   def self.find_by_name_i(name)
     Group.where('LOWER(name) = ?', name.downcase).first
