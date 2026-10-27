@@ -76,12 +76,6 @@ Layout/MultilineMethodCallIndentation:
     - 'app/views/components/common/money_graphs.rb'
     - 'csv_data/raw/wiki_feds_cleaner.rb'
 
-# Offense count: 28
-# This cop supports safe autocorrection (--autocorrect).
-Layout/SpaceAfterComma:
-  Exclude:
-    - 'spec/models/group_spec.rb'
-
 # Offense count: 35
 # This cop supports safe autocorrection (--autocorrect).
 # Configuration parameters: AllowForAlignment, EnforcedStyleForExponentOperator, EnforcedStyleForRationalLiterals.
