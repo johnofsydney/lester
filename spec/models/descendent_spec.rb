@@ -100,6 +100,36 @@ RSpec.describe Descendent do
       end
     end
 
+    context 'when the node is a capped Group leaf (too large to have been expanded)' do
+      let(:klass) { 'Group' }
+      let(:node) { instance_double(Group, is_a?: true, nodes_count_cached: 275, id: 1, name: 'liberals (nsw)') }
+
+      it 'scales with the leaf\'s own size rather than the usual parent-based tiers' do
+        expect(descendent.mass).to eq(15)
+      end
+    end
+
+    context 'when the node is a Group at depth 0, even if its own size exceeds the cap' do
+      let(:depth) { 0 }
+      let(:klass) { 'Group' }
+      let(:node) { instance_double(Group, is_a?: true, nodes_count_cached: 275, id: 1, name: 'liberals (nsw)') }
+      let(:parent_count) { 0 }
+
+      it 'is exempt, since the root always expands regardless of size' do
+        expect(descendent.mass).to eq(4)
+      end
+    end
+
+    context 'when the node is a Group leaf at or under the expand threshold' do
+      let(:klass) { 'Group' }
+      let(:node) { instance_double(Group, is_a?: true, nodes_count_cached: 50, id: 1, name: 'liberals (nsw)') }
+      let(:parent_count) { 0 }
+
+      it 'uses the ordinary parent-based tiers, not the capped scaling' do
+        expect(descendent.mass).to eq(4)
+      end
+    end
+
     context 'when parent_size is calculated' do
       let(:parent) { instance_double(Group) }
 

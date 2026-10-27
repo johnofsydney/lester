@@ -61,6 +61,7 @@ class Descendent
 
   def mass
     return 2 if klass == 'Person'
+    return capped_mass if capped?
 
     case parent_size
     when 0..3
@@ -92,6 +93,22 @@ class Descendent
   end
 
   private
+
+  # True for a Group leaf that wasn't expanded because it's too large to follow
+  # (see CanAddToQueue, ADR 0012) - the root is exempt, since it always expands
+  # regardless of size.
+  def capped?
+    return false if depth.zero? || !entity.is_a?(Group)
+
+    (entity.nodes_count_cached || 0) > Constants::MAX_NODES_TO_EXPAND
+  end
+
+  # Scales with the leaf's own size (already cached on the entity) rather than its
+  # parent's, so a capped leaf's visual weight signals "traversal stopped here because
+  # this is a large group" instead of looking identical to an ordinary small leaf.
+  def capped_mass
+    [12 + Math.log2(entity.nodes_count_cached / Constants::MAX_NODES_TO_EXPAND.to_f).ceil, 30].min
+  end
 
   def parent_size
     return 0 unless parent_count || parent
