@@ -62,7 +62,7 @@ class RehydratedNode
 
   def klass = node.class.name
 
-  delegate :id, :name, :business_number, :attributes, :nodes_count, to: :node
+  delegate :id, :name, :display_name, :business_number, :attributes, :nodes_count, to: :node
   delegate :is_group?, :is_person?, :is_tag?, to: :node
   delegate :trading_names, to: :node # temporary - needed for heading view
 

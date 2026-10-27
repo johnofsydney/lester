@@ -80,6 +80,10 @@ class Person < ApplicationRecord
   def is_person? = true
   def business_number = nil
 
+  def display_name
+    Nodes::NameCapitalizer.capitalize_for('Person', name)
+  end
+
   # rubocop:disable Style/StringConcatenation # feels nicer in this case
   def tweet_body
     body = <<~SUMMARY.strip

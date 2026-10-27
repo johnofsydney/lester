@@ -28,12 +28,12 @@ class Common::MoneyGraphs < ApplicationView
       if giver
         query.group(:taker_id, :taker_type)
             .sum(:amount)
-            .transform_keys{ |key| key[1].constantize.find(key[0]).name }
+            .transform_keys{ |key| key[1].constantize.find(key[0]).display_name }
             .map { |name, _v| "##{Digest::MD5.hexdigest(name)[0..5]}" }
       else
         query.group(:giver_id, :giver_type)
             .sum(:amount)
-            .transform_keys{ |key| key[1].constantize.find(key[0]).name }
+            .transform_keys{ |key| key[1].constantize.find(key[0]).display_name }
             .map { |name, _v| "##{Digest::MD5.hexdigest(name)[0..5]}" }
       end
     end
@@ -66,7 +66,7 @@ class Common::MoneyGraphs < ApplicationView
   def name_for_bar_graph(key)
     klass = key[1].constantize # key[1] == type, giver_type or taker_type
     instance = klass.find(key[0]) # key[0] == id, giver_id or taker_id
-    name = instance.name
+    name = instance.display_name
 
     return name if name.length <= MAX_CHARS
 
