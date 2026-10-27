@@ -44,6 +44,23 @@ RSpec.describe Descendent do
 
         it { expect(descendent.shape).to eq('box') }
       end
+
+      context 'and the node is a capped Group (too large to have been expanded)' do
+        let(:node) { instance_double(Group, is_a?: true, nodes_count_cached: 275, id: 1, name: 'liberals (nsw)') }
+
+        it 'uses a distinct shape, not the ordinary box' do
+          expect(descendent.shape).to eq('star')
+        end
+      end
+
+      context 'and the node is a capped Group at depth 0' do
+        let(:depth) { 0 }
+        let(:node) { instance_double(Group, is_a?: true, nodes_count_cached: 275, id: 1, name: 'liberals (nsw)') }
+
+        it 'stays circle, since the root is exempt from the capped cue' do
+          expect(descendent.shape).to eq('circle')
+        end
+      end
     end
   end
 
