@@ -225,8 +225,15 @@ class Group < ApplicationRecord
     greens: '#198754'
   }.freeze
 
+  MAJOR_GROUP_COLORS = {
+    'australian labor party' => PARTY_COLORS[:labor],
+    'liberal / national coalition' => PARTY_COLORS[:coalition],
+    'the greens' => PARTY_COLORS[:greens]
+  }.freeze
+
   def self.party_color_for(name)
-    PARTY_COLORS.find { |party_key, _color| NAMES.send(party_key).to_h.value?(name) }&.last
+    MAJOR_GROUP_COLORS[name] ||
+      PARTY_COLORS.find { |party_key, _color| NAMES.send(party_key).to_h.value?(name) }&.last
   end
 
   def self.find_by_name_i(name)

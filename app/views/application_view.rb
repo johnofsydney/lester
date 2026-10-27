@@ -17,11 +17,17 @@ class ApplicationView < ApplicationComponent
   end
 
   def background_color(item)
-    '#' + text_to_hex(safe_name(item))
+    party_color(item) || '#' + text_to_hex(safe_name(item))
   end
 
   def color(item)
+    return 'white' if party_color(item)
+
     text_to_hex(safe_name(item)).hex > 0x7FFFFF ? 'black' : 'white'
+  end
+
+  def party_color(item)
+    Group.party_color_for(safe_name(item))
   end
 
   def text_to_hex(text)
