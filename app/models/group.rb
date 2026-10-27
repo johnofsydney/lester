@@ -222,30 +222,43 @@ class Group < ApplicationRecord
   end
 
   def self.charities_tag
-    Group.find(124_513)
+    find_seeded(124_513, :charities_tag)
   end
 
   def self.lobbyists_tag
-    Group.find(124_509)
+    find_seeded(124_509, :lobbyists_tag)
   end
 
   def self.client_of_lobbyists_tag
-    Group.find(124_510)
+    find_seeded(124_510, :client_of_lobbyists_tag)
   end
 
   def self.government_department_tag
-    Group.find(124_514)
+    find_seeded(124_514, :government_department_tag)
   end
 
   def self.federal_parliament
-    Group.find(877)
+    find_seeded(877, :federal_parliament)
   end
 
   def self.nsw_parliament
-    Group.find(3740)
+    find_seeded(3740, :nsw_parliament)
   end
 
   def self.local_councils_tag
-    Group.find(132_067)
+    find_seeded(132_067, :local_councils_tag)
   end
+
+  # These IDs only exist because production is seeded into dev/staging with PKs preserved
+  # (see db/seeds.rb). A DB without that seed data raises RecordNotFound with no indication
+  # of which constant or seed step was missing.
+  def self.find_seeded(id, method_name)
+    Group.find(id)
+  rescue ActiveRecord::RecordNotFound
+    raise ActiveRecord::RecordNotFound,
+          "Group.#{method_name} expects group id #{id} to exist. This ID is seeded from " \
+          'production (see db/seeds.rb and `bin/rails seed_data:extract`) and is not ' \
+          'present on this database.'
+  end
+  private_class_method :find_seeded
 end
