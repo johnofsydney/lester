@@ -64,8 +64,8 @@ RSpec.describe Group do
   describe '#transfers' do
     let(:giving_group) { described_class.create(name: 'Giving Group') }
     let(:receiver_group) { described_class.create(name: 'Receiver Group') }
-    let!(:incoming_transfer) { Transfer.create(taker: group, giver: giving_group, amount: 123, effective_date: Date.new(2025,12,25)) }
-    let!(:outgoing_transfer) { Transfer.create(taker: receiver_group, giver: group, amount: 123, effective_date: Date.new(2025,12,25)) }
+    let!(:incoming_transfer) { Transfer.create(taker: group, giver: giving_group, amount: 123, effective_date: Date.new(2025, 12, 25)) }
+    let!(:outgoing_transfer) { Transfer.create(taker: receiver_group, giver: group, amount: 123, effective_date: Date.new(2025, 12, 25)) }
 
     it 'returns all incoming and outgoing transfers' do
       expect(group.incoming_transfers).to contain_exactly(incoming_transfer)
@@ -120,20 +120,20 @@ RSpec.describe Group do
 
     before do
       # Transfers where the group is the giver
-      Transfer.create(giver: group, taker: Person.create(name: 'Person A'), amount: 100, effective_date: Date.new(2024,1,1))
-      Transfer.create(giver: group, taker: Person.create(name: 'Person B'), amount: 200, effective_date: Date.new(2024,2,1))
-      Transfer.create(giver: group, taker: Group.create(name: 'Group C'), amount: 300, effective_date: Date.new(2024,3,1))
-      Transfer.create(giver: group, taker: Group.create(name: 'Group D'), amount: 400, effective_date: Date.new(2024,4,1))
-      Transfer.create(giver: group, taker: Person.create(name: 'Person E'), amount: 500, effective_date: Date.new(2024,5,1))
-      Transfer.create(giver: group, taker: Person.create(name: 'Person F'), amount: 600, effective_date: Date.new(2024,6,1))
+      Transfer.create(giver: group, taker: Person.create(name: 'Person A'), amount: 100, effective_date: Date.new(2024, 1, 1))
+      Transfer.create(giver: group, taker: Person.create(name: 'Person B'), amount: 200, effective_date: Date.new(2024, 2, 1))
+      Transfer.create(giver: group, taker: Group.create(name: 'Group C'), amount: 300, effective_date: Date.new(2024, 3, 1))
+      Transfer.create(giver: group, taker: Group.create(name: 'Group D'), amount: 400, effective_date: Date.new(2024, 4, 1))
+      Transfer.create(giver: group, taker: Person.create(name: 'Person E'), amount: 500, effective_date: Date.new(2024, 5, 1))
+      Transfer.create(giver: group, taker: Person.create(name: 'Person F'), amount: 600, effective_date: Date.new(2024, 6, 1))
 
       # Transfers where the group is the taker
-      Transfer.create(taker: group, giver: Person.create(name: 'Person G'), amount: 150, effective_date: Date.new(2024,1,15))
-      Transfer.create(taker: group, giver: Person.create(name: 'Person H'), amount: 250, effective_date: Date.new(2024,2,15))
-      Transfer.create(taker: group, giver: Group.create(name: 'Group I'), amount: 350, effective_date: Date.new(2024,3,15))
-      Transfer.create(taker: group, giver: Group.create(name: 'Group J'), amount: 450, effective_date: Date.new(2024,4,15))
-      Transfer.create(taker: group, giver: Person.create(name: 'Person K'), amount: 550, effective_date: Date.new(2024,5,15))
-      Transfer.create(taker: group, giver: Person.create(name: 'Person L'), amount: 650, effective_date: Date.new(2024,6,15))
+      Transfer.create(taker: group, giver: Person.create(name: 'Person G'), amount: 150, effective_date: Date.new(2024, 1, 15))
+      Transfer.create(taker: group, giver: Person.create(name: 'Person H'), amount: 250, effective_date: Date.new(2024, 2, 15))
+      Transfer.create(taker: group, giver: Group.create(name: 'Group I'), amount: 350, effective_date: Date.new(2024, 3, 15))
+      Transfer.create(taker: group, giver: Group.create(name: 'Group J'), amount: 450, effective_date: Date.new(2024, 4, 15))
+      Transfer.create(taker: group, giver: Person.create(name: 'Person K'), amount: 550, effective_date: Date.new(2024, 5, 15))
+      Transfer.create(taker: group, giver: Person.create(name: 'Person L'), amount: 650, effective_date: Date.new(2024, 6, 15))
     end
 
     describe '#all_the_groups' do

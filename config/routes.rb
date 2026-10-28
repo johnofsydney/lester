@@ -10,8 +10,6 @@ Rails.application.routes.draw do
     mount MaintenanceTasks::Engine, at: '/maintenance_tasks'
   end
 
-  mount Prettytodo::Engine => '/prettytodo' if Rails.env.development?
-
   get 'groups/group_people/:group_id' => 'groups#group_people'
   get 'groups/affiliated_groups/:group_id' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
