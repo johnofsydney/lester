@@ -49,7 +49,9 @@ class Groups::ShowView < ApplicationView
             style: 'min-width: 250px; min-height: 100vh;'
           ) do
             a(href: "/admin/groups/#{group.id}", class: 'btn btn-sm btn-outline-primary mb-2 w-100') { 'Edit Group in Admin' }
-            a(href: "/admin/groups/#{group.id}/merge_with?source_group_id=#{group.id}", class: 'btn btn-sm btn-outline-danger w-100') { 'Merge Group in Admin' }
+            a(href: "/admin/groups/#{group.id}/merge_with?source_group_id=#{group.id}", class: 'btn btn-sm btn-outline-danger mb-2 w-100') { 'Merge Group in Admin' }
+            a(href: "/groups/#{group.id}/reload", class: 'btn btn-sm btn-outline-secondary mb-2 w-100') { 'Reload' }
+            a(href: "/groups/#{group.id}/post_to_socials", class: 'btn btn-sm btn-outline-secondary mb-2 w-100') { 'Post to Socials' }
             render Common::ExternalIdentifiersTable.new(external_identifiers: group.external_identifiers)
           end
         end

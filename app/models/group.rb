@@ -203,6 +203,31 @@ class Group < ApplicationRecord
     Nodes::NameCapitalizer.capitalize_for('Group', name)
   end
 
+  # rubocop:disable Style/StringConcatenation # feels nicer in this case
+  def tweet_body
+    body = <<~SUMMARY.strip
+      🔍 #{name}
+
+      👥 #{nodes_count} #{'connection'.pluralize(nodes_count)} in our database.
+
+      💰 Money Tracker:
+      ➡️ In: #{money_in || 'None'}
+      ⬅️ Out: #{money_out || 'None'}
+    SUMMARY
+
+    call_to_action = "\n\n" + "See more: https://join-the-dots.info/groups/#{id}"
+    body += call_to_action if (body.length + call_to_action.length) < 300
+    aus_pol_tag = "\n\n" + '#AusPol'
+    body += aus_pol_tag if (body.length + aus_pol_tag.length) < 300
+    name_to_tag = ' #' + name.downcase.tr(' ', '_')
+    body += name_to_tag if (body.length + name_to_tag.length) < 300
+    final_sign_off = ' #follow_the_money'
+    body += final_sign_off if (body.length + final_sign_off.length) < 300
+
+    body.strip
+  end
+  # rubocop:enable Style/StringConcatenation
+
   def add_to_tag(tag_group: nil, tag_name: nil)
     raise ArgumentError, 'Either tag_group or tag_name must be provided' if tag_group.blank? && tag_name.blank?
     return if is_tag?

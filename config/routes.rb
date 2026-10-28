@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   get 'groups/group_people/:group_id' => 'groups#group_people'
   get 'groups/affiliated_groups/:group_id' => 'groups#affiliated_groups'
   get 'groups/money_summary/:group_id' => 'groups#money_summary'
-  get 'groups/:id/reload' => 'groups#reload'
+  get 'groups/:id/reload' => 'groups#reload', as: :group_reload
 
   get 'people/:id/network_graph' => 'inertia#network_graph_person'
   get 'groups/:id/network_graph' => 'inertia#network_graph_group'
@@ -27,9 +27,10 @@ Rails.application.routes.draw do
   get 'search/advanced/groups' => 'advanced_search#group_autocomplete', defaults: { format: 'json' }, as: :advanced_search_group_autocomplete
 
   get '/post_to_socials' => 'home#post_to_socials'              # Random
-  get '/people/:id/post_to_socials' => 'people#post_to_socials' # Person
+  get '/people/:id/post_to_socials' => 'people#post_to_socials', as: :person_post_to_socials # Person
+  get '/groups/:id/post_to_socials' => 'groups#post_to_socials', as: :group_post_to_socials # Group
 
-  get '/people/:id/reload' => 'people#reload'
+  get '/people/:id/reload' => 'people#reload', as: :person_reload
   get '/tradingnames/:id' => 'trading_names#show', as: :trading_name
   get '/tags/:id' => 'groups#show'
 
