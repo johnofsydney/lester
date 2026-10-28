@@ -174,4 +174,18 @@ RSpec.describe Group do
       end
     end
   end
+
+  describe 'hardcoded seeded group lookups' do
+    it 'raises a descriptive error when the seeded group id is missing' do
+      expect { Group.charities_tag }.to raise_error(
+        ActiveRecord::RecordNotFound, /Group\.charities_tag expects group id 124513/
+      )
+    end
+
+    it 'returns the group when the seeded id exists' do
+      group = Group.create(id: 124_513, name: 'Charities')
+
+      expect(Group.charities_tag).to eq(group)
+    end
+  end
 end
