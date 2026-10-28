@@ -24,6 +24,7 @@
       legend: 'left',
       title: "#{entity.name.upcase}: Top 5 #{giver ? 'recipients' : 'funders' }",
       donut: true,
+      library: { scales: { x: { display: false }, y: { display: false } } }
       ) %>
       <span class="bottom-right text-muted small"><%= entity.cached.data_time_range %></span>
   </div>
